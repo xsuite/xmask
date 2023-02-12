@@ -1,2 +1,2 @@
 from .env_and_links import make_mad_environment
-from .madx_model import attach_beam_to_sequences
+from .madx_model import attach_beam_to_sequences, configure_b4_from_b2
