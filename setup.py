@@ -33,7 +33,7 @@ setup(
     download_url="https://pypi.python.org/pypi/pymaskmx",
     project_urls={
             "Bug Tracker": "https://github.com/xsuite/pymaskmx/issues",
-            "Source Code": "https://github.com/pymaskmx/xtrack",
+            "Source Code": "https://github.com/xsuite/pymaskmx/",
         },
     packages=find_packages(),
     ext_modules = extensions,
