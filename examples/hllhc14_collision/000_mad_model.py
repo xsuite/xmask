@@ -49,11 +49,10 @@ pm.configure_b4_from_b2(
     sequence_b4=mad_b4.sequence.lhcb2,
     sequence_b2=mad.sequence.lhcb2)
 
-prrrrr
-
 # Save lines for closed orbit reference
-lines_co_ref = save_lines_for_closed_orbit_reference(mad, mad_b4)
-
+lines_co_ref = pm.save_lines_for_closed_orbit_reference(
+    sequence_clockwise=mad.sequence.lhcb1,
+    sequence_anticlockwise=mad_b4.sequence.lhcb2)
 
 lines_to_track = {}
 for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):

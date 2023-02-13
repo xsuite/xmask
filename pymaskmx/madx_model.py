@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+import xtrack as xt
+
 def attach_beam_to_sequences(sequence, beam_to_configure=1, beam_configuration=None):
     """Attach beam to sequence
 
@@ -60,6 +62,26 @@ def attach_beam_to_sequences(sequence, beam_to_configure=1, beam_configuration=N
         mass={particle_mass},
         charge={particle_charge};
     ''')
+
+def save_lines_for_closed_orbit_reference(sequence_clockwise, sequence_anticlockwise):
+
+    name_cw = sequence_clockwise.name
+    name_acw = sequence_anticlockwise.name
+
+    lines_co_ref = {}
+    lines_co_ref[name_cw + '_co_ref'] = xt.Line.from_madx_sequence(
+        sequence_clockwise,
+        deferred_expressions=True,
+        expressions_for_element_types=('kicker', 'hkicker', 'vkicker'),
+        replace_in_expr={'bv_aux': 'bvaux_' + name_cw})
+    lines_co_ref[name_acw + '_co_ref'] = xt.Line.from_madx_sequence(
+        sequence_anticlockwise,
+        deferred_expressions=True,
+        expressions_for_element_types=('kicker', 'hkicker', 'vkicker'),
+        replace_in_expr={'bv_aux': 'bvaux_' + name_acw})
+    return lines_co_ref
+
+
 
 def configure_b4_from_b2(sequence_b4, sequence_b2,
         update_globals={'bv_aux': -1, 'mylhcbeam': 4}):
