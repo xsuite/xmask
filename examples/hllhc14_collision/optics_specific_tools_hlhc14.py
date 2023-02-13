@@ -15,22 +15,22 @@ def build_sequence(mad, beam, **kwargs):
         f'''
         ! Get the toolkit
         call,file=
-          "optics_repository/toolkit/macro.madx";
+          "acc-models-lhc/toolkit/macro.madx";
         '''
         '''
         ! Build sequence
         option, -echo,-warn,-info;
         if (mylhcbeam==4){
-          call,file="optics_repository/../runIII/lhcb4.seq";
+          call,file="acc-models-lhc/../runIII/lhcb4.seq";
         } else {
-          call,file="optics_repository/../runIII/lhc.seq";
+          call,file="acc-models-lhc/../runIII/lhc.seq";
         };
         option, -echo, warn,-info;
         '''
         f'''
         !Install HL-LHC
         call, file=
-          "optics_repository/hllhc_sequence.madx";
+          "acc-models-lhc/hllhc_sequence.madx";
         '''
         '''
         ! Slice nominal sequence
@@ -49,7 +49,7 @@ def build_sequence(mad, beam, **kwargs):
         seqedit, sequence=lhcb2; flatten; cycle, start=IP3; flatten; endedit;
 
         ! Install crab cavities (they are off)
-        call, file='optics_repository/toolkit/enable_crabcavities.madx';
+        call, file='acc-models-lhc/toolkit/enable_crabcavities.madx';
         on_crab1 = 0;
         on_crab5 = 0;
 

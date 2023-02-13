@@ -13,11 +13,17 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         for kk, vv in pars_for_imperfections.items():
             mad_track.globals[kk] = vv
         mad_track.input(f'call, file="{scripts_folder}/submodule_04a_preparation.madx";')
+        mad_track.input(f'call, file="{scripts_folder}/submodule_04a_s1_prepare_nom_twiss_table.madx";')
+
+        mad_track.input('exec, crossing_disable;')
+
         mad_track.input(f'call, file="{scripts_folder}/submodule_04b_alignsep.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04c_errortables.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04d_efcomp.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04e_correction.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04f_final.madx";')
+
+        mad_track.input('exec, crossing_restore;')
     else:
         # Synthesize knobs
         if enable_knob_synthesis:
