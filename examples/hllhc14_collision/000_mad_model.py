@@ -18,7 +18,7 @@ import pymaskmx.lhc as pmlhc
 # from pymask.line_preparation import save_lines_for_closed_orbit_reference
 
 # Import user-defined optics-specific tools
-import optics_specific_tools as ost
+import optics_specific_tools_hlhc14 as ost
 
 # Read config file
 with open('config_mad.yaml','r') as fid:

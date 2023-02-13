@@ -1,10 +1,10 @@
 # Links to be made for tools and scripts
 links:
-  optics_repository: ../../../hllhc14
+  acc-models-lhc: ../../../hllhc14
   errors: ../../../lhcerrors
 
 # Optics file
-optics_file: optics_repository/round/opt_round_150_1500_thin.madx
+optics_file: acc-models-lhc/round/opt_round_150_1500_thin.madx
 # Optics version
 optics_version: '1.4' # Neede by error routines
 
