@@ -6,10 +6,14 @@ links:
 # Optics file
 optics_file: acc-models-lhc/round/opt_round_150_1500_thin.madx
 # Optics version
-optics_version: '1.4' # Neede by error routines
+optics_version: '1.4' # Needed by error routines
 
 # Beam parameters
-beam_energy_tot: 7000           # [GeV]
+beam_config:
+  lhcb1:
+    beam_energy_tot: 7000           # [GeV]
+  lhcb2:
+    beam_energy_tot: 7000           # [GeV]
 
 # Verbose flag for MAD-X parts
 verbose_mad_parts: true

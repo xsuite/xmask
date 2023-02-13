@@ -57,10 +57,10 @@ for line_name in ['lhcb1', 'lhcb2']:
             xt.Vary(knob_names['dq_knob_2'], step=1e-8),
         ],
         targets = [
-            xt.Target('qx', configuration['qx'], tol=1e-4),
-            xt.Target('qy', configuration['qy'], tol=1e-4),
-            xt.Target('dqx', configuration['dqx'], tol=0.05),
-            xt.Target('dqy', configuration['dqy'], tol=0.05)])
+            xt.Target('qx', configuration['qx'][line_name], tol=1e-4),
+            xt.Target('qy', configuration['qy'][line_name], tol=1e-4),
+            xt.Target('dqx', configuration['dqx'][line_name], tol=0.05),
+            xt.Target('dqy', configuration['dqy'][line_name], tol=0.05)])
 
 
 

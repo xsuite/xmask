@@ -40,10 +40,18 @@ knob_settings:
   i_oct_b1:     -235            # [A]
 
 # Tunes and chromaticities
-qx: 62.31
-qy: 60.32
-dqx: 5
-dqy: 5
+qx:
+  lhcb1: 62.31
+  lhcb2: 62.31
+qy:
+  lhcb1: 60.32
+  lhcb2: 60.32
+dqx:
+  lhcb1: 5
+  lhcb2: 5
+dqy:
+  lhcb1: 6
+  lhcb2: 6
 
 knob_names:
 

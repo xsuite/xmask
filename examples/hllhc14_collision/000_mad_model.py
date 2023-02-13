@@ -10,13 +10,6 @@ import xpart as xp
 import pymaskmx as pm
 import pymaskmx.lhc as pmlhc
 
-# from pymask.line_preparation import make_mad_environment
-# from pymask.line_preparation import rename_coupling_knobs_and_coefficients
-# from pymask.line_preparation import define_octupole_current_knobs
-# from pymask.line_preparation import add_correction_term_to_dipole_correctors
-# from pymask.line_preparation import install_correct_errors_and_synthesisize_knobs
-# from pymask.line_preparation import save_lines_for_closed_orbit_reference
-
 # Import user-defined optics-specific tools
 import optics_specific_tools_hlhc14 as ost
 
@@ -35,10 +28,11 @@ mad.globals.par_verbose = int(configuration['verbose_mad_parts'])
 ost.build_sequence(mad, beam=1, optics_version=configuration['optics_version'])
 ost.apply_optics(mad, optics_file=configuration['optics_file'])
 
+beam_config = configuration['beam_config']
 pm.attach_beam_to_sequence(mad.sequence.lhcb1, beam_to_configure=1,
-                            beam_configuration=configuration)
+                            beam_configuration=beam_config['lhcb1'])
 pm.attach_beam_to_sequence(mad.sequence.lhcb2, beam_to_configure=2,
-                            beam_configuration=configuration)
+                            beam_configuration=beam_config['lhcb2'])
 
 # Warm up (seems I need to twiss for mad to load everything)
 mad.use('lhcb1'); mad.twiss(); mad.use('lhcb2'); mad.twiss()
