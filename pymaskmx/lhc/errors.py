@@ -6,7 +6,7 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
     # Force on_disp = 0
     mad_track.globals.on_disp = 0. # will be restored later
 
-    scripts_folder = os.path.dirname(__file__) + '/madx_scripts/'
+    scripts_folder = os.path.dirname(__file__) + '/madx_scripts'
 
     # Install and correct errors
     if enable_imperfections:
