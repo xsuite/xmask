@@ -71,8 +71,6 @@ for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):
         enable_knob_synthesis= configuration['enable_knob_synthesis'],
         pars_for_imperfections=configuration['pars_for_imperfections'])
 
-    prrrrr
-
     # Prepare xsuite line
     line = xt.Line.from_madx_sequence(
         mad_track.sequence[sequence_to_track], apply_madx_errors=True,
@@ -83,9 +81,9 @@ for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):
         q0 = mad_beam.charge, mass0 = mad_beam.mass*1e9)
 
     # Prepare coupling and octupole knobs
-    rename_coupling_knobs_and_coefficients(line=line,
+    pmlhc.rename_coupling_knobs_and_coefficients(line=line,
                                            beamn=int(sequence_to_track[-1]))
-    define_octupole_current_knobs(line=line, beamn=int(sequence_to_track[-1]))
+    pmlhc.define_octupole_current_knobs(line=line, beamn=int(sequence_to_track[-1]))
     lines_to_track[sequence_to_track] = line
 
 
@@ -100,7 +98,7 @@ collider = xt.Multiline(
 collider['lhcb1_co_ref'].particle_ref = collider['lhcb1'].particle_ref.copy()
 collider['lhcb2_co_ref'].particle_ref = collider['lhcb2'].particle_ref.copy()
 
-add_correction_term_to_dipole_correctors(collider)
+pmlhc.add_correction_term_to_dipole_correctors(collider)
 
 # Save the two lines to json
 with open('collider_00_from_mad.json', 'w') as fid:
