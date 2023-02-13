@@ -10,7 +10,8 @@ print, text="";
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !               correction of field errors in MB (compatible with V6.503 & SLHC)
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-call, file="modules/submodule_04e_s1_synthesize_knobs.madx";
+!!!! Called from the main script (in python)
+!!!!call, file="modules/submodule_04e_s1_synthesize_knobs.madx";
 
 
 
