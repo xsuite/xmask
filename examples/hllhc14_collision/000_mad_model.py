@@ -8,6 +8,7 @@ import xtrack as xt
 import xpart as xp
 
 import pymaskmx as pm
+import pymaskmx.lhc as pmlhc
 
 # from pymask.line_preparation import make_mad_environment
 # from pymask.line_preparation import rename_coupling_knobs_and_coefficients
@@ -34,9 +35,9 @@ mad.globals.par_verbose = int(configuration['verbose_mad_parts'])
 ost.build_sequence(mad, beam=1, optics_version=configuration['optics_version'])
 ost.apply_optics(mad, optics_file=configuration['optics_file'])
 
-pm.attach_beam_to_sequences(mad.sequence.lhcb1, beam_to_configure=1,
+pm.attach_beam_to_sequence(mad.sequence.lhcb1, beam_to_configure=1,
                             beam_configuration=configuration)
-pm.attach_beam_to_sequences(mad.sequence.lhcb2, beam_to_configure=2,
+pm.attach_beam_to_sequence(mad.sequence.lhcb2, beam_to_configure=2,
                             beam_configuration=configuration)
 
 # Warm up (seems I need to twiss for mad to load everything)
@@ -65,10 +66,12 @@ for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):
     mad_track.input('exec, crossing_save;') # In this way crossing_restore keeps the flat machine
 
     # Install and correct errors
-    install_correct_errors_and_synthesisize_knobs(mad_track,
+    pmlhc.install_correct_errors_and_synthesisize_knobs(mad_track,
         enable_imperfections=configuration['enable_imperfections'],
         enable_knob_synthesis= configuration['enable_knob_synthesis'],
         pars_for_imperfections=configuration['pars_for_imperfections'])
+
+    prrrrr
 
     # Prepare xsuite line
     line = xt.Line.from_madx_sequence(
