@@ -3,7 +3,7 @@ import numpy as np
 
 import xtrack as xt
 
-def attach_beam_to_sequences(sequence, beam_to_configure=1, beam_configuration=None):
+def attach_beam_to_sequence(sequence, beam_to_configure=1, beam_configuration=None):
     """Attach beam to sequence
 
     Parameters
