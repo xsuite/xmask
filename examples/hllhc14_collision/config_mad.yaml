@@ -13,9 +13,6 @@ beam_config:
   lhcb2:
     beam_energy_tot: 7000           # [GeV]
 
-# Verbose flag for MAD-X parts
-verbose_mad_parts: true
-
 # Enable machine imperfections
 enable_imperfections: false
 

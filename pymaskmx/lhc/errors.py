@@ -20,6 +20,8 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         assert type(ver_hllhc_optics) is float
         mad_track.globals.ver_hllhc_optics = ver_hllhc_optics
 
+    mad_track.globals.par_verbose = 1
+
     # Force on_disp = 0
     mad_track.globals.on_disp = 0. # will be restored later
 

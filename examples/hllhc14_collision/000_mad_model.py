@@ -12,6 +12,9 @@ import pymaskmx.lhc as pmlhc
 
 # Assumptions from the madx model and optics
 # - Machine energy is stored in madx variable "nrj" (in GeV)
+# - The variable "mylhcbeam" is set to one in the madx instance holding
+#   b1 and b2 (both clockwise), and to 4 in the madx instance holding b4
+#   (anti-clockwise).
 # - Version of optics is stored in madx variable "ver_lhc_run" for LHC and
 #   "ver_hllhc_optics" for HL-LHC
 # - Macros are available to save/desable/load orbit bumps, which are called
@@ -28,36 +31,38 @@ with open('config_mad.yaml','r') as fid:
 pm.make_mad_environment(links=configuration['links'])
 
 # Start mad
-mad = Madx(command_log="mad_collider.log")
-mad.globals.par_verbose = int(configuration['verbose_mad_parts'])
+mad_b1b2 = Madx(command_log="mad_collider.log")
+mad_b4 = Madx(command_log="mad_b4.log")
 
-# Build sequence, load optics, define beam
-ost.build_sequence(mad, beam=1)
-ost.apply_optics(mad, optics_file=configuration['optics_file'])
+# Build sequences
+ost.build_sequence(mad_b1b2, mylhcbeam=1)
+ost.build_sequence(mad_b4, mylhcbeam=4)
 
+# Apply optics (only for b1b2, b4 will be generated from b1b2)
+ost.apply_optics(mad_b1b2, optics_file=configuration['optics_file'])
+
+# Beam definitions (only for b1b2, b4 will be generated from b1b2)
 beam_config = configuration['beam_config']
-pm.attach_beam_to_sequence(mad.sequence.lhcb1, beam_to_configure=1,
+pm.attach_beam_to_sequence(mad_b1b2.sequence.lhcb1, beam_to_configure=1,
                             beam_configuration=beam_config['lhcb1'])
-pm.attach_beam_to_sequence(mad.sequence.lhcb2, beam_to_configure=2,
+pm.attach_beam_to_sequence(mad_b1b2.sequence.lhcb2, beam_to_configure=2,
                             beam_configuration=beam_config['lhcb2'])
 
 # Warm up (seems I need to twiss for mad to load everything)
-mad.use('lhcb1'); mad.twiss(); mad.use('lhcb2'); mad.twiss()
+mad_b1b2.use('lhcb1'); mad_b1b2.twiss(); mad_b1b2.use('lhcb2'); mad_b1b2.twiss()
 
 # Generate beam 4
-mad_b4 = Madx(command_log="mad_b4.log")
-ost.build_sequence(mad_b4, beam=4)
 pm.configure_b4_from_b2(
     sequence_b4=mad_b4.sequence.lhcb2,
-    sequence_b2=mad.sequence.lhcb2)
+    sequence_b2=mad_b1b2.sequence.lhcb2)
 
 # Save lines for closed orbit reference
 lines_co_ref = pm.save_lines_for_closed_orbit_reference(
-    sequence_clockwise=mad.sequence.lhcb1,
+    sequence_clockwise=mad_b1b2.sequence.lhcb1,
     sequence_anticlockwise=mad_b4.sequence.lhcb2)
 
 lines_to_track = {}
-for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):
+for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad_b1b2, mad_b4]):
 
     # Final use
     mad_track.use(sequence_to_track)

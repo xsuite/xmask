@@ -1,7 +1,7 @@
-def build_sequence(mad, beam, **kwargs):
+def build_sequence(mad, mylhcbeam, **kwargs):
 
     # Select beam
-    mad.input(f'mylhcbeam = {beam}')
+    mad.input(f'mylhcbeam = {mylhcbeam}')
 
     mad.input(
 
