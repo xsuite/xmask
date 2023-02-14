@@ -5,8 +5,6 @@ links:
 
 # Optics file
 optics_file: acc-models-lhc/round/opt_round_150_1500_thin.madx
-# Optics version
-optics_version: '1.4' # Needed by error routines
 
 # Beam parameters
 beam_config:
@@ -23,6 +21,10 @@ enable_imperfections: false
 
 # Enable knob synthesis (for coupling correction, if no imperfections)
 enable_knob_synthesis: false
+
+# Optics version, for choice of correction algorithms
+# (ver_lhc_run or ver_hllhc_optics)
+ver_hllhc_optics: 1.4
 
 # Parameters for machine imperfections
 pars_for_imperfections:

@@ -32,7 +32,7 @@ mad = Madx(command_log="mad_collider.log")
 mad.globals.par_verbose = int(configuration['verbose_mad_parts'])
 
 # Build sequence, load optics, define beam
-ost.build_sequence(mad, beam=1, optics_version=configuration['optics_version'])
+ost.build_sequence(mad, beam=1)
 ost.apply_optics(mad, optics_file=configuration['optics_file'])
 
 beam_config = configuration['beam_config']
@@ -46,7 +46,7 @@ mad.use('lhcb1'); mad.twiss(); mad.use('lhcb2'); mad.twiss()
 
 # Generate beam 4
 mad_b4 = Madx(command_log="mad_b4.log")
-ost.build_sequence(mad_b4, beam=4, optics_version=configuration['optics_version'])
+ost.build_sequence(mad_b4, beam=4)
 pm.configure_b4_from_b2(
     sequence_b4=mad_b4.sequence.lhcb2,
     sequence_b2=mad.sequence.lhcb2)
@@ -70,7 +70,9 @@ for sequence_to_track, mad_track in zip(['lhcb1', 'lhcb2'], [mad, mad_b4]):
     pmlhc.install_correct_errors_and_synthesisize_knobs(mad_track,
         enable_imperfections=configuration['enable_imperfections'],
         enable_knob_synthesis= configuration['enable_knob_synthesis'],
-        pars_for_imperfections=configuration['pars_for_imperfections'])
+        pars_for_imperfections=configuration['pars_for_imperfections'],
+        ver_lhc_run=configuration.get('ver_lhc_run', None),
+        ver_hllhc_optics=configuration.get('ver_hllhc_optics', None))
 
     # Prepare xsuite line
     line = xt.Line.from_madx_sequence(
