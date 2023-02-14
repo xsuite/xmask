@@ -10,6 +10,13 @@ import xpart as xp
 import pymaskmx as pm
 import pymaskmx.lhc as pmlhc
 
+# Assumptions from the madx model and optics
+# - Machine energy is stored in madx variable "nrj" (in GeV)
+# - Version of optics is stored in madx variable "ver_lhc_run" for LHC and
+#   "ver_hllhc_optics" for HL-LHC
+# - Macros are available to save/desable/load orbit bumps, which are called
+#   "crossing_save", "crossing_disable", and "crossing_restore".
+
 # Import user-defined optics-specific tools
 import optics_specific_tools_hlhc14 as ost
 
