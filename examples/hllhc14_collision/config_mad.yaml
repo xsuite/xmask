@@ -22,6 +22,7 @@ enable_knob_synthesis: false
 # Optics version, for choice of correction algorithms
 # (ver_lhc_run or ver_hllhc_optics)
 ver_hllhc_optics: 1.4
+ver_lhc_run: null
 
 # Parameters for machine imperfections
 pars_for_imperfections:
