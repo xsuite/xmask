@@ -1,5 +1,6 @@
 import yaml
 import json
+import xobjects as xo
 
 import xtrack as xt
 
@@ -15,7 +16,7 @@ with open('collider_01_bb_off.json', 'r') as fid:
 with open('corr_co.json', 'r') as fid:
     co_corr_config = json.load(fid)
 
-    
+
 
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
@@ -71,7 +72,9 @@ collider.configure_beambeam_interactions(
     nemitt_x=2e-6, nemitt_y=3e-6)
 
 
-
+with open('collider_02_bb_on.json', 'w') as fid:
+    dct = collider.to_dict()
+    json.dump(dct, fid, cls=xo.JEncoder)
 
 
 
