@@ -62,6 +62,15 @@ for line_name in ['lhcb1', 'lhcb2']:
             xt.Target('dqx', configuration['dqx'][line_name], tol=0.05),
             xt.Target('dqy', configuration['dqy'][line_name], tol=0.05)])
 
+# Configure beam-beam lenses
+print('Configuring beam-beam lenses...')
+collider.configure_beambeam_interactions(
+    num_particles=2.2e11,
+    nemitt_x=2e-6, nemitt_y=3e-6)
+
+
+
+
 
 
 
