@@ -37,7 +37,7 @@ knob_settings:
 
   # Octupoles
   i_oct_b1:     -235            # [A]
-  i_oct_b1:     -235            # [A]
+  i_oct_b2:     -235            # [A]
 
 # Tunes and chromaticities
 qx:

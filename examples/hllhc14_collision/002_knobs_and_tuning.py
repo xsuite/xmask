@@ -15,6 +15,8 @@ with open('collider_01_bb_off.json', 'r') as fid:
 with open('corr_co.json', 'r') as fid:
     co_corr_config = json.load(fid)
 
+    
+
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
 for kk, vv in configuration['knob_settings'].items():

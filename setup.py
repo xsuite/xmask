@@ -40,7 +40,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'numpy>=1.0',
-        'xsuite',
+        'pyyaml',
+        'xfields',
         ],
     extras_require={
         'tests': ['cpymad', 'pytest'],
