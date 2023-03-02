@@ -246,5 +246,5 @@ for beam, other_beam in zip([beams['weak'], beams['strong']],[beams['strong'], b
                 assert my_dict['other_beam_Sigma_13'] == 0 
                 np.testing.assert_allclose(my_dict['other_beam_Sigma_33'], sigma33)
                 assert my_dict['min_sigma_diff'] == 1e-10
-                print(-beam_twiss_df[beam_twiss_df['name']==ii['name']].x.values[0] +other_beam_twiss_df[other_beam_twiss_df['name']==change_bblr_weak_strong(ii['name'])].x.values[0] - my_dict['ref_shift_x'])
+                #print(-beam_twiss_df[beam_twiss_df['name']==ii['name']].y.values[0]- my_dict['ref_shift_y'])
 # %%
