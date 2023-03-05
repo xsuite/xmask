@@ -16,69 +16,86 @@ with open('collider_02_bb_on.json', 'r') as fid:
 collider.build_trackers()
 
 # %%
-weak_beam = 'lhcb1'
-strong_beam = 'lhcb2'
+
+bb_ip_n_list = [1, 2, 5, 8]
+num_long_range_encounters_per_side = [25, 20, 25, 20]
+num_slices_head_on = 11
+
+line_names = ['lhcb1', 'lhcb2']
+
+# TODO: check that beambeam_scale responds correctly
+
+general_check_data = {ll: {} for ll in line_names}
+
+# Extract lists of long-range and head-on bb elements
+for beam in line_names:
+    line_name = general_check_data[beam]['name']
+    line_df = collider[line_name].to_pandas()
+
+    bb_lr_elements = list(
+        line_df[line_df['element_type'] == 'BeamBeamBiGaussian2D'].name.values)
+    general_check_data[beam]['bb_lr_elements'] = bb_lr_elements
+
+    bb_ho_elements = list(
+        line_df[line_df['element_type'] == 'BeamBeamBiGaussian3D'].name.values)
+    general_check_data[beam]['bb_ho_elements'] = bb_ho_elements
+
+    # Check that the number of lenses is correct
+    assert (len(general_check_data[beam]['bb_lr_elements'])
+            == 2 * sum(num_long_range_encounters_per_side))
+    assert (len(general_check_data[beam]['bb_ho_elements'])
+            == len(bb_ip_n_list) * num_slices_head_on)
+
+# Store twiss and survey data
+for bb_state in line_names:
+    collider.vars['beambeam_scale'] = (1 if bb_state == 'on' else 0)
+    for beam in ['weak', 'strong']:
+        line_name = general_check_data[beam]['name']
+        ttww = collider[line_name].twiss(reverse=(beam=='strong'))
+        ssvv = collider[line_name].survey(element0=0, reverse=(beam=='strong'))
+        general_check_data[beam][f'twiss_bb_{bb_state}'] = ttww
+        general_check_data[beam][f'survey_bb_{bb_state}'] = ssvv
+
+# Check no effect of bb on closed orbit
+tolerances_for_co_check = {
+    'x': 1e-10, 'px': 1e-12, 'y': 1e-10, 'py': 1e-12, 'delta': 1e-10, 'zeta': 1e-9
+}
+for beam in line_names:
+    tw_bb_on = general_check_data[beam]['twiss_bb_on']
+    tw_bb_off = general_check_data[beam]['twiss_bb_off']
+    for ii in ['x', 'px', 'y', 'py', 'delta', 'zeta']:
+        np.testing.assert_allclose(tw_bb_on[ii], tw_bb_off[ii],
+                                   atol=tolerances_for_co_check[ii], rtol=0)
+        if verbose: print(f'{ii} is OK')
+
+# Check no effect of bb on survey
+for beam in line_names:
+    sv_bb_on = general_check_data[beam]['survey_bb_on']
+    sv_bb_off = general_check_data[beam]['survey_bb_off']
+    for ii in ['X','Y','Z','theta','phi','psi','angle','tilt']:
+        np.testing.assert_allclose(sv_bb_on[ii], sv_bb_off[ii],
+                                   rtol=0, atol=1e-200)
+        if verbose: print(f'Survey {ii} is OK')
+
+# TODO: check that tune shift has the right magnitude (compare on and off)
+
+
+prrrrrr
+
+# Choose ip
 ip_name = 'ip1'
-
-beams = {'weak':{'name':weak_beam},'strong':{'name':strong_beam}}
-
-## BB ON
-collider.vars['beambeam_scale'] = 1
-if verbose: print(f"=> BB ON")
-
-for beam in beams:
-    my_beam =  beams[beam]
-    if verbose: print(f"==> {beam} beam: { my_beam['name']}")
-    my_beam['line'] = collider[my_beam['name']]
-    if beam == 'weak':
-        my_beam['twiss_bb_on'] = my_beam['line'].twiss()
-        my_beam['survey_bb_on'] = my_beam['line'].survey(element0=ip_name)
-    elif beam == 'strong':
-        my_beam['twiss_bb_on'] = my_beam['line'].twiss(reverse=True)
-        my_beam['survey_bb_on'] = my_beam['line'].survey(element0=ip_name, reverse=True)
-    else:
-        raise Exception("Only two beams are possible (the weak and the strong).")
-
-## BB OFF
-if verbose: print(f"=> BB OFF")
-collider.vars['beambeam_scale'] = 0
-for beam in beams:
-    my_beam =  beams[beam]
-    if verbose: print(f"==> {beam} beam: { my_beam['name']}")
-    if beam == 'weak':
-        my_beam['twiss_bb_off'] = my_beam['line'].twiss()
-        my_beam['survey_bb_off'] = my_beam['line'].survey(element0=ip_name)
-    elif beam == 'strong':
-        my_beam['twiss_bb_off'] = my_beam['line'].twiss(reverse=True)
-        my_beam['survey_bb_off'] = my_beam['line'].survey(element0=ip_name, reverse=True)
-    else:
-        raise Exception("Only two beams are possible (the weak and the strong).")
 
 ## BB BACK ON
 collider.vars['beambeam_scale'] = 1
 
-# %% Test on CO
-print('Testing the effect of the BB on the CO: BB should have no effect on the CO.')
-for beam in beams:
-    my_beam =  beams[beam]
-    if verbose: print(f"=> {beam} beam: { my_beam['name']}")
-    if verbose: print(f"==> twiss values")
-    for ii in ['x', 'y', 'delta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-10, rtol=0)
-        if verbose: print(f'{ii} is OK')
-    for ii in ['px', 'py']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-12, rtol=0)
-        if verbose:print(f'{ii} is OK')
-    for ii in ['zeta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-9, rtol=0)
-        if verbose: print(f'{ii} is OK')
-    for ii in ['delta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-10, rtol=0)
-        if verbose: print(f'{ii} is OK')
-    if verbose: print(f"==> survey values")
-    for ii in ['X','Y','Z','theta','phi','psi','angle','tilt']:
-            np.testing.assert_allclose(my_beam['survey_bb_on'][ii], my_beam['survey_bb_off'][ii],  atol=1e-200, rtol=0)
-            if verbose: print(f'{ii} is OK')
+
+
+weak_beam = 'lhcb1'
+strong_beam = 'lhcb2'
+
+
+
+# ------------
 
 # %%
 def get_df_elements_of_type(self, my_type):
@@ -87,17 +104,18 @@ def get_df_elements_of_type(self, my_type):
     return [{'name':jj, 's':kk, 'element':ii} for ii,jj,kk in zip(aux[0],aux[1],aux[2])]
 xt.line.Line.get_df_elements_of_type=get_df_elements_of_type
 
-for beam in beams:
-        my_beam =  beams[beam]
-        my_beam['bb_2d_dict'] =my_beam['line'].get_df_elements_of_type(xf.beam_elements.beambeam2d.BeamBeamBiGaussian2D)
-        my_beam['bb_3d_dict'] =my_beam['line'].get_df_elements_of_type(xf.beam_elements.beambeam3d.BeamBeamBiGaussian3D)
+for beam in ['weak', 'strong']:
+        my_beam =  check_data[beam]
+        my_beam['line'] = collider[my_beam['name']]
+        my_beam['bb_2d_dict'] = my_beam['line'].get_df_elements_of_type(xf.beam_elements.beambeam2d.BeamBeamBiGaussian2D)
+        my_beam['bb_3d_dict'] = my_beam['line'].get_df_elements_of_type(xf.beam_elements.beambeam3d.BeamBeamBiGaussian3D)
 # %% making the dictionary of the BB elements
 ho_slices = 11
 ip_list = [1,2,5,8]
 bblr_lenses_installed = [25,20,25,20]
 harmonic = 3564
-for beam in beams:
-    my_beam =  beams[beam]
+for beam in check_data:
+    my_beam =  check_data[beam]
     my_beam['bb_2d'] = {}
     for ip in ip_list:
             my_beam['bb_2d'][ip] = {'left':[], 'right':[]}
@@ -122,22 +140,22 @@ for beam in beams:
                 assert bbho['name'][0:5]=='bb_ho'
 
 # %% Checking the numbers of the BB encounters
-for beam in beams:
-    my_beam =  beams[beam]
+for beam in check_data:
+    my_beam =  check_data[beam]
     for ip, bblr_number in zip(ip_list, bblr_lenses_installed):
         # check the BBLR 
         assert len(my_beam['bb_2d'][ip]['left'])==len(my_beam['bb_2d'][ip]['right'])==bblr_number
         # check the BBHO 
         assert len(my_beam['bb_3d'][ip]['left'])==len(my_beam['bb_3d'][ip]['right'])==(ho_slices-1)/2
         assert len(my_beam['bb_3d'][ip]['center'])==1
-        
+
 # %% Check the position of the BB encounters
 
 from scipy.stats import norm
 sigmaz=0.076
 # assert that ho_slices is odd
 assert ho_slices%2==1
-assert beams['weak']['line'].get_length()==beams['strong']['line'].get_length()
+assert check_data['weak']['line'].get_length()==check_data['strong']['line'].get_length()
 
 # from  https://github.com/giadarol/WeakStrong/blob/master/slicing.py
 def get_z_centroids(ho_slices, sigmaz):
@@ -151,11 +169,11 @@ def get_z_centroids(ho_slices, sigmaz):
             )*ho_slices)
     return z_centroids +[0] + [-ii for ii in z_centroids[-1::-1]]
 
-bblr_distance = beams['weak']['line'].get_length()/harmonic/2
+bblr_distance = check_data['weak']['line'].get_length()/harmonic/2
 atol = 1e-12
 # Please note that the Left and Right are set with respect to the lhcb1
-for beam in beams:
-    my_beam =  beams[beam]
+for beam in check_data:
+    my_beam =  check_data[beam]
     for ip in ip_list:
         if  my_beam['name']=='lhcb1':
             for ii, bblr in enumerate(my_beam['bb_2d'][ip]['left'][-1::-1]):
@@ -218,7 +236,7 @@ def change_bblr_weak_strong(my_string):
 epsilon_xn = 2.0e-6 # m
 epsilon_yn = 3.0e-6 # m
 
-for beam, other_beam in zip([beams['weak'], beams['strong']],[beams['strong'], beams['weak']]):
+for beam, other_beam in zip([check_data['weak'], check_data['strong']],[check_data['strong'], check_data['weak']]):
     beam_twiss_df = beam['twiss_bb_off'].to_pandas()
     other_beam_twiss_df = other_beam['twiss_bb_off'].to_pandas()
     beam_survey_df = beam['survey_bb_off'].to_pandas()
