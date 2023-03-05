@@ -29,11 +29,11 @@ name_weak = 'lhcb1' # will be parametrized by pytest
 name_strong = 'lhcb2' # will be parametrized by pytest
 sorting = {'l': -1 , 'r': 1} # will be parametrized by pytest
 
-ip = 5 # will be parametrized by pytest
-num_lr_per_side = 25 # will be parametrized by pytest
-name_weak = 'lhcb2' # will be parametrized by pytest
-name_strong = 'lhcb1' # will be parametrized by pytest
-sorting = {'l': 1 , 'r': -1} # will be parametrized by pytest
+# ip = 5 # will be parametrized by pytest
+# num_lr_per_side = 25 # will be parametrized by pytest
+# name_weak = 'lhcb2' # will be parametrized by pytest
+# name_strong = 'lhcb1' # will be parametrized by pytest
+# sorting = {'l': 1 , 'r': -1} # will be parametrized by pytest
 
 # The bb lenses are setup based on the twiss taken with the bb off
 with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
@@ -45,6 +45,8 @@ survey_weak = collider[name_weak].survey(element0=f'ip{ip}')
 survey_strong = collider[name_strong].survey(element0=f'ip{ip}', reverse=True)
 beta0_strong = collider[name_strong].particle_ref.beta0[0]
 gamma0_strong = collider[name_strong].particle_ref.gamma0[0]
+
+bunch_spacing_ds = tw_weak.circumference/harmonic_number*bunch_spacing_buckets
 
 # Check lr encounters
 for side in ['l', 'r']:
@@ -84,4 +86,9 @@ for side in ['l', 'r']:
                             tw_strong[nn_strong, 'y'] - tw_weak[nn_weak, 'y']
                             + survey_strong[nn_strong, 'Y'] - survey_weak[nn_weak, 'Y'],
                             rtol=0, atol=1e-4 * expected_sigma_y)
+
+        # s position
+        assert np.isclose(tw_weak[nn_weak, 's'] - tw_weak[f'ip{ip}', 's'],
+                          bunch_spacing_ds/2 * (iele+1) * sorting[side],
+                          rtol=0, atol=10e-6)
 
