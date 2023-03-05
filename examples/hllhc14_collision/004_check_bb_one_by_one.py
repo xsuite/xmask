@@ -29,11 +29,11 @@ name_weak = 'lhcb1' # will be parametrized by pytest
 name_strong = 'lhcb2' # will be parametrized by pytest
 sorting = {'l': -1 , 'r': 1} # will be parametrized by pytest
 
-# ip = 5 # will be parametrized by pytest
-# num_lr_per_side = 25 # will be parametrized by pytest
-# name_weak = 'lhcb2' # will be parametrized by pytest
-# name_strong = 'lhcb1' # will be parametrized by pytest
-# sorting = {'l': 1 , 'r': -1} # will be parametrized by pytest
+ip = 5 # will be parametrized by pytest
+num_lr_per_side = 25 # will be parametrized by pytest
+name_weak = 'lhcb2' # will be parametrized by pytest
+name_strong = 'lhcb1' # will be parametrized by pytest
+sorting = {'l': 1 , 'r': -1} # will be parametrized by pytest
 
 # The bb lenses are setup based on the twiss taken with the bb off
 with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
