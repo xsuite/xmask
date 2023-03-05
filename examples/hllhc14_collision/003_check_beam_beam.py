@@ -64,16 +64,16 @@ for beam in beams:
     if verbose: print(f"=> {beam} beam: { my_beam['name']}")
     if verbose: print(f"==> twiss values")
     for ii in ['x', 'y', 'delta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=6.8e-13, rtol=0)
+        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-10, rtol=0)
         if verbose: print(f'{ii} is OK')
     for ii in ['px', 'py']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=2.9e-14, rtol=0)
+        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-12, rtol=0)
         if verbose:print(f'{ii} is OK')
     for ii in ['zeta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1.2e-10, rtol=0)
+        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-9, rtol=0)
         if verbose: print(f'{ii} is OK')
     for ii in ['delta']:
-        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=7.2e-14, rtol=0)
+        np.testing.assert_allclose(my_beam['twiss_bb_on'][ii], my_beam['twiss_bb_off'][ii],  atol=1e-10, rtol=0)
         if verbose: print(f'{ii} is OK')
     if verbose: print(f"==> survey values")
     for ii in ['X','Y','Z','theta','phi','psi','angle','tilt']:

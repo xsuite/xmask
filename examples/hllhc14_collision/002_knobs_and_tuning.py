@@ -16,8 +16,6 @@ with open('collider_01_bb_off.json', 'r') as fid:
 with open('corr_co.json', 'r') as fid:
     co_corr_config = json.load(fid)
 
-
-
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
 for kk, vv in configuration['knob_settings'].items():
@@ -52,12 +50,12 @@ for line_name in ['lhcb1', 'lhcb2']:
 
     # Match tune and chromaticity
     print(f'Matching tune and chromaticity for {line_name}')
-    collider[line_name].match(
+    collider[line_name].match(verbose=True,
         vary=[
             xt.Vary(knob_names['q_knob_1'], step=1e-8),
             xt.Vary(knob_names['q_knob_2'], step=1e-8),
-            xt.Vary(knob_names['dq_knob_1'], step=1e-8),
-            xt.Vary(knob_names['dq_knob_2'], step=1e-8),
+            xt.Vary(knob_names['dq_knob_1'], step=1e-4),
+            xt.Vary(knob_names['dq_knob_2'], step=1e-4),
         ],
         targets = [
             xt.Target('qx', configuration['qx'][line_name], tol=1e-4),
