@@ -123,11 +123,21 @@ assert np.isclose(np.mean(_get_z_centroids(100000, 5.)), 0,
 
 z_centroids = _get_z_centroids(num_slices_head_on, sigmaz)
 assert len(z_centroids) == num_slices_head_on
-
 assert num_slices_head_on % 2 == 1
+
+# Measure crabbing angle
+z_crab_test = 0.01
+with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
+    tw_z_crab_plus = collider[name_strong].twiss(zeta0=z_crab_test, method='4d',
+                                                freeze_longitudinal=True)
+    tw_z_crab_minus = collider[name_strong].twiss(zeta0=-z_crab_test, method='4d',
+                                                freeze_longitudinal=True)
+phi_crab_x = (tw_z_crab_plus[f'ip{ip}', 'x'] - tw_z_crab_minus[f'ip{ip}', 'x']) / (2*z_crab_test)
+phi_crab_y = (tw_z_crab_plus[f'ip{ip}', 'y'] - tw_z_crab_minus[f'ip{ip}', 'y']) / (2*z_crab_test)
+
 for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
                        (num_slices_head_on - 1) // 2 + 1),
-                  z_centroids)):
+                  z_centroids))[5:7]:
 
     if ii == 0:
         side = 'c'
@@ -178,5 +188,29 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
                         atol=0, rtol=1e-5)
     assert np.isclose(ee_weak.slices_other_beam_Sigma_34[0], expected_sigma_ypy,
                         atol=0, rtol=1e-5)
+
+    # Orbit
+    assert np.isclose(ee_weak.ref_shift_x, tw_weak[nn_weak, 'x'],
+                        rtol=0, atol=1e-4 * expected_sigma_x)
+    assert np.isclose(ee_weak.ref_shift_px, tw_weak[nn_weak, 'px'],
+                        rtol=0, atol=1e-4 * expected_sigma_px)
+    assert np.isclose(ee_weak.ref_shift_y, tw_weak[nn_weak, 'y'],
+                        rtol=0, atol=1e-4 * expected_sigma_y)
+    assert np.isclose(ee_weak.ref_shift_py, tw_weak[nn_weak, 'py'],
+                        rtol=0, atol=1e-4 * expected_sigma_py)
+    assert np.isclose(ee_weak.ref_shift_zeta, tw_weak[nn_weak, 'zeta'],
+                        rtol=0, atol=1e-9)
+    assert np.isclose(ee_weak.ref_shift_pzeta, tw_weak[nn_weak, 'ptau']/beta0_strong,
+                        rtol=0, atol=1e-9)
+
+    # Separation
+    assert np.isclose(ee_weak.other_beam_shift_x,
+            (tw_strong[nn_strong, 'x'] - tw_weak[nn_weak, 'x']
+            + survey_strong[nn_strong, 'X'] - survey_weak[nn_weak, 'X']
+            + phi_crab_x
+              * tw_strong.circumference / (2 * np.pi * harmonic_number)
+              * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)))
+
+
 
 
