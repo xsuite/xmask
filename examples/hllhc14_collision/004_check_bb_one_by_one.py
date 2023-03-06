@@ -129,15 +129,15 @@ assert num_slices_head_on % 2 == 1
 z_crab_test = 0.01
 with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
     tw_z_crab_plus = collider[name_strong].twiss(zeta0=z_crab_test, method='4d',
-                                                freeze_longitudinal=True)
+                                freeze_longitudinal=True, reverse=True)
     tw_z_crab_minus = collider[name_strong].twiss(zeta0=-z_crab_test, method='4d',
-                                                freeze_longitudinal=True)
-phi_crab_x = (tw_z_crab_plus[f'ip{ip}', 'x'] - tw_z_crab_minus[f'ip{ip}', 'x']) / (2*z_crab_test)
-phi_crab_y = (tw_z_crab_plus[f'ip{ip}', 'y'] - tw_z_crab_minus[f'ip{ip}', 'y']) / (2*z_crab_test)
+                                freeze_longitudinal=True, reverse=True)
+phi_crab_x = -(tw_z_crab_plus[f'ip{ip}', 'x'] - tw_z_crab_minus[f'ip{ip}', 'x']) / (2*z_crab_test)
+phi_crab_y = -(tw_z_crab_plus[f'ip{ip}', 'y'] - tw_z_crab_minus[f'ip{ip}', 'y']) / (2*z_crab_test)
 
 for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
                        (num_slices_head_on - 1) // 2 + 1),
-                  z_centroids))[5:7]:
+                  z_centroids)):
 
     if ii == 0:
         side = 'c'
@@ -207,9 +207,18 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
     assert np.isclose(ee_weak.other_beam_shift_x,
             (tw_strong[nn_strong, 'x'] - tw_weak[nn_weak, 'x']
             + survey_strong[nn_strong, 'X'] - survey_weak[nn_weak, 'X']
-            + phi_crab_x
+            + phi_crab_x # The sign is guessed
               * tw_strong.circumference / (2 * np.pi * harmonic_number)
-              * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)))
+              * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)),
+              rtol=0, atol=1e-6) # Not the cleanest, to be investigated
+
+    assert np.isclose(ee_weak.other_beam_shift_y,
+            (tw_strong[nn_strong, 'y'] - tw_weak[nn_weak, 'y']
+            + survey_strong[nn_strong, 'Y'] - survey_weak[nn_weak, 'Y']
+            + phi_crab_y # The sign is guessed
+                * tw_strong.circumference / (2 * np.pi * harmonic_number)
+                * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)),
+            rtol=0, atol=1e-6) # Not the cleanest, to be investigated
 
 
 
