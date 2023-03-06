@@ -220,6 +220,18 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
                 * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)),
             rtol=0, atol=1e-6) # Not the cleanest, to be investigated
 
+    # Check crossing angle
+    # Assume that crossing is either in x or in y
+    if tw_weak[ip, 'px'] < 1e-6:
+        # Vertical crossing
+        assert np.isclose(ee_weak.alpha, np.pi/2, atol=1e-3, rtol=0)
+        assert np.isclose(
+            2*ee_weak.phi, tw_weak[f'ip{ip}', 'py'] - tw_strong[f'ip{ip}', 'py'],
+            atol=1e-7, rtol=0)
+    else:
+        assert np.isclose(ee_weak.alpha, 0, atol=1e-3, rtol=0)
+        TODO
+
 
 
 
