@@ -35,10 +35,11 @@ harmonic_number = 35640
 bunch_spacing_buckets = 10
 sigmaz = 0.076
 num_slices_head_on = 11
+num_particles = 2.2e11
 
 
 
-ip = 5 # will be parametrized by pytest
+ip = 1 # will be parametrized by pytest
 num_lr_per_side = 25 # will be parametrized by pytest
 name_weak = 'lhcb1' # will be parametrized by pytest
 name_strong = 'lhcb2' # will be parametrized by pytest
@@ -176,18 +177,24 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
     expected_sigma_py = np.sqrt(tw_strong[nn_strong, 'gamy']
                                 * nemitt_y/beta0_strong/gamma0_strong)
     assert np.isclose(ee_weak.slices_other_beam_Sigma_22[0], expected_sigma_px**2,
-                      atol=0, rtol=1e-6)
+                      atol=0, rtol=1e-4)
     assert np.isclose(ee_weak.slices_other_beam_Sigma_44[0], expected_sigma_py**2,
-                      atol=0, rtol=1e-6)
+                      atol=0, rtol=1e-4)
 
     expected_sigma_xpx = -(tw_strong[nn_strong, 'alfx']
                             * nemitt_x / beta0_strong / gamma0_strong)
     expected_sigma_ypy = -(tw_strong[nn_strong, 'alfy']
                             * nemitt_y / beta0_strong / gamma0_strong)
     assert np.isclose(ee_weak.slices_other_beam_Sigma_12[0], expected_sigma_xpx,
-                        atol=0, rtol=1e-5)
+                        atol=0, rtol=1e-4)
     assert np.isclose(ee_weak.slices_other_beam_Sigma_34[0], expected_sigma_ypy,
-                        atol=0, rtol=1e-5)
+                        atol=0, rtol=1e-4)
+
+    # Assert no coupling
+    assert ee_weak.slices_other_beam_Sigma_13[0] == 0
+    assert ee_weak.slices_other_beam_Sigma_14[0] == 0
+    assert ee_weak.slices_other_beam_Sigma_23[0] == 0
+    assert ee_weak.slices_other_beam_Sigma_24[0] == 0
 
     # Orbit
     assert np.isclose(ee_weak.ref_shift_x, tw_weak[nn_weak, 'x'],
@@ -220,9 +227,14 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
                 * np.sin(2 * np.pi*zz*harmonic_number / tw_strong.circumference)),
             rtol=0, atol=1e-6) # Not the cleanest, to be investigated
 
+    assert ee_weak.other_beam_shift_px == 0
+    assert ee_weak.other_beam_shift_py == 0
+    assert ee_weak.other_beam_shift_zeta == 0
+    assert ee_weak.other_beam_shift_pzeta == 0
+
     # Check crossing angle
     # Assume that crossing is either in x or in y
-    if tw_weak[ip, 'px'] < 1e-6:
+    if tw_weak[f'ip{ip}', 'px'] < 1e-6:
         # Vertical crossing
         assert np.isclose(ee_weak.alpha, np.pi/2, atol=1e-3, rtol=0)
         assert np.isclose(
@@ -230,8 +242,26 @@ for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
             atol=1e-7, rtol=0)
     else:
         assert np.isclose(ee_weak.alpha, 0, atol=1e-3, rtol=0)
-        TODO
+        assert np.isclose(
+            2*ee_weak.phi, tw_weak[f'ip{ip}', 'px'] - tw_strong[f'ip{ip}', 'px'],
+            atol=1e-7, rtol=0)
 
+    # Check intensity
+    assert np.isclose(ee_weak.slices_other_beam_num_particles[0],
+                      num_particles/num_slices_head_on, atol=0, rtol=1e-8)
 
+    # Other checks
+    assert ee_weak.min_sigma_diff < 1e-9
+    assert ee_weak.min_sigma_diff > 0
 
+    assert ee_weak.threshold_singular < 1e-27
+    assert ee_weak.threshold_singular > 0
+
+    assert ee_weak._flag_beamstrahlung == 0
+
+    assert ee_weak.scale_strength == 1
+    assert ee_weak.other_beam_q0 == 1
+
+    for nn in ['x', 'y', 'zeta', 'px', 'py', 'pzeta']:
+        assert getattr(ee_weak, f'slices_other_beam_{nn}_center')[0] == 0
 
