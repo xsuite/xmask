@@ -33,6 +33,11 @@ def build_xsuite_collider(
     pm.attach_beam_to_sequence(sequence_b2, beam_to_configure=2,
                                 beam_configuration=beam_config['lhcb2'])
 
+    # Store energy in nrj
+    sequence_b1._madx.globals.nrj = beam_config['lhcb1']['beam_energy_tot']
+    sequence_b2._madx.globals.nrj = beam_config['lhcb2']['beam_energy_tot']
+    sequence_b4._madx.globals.nrj = beam_config['lhcb2']['beam_energy_tot']
+
     # Warm up (seems I need to twiss for mad to load everything)
     for seq in [sequence_b1, sequence_b2]:
         mm = seq._madx
