@@ -50,7 +50,7 @@ for line_name in ['lhcb1', 'lhcb2']:
 
     # Match tune and chromaticity
     print(f'Matching tune and chromaticity for {line_name}')
-    collider[line_name].match(verbose=True,
+    collider[line_name].match(verbose=False,
         vary=[
             xt.Vary(knob_names['q_knob_1'], step=1e-8),
             xt.Vary(knob_names['q_knob_2'], step=1e-8),
@@ -115,6 +115,8 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert np.isclose(tw['ip1', 'py'], 0, rtol=0, atol=0.5e-6)
     assert np.isclose(tw['ip5', 'px'], 0, rtol=0, atol=0.5e-6)
     assert np.isclose(tw['ip5', 'py'], 250e-6, rtol=0, atol=0.5e-6)
+
+    #assert np.isclose(tw['ip2', 'px'],
 
 
 
