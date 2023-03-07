@@ -63,11 +63,11 @@ for line_name in ['lhcb1', 'lhcb2']:
             xt.Target('dqx', configuration['dqx'][line_name], tol=0.05),
             xt.Target('dqy', configuration['dqy'][line_name], tol=0.05)])
 
-# Configure beam-beam lenses
-print('Configuring beam-beam lenses...')
-collider.configure_beambeam_interactions(
-    num_particles=2.2e11,
-    nemitt_x=2e-6, nemitt_y=3e-6)
+# # Configure beam-beam lenses
+# print('Configuring beam-beam lenses...')
+# collider.configure_beambeam_interactions(
+#     num_particles=2.2e11,
+#     nemitt_x=2e-6, nemitt_y=3e-6)
 
 
 with open('collider_02_bb_on.json', 'w') as fid:
@@ -93,8 +93,29 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert np.isclose(tw.c_minus, 0, atol=1e-4, rtol=0)
     assert np.allclose(tw.zeta, 0, rtol=0, atol=1e-4) # Check RF phase
 
+    # Check separations
     assert np.isclose(tw['ip1', 'x'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
     assert np.isclose(tw['ip1', 'y'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+    assert np.isclose(tw['ip5', 'x'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+    assert np.isclose(tw['ip5', 'y'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+
+    assert np.isclose(tw['ip2', 'x'],
+            -0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
+            rtol=0, atol=4e-6)
+    assert np.isclose(tw['ip2', 'y'], 0, rtol=0, atol=5e-8)
+
+    assert np.isclose(tw['ip8', 'x'], 0, rtol=0, atol=5e-8)
+    assert np.isclose(tw['ip8', 'y'],
+            -0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
+            rtol=0, atol=5e-8)
+
+    # Check crossing angles
+    assert np.isclose(tw['ip1', 'px'],
+            250e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6)
+    assert np.isclose(tw['ip1', 'py'], 0, rtol=0, atol=0.5e-6)
+    assert np.isclose(tw['ip5', 'px'], 0, rtol=0, atol=0.5e-6)
+    assert np.isclose(tw['ip5', 'py'], 250e-6, rtol=0, atol=0.5e-6)
+
 
 
 
