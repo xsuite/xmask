@@ -104,12 +104,6 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
     name_strong = line_config[name_weak]['strong_beam']
     sorting = line_config[name_weak]['sorting']
 
-    # ip_n = 5 # will be parametrized by pytest
-    # num_lr_per_side = 25 # will be parametrized by pytest
-    # name_weak = 'lhcb2' # will be parametrized by pytest
-    # name_strong = 'lhcb1' # will be parametrized by pytest
-    # sorting = {'l': 1 , 'r': -1} # will be parametrized by pytest
-
     # The bb lenses are setup based on the twiss taken with the bb off
     print('Twiss(es) (with bb off)')
     with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
@@ -191,7 +185,7 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
     # Quick check on _get_z_centroids
     assert np.isclose(np.mean(_get_z_centroids(100000, 5.)**2), 5**2,
-                            rtol=0, atol=52e-4)
+                            rtol=0, atol=5e-4)
     assert np.isclose(np.mean(_get_z_centroids(100000, 5.)), 0,
                             rtol=0, atol=1e-10)
 
