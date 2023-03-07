@@ -75,10 +75,26 @@ with open('collider_02_bb_on.json', 'w') as fid:
     json.dump(dct, fid, cls=xo.JEncoder)
 
 
-
-
 # Checks
+collider.vars['beambeam_scale'] = 0.0 # Switch off beam-beam
+                                      # Beam-beam lenses are checked in separate script
 
-# RF
+import numpy as np
+for line_name in ['lhcb1', 'lhcb2']:
+    tw = collider[line_name].twiss()
 
-# Crabs
+    assert np.isclose(tw.qx, 62.31, atol=1e-5, rtol=0)
+    assert np.isclose(tw.qy, 60.32, atol=1e-5, rtol=0)
+    assert np.isclose(tw.qs, 0.00212, atol=1e-5, rtol=0) # Checks that RF is well set
+
+    assert np.isclose(tw.dqx, 5, atol=0.1, rtol=0)
+    assert np.isclose(tw.dqy, 6, atol=0.1, rtol=0)
+
+    assert np.isclose(tw.c_minus, 0, atol=1e-4, rtol=0)
+    assert np.allclose(tw.zeta, 0, rtol=0, atol=1e-4) # Check RF phase
+
+    assert np.isclose(tw['ip1', 'x'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+    assert np.isclose(tw['ip1', 'y'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+
+
+
