@@ -126,5 +126,15 @@ for line_name in ['lhcb1', 'lhcb2']:
             -115e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
     assert np.isclose(tw['ip8', 'py'], 2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
 
+    assert np.isclose(tw['ip1', 'betx'], 15e-2, rtol=2e-2, atol=0) # beta beating coming from on_disp
+    assert np.isclose(tw['ip1', 'bety'], 15e-2, rtol=3e-2, atol=0)
+    assert np.isclose(tw['ip5', 'betx'], 15e-2, rtol=2e-2, atol=0)
+    assert np.isclose(tw['ip5', 'bety'], 15e-2, rtol=2e-2, atol=0)
+
+    assert np.isclose(tw['ip2', 'betx'], 10., rtol=4e-2, atol=0)
+    assert np.isclose(tw['ip2', 'bety'], 10., rtol=3e-2, atol=0)
+
+    assert np.isclose(tw['ip8', 'betx'], 1.5, rtol=3e-2, atol=0)
+    assert np.isclose(tw['ip8', 'bety'], 1.5, rtol=2e-2, atol=0)
 
 
