@@ -82,7 +82,11 @@ collider.vars['beambeam_scale'] = 0.0 # Switch off beam-beam
 import numpy as np
 for line_name in ['lhcb1', 'lhcb2']:
 
-    # TODO Add checks on refer
+    assert collider[line_name].particle_ref.q0 == 1
+    assert np.isclose(collider[line_name].particle_ref.p0c, 7e12,
+                      atol=0, rtol=1e-5)
+    assert np.isclose(collider[line_name].particle_ref.mass0, 0.9382720813e9,
+                        atol=0, rtol=1e-5)
 
     tw = collider[line_name].twiss()
 
