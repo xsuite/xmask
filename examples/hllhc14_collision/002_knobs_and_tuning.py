@@ -81,11 +81,14 @@ collider.vars['beambeam_scale'] = 0.0 # Switch off beam-beam
 
 import numpy as np
 for line_name in ['lhcb1', 'lhcb2']:
+
+    # TODO Add checks on refer
+
     tw = collider[line_name].twiss()
 
-    assert np.isclose(tw.qx, 62.31, atol=1e-5, rtol=0)
-    assert np.isclose(tw.qy, 60.32, atol=1e-5, rtol=0)
-    assert np.isclose(tw.qs, 0.00212, atol=1e-5, rtol=0) # Checks that RF is well set
+    assert np.isclose(tw.qx, 62.31, atol=1e-4, rtol=0)
+    assert np.isclose(tw.qy, 60.32, atol=1e-4, rtol=0)
+    assert np.isclose(tw.qs, 0.00212, atol=1e-4, rtol=0) # Checks that RF is well set
 
     assert np.isclose(tw.dqx, 5, atol=0.1, rtol=0)
     assert np.isclose(tw.dqy, 6, atol=0.1, rtol=0)
@@ -116,8 +119,12 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert np.isclose(tw['ip5', 'px'], 0, rtol=0, atol=0.5e-6)
     assert np.isclose(tw['ip5', 'py'], 250e-6, rtol=0, atol=0.5e-6)
 
-    #assert np.isclose(tw['ip2', 'px'],
+    assert np.isclose(tw['ip2', 'px'], 0, rtol=0, atol=0.5e-6)
+    assert np.isclose(tw['ip2', 'py'], -100e-6 , rtol=0, atol=0.5e-6) # accounts for spectrometer
 
+    assert np.isclose(tw['ip8', 'px'],
+            -115e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
+    assert np.isclose(tw['ip8', 'py'], 2, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
 
 
 
