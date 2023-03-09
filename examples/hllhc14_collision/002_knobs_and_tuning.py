@@ -124,7 +124,7 @@ for line_name in ['lhcb1', 'lhcb2']:
 
     assert np.isclose(tw['ip8', 'px'],
             -115e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
-    assert np.isclose(tw['ip8', 'py'], 2, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
+    assert np.isclose(tw['ip8', 'py'], 2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
 
 
 
