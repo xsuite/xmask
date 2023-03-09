@@ -56,6 +56,5 @@ def add_correction_term_to_dipole_correctors(line):
     for kk in list(line.vars._owner.keys()):
         if kk.startswith('acb'):
             line.vars['corr_co_'+kk] = 0
-            line.vars[kk] += (line.vars['corr_co_'+kk]
-                                * line.vars['on_corr_co'])
+            line.vars[kk] += (line.vars['corr_co_'+kk] * line.vars['on_corr_co'])
 

@@ -141,4 +141,19 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert np.isclose(tw['ip8', 'betx'], 1.5, rtol=3e-2, atol=0)
     assert np.isclose(tw['ip8', 'bety'], 1.5, rtol=2e-2, atol=0)
 
+    # Check crab cavities
+    z_crab_test = 1e-2
+    phi_crab_1 = ((
+        collider[line_name].twiss(method='4d', zeta0=z_crab_test)['ip1', 'x']
+      - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['ip1', 'x'])
+      / 2 / z_crab_test)
+
+    phi_crab_5 = ((
+        collider[line_name].twiss(method='4d', zeta0=z_crab_test)['ip5', 'y']
+      - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['ip5', 'y'])
+      / 2 / z_crab_test)
+
+    assert np.isclose(phi_crab_1, -190e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                      rtol=1e-2, atol=0)
+    assert np.isclose(phi_crab_5, -190e-6, rtol=1e-2, atol=0)
 
