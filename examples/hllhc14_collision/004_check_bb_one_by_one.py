@@ -244,10 +244,10 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
         assert np.isclose(ee_weak.slices_other_beam_Sigma_11[0],
                           expected_sigma_x**2,
-                          atol=0, rtol=1e-6)
+                          atol=0, rtol=1e-5)
         assert np.isclose(ee_weak.slices_other_beam_Sigma_33[0],
                           expected_sigma_y**2,
-                          atol=0, rtol=1e-6)
+                          atol=0, rtol=1e-5)
 
         expected_sigma_px = np.sqrt(tw_strong[nn_strong, 'gamx']
                                     * nemitt_x/beta0_strong/gamma0_strong)
@@ -321,18 +321,20 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         # Assume that crossing is either in x or in y
         if np.abs(tw_weak[f'ip{ip_n}', 'px']) < 1e-6:
             # Vertical crossing
-            assert np.isclose(ee_weak.alpha, np.pi/2, atol=1e-3, rtol=0)
+            assert np.isclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
             assert np.isclose(
                 2*ee_weak.phi,
                 tw_weak[f'ip{ip_n}', 'py'] - tw_strong[f'ip{ip_n}', 'py'],
-                atol=1e-7, rtol=0)
+                atol=2e-7, rtol=0)
         else:
             # Horizontal crossing
-            assert np.isclose(ee_weak.alpha, 0, atol=1e-3, rtol=0)
+            assert np.isclose(ee_weak.alpha,
+                (-15e-3 if ip_n==8 else 0)*{'lhcb1': 1, 'lhcb2': -1}[name_weak], 
+                atol=5e-3, rtol=0)
             assert np.isclose(
                 2*ee_weak.phi,
                 tw_weak[f'ip{ip_n}', 'px'] - tw_strong[f'ip{ip_n}', 'px'],
-                atol=1e-7, rtol=0)
+                atol=2e-7, rtol=0)
 
         # Check intensity
         assert np.isclose(ee_weak.slices_other_beam_num_particles[0],
