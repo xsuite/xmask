@@ -1,7 +1,6 @@
 # Links to be made for tools and scripts
 links:
   acc-models-lhc: ../../test_data/hllhc14
-  errors: ../../pymaskmx/lhc/lhcerrors
 
 # Optics file
 optics_file: acc-models-lhc/round/opt_round_150_1500_thin.madx

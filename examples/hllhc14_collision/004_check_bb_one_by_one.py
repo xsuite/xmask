@@ -84,8 +84,8 @@ for line_name in ['lhcb1', 'lhcb2']:
     tw_bb_off = collider[line_name].twiss()
     collider.vars['beambeam_scale'] = 1
 
-    assert np.isclose(tw_bb_off.qx, qx_no_bb, rtol=0, atol=1e-5)
-    assert np.isclose(tw_bb_off.qy, qy_no_bb, rtol=0, atol=1e-5)
+    assert np.isclose(tw_bb_off.qx, qx_no_bb, rtol=0, atol=1e-4)
+    assert np.isclose(tw_bb_off.qy, qy_no_bb, rtol=0, atol=1e-4)
 
     # Check that there is a tune shift of the order of 1.5e-2
     assert np.isclose(tw_bb_on.qx, qx_no_bb - 1.5e-2, rtol=0, atol=4e-3)

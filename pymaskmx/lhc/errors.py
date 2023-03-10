@@ -1,9 +1,27 @@
 
 import os
+import pathlib
+
+lhc_module_folder = pathlib.Path(__file__).parent
+
+def install_errors_placeholders_hllhc(mad):
+    os.system(f'rm errors')
+    os.symlink(lhc_module_folder / 'lhcerrors', 'errors')
+
+    mad.input('''
+      ! Install placeholder elements for errors (set to zero)
+      call, file="errors/HL-LHC/install_MQXF_fringenl.madx";  ! adding fringe place holder
+      call, file="errors/HL-LHC/install_MCBXFAB_errors.madx"; !adding D1 corrector placeholders in IR1/5 (for errors)
+      call, file="errors/HL-LHC/install_MCBRD_errors.madx";   ! adding D2 corrector placeholders in IR1/5 (for errors)
+      call, file="errors/HL-LHC/install_NLC_errors.madx";     !adding non-linear corrector placeholders in IR1/5 (for errors)
+    ''')
 
 def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfections,
                         enable_knob_synthesis, pars_for_imperfections,
                         ver_lhc_run=None, ver_hllhc_optics=None):
+
+    os.system(f'rm errors')
+    os.symlink(lhc_module_folder / 'lhcerrors', 'errors')
 
     assert ver_lhc_run is not None or ver_hllhc_optics is not None, (
         'Must specify either ver_lhc_run or ver_hllhc_optics')

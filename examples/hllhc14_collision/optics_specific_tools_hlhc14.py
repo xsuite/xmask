@@ -1,3 +1,5 @@
+from pymaskmx.lhc import install_errors_placeholders_hllhc
+
 def build_sequence(mad, mylhcbeam, **kwargs):
 
     # Select beam
@@ -28,13 +30,12 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       '''
       ! Slice nominal sequence
       exec, myslice;
+      ''')
 
-      ! Install placeholder elements for errors (set to zero)
-      call, file="errors/HL-LHC/install_MQXF_fringenl.madx";    ! adding fringe place holder
-      call, file="errors/HL-LHC/install_MCBXFAB_errors.madx";   ! adding D1 corrector placeholders in IR1/5 (for errors)
-      call, file="errors/HL-LHC/install_MCBRD_errors.madx";     ! adding D2 corrector placeholders in IR1/5 (for errors)
-      call, file="errors/HL-LHC/install_NLC_errors.madx";       ! adding non-linear corrector placeholders in IR1/5 (for errors)
+    install_errors_placeholders_hllhc(mad)
 
+    mad.input(
+      '''
       !Cycling w.r.t. to IP3 (mandatory to find closed orbit in collision in the presence of errors)
       if (mylhcbeam<3){
         seqedit, sequence=lhcb1; flatten; cycle, start=IP3; flatten; endedit;
@@ -50,7 +51,7 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       exec, twiss_opt;
 
 
-        '''
+      '''
     )
 
 
