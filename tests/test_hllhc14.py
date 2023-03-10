@@ -9,7 +9,9 @@ import pymaskmx.lhc as pmlhc
 
 test_data_dir = Path(__file__).parent.parent / "test_data"
 
-def test_hllhc14():
+common_objects = {}
+
+def test_hllhc14_0_create_collider():
     # Make mad environment
     pm.make_mad_environment(links={
         'acc-models-lhc': str(test_data_dir / 'hllhc14')})
@@ -44,6 +46,33 @@ def test_hllhc14():
         pars_for_imperfections={},
         ver_lhc_run=None,
         ver_hllhc_optics=1.4)
+
+    assert len(collider.lines.keys()) == 4
+
+    common_objects['collider'] = collider
+
+def test_hllhc14_1_install_beambeam():
+
+    collider = common_objects['collider']
+    assert collider is not None
+
+    collider.install_beambeam_interactions(
+    clockwise_line='lhcb1',
+    anticlockwise_line='lhcb2',
+    ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+    num_long_range_encounters_per_side=[25, 20, 25, 20],
+    num_slices_head_on=11,
+    harmonic_number=35640,
+    bunch_spacing_buckets=10,
+    sigmaz=0.076)
+
+    common_objects['collider'] = collider
+
+def test_hllhc14_2_tuning():
+
+    collider = common_objects['collider']
+    assert collider is not None
+
 
 
 def build_sequence(mad, mylhcbeam, **kwargs):
