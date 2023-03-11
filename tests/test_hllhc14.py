@@ -271,7 +271,13 @@ def test_hllhc14_2_tuning():
 
         assert np.isclose(phi_crab_1, -190e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
                         rtol=1e-2, atol=0)
-        assert np.isclose(phi_crab_5, -190e-6, rtol=1e-2, atol=0)
+        assert np.isclose(phi_crab_5, -170e-6, rtol=1e-2, atol=0)
+
+        # Check one octupole strength
+        assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
+                          rtol=1e-3, atol=0)
+        assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
+                          rtol=1e-3, atol=0)
 
 def build_sequence(mad, mylhcbeam, **kwargs):
 
@@ -586,7 +592,7 @@ knob_settings_yaml_str = """
 
   # Crab cavities
   on_crab1: -190        # [urad]
-  on_crab5: -190        # [urad]
+  on_crab5: -170        # [urad]
 
   # Magnets of the experiments
   on_alice_normalized: 1
@@ -601,7 +607,7 @@ knob_settings_yaml_str = """
   lagrf400.b2:   0.             # [rad]
 
   # Octupoles
-  i_oct_b1:     -235            # [A]
+  i_oct_b1:     -200            # [A]
   i_oct_b2:     -235            # [A]
 """
 
