@@ -135,6 +135,8 @@ def test_hllhc14_2_tuning():
     collider = xt.Multiline.from_json('collider_hllhc14_01.json')
 
     knob_settings = yaml.safe_load(knob_settings_yaml_str)
+    tune_chorma_targets = yaml.safe_load(tune_chroma_yaml_str)
+    knob_names_lines = yaml.safe_load(knob_names_yaml_str)
 
     # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
     # experimental magnets, etc.)
@@ -143,6 +145,115 @@ def test_hllhc14_2_tuning():
 
     # Build trackers
     collider.build_trackers()
+
+    # Tunings
+    for line_name in ['lhcb1', 'lhcb2']:
+
+        knob_names = knob_names_lines[line_name]
+
+        targets = {
+            'qx': tune_chorma_targets['qx'][line_name],
+            'qy': tune_chorma_targets['qy'][line_name],
+            'dqx': tune_chorma_targets['dqx'][line_name],
+            'dqy': tune_chorma_targets['dqy'][line_name],
+        }
+
+        pm.machine_tuning(line=collider[line_name],
+            enable_closed_orbit_correction=True,
+            enable_linear_coupling_correction=True,
+            enable_tune_correction=True,
+            enable_chromaticity_correction=True,
+            knob_names=knob_names,
+            targets=targets,
+            line_co_ref=collider[line_name+'_co_ref'],
+            co_corr_config=orbit_correction_config[line_name])
+
+    collider.to_json('collider_hllhc14_02.json')
+
+    for line_name in ['lhcb1', 'lhcb2']:
+
+        assert collider[line_name].particle_ref.q0 == 1
+        assert np.isclose(collider[line_name].particle_ref.p0c, 7e12,
+                        atol=0, rtol=1e-5)
+        assert np.isclose(collider[line_name].particle_ref.mass0, 0.9382720813e9,
+                            atol=0, rtol=1e-5)
+
+        tw = collider[line_name].twiss()
+
+        if line_name == 'lhcb1':
+            assert np.isclose(tw.qx, 62.31, atol=1e-4, rtol=0)
+            assert np.isclose(tw.qy, 60.32, atol=1e-4, rtol=0)
+            assert np.isclose(tw.dqx, 5, atol=0.1, rtol=0)
+            assert np.isclose(tw.dqy, 7, atol=0.1, rtol=0)
+        elif line_name == 'lhcb2':
+            assert np.isclose(tw.qx, 62.315, atol=1e-4, rtol=0)
+            assert np.isclose(tw.qy, 60.325, atol=1e-4, rtol=0)
+            assert np.isclose(tw.dqx, 6, atol=0.1, rtol=0)
+            assert np.isclose(tw.dqy, 8, atol=0.1, rtol=0)
+        else:
+            raise ValueError(f'Unknown line name {line_name}')
+
+        assert np.isclose(tw.qs, 0.00212, atol=1e-4, rtol=0) # Checks that RF is well set
+
+        assert np.isclose(tw.c_minus, 0, atol=1e-4, rtol=0)
+        assert np.allclose(tw.zeta, 0, rtol=0, atol=1e-4) # Check RF phase
+
+        # Check separations
+        assert np.isclose(tw['ip1', 'x'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        assert np.isclose(tw['ip1', 'y'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        assert np.isclose(tw['ip5', 'x'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        assert np.isclose(tw['ip5', 'y'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+
+        assert np.isclose(tw['ip2', 'x'],
+                -0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
+                rtol=0, atol=4e-6)
+        assert np.isclose(tw['ip2', 'y'], 0, rtol=0, atol=5e-8)
+
+        assert np.isclose(tw['ip8', 'x'], 0, rtol=0, atol=5e-8)
+        assert np.isclose(tw['ip8', 'y'],
+                -0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
+                rtol=0, atol=5e-8)
+
+        # Check crossing angles
+        assert np.isclose(tw['ip1', 'px'],
+                250e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['ip1', 'py'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['ip5', 'px'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['ip5', 'py'], 250e-6, rtol=0, atol=0.5e-6)
+
+        assert np.isclose(tw['ip2', 'px'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['ip2', 'py'], -100e-6 , rtol=0, atol=0.5e-6) # accounts for spectrometer
+
+        assert np.isclose(tw['ip8', 'px'],
+                -115e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
+        assert np.isclose(tw['ip8', 'py'], 2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
+
+        assert np.isclose(tw['ip1', 'betx'], 15e-2, rtol=2e-2, atol=0) # beta beating coming from on_disp
+        assert np.isclose(tw['ip1', 'bety'], 15e-2, rtol=3e-2, atol=0)
+        assert np.isclose(tw['ip5', 'betx'], 15e-2, rtol=2e-2, atol=0)
+        assert np.isclose(tw['ip5', 'bety'], 15e-2, rtol=2e-2, atol=0)
+
+        assert np.isclose(tw['ip2', 'betx'], 10., rtol=4e-2, atol=0)
+        assert np.isclose(tw['ip2', 'bety'], 10., rtol=3e-2, atol=0)
+
+        assert np.isclose(tw['ip8', 'betx'], 1.5, rtol=3e-2, atol=0)
+        assert np.isclose(tw['ip8', 'bety'], 1.5, rtol=2e-2, atol=0)
+
+        # Check crab cavities
+        z_crab_test = 1e-2
+        phi_crab_1 = ((
+            collider[line_name].twiss(method='4d', zeta0=z_crab_test)['ip1', 'x']
+        - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['ip1', 'x'])
+        / 2 / z_crab_test)
+
+        phi_crab_5 = ((
+            collider[line_name].twiss(method='4d', zeta0=z_crab_test)['ip5', 'y']
+        - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['ip5', 'y'])
+        / 2 / z_crab_test)
+
+        assert np.isclose(phi_crab_1, -190e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                        rtol=1e-2, atol=0)
+        assert np.isclose(phi_crab_5, -190e-6, rtol=1e-2, atol=0)
 
 def build_sequence(mad, mylhcbeam, **kwargs):
 
@@ -436,8 +547,6 @@ orbit_correction_config['lhcb2'] = {
 }
 
 knob_settings_yaml_str = """
-knob_settings:
-
   # Orbit knobs
   on_x1: 250            # [urad]
   on_sep1: 0            # [mm]
@@ -476,4 +585,37 @@ knob_settings:
   # Octupoles
   i_oct_b1:     -235            # [A]
   i_oct_b2:     -235            # [A]
+"""
+
+knob_names_yaml_str = """
+lhcb1:
+    q_knob_1: kqtf.b1
+    q_knob_2: kqtd.b1
+    dq_knob_1: ksf.b1
+    dq_knob_2: ksd.b1
+    c_minus_knob_1: c_minus_re_b1
+    c_minus_knob_2: c_minus_im_b1
+
+lhcb2:
+    q_knob_1: kqtf.b2
+    q_knob_2: kqtd.b2
+    dq_knob_1: ksf.b2
+    dq_knob_2: ksd.b2
+    c_minus_knob_1: c_minus_re_b2
+    c_minus_knob_2: c_minus_im_b2
+"""
+tune_chroma_yaml_str = """
+qx:
+  lhcb1: 62.31
+  lhcb2: 62.315
+qy:
+  lhcb1: 60.32
+  lhcb2: 60.325
+dqx:
+  lhcb1: 5
+  lhcb2: 6
+dqy:
+  lhcb1: 7
+  lhcb2: 8
+
 """
