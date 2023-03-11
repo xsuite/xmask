@@ -114,3 +114,16 @@ config_knobs_and_tuning:
         dq_knob_2: ksd.b2
         c_minus_knob_1: c_minus_re_b2
         c_minus_knob_2: c_minus_im_b2
+
+config_beambeam:
+    bunch_spacing_buckets: 10
+    num_slices_head_on: 11
+    num_long_range_encounters_per_side:
+      ip1: 25
+      ip2: 20
+      ip5: 25
+      ip8: 20
+    sigma_z: 0.076
+    num_particles_per_bunch: 2.2e11
+    nemitt_x: 2.5e-6
+    nemitt_y: 2.5e-6

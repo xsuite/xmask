@@ -1,30 +1,37 @@
 import json
+import yaml
 import numpy as np
 
 import xtrack as xt
-import xobjects as xo
 
-with open('collider_00_from_mad.json', 'r') as fid:
-    collider = xt.Multiline.from_dict(json.load(fid))
+# Load collider
+collider = xt.Multiline.from_json('collider_00_from_mad.json')
 
+# Read config file
+with open('config.yaml','r') as fid:
+    dct = yaml.safe_load(fid)
+    config_bb = dct['config_beambeam']
+
+# Install beam-beam lenses (inactive and not configured)
 collider.install_beambeam_interactions(
     clockwise_line='lhcb1',
     anticlockwise_line='lhcb2',
     ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
-    num_long_range_encounters_per_side=[25, 20, 25, 20],
-    num_slices_head_on=11,
+    num_long_range_encounters_per_side=[
+        config_bb['num_long_range_encounters_per_side'][ip]
+        for ip in ['ip1', 'ip2', 'ip5', 'ip8']],
+    num_slices_head_on=config_bb['num_slices_head_on'],
     harmonic_number=35640,
-    bunch_spacing_buckets=10,
-    sigmaz=0.076)
+    bunch_spacing_buckets=config_bb['bunch_spacing_buckets'],
+    sigmaz=config_bb['sigmaz'])
 
-collider.build_trackers()
-
-with open('collider_01_bb_off.json', 'w') as fid:
-    dct = collider.to_dict()
-    json.dump(dct, fid, cls=xo.JEncoder)
+# Save to file
+collider.to_json('collider_01_bb_off.json')
 
 
 ###### Checks ######
+
+collider.build_trackers()
 
 collider_before_save = collider
 dct = collider.to_dict()

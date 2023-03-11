@@ -10,8 +10,7 @@ with open('config_knobs_and_tuning.yaml','r') as fid:
     configuration = yaml.safe_load(fid)
 
 # Load collider
-with open('collider_01_bb_off.json', 'r') as fid:
-    collider = xt.Multiline.from_dict(json.load(fid))
+collider = xt.Multiline.from_json('collider_01_bb_off.json')
 
 # Load orbit correction configuration
 with open('corr_co.json', 'r') as fid:
