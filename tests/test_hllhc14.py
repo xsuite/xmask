@@ -1,4 +1,4 @@
-import json
+import yaml
 from pathlib import Path
 import numpy as np
 from cpymad.madx import Madx
@@ -134,7 +134,15 @@ def test_hllhc14_2_tuning():
 
     collider = xt.Multiline.from_json('collider_hllhc14_01.json')
 
+    knob_settings = yaml.safe_load(knob_settings_yaml_str)
 
+    # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
+    # experimental magnets, etc.)
+    for kk, vv in knob_settings.items():
+        collider.vars[kk] = vv
+
+    # Build trackers
+    collider.build_trackers()
 
 def build_sequence(mad, mylhcbeam, **kwargs):
 
@@ -426,3 +434,46 @@ orbit_correction_config['lhcb2'] = {
         targets=('ip8', 'e.ds.l8.b2',),
     ),
 }
+
+knob_settings_yaml_str = """
+knob_settings:
+
+  # Orbit knobs
+  on_x1: 250            # [urad]
+  on_sep1: 0            # [mm]
+  on_x2: -170           # [urad]
+  on_sep2: 0.138        # [mm]
+  on_x5: 250            # [urad]
+  on_sep5: 0            # [mm]
+  on_x8: -250           # [urad]
+  on_sep8: -0.043       # [mm]
+  on_a1: 0              # [urad]
+  on_o1: 0              # [mm]
+  on_a2: 0              # [urad]
+  on_o2: 0              # [mm]
+  on_a5: 0              # [urad]
+  on_o5: 0              # [mm]
+  on_a8: 0              # [urad]
+  on_o8: 0              # [mm]
+  on_disp: 1            # Value to choose could be optics-dependent
+
+  # Crab cavities
+  on_crab1: -190        # [urad]
+  on_crab5: -190        # [urad]
+
+  # Magnets of the experiments
+  on_alice_normalized: 1
+  on_lhcb_normalized: 1
+  on_sol_atlas: 0
+  on_sol_cms: 0
+  on_sol_alice: 0
+
+  # RF voltage and phases
+  vrf400:       16.0            # [MV]
+  lagrf400.b1:   0.5            # [rad]
+  lagrf400.b2:   0.             # [rad]
+
+  # Octupoles
+  i_oct_b1:     -235            # [A]
+  i_oct_b2:     -235            # [A]
+"""

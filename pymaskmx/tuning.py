@@ -1,0 +1,68 @@
+import xtrack as xt
+
+def machine_tuning(line,
+        enable_closed_orbit_correction=True,
+        enable_linear_coupling_correction=True,
+        enable_tune_correction=True,
+        enable_chromaticity_correction=True,
+        knob_names=None,
+        targets=None,
+        line_co_ref=None, co_corr_config=None):
+
+    # Correct closed orbit
+    if enable_closed_orbit_correction:
+        print(f'Correcting closed orbit')
+        assert line_co_ref is not None
+        assert co_corr_config is not None
+        line.correct_closed_orbit(
+                                reference=line_co_ref,
+                                correction_config=co_corr_config)
+
+    if enable_linear_coupling_correction:
+        assert knob_names is not None
+        assert 'c_minus_knob_1' in knob_names
+        assert 'c_minus_knob_2' in knob_names
+        # Match coupling
+        print(f'Matching linear coupling')
+        line.match(
+            vary=[
+                xt.Vary(name=knob_names['c_minus_knob_1'],
+                        limits=[-0.5e-2, 0.5e-2], step=1e-5),
+                xt.Vary(name=knob_names['c_minus_knob_2'],
+                        limits=[-0.5e-2, 0.5e-2], step=1e-5)],
+            targets=[xt.Target('c_minus', 0, tol=1e-4)])
+
+    # Match tune and chromaticity
+    if enable_tune_correction or enable_chromaticity_correction:
+
+        vary = []
+        targets = []
+
+        if enable_tune_correction:
+            assert knob_names is not None
+            assert 'q_knob_1' in knob_names
+            assert 'q_knob_2' in knob_names
+            assert targets is not None
+            assert 'qx' in targets
+            assert 'qy' in targets
+
+            vary.append(xt.Vary(knob_names['q_knob_1'], step=1e-8))
+            vary.append(xt.Vary(knob_names['q_knob_2'], step=1e-8))
+            targets.append(xt.Target('qx', targets['qx'], tol=1e-4))
+            targets.append(xt.Target('qy', targets['qy'], tol=1e-4))
+
+        if enable_chromaticity_correction:
+            assert knob_names is not None
+            assert 'dq_knob_1' in knob_names
+            assert 'dq_knob_2' in knob_names
+            assert targets is not None
+            assert 'dqx' in targets
+            assert 'dqy' in targets
+
+            vary.append(xt.Vary(knob_names['dq_knob_1'], step=1e-4))
+            vary.append(xt.Vary(knob_names['dq_knob_2'], step=1e-4))
+            targets.append(xt.Target('dqx', targets['dqx'], tol=0.05))
+            targets.append(xt.Target('dqy', targets['dqy'], tol=0.05))
+
+        print(f'Matching tune and chromaticity')
+        line.match(verbose=False, vary=vary, targets=targets)
