@@ -28,6 +28,8 @@ collider.install_beambeam_interactions(
 # Save to file
 collider.to_json('collider_01_bb_off.json')
 
+#!end-doc-part'
+
 
 ###### Checks ######
 
