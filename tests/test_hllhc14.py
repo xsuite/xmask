@@ -143,7 +143,26 @@ def test_hllhc14_2_tuning():
     # Check coupling knobs are responding
     collider.vars['c_minus_re_b1'] = 1e-3
     collider.vars['c_minus_im_b1'] = 1e-3
-    prrrr
+    assert np.isclose(collider['lhcb1'].twiss().c_minus, 1.4e-3,
+                      rtol=0, atol=2e-4)
+    assert np.isclose(collider['lhcb2'].twiss().c_minus, 0,
+                      rtol=0, atol=2e-4)
+    collider.vars['c_minus_re_b1'] = 0
+    collider.vars['c_minus_im_b1'] = 0
+    collider.vars['c_minus_re_b2'] = 1e-3
+    collider.vars['c_minus_im_b2'] = 1e-3
+    assert np.isclose(collider['lhcb1'].twiss().c_minus, 0,
+                        rtol=0, atol=2e-4)
+    assert np.isclose(collider['lhcb2'].twiss().c_minus, 1.4e-3,
+                        rtol=0, atol=2e-4)
+    collider.vars['c_minus_re_b2'] = 0
+    collider.vars['c_minus_im_b2'] = 0
+
+    # Introduce some coupling to check correction
+    collider.vars['c_minus_re_b1'] = 0.4e-3
+    collider.vars['c_minus_im_b1'] = 0.7e-3
+    collider.vars['c_minus_re_b2'] = 0.5e-3
+    collider.vars['c_minus_im_b2'] = 0.6e-3
 
     # Tunings
     for line_name in ['lhcb1', 'lhcb2']:
