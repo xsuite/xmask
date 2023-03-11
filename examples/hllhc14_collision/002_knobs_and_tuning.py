@@ -3,6 +3,7 @@ import json
 import xobjects as xo
 
 import xtrack as xt
+import pymaskmx as pm
 
 # Read config file
 with open('config_knobs_and_tuning.yaml','r') as fid:
@@ -24,44 +25,27 @@ for kk, vv in configuration['knob_settings'].items():
 # Build trackers
 collider.build_trackers()
 
-# Twiss before correction
-twb1_before = collider['lhcb1'].twiss()
-twb2_before = collider['lhcb2'].twiss(reverse=True)
-
 # Tunings
 for line_name in ['lhcb1', 'lhcb2']:
+
     knob_names = configuration['knob_names'][line_name]
 
-    # Correct closed orbit
-    print(f'Correcting closed orbit for {line_name}')
-    collider[line_name].correct_closed_orbit(
-                            reference=collider[line_name+'_co_ref'],
-                            correction_config=co_corr_config[line_name])
+    targets = {
+        'qx': configuration['qx'][line_name],
+        'qy': configuration['qy'][line_name],
+        'dqx': configuration['dqx'][line_name],
+        'dqy': configuration['dqy'][line_name],
+    }
 
-    # Match coupling
-    print(f'Matching coupling for {line_name}')
-    collider[line_name].match(
-        vary=[
-            xt.Vary(name=knob_names['c_minus_knob_1'],
-                    limits=[-0.5e-2, 0.5e-2], step=1e-5),
-            xt.Vary(name=knob_names['c_minus_knob_2'],
-                    limits=[-0.5e-2, 0.5e-2], step=1e-5)],
-        targets=[xt.Target('c_minus', 0, tol=1e-4)])
-
-    # Match tune and chromaticity
-    print(f'Matching tune and chromaticity for {line_name}')
-    collider[line_name].match(verbose=False,
-        vary=[
-            xt.Vary(knob_names['q_knob_1'], step=1e-8),
-            xt.Vary(knob_names['q_knob_2'], step=1e-8),
-            xt.Vary(knob_names['dq_knob_1'], step=1e-4),
-            xt.Vary(knob_names['dq_knob_2'], step=1e-4),
-        ],
-        targets = [
-            xt.Target('qx', configuration['qx'][line_name], tol=1e-4),
-            xt.Target('qy', configuration['qy'][line_name], tol=1e-4),
-            xt.Target('dqx', configuration['dqx'][line_name], tol=0.05),
-            xt.Target('dqy', configuration['dqy'][line_name], tol=0.05)])
+    pm.machine_tuning(line=collider[line_name],
+        enable_closed_orbit_correction=True,
+        enable_linear_coupling_correction=True,
+        enable_tune_correction=True,
+        enable_chromaticity_correction=True,
+        knob_names=knob_names,
+        targets=targets,
+        line_co_ref=collider[line_name+'_co_ref'],
+        co_corr_config=co_corr_config[line_name])
 
 # Configure beam-beam lenses
 print('Configuring beam-beam lenses...')
