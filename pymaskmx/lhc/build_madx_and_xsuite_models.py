@@ -28,6 +28,36 @@ def build_xsuite_collider(
     ver_lhc_run,
     ver_hllhc_optics):
 
+    """
+    Build xsuite collider from madx sequences and optics.
+
+    Parameters
+    ----------
+    sequence_b1: cpymad.madx.Sequence
+        Madx sequence for beam 1 (clockwise)
+    sequence_b2: cpymad.madx.Sequence
+        Madx sequence for beam 2 (clockwise)
+    sequence_b4: cpymad.madx.Sequence
+        Madx sequence for beam 4 (anti-clockwise)
+    beam_config: dict
+        Dictionary with beam configuration (see examples)
+    enable_imperfections: bool
+        If True, lattice imperfections are installed and corrected
+    enable_knob_synthesis: bool
+        If True, knobs (linear coupling) are synthesized
+    pars_for_imperfections: dict
+        Dictionary with parameters for imperfections configuration (see examples)
+    ver_lhc_run: str
+        Version of LHC optics (None if HL-LHC)
+    ver_hllhc_optics: str
+        Version of HL-LHC optics (None if LHC)
+
+    Returns
+    -------
+    collider: xtrack.Multiline
+
+    """
+
     pm.attach_beam_to_sequence(sequence_b1, beam_to_configure=1,
                                 beam_configuration=beam_config['lhcb1'])
     pm.attach_beam_to_sequence(sequence_b2, beam_to_configure=2,
