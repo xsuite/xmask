@@ -30,12 +30,6 @@ def test_hllhc14_0_create_collider():
     apply_optics(mad_b1b2,
         optics_file="acc-models-lhc/round/opt_round_150_1500_thin.madx")
 
-    # For test we do not rely on executatbles to generate coupling knobs
-    mad_b1b2.call(
-        "acc-models-lhc/_for_test_cminus_knobs_15cm/MB_corr_setting_b1.mad")
-    mad_b4.call(
-        "acc-models-lhc/_for_test_cminus_knobs_15cm/MB_corr_setting_b2.mad")
-
     # Build xsuite collider
     collider = pmlhc.build_xsuite_collider(
         sequence_b1=mad_b1b2.sequence.lhcb1,
@@ -44,7 +38,7 @@ def test_hllhc14_0_create_collider():
         beam_config={'lhcb1':{'beam_energy_tot': 7000},
                      'lhcb2':{'beam_energy_tot': 7000}},
         enable_imperfections=False,
-        enable_knob_synthesis=False,
+        enable_knob_synthesis='_mock_for_testing',
         pars_for_imperfections={},
         ver_lhc_run=None,
         ver_hllhc_optics=1.4)
@@ -145,6 +139,11 @@ def test_hllhc14_2_tuning():
 
     # Build trackers
     collider.build_trackers()
+
+    # Check coupling knobs are responding
+    collider.vars['c_minus_re_b1'] = 1e-3
+    collider.vars['c_minus_im_b1'] = 1e-3
+    prrrr
 
     # Tunings
     for line_name in ['lhcb1', 'lhcb2']:

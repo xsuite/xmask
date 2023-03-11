@@ -63,7 +63,14 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
 
         mad_track.input('exec, crossing_restore;')
     else:
-        # Synthesize knobs
-        if enable_knob_synthesis:
+        # Mock for testing on mac
+        if enable_knob_synthesis == '_mock_for_testing':
+            if mad_track.globals['mylhcbeam'] == 1:
+                mad_track.call("acc-models-lhc/"
+                        "_for_test_cminus_knobs_15cm/MB_corr_setting_b1.mad")
+            else:
+                mad_track.call("acc-models-lhc/"
+                        "_for_test_cminus_knobs_15cm/MB_corr_setting_b2.mad")
+        elif enable_knob_synthesis:
             mad_track.input(f'call, file="{scripts_folder}/submodule_04a_s1_prepare_nom_twiss_table.madx";')
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')

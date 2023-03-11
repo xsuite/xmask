@@ -90,7 +90,6 @@ def build_xsuite_collider(
         define_octupole_current_knobs(line=line, beamn=int(sequence_name[-1]))
         lines_to_track[sequence_name] = line
 
-
     collider = xt.Multiline(
         lines={
             'lhcb1': lines_to_track['lhcb1'],
