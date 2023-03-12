@@ -10,47 +10,22 @@ with open('config_knobs_and_tuning.yaml','r') as fid:
     configuration = yaml.safe_load(fid)
 
 # Load collider
-collider = xt.Multiline.from_json('collider_01_bb_off.json')
-
-# Load orbit correction configuration
-with open('corr_co.json', 'r') as fid:
-    co_corr_config = json.load(fid)
-
-# Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
-# experimental magnets, etc.)
-for kk, vv in configuration['knob_settings'].items():
-    collider.vars[kk] = vv
-
-# Build trackers
+collider = xt.Multiline.from_json('collider_02_tuned_bb_off.json')
 collider.build_trackers()
 
-# Tunings
-for line_name in ['lhcb1', 'lhcb2']:
+# Configure beam-beam lenses
+print('Configuring beam-beam lenses...')
+collider.configure_beambeam_interactions(
+    num_particles=2.2e11,
+    nemitt_x=2e-6, nemitt_y=3e-6)
 
-    knob_names = configuration['knob_names'][line_name]
-
-    targets = {
-        'qx': configuration['qx'][line_name],
-        'qy': configuration['qy'][line_name],
-        'dqx': configuration['dqx'][line_name],
-        'dqy': configuration['dqy'][line_name],
-    }
-
-    pm.machine_tuning(line=collider[line_name],
-        enable_closed_orbit_correction=True,
-        enable_linear_coupling_correction=True,
-        enable_tune_correction=True,
-        enable_chromaticity_correction=True,
-        knob_names=knob_names,
-        targets=targets,
-        line_co_ref=collider[line_name+'_co_ref'],
-        co_corr_config=co_corr_config[line_name])
-
-collider.to_json('collider_02_tuned_bb_off.json')
+collider.to_json('collider_03_tuned_bb_on.json')
 
 #!end-doc-part
 
 # Checks
+collider.vars['beambeam_scale'] = 0.0 # Switch off beam-beam
+                                      # Beam-beam lenses are checked in separate script
 
 import numpy as np
 for line_name in ['lhcb1', 'lhcb2']:
