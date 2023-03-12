@@ -17,13 +17,12 @@ collider.install_beambeam_interactions(
     clockwise_line='lhcb1',
     anticlockwise_line='lhcb2',
     ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
-    num_long_range_encounters_per_side=[
-        config_bb['num_long_range_encounters_per_side'][ip]
-        for ip in ['ip1', 'ip2', 'ip5', 'ip8']],
+    num_long_range_encounters_per_side=
+        config_bb['num_long_range_encounters_per_side'],
     num_slices_head_on=config_bb['num_slices_head_on'],
     harmonic_number=35640,
     bunch_spacing_buckets=config_bb['bunch_spacing_buckets'],
-    sigmaz=config_bb['sigmaz'])
+    sigmaz=config_bb['sigma_z'])
 
 # Save to file
 collider.to_json('collider_01_bb_off.json')
