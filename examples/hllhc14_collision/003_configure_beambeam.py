@@ -1,12 +1,12 @@
-import yaml
+import pymaskmx as pm
 import xtrack as xt
 
-# Read config file
+# Read beam-beam config from config file
 with open('config.yaml','r') as fid:
-    config = yaml.safe_load(fid)
+    config = pm.yaml.load(fid)
 config_bb = config['config_beambeam']
 
-# Load collider
+# Load collider and build trackers
 collider = xt.Multiline.from_json('collider_02_tuned_bb_off.json')
 collider.build_trackers()
 

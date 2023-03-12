@@ -8,7 +8,7 @@ import pymaskmx as pm
 collider = xt.Multiline.from_json('collider_01_bb_off.json')
 collider.build_trackers()
 
-# Read config file
+# Read knobs and tuning settings from config file
 with open('config.yaml','r') as fid:
     config = yaml.safe_load(fid)
 conf_knobs_and_tuning = config['config_knobs_and_tuning']

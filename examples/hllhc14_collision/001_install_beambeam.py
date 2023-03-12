@@ -7,7 +7,7 @@ import xtrack as xt
 # Load collider
 collider = xt.Multiline.from_json('collider_00_from_mad.json')
 
-# Read config file
+# Read beam-beam config from config file
 with open('config.yaml','r') as fid:
     config = yaml.safe_load(fid)
 config_bb = config['config_beambeam']
