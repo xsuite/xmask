@@ -1,6 +1,3 @@
-import yaml
-import json
-
 import xtrack as xt
 import pymaskmx as pm
 
@@ -10,7 +7,7 @@ collider.build_trackers()
 
 # Read knobs and tuning settings from config file
 with open('config.yaml','r') as fid:
-    config = yaml.safe_load(fid)
+    config = pm.yaml.load(fid)
 conf_knobs_and_tuning = config['config_knobs_and_tuning']
 
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
