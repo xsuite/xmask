@@ -231,5 +231,6 @@ correction_setup['lhcb2'] = {
 
 
 import json
-with open('corr_co.json', 'w') as fid:
-    json.dump(correction_setup, fid, indent=4)
+for nn in ['lhcb1', 'lhcb2']:
+    with open(f'corr_co_{nn}.json', 'w') as fid:
+        json.dump(correction_setup[nn], fid, indent=4)

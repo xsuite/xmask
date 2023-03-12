@@ -13,10 +13,6 @@ with open('config.yaml','r') as fid:
     config = yaml.safe_load(fid)
 conf_knobs_and_tuning = config['config_knobs_and_tuning']
 
-# Load orbit correction configuration
-with open('corr_co.json', 'r') as fid:
-    co_corr_config = json.load(fid)
-
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
 for kk, vv in conf_knobs_and_tuning['knob_settings'].items():
@@ -42,7 +38,7 @@ for line_name in ['lhcb1', 'lhcb2']:
         knob_names=knob_names,
         targets=targets,
         line_co_ref=collider[line_name+'_co_ref'],
-        co_corr_config=co_corr_config[line_name])
+        co_corr_config=conf_knobs_and_tuning['closed_orbit_correction'][line_name])
 
 collider.to_json('collider_02_tuned_bb_off.json')
 

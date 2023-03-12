@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import xtrack as xt
 
 def machine_tuning(line,
@@ -14,6 +17,10 @@ def machine_tuning(line,
         print(f'Correcting closed orbit')
         assert line_co_ref is not None
         assert co_corr_config is not None
+        if isinstance(co_corr_config, (str, [Path])):
+            with open(co_corr_config, 'r') as fid:
+                co_corr_config = json.load(fid)
+
         line.correct_closed_orbit(
                                 reference=line_co_ref,
                                 correction_config=co_corr_config)
