@@ -1,6 +1,7 @@
 import yaml
 
 from cpymad.madx import Madx
+import xtrack as xt
 
 import pymaskmx as pm
 import pymaskmx.lhc as pmlhc

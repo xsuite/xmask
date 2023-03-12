@@ -1,4 +1,4 @@
-import json
+
 import yaml
 import numpy as np
 
@@ -32,7 +32,7 @@ collider.to_json('collider_01_bb_off.json')
 
 
 ###### Checks ######
-
+import json
 collider.build_trackers()
 
 collider_before_save = collider

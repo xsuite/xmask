@@ -1,9 +1,5 @@
 import yaml
-import json
-import xobjects as xo
-
 import xtrack as xt
-import pymaskmx as pm
 
 # Read config file
 with open('config.yaml','r') as fid:
