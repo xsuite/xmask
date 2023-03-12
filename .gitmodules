@@ -1,0 +1,3 @@
+[submodule "xmask/lhc/lhcerrors"]
+	path = xmask/lhc/lhcerrors
+	url = https://github.com/lhcopt/lhcerrors
