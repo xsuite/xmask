@@ -10,8 +10,8 @@ import optics_specific_tools_hlhc14 as ost
 
 # Read config file
 with open('config.yaml','r') as fid:
-    dct = yaml.safe_load(fid)
-    config_mad_model = dct['config_mad']
+    config = yaml.safe_load(fid)
+config_mad_model = config['config_mad']
 
 # Make mad environment
 pm.make_mad_environment(links=config_mad_model['links'])

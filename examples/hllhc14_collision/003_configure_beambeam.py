@@ -6,8 +6,9 @@ import xtrack as xt
 import pymaskmx as pm
 
 # Read config file
-with open('config_knobs_and_tuning.yaml','r') as fid:
-    configuration = yaml.safe_load(fid)
+with open('config.yaml','r') as fid:
+    config = yaml.safe_load(fid)
+config_bb = config['config_beambeam']
 
 # Load collider
 collider = xt.Multiline.from_json('collider_02_tuned_bb_off.json')
@@ -16,8 +17,9 @@ collider.build_trackers()
 # Configure beam-beam lenses
 print('Configuring beam-beam lenses...')
 collider.configure_beambeam_interactions(
-    num_particles=2.2e11,
-    nemitt_x=2e-6, nemitt_y=3e-6)
+    num_particles=config_bb['num_particles_per_bunch'],
+    nemitt_x=config_bb['nemitt_x'],
+    nemitt_y=config_bb['nemitt_y'])
 
 collider.to_json('collider_03_tuned_bb_on.json')
 

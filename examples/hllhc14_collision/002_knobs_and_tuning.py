@@ -6,8 +6,9 @@ import xtrack as xt
 import pymaskmx as pm
 
 # Read config file
-with open('config_knobs_and_tuning.yaml','r') as fid:
-    configuration = yaml.safe_load(fid)
+with open('config.yaml','r') as fid:
+    config = yaml.safe_load(fid)
+conf_knobs_and_tuning = config['config_knobs_and_tuning']
 
 # Load collider
 collider = xt.Multiline.from_json('collider_01_bb_off.json')
@@ -18,7 +19,7 @@ with open('corr_co.json', 'r') as fid:
 
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
-for kk, vv in configuration['knob_settings'].items():
+for kk, vv in conf_knobs_and_tuning['knob_settings'].items():
     collider.vars[kk] = vv
 
 # Build trackers
@@ -27,13 +28,13 @@ collider.build_trackers()
 # Tunings
 for line_name in ['lhcb1', 'lhcb2']:
 
-    knob_names = configuration['knob_names'][line_name]
+    knob_names = conf_knobs_and_tuning['knob_names'][line_name]
 
     targets = {
-        'qx': configuration['qx'][line_name],
-        'qy': configuration['qy'][line_name],
-        'dqx': configuration['dqx'][line_name],
-        'dqy': configuration['dqy'][line_name],
+        'qx': conf_knobs_and_tuning['qx'][line_name],
+        'qy': conf_knobs_and_tuning['qy'][line_name],
+        'dqx': conf_knobs_and_tuning['dqx'][line_name],
+        'dqy': conf_knobs_and_tuning['dqy'][line_name],
     }
 
     pm.machine_tuning(line=collider[line_name],

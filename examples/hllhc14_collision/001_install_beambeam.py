@@ -9,8 +9,8 @@ collider = xt.Multiline.from_json('collider_00_from_mad.json')
 
 # Read config file
 with open('config.yaml','r') as fid:
-    dct = yaml.safe_load(fid)
-    config_bb = dct['config_beambeam']
+    config = yaml.safe_load(fid)
+config_bb = config['config_beambeam']
 
 # Install beam-beam lenses (inactive and not configured)
 collider.install_beambeam_interactions(
@@ -36,8 +36,8 @@ collider.to_json('collider_01_bb_off.json')
 collider.build_trackers()
 
 collider_before_save = collider
-dct = collider.to_dict()
-collider = xt.Multiline.from_dict(dct)
+config = collider.to_dict()
+collider = xt.Multiline.from_dict(config)
 collider.build_trackers()
 
 assert collider._bb_config['dataframes']['clockwise'].shape == (

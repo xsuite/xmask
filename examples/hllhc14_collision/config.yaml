@@ -124,6 +124,6 @@ config_beambeam:
       ip5: 25
       ip8: 20
     sigma_z: 0.076
-    num_particles_per_bunch: 2.2e11
+    num_particles_per_bunch: 2.2e+11
     nemitt_x: 2.5e-6
     nemitt_y: 2.5e-6
