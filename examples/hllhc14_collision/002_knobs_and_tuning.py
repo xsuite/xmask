@@ -1,5 +1,5 @@
 import xtrack as xt
-import pymaskmx as pm
+import xmask as xm
 
 # Load collider anf build trackers
 collider = xt.Multiline.from_json('collider_01_bb_off.json')
@@ -7,7 +7,7 @@ collider.build_trackers()
 
 # Read knobs and tuning settings from config file
 with open('config.yaml','r') as fid:
-    config = pm.yaml.load(fid)
+    config = xm.yaml.load(fid)
 conf_knobs_and_tuning = config['config_knobs_and_tuning']
 
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
@@ -27,7 +27,7 @@ for line_name in ['lhcb1', 'lhcb2']:
         'dqy': conf_knobs_and_tuning['dqy'][line_name],
     }
 
-    pm.machine_tuning(line=collider[line_name],
+    xm.machine_tuning(line=collider[line_name],
         enable_closed_orbit_correction=True,
         enable_linear_coupling_correction=True,
         enable_tune_correction=True,

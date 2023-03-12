@@ -1,14 +1,14 @@
 import numpy as np
 
 import xtrack as xt
-import pymaskmx as pm
+import xmask as xm
 
 # Load collider
 collider = xt.Multiline.from_json('collider_00_from_mad.json')
 
 # Read beam-beam config from config file
 with open('config.yaml','r') as fid:
-    config = pm.yaml.load(fid)
+    config = xm.yaml.load(fid)
 config_bb = config['config_beambeam']
 
 # Install beam-beam lenses (inactive and not configured)

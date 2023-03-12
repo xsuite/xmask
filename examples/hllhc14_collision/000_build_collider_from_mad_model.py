@@ -1,19 +1,19 @@
 from cpymad.madx import Madx
 import xtrack as xt
 
-import pymaskmx as pm
-import pymaskmx.lhc as pmlhc
+import xmask as xm
+import xmask.lhc as pmlhc
 
 # Import user-defined optics-specific tools
 import optics_specific_tools_hlhc14 as ost
 
 # Read config file
 with open('config.yaml','r') as fid:
-    config = pm.yaml.load(fid)
+    config = xm.yaml.load(fid)
 config_mad_model = config['config_mad']
 
 # Make mad environment
-pm.make_mad_environment(links=config_mad_model['links'])
+xm.make_mad_environment(links=config_mad_model['links'])
 
 # Start mad
 mad_b1b2 = Madx(command_log="mad_collider.log")
@@ -27,7 +27,7 @@ ost.build_sequence(mad_b4, mylhcbeam=4)
 ost.apply_optics(mad_b1b2, optics_file=config_mad_model['optics_file'])
 
 # Build xsuite collider
-collider = pmlhc.build_xsuite_collider(
+collider = xmlhc.build_xsuite_collider(
     sequence_b1=mad_b1b2.sequence.lhcb1,
     sequence_b2=mad_b1b2.sequence.lhcb2,
     sequence_b4=mad_b4.sequence.lhcb2,

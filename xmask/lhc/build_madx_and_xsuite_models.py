@@ -1,7 +1,7 @@
 import xtrack as xt
 import xpart as xp
 
-import pymaskmx as pm
+import xmask as xm
 
 from .errors import install_correct_errors_and_synthesisize_knobs
 from .knob_manipulations import rename_coupling_knobs_and_coefficients
@@ -58,9 +58,9 @@ def build_xsuite_collider(
 
     """
 
-    pm.attach_beam_to_sequence(sequence_b1, beam_to_configure=1,
+    xm.attach_beam_to_sequence(sequence_b1, beam_to_configure=1,
                                 beam_configuration=beam_config['lhcb1'])
-    pm.attach_beam_to_sequence(sequence_b2, beam_to_configure=2,
+    xm.attach_beam_to_sequence(sequence_b2, beam_to_configure=2,
                                 beam_configuration=beam_config['lhcb2'])
 
     # Store energy in nrj
@@ -75,12 +75,12 @@ def build_xsuite_collider(
         mm.twiss()
 
     # Generate beam 4
-    pm.configure_b4_from_b2(
+    xm.configure_b4_from_b2(
         sequence_b4=sequence_b4,
         sequence_b2=sequence_b2)
 
     # Save lines for closed orbit reference
-    lines_co_ref = pm.save_lines_for_closed_orbit_reference(
+    lines_co_ref = xm.save_lines_for_closed_orbit_reference(
         sequence_clockwise=sequence_b1,
         sequence_anticlockwise=sequence_b4)
 

@@ -1,4 +1,4 @@
-from pymaskmx.lhc import install_errors_placeholders_hllhc
+from xmask.lhc import install_errors_placeholders_hllhc
 
 def build_sequence(mad, mylhcbeam, **kwargs):
 

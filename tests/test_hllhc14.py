@@ -9,8 +9,8 @@ from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
 
-import pymaskmx as pm
-import pymaskmx.lhc as pmlhc
+import xmask as xm
+import xmask.lhc as xmlhc
 
 # We assume that the tests will be run in order. In case of issues we could use
 # https://pypi.org/project/pytest-order/ to enforce the order.
@@ -19,7 +19,7 @@ test_data_dir = Path(__file__).parent.parent / "test_data"
 
 def test_hllhc14_0_create_collider():
     # Make mad environment
-    pm.make_mad_environment(links={
+    xm.make_mad_environment(links={
         'acc-models-lhc': str(test_data_dir / 'hllhc14')})
 
     # Start mad
@@ -35,7 +35,7 @@ def test_hllhc14_0_create_collider():
         optics_file="acc-models-lhc/round/opt_round_150_1500_thin.madx")
 
     # Build xsuite collider
-    collider = pmlhc.build_xsuite_collider(
+    collider = xmlhc.build_xsuite_collider(
         sequence_b1=mad_b1b2.sequence.lhcb1,
         sequence_b2=mad_b1b2.sequence.lhcb2,
         sequence_b4=mad_b4.sequence.lhcb2,
@@ -180,7 +180,7 @@ def test_hllhc14_2_tuning():
             'dqy': tune_chorma_targets['dqy'][line_name],
         }
 
-        pm.machine_tuning(line=collider[line_name],
+        xm.machine_tuning(line=collider[line_name],
             enable_closed_orbit_correction=True,
             enable_linear_coupling_correction=True,
             enable_tune_correction=True,
@@ -662,7 +662,7 @@ def build_sequence(mad, mylhcbeam, **kwargs):
     exec, myslice;
     ''')
 
-    pmlhc.install_errors_placeholders_hllhc(mad)
+    xmlhc.install_errors_placeholders_hllhc(mad)
 
     mad.input(
     '''

@@ -1,9 +1,9 @@
-import pymaskmx as pm
+import xmask as xm
 import xtrack as xt
 
 # Read beam-beam config from config file
 with open('config.yaml','r') as fid:
-    config = pm.yaml.load(fid)
+    config = xm.yaml.load(fid)
 config_bb = config['config_beambeam']
 
 # Load collider and build trackers
