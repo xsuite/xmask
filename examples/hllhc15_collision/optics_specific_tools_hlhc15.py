@@ -16,9 +16,9 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       ! Build sequence
       option, -echo,-warn,-info;
       if (mylhcbeam==4){
-        call,file="acc-models-lhc/../runIII/lhcb4.seq";
+        call,file="acc-models-lhc/lhc/lhcb4.seq";
       } else {
-        call,file="acc-models-lhc/../runIII/lhc.seq";
+        call,file="acc-models-lhc/lhc/lhc.seq";
       };
       option, -echo, warn,-info;
       '''

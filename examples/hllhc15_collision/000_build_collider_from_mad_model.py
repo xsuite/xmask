@@ -2,10 +2,10 @@ from cpymad.madx import Madx
 import xtrack as xt
 
 import xmask as xm
-import xmask.lhc as pmlhc
+import xmask.lhc as xmlhc
 
 # Import user-defined optics-specific tools
-import optics_specific_tools_hlhc14 as ost
+import optics_specific_tools_hlhc15 as ost
 
 # Read config file
 with open('config.yaml','r') as fid:
