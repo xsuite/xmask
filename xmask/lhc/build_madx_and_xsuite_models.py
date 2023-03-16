@@ -23,10 +23,11 @@ from .knob_manipulations import add_correction_term_to_dipole_correctors
 def build_xsuite_collider(
     sequence_b1, sequence_b2, sequence_b4, beam_config,
     enable_imperfections,
-    enable_knob_synthesis,
-    pars_for_imperfections,
-    ver_lhc_run,
-    ver_hllhc_optics,
+    install_apertures=False,
+    enable_knob_synthesis=False,
+    pars_for_imperfections={},
+    ver_lhc_run=None,
+    ver_hllhc_optics=None,
     call_after_last_use=None,):
 
     """
@@ -44,6 +45,8 @@ def build_xsuite_collider(
         Dictionary with beam configuration (see examples)
     enable_imperfections: bool
         If True, lattice imperfections are installed and corrected
+    install_apertures: bool
+        If True, apertures are installed
     enable_knob_synthesis: bool
         If True, knobs (linear coupling) are synthesized
     pars_for_imperfections: dict
@@ -113,6 +116,7 @@ def build_xsuite_collider(
         line = xt.Line.from_madx_sequence(
             mad_track.sequence[sequence_name], apply_madx_errors=True,
             deferred_expressions=True,
+            install_apertures=install_apertures, 
             replace_in_expr={'bv_aux': 'bvaux_'+sequence_name})
         mad_beam = mad_track.sequence[sequence_name].beam
         line.particle_ref = xp.Particles(p0c = mad_beam.pc*1e9,

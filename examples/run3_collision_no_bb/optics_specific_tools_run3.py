@@ -59,9 +59,13 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       select, flag=makethin, pattern=mqt\.  ,  slice=2* slicefactor;
 
       if (mylhcbeam==1){
+        beam; ! needed for use
+        use,sequence=lhcb1; ! seems needed before makethin
         makethin, sequence=lhcb1, makedipedge=false, style=teapot, makeendmarkers=true;
         makethin, sequence=lhcb2, makedipedge=false, style=teapot, makeendmarkers=true;
       } else {
+        beam; ! needed for use
+        use,sequence=lhcb1; ! seems needed before makethin
         makethin, sequence=lhcb2, makedipedge=false, style=teapot, makeendmarkers=true;
       };
 
@@ -74,9 +78,6 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       };
 
 ''')
-
-
-
 
 def apply_optics(mad, optics_file):
     mad.call(optics_file)

@@ -32,10 +32,11 @@ collider = xmlhc.build_xsuite_collider(
     sequence_b2=mad_b1b2.sequence.lhcb2,
     sequence_b4=mad_b4.sequence.lhcb2,
     beam_config=config_mad_model['beam_config'],
+    install_apertures=config_mad_model['install_apertures'],
     enable_imperfections=config_mad_model['enable_imperfections'],
     enable_knob_synthesis=config_mad_model['enable_knob_synthesis'],
     pars_for_imperfections={},
-    ver_lhc_run=None,
+    ver_lhc_run=0.,
     ver_hllhc_optics=None,
     call_after_last_use=ost.call_after_last_use)
 

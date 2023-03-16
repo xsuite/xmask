@@ -53,13 +53,6 @@ if (make_thin==1){    ! Thick lattice currently does not have full aperture mode
     call, file="run3seq/aperture/aperture_as-built.b2.madx";
     call, file="run3seq/aperture/aper_tol_as-built.b2.madx";
 };
-call, file="run3opt/RunIII_dev/Proton_2023/opticsfile.43";
-
-!! Set beam
-if (mylhcbeam<4){
-  Beam,particle=proton,sequence=lhcb1,energy=NRJ,NPART=numpart,sige=esigma,sigt=zsigma, ex=exn*pmass/nrj,ey=exn*pmass/nrj;          
-};
-Beam,particle=proton,sequence=lhcb2,energy=NRJ,bv=-bv_aux,NPART=numpart,sige=esigma,sigt=zsigma, ex=exn*pmass/nrj,ey=exn*pmass/nrj;
 
 ''')
 
@@ -90,12 +83,23 @@ mad.input('''
     select, flag=makethin, pattern=mqt\.  ,  slice=2* slicefactor;
 
     if (mylhcbeam==1){
+      beam;
       use,sequence=lhcb1;
       makethin, sequence=lhcb1, makedipedge=false, style=teapot, makeendmarkers=true;
      } else {
+      beam;
       use,sequence=lhcb2;
       makethin, sequence=lhcb2, makedipedge=false, style=teapot, makeendmarkers=true;
     };
+
+    call, file="run3opt/RunIII_dev/Proton_2023/opticsfile.43";
+
+    !! Set beam
+    if (mylhcbeam<4){
+    Beam,particle=proton,sequence=lhcb1,energy=NRJ,NPART=numpart,sige=esigma,sigt=zsigma, ex=exn*pmass/nrj,ey=exn*pmass/nrj;          
+    };
+    Beam,particle=proton,sequence=lhcb2,energy=NRJ,bv=-bv_aux,NPART=numpart,sige=esigma,sigt=zsigma, ex=exn*pmass/nrj,ey=exn*pmass/nrj;
+
 ''')
 
 mad.use('lhcb1')

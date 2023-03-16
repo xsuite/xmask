@@ -16,6 +16,8 @@ config_mad:
       lhcb2:
         beam_energy_tot: 6800           # [GeV]
 
+    install_apertures: true
+
     # Enable machine imperfections
     enable_imperfections: false
 
