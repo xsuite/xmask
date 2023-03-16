@@ -40,8 +40,6 @@ collider = xmlhc.build_xsuite_collider(
     ver_hllhc_optics=None,
     call_after_last_use=ost.call_after_last_use)
 
-prrrr
-
 # Save to file
 collider.to_json('collider_00_from_mad.json')
 
