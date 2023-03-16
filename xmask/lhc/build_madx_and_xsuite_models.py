@@ -26,7 +26,8 @@ def build_xsuite_collider(
     enable_knob_synthesis,
     pars_for_imperfections,
     ver_lhc_run,
-    ver_hllhc_optics):
+    ver_hllhc_optics,
+    call_after_last_use=None,):
 
     """
     Build xsuite collider from madx sequences and optics.
@@ -92,6 +93,9 @@ def build_xsuite_collider(
 
         # Final use
         mad_track.use(sequence_name)
+
+        if call_after_last_use is not None:
+            call_after_last_use(mad_track)
 
         # We work exclusively on the flat machine
         mad_track.input('exec, crossing_disable;')
