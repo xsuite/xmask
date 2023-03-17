@@ -10,7 +10,8 @@ def machine_tuning(line,
         enable_chromaticity_correction=True,
         knob_names=None,
         targets=None,
-        line_co_ref=None, co_corr_config=None):
+        line_co_ref=None, co_corr_config=None,
+        verbose=False):
 
     # Correct closed orbit
     if enable_closed_orbit_correction:
@@ -31,7 +32,7 @@ def machine_tuning(line,
         assert 'c_minus_knob_2' in knob_names
         # Match coupling
         print(f'Matching linear coupling')
-        line.match(
+        line.match(verbose=verbose,
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
                         limits=[-0.5e-2, 0.5e-2], step=1e-5),
@@ -72,4 +73,4 @@ def machine_tuning(line,
             match_targets.append(xt.Target('dqy', targets['dqy'], tol=0.05))
 
         print(f'Matching tune and chromaticity')
-        line.match(verbose=False, vary=vary, targets=match_targets)
+        line.match(verbose=verbose, vary=vary, targets=match_targets)
