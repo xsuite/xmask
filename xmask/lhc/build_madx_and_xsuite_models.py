@@ -70,7 +70,8 @@ def build_xsuite_collider(
     # Store energy in nrj
     sequence_b1._madx.globals.nrj = beam_config['lhcb1']['beam_energy_tot']
     sequence_b2._madx.globals.nrj = beam_config['lhcb2']['beam_energy_tot']
-    sequence_b4._madx.globals.nrj = beam_config['lhcb2']['beam_energy_tot']
+    if sequence_b4 is not None:
+        sequence_b4._madx.globals.nrj = beam_config['lhcb2']['beam_energy_tot']
 
     # Warm up (seems I need to twiss for mad to load everything)
     for seq in [sequence_b1, sequence_b2]:
@@ -79,9 +80,8 @@ def build_xsuite_collider(
         mm.twiss()
 
     # Generate beam 4
-    xm.configure_b4_from_b2(
-        sequence_b4=sequence_b4,
-        sequence_b2=sequence_b2)
+    if sequence_b4 is not None:
+        xm.configure_b4_from_b2(sequence_b4=sequence_b4, sequence_b2=sequence_b2)
 
     # Save lines for closed orbit reference
     lines_co_ref = xm.save_lines_for_closed_orbit_reference(
@@ -90,6 +90,9 @@ def build_xsuite_collider(
 
     lines_to_track = {}
     for sequence_to_track in [sequence_b1, sequence_b4]:
+
+        if sequence_to_track is None:
+            continue
 
         sequence_name = sequence_to_track.name
         mad_track = sequence_to_track._madx
@@ -128,16 +131,15 @@ def build_xsuite_collider(
         define_octupole_current_knobs(line=line, beamn=int(sequence_name[-1]))
         lines_to_track[sequence_name] = line
 
-    collider = xt.Multiline(
-        lines={
-            'lhcb1': lines_to_track['lhcb1'],
-            'lhcb2': lines_to_track['lhcb2'],
-            'lhcb1_co_ref': lines_co_ref['lhcb1_co_ref'],
-            'lhcb2_co_ref': lines_co_ref['lhcb2_co_ref'],
-        })
+    lines = {}
+    lines.update(lines_to_track)
+    lines.update(lines_co_ref)
+    collider = xt.Multiline(lines=lines)
 
-    collider['lhcb1_co_ref'].particle_ref = collider['lhcb1'].particle_ref.copy()
-    collider['lhcb2_co_ref'].particle_ref = collider['lhcb2'].particle_ref.copy()
+    if 'lhcb1' in lines_to_track:
+        collider['lhcb1_co_ref'].particle_ref = collider['lhcb1'].particle_ref.copy()
+    if 'lhcb2' in lines_to_track:
+        collider['lhcb2_co_ref'].particle_ref = collider['lhcb2'].particle_ref.copy()
 
     add_correction_term_to_dipole_correctors(collider)
 
