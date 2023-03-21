@@ -55,6 +55,9 @@ def build_xsuite_collider(
         Version of LHC optics (None if HL-LHC)
     ver_hllhc_optics: str
         Version of HL-LHC optics (None if LHC)
+    call_after_last_use: callable
+        Function called after last madx use command
+
 
     Returns
     -------
