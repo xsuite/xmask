@@ -6,11 +6,11 @@ import xtrack as xt
 collider = xt.Multiline.from_json('./collider_03_tuned_bb_on.json')
 collider.build_trackers()
 
-collider.vars['beambeam_scale'] = 1
+collider.vars['beambeam_scale'] = 0.3
 
-fp = collider['lhcb1'].get_footprint(nemitt_x=1e-6, nemitt_y=1e-6,
+fp = collider['lhcb1'].get_footprint(nemitt_x=2.5e-6, nemitt_y=2.5e-6,
                                      theta_range=(0.05, np.pi/2-0.05),
-                                     n_fft=2**18, keep_fft=True)
+                                     n_fft=2**18)
 # Find problematic points
 
 i_problems = np.where(np.abs(fp.qx.flatten() - fp.qy.flatten()) < 1e-4)
