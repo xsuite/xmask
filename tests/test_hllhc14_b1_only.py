@@ -73,7 +73,7 @@ def test_hllhc14_1_install_beambeam():
 
     assert collider._bb_config['dataframes']['clockwise'].shape == (
         collider_before_save._bb_config['dataframes']['clockwise'].shape)
-    assert collider._bb_config['dataframes']['anticlockwise'].shape is None
+    assert collider._bb_config['dataframes']['anticlockwise'] is None
 
     assert (collider._bb_config['dataframes']['clockwise']['elementName'].iloc[50]
         == collider_before_save._bb_config['dataframes']['clockwise']['elementName'].iloc[50])
@@ -514,7 +514,7 @@ def test_hllhc14_3_bb_config():
     check_optics_orbit_etc(collider)
 
 def check_optics_orbit_etc(collider):
-    for line_name in ['lhcb1', 'lhcb2']:
+    for line_name in ['lhcb1']:
 
         assert collider[line_name].particle_ref.q0 == 1
         assert np.isclose(collider[line_name].particle_ref.p0c, 7e12,
@@ -601,8 +601,6 @@ def check_optics_orbit_etc(collider):
 
         # Check one octupole strength
         assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
-                          rtol=1e-3, atol=0)
-        assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
                           rtol=1e-3, atol=0)
 
 
