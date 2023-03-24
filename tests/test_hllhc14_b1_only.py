@@ -240,9 +240,8 @@ def test_hllhc14_3_bb_config():
         assert np.isclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
 
         # Check that there is a tune shift of the order of 1.5e-2
-# DISABLED FOR DEBUGGING!!!!
-#        assert np.isclose(tw_bb_on.qx, qx_no_bb[line_name] - 1.5e-2, rtol=0, atol=4e-3)
-#        assert np.isclose(tw_bb_on.qy, qy_no_bb[line_name] - 1.5e-2, rtol=0, atol=4e-3)
+        assert np.isclose(tw_bb_on.qx, qx_no_bb[line_name] - 1.5e-2, rtol=0, atol=4e-3)
+        assert np.isclose(tw_bb_on.qy, qy_no_bb[line_name] - 1.5e-2, rtol=0, atol=4e-3)
 
         # Check that there is no effect on the orbit
         np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
