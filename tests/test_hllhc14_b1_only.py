@@ -169,7 +169,7 @@ def test_hllhc14_b1_only_2_tuning():
     collider.to_json('collider_hllhc14_b1_only_02.json')
 
     # Check optics, orbit, rf, etc.
-    check_optics_orbit_etc(collider, lien_names=['lhcb1'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1'])
 
 def test_hllhc14_b1_only_3_bb_config():
 

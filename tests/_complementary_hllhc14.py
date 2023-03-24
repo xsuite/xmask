@@ -89,10 +89,12 @@ def check_optics_orbit_etc(collider, line_names):
         assert np.isclose(phi_crab_5, -170e-6, rtol=1e-2, atol=0)
 
         # Check one octupole strength
-        assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
+        if line_name == 'lhcb1':
+            assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
                           rtol=1e-3, atol=0)
-        assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
-                          rtol=1e-3, atol=0)
+        elif line_name == 'lhcb2':
+            assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
+                            rtol=1e-3, atol=0)
 
 
 
