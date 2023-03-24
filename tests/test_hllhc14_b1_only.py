@@ -43,7 +43,7 @@ def test_hllhc14_0_create_collider():
         ver_lhc_run=None,
         ver_hllhc_optics=1.4)
 
-    assert len(collider.lines.keys()) == 4
+    assert len(collider.lines.keys()) == 2
 
     collider.to_json('collider_hllhc14_b1_only_00.json')
 
