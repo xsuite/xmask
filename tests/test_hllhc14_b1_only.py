@@ -171,12 +171,13 @@ def test_hllhc14_2_tuning():
 
 def test_hllhc14_3_bb_config():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_02.json')
+    collider = xt.Multiline.from_json('collider_hllhc14_b1_only_02.json')
     collider.build_trackers()
 
     collider.configure_beambeam_interactions(
         num_particles=2.2e11,
-        nemitt_x=2e-6, nemitt_y=3e-6)
+        nemitt_x=2e-6, nemitt_y=3e-6,
+        use_antisymmetry=True)
 
     ip_bb_config= {
         'ip1': {'num_lr_per_side': 25},
