@@ -57,15 +57,15 @@ def test_hllhc14_b1_only_1_install_beambeam():
     collider = xt.Multiline.from_json('collider_hllhc14_b1_only_00.json')
 
     collider.install_beambeam_interactions(
-    clockwise_line='lhcb1',
-    anticlockwise_line=None,
-    ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
-    num_long_range_encounters_per_side={
-        'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
-    num_slices_head_on=11,
-    harmonic_number=35640,
-    bunch_spacing_buckets=10,
-    sigmaz=0.076)
+        clockwise_line='lhcb1',
+        anticlockwise_line=None,
+        ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+        num_long_range_encounters_per_side={
+            'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
+        num_slices_head_on=11,
+        harmonic_number=35640,
+        bunch_spacing_buckets=10,
+        sigmaz=0.076)
 
     collider.to_json('collider_hllhc14_b1_only_01.json')
 
