@@ -287,13 +287,13 @@ def test_hllhc14_3_bb_config():
         print('Twiss(es) (with bb off)')
         with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
             tw_weak = collider[name_weak].twiss()
-            tw_strong = collider[name_strong].twiss(reverse=True)
+            tw_strong = collider[name_strong].twiss().reverse()
 
         # Survey starting from ip
         print('Survey(s) (starting from ip)')
         survey_weak = collider[name_weak].survey(element0=f'ip{ip_n}')
         survey_strong = collider[name_strong].survey(
-                                    element0=f'ip{ip_n}', reverse=True)
+                                            element0=f'ip{ip_n}').reverse()
         beta0_strong = collider[name_strong].particle_ref.beta0[0]
         gamma0_strong = collider[name_strong].particle_ref.gamma0[0]
 
