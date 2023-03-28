@@ -108,11 +108,11 @@ def test_hllhc14_b1_only_1_install_beambeam():
     assert np.isclose(tw1_b1.dqy, tw0_b1.dqy, atol=1e-4, rtol=0)
 
     for ipn in [1, 2, 3, 4, 5, 6, 7, 8]:
-        assert np.isclose(tw1_b1[f'ip{ipn}', 'betx'], tw0_b1[f'ip{ipn}', 'betx'], rtol=1e-5, atol=0)
-        assert np.isclose(tw1_b1[f'ip{ipn}', 'bety'], tw0_b1[f'ip{ipn}', 'bety'], rtol=1e-5, atol=0)
+        assert np.isclose(tw1_b1['betx', f'ip{ipn}'], tw0_b1['betx', f'ip{ipn}'], rtol=1e-5, atol=0)
+        assert np.isclose(tw1_b1['bety', f'ip{ipn}'], tw0_b1['bety', f'ip{ipn}'], rtol=1e-5, atol=0)
 
-        assert np.isclose(tw1_b1[f'ip{ipn}', 'px'], tw0_b1[f'ip{ipn}', 'px'], rtol=1e-9, atol=0)
-        assert np.isclose(tw1_b1[f'ip{ipn}', 'py'], tw0_b1[f'ip{ipn}', 'py'], rtol=1e-9, atol=0)
+        assert np.isclose(tw1_b1['px', f'ip{ipn}'], tw0_b1['px', f'ip{ipn}'], rtol=1e-9, atol=0)
+        assert np.isclose(tw1_b1['py', f'ip{ipn}'], tw0_b1['py', f'ip{ipn}'], rtol=1e-9, atol=0)
 
 def test_hllhc14_b1_only_2_tuning():
 
@@ -264,13 +264,13 @@ def test_hllhc14_b1_only_3_bb_config():
         # The bb lenses are setup based on the twiss taken with the bb off
         print('Twiss(es) (with bb off)')
         tw_weak = collider_ref[name_weak].twiss()
-        tw_strong = collider_ref[name_strong].twiss(reverse=True)
+        tw_strong = collider_ref[name_strong].twiss().reverse()
 
         # Survey starting from ip
         print('Survey(s) (starting from ip)')
         survey_weak = collider_ref[name_weak].survey(element0=f'ip{ip_n}')
         survey_strong = collider_ref[name_strong].survey(
-                                    element0=f'ip{ip_n}', reverse=True)
+                                    element0=f'ip{ip_n}').reverse()
         beta0_strong = collider_ref[name_strong].particle_ref.beta0[0]
         gamma0_strong = collider_ref[name_strong].particle_ref.gamma0[0]
 
@@ -290,9 +290,9 @@ def test_hllhc14_b1_only_3_bb_config():
 
                 assert isinstance(ee_weak, xf.BeamBeamBiGaussian2D)
 
-                expected_sigma_x = np.sqrt(tw_strong[nn_strong, 'betx']
+                expected_sigma_x = np.sqrt(tw_strong['betx', nn_strong]
                                         * nemitt_x/beta0_strong/gamma0_strong)
-                expected_sigma_y = np.sqrt(tw_strong[nn_strong, 'bety']
+                expected_sigma_y = np.sqrt(tw_strong['bety', nn_strong]
                                         * nemitt_y/beta0_strong/gamma0_strong)
 
                 # Beam sizes
@@ -305,24 +305,24 @@ def test_hllhc14_b1_only_3_bb_config():
                 assert ee_weak.other_beam_Sigma_13 == 0
 
                 # Orbit
-                assert np.isclose(ee_weak.ref_shift_x, tw_weak[nn_weak, 'x'],
+                assert np.isclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_x)
-                assert np.isclose(ee_weak.ref_shift_y, tw_weak[nn_weak, 'y'],
+                assert np.isclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
                                     rtol=0, atol=1e-4 * expected_sigma_y)
 
                 # Separation
                 assert np.isclose(ee_weak.other_beam_shift_x,
-                    tw_strong[nn_strong, 'x'] - tw_weak[nn_weak, 'x']
-                    + survey_strong[nn_strong, 'X'] - survey_weak[nn_weak, 'X'],
+                    tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
+                    + survey_strong['X', nn_strong] - survey_weak['X', nn_weak],
                     rtol=0.6, atol=18e-2 * expected_sigma_x)
 
                 assert np.isclose(ee_weak.other_beam_shift_y,
-                    tw_strong[nn_strong, 'y'] - tw_weak[nn_weak, 'y']
-                    + survey_strong[nn_strong, 'Y'] - survey_weak[nn_weak, 'Y'],
+                    tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
+                    + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak],
                     rtol=0.06, atol=18e-2 * expected_sigma_y)
 
                 # s position
-                assert np.isclose(tw_weak[nn_weak, 's'] - tw_weak[f'ip{ip_n}', 's'],
+                assert np.isclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
                                 bunch_spacing_ds/2 * (iele+1) * sorting[side],
                                 rtol=0, atol=10e-6)
 
@@ -360,10 +360,10 @@ def test_hllhc14_b1_only_3_bb_config():
             method='4d',
             freeze_longitudinal=True).reverse()
         phi_crab_x = -(
-            (tw_z_crab_plus[f'ip{ip_n}', 'x'] - tw_z_crab_minus[f'ip{ip_n}', 'x'])
+            (tw_z_crab_plus['x', f'ip{ip_n}'] - tw_z_crab_minus['x', f'ip{ip_n}'])
                 / (2*z_crab_test))
         phi_crab_y = -(
-            (tw_z_crab_plus[f'ip{ip_n}', 'y'] - tw_z_crab_minus[f'ip{ip_n}', 'y'])
+            (tw_z_crab_plus['y', f'ip{ip_n}'] - tw_z_crab_minus['y', f'ip{ip_n}'])
                 / (2*z_crab_test))
 
         for ii, zz in list(zip(range(-(num_slices_head_on - 1) // 2,
@@ -388,13 +388,13 @@ def test_hllhc14_b1_only_3_bb_config():
 
             # s position
             expected_s = zz / 2
-            assert np.isclose(tw_weak[nn_weak, 's'] - tw_weak[f'ip{ip_n}', 's'],
+            assert np.isclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
                             expected_s, atol=10e-6, rtol=0)
 
             # Beam sizes
-            expected_sigma_x = np.sqrt(tw_strong[nn_strong, 'betx']
+            expected_sigma_x = np.sqrt(tw_strong['betx', nn_strong]
                                     * nemitt_x/beta0_strong/gamma0_strong)
-            expected_sigma_y = np.sqrt(tw_strong[nn_strong, 'bety']
+            expected_sigma_y = np.sqrt(tw_strong['bety', nn_strong]
                                     * nemitt_y/beta0_strong/gamma0_strong)
 
             assert np.isclose(ee_weak.slices_other_beam_Sigma_11[0],
@@ -404,9 +404,9 @@ def test_hllhc14_b1_only_3_bb_config():
                             expected_sigma_y**2,
                             atol=0, rtol=10e-2) #????????
 
-            expected_sigma_px = np.sqrt(tw_strong[nn_strong, 'gamx']
+            expected_sigma_px = np.sqrt(tw_strong['gamx', nn_strong]
                                         * nemitt_x/beta0_strong/gamma0_strong)
-            expected_sigma_py = np.sqrt(tw_strong[nn_strong, 'gamy']
+            expected_sigma_py = np.sqrt(tw_strong['gamy', nn_strong]
                                         * nemitt_y/beta0_strong/gamma0_strong)
             assert np.isclose(ee_weak.slices_other_beam_Sigma_22[0],
                             expected_sigma_px**2,
@@ -415,9 +415,9 @@ def test_hllhc14_b1_only_3_bb_config():
                             expected_sigma_py**2,
                             atol=0, rtol=5e-2)
 
-            expected_sigma_xpx = -(tw_strong[nn_strong, 'alfx']
+            expected_sigma_xpx = -(tw_strong['alfx', nn_strong]
                                     * nemitt_x / beta0_strong / gamma0_strong)
-            expected_sigma_ypy = -(tw_strong[nn_strong, 'alfy']
+            expected_sigma_ypy = -(tw_strong['alfy', nn_strong]
                                     * nemitt_y / beta0_strong / gamma0_strong)
             assert np.isclose(ee_weak.slices_other_beam_Sigma_12[0],
                             expected_sigma_xpx,
@@ -435,25 +435,25 @@ def test_hllhc14_b1_only_3_bb_config():
             assert ee_weak.slices_other_beam_Sigma_24[0] == 0
 
             # Orbit
-            assert np.isclose(ee_weak.ref_shift_x, tw_weak[nn_weak, 'x'],
+            assert np.isclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
                                 rtol=0, atol=1e-2 * expected_sigma_x)
-            assert np.isclose(ee_weak.ref_shift_px, tw_weak[nn_weak, 'px'],
+            assert np.isclose(ee_weak.ref_shift_px, tw_weak['px', nn_weak],
                                 rtol=0, atol=1e-2 * expected_sigma_px)
-            assert np.isclose(ee_weak.ref_shift_y, tw_weak[nn_weak, 'y'],
+            assert np.isclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
                                 rtol=0, atol=1e-2 * expected_sigma_y)
-            assert np.isclose(ee_weak.ref_shift_py, tw_weak[nn_weak, 'py'],
+            assert np.isclose(ee_weak.ref_shift_py, tw_weak['py', nn_weak],
                                 rtol=0, atol=1e-2 * expected_sigma_py)
-            assert np.isclose(ee_weak.ref_shift_zeta, tw_weak[nn_weak, 'zeta'],
+            assert np.isclose(ee_weak.ref_shift_zeta, tw_weak['zeta', nn_weak],
                                 rtol=0, atol=1e-9)
             assert np.isclose(ee_weak.ref_shift_pzeta,
-                            tw_weak[nn_weak, 'ptau']/beta0_strong,
+                            tw_weak['ptau', nn_weak]/beta0_strong,
                             rtol=0, atol=1e-9)
 
             # Separation
             # for phi_crab definition, see Xsuite physics manual
             assert np.isclose(ee_weak.other_beam_shift_x,
-                (tw_strong[nn_strong, 'x'] - tw_weak[nn_weak, 'x']
-                + survey_strong[nn_strong, 'X'] - survey_weak[nn_weak, 'X']
+                (tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
+                + survey_strong['X', nn_strong] - survey_weak['X', nn_weak]
                 - phi_crab_x
                     * tw_strong.circumference / (2 * np.pi * harmonic_number)
                     * np.sin(2 * np.pi * zz
@@ -461,8 +461,8 @@ def test_hllhc14_b1_only_3_bb_config():
                 rtol=0, atol=1e-5) # Not the cleanest, to be investigated
 
             assert np.isclose(ee_weak.other_beam_shift_y,
-                (tw_strong[nn_strong, 'y'] - tw_weak[nn_weak, 'y']
-                + survey_strong[nn_strong, 'Y'] - survey_weak[nn_weak, 'Y']
+                (tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
+                + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak]
                 - phi_crab_y
                     * tw_strong.circumference / (2 * np.pi * harmonic_number)
                     * np.sin(2 * np.pi * zz
@@ -476,19 +476,19 @@ def test_hllhc14_b1_only_3_bb_config():
 
             # Check crossing angle
             # Assume that crossing is either in x or in y
-            if np.abs(tw_weak[f'ip{ip_n}', 'px']) < 1e-6:
+            if np.abs(tw_weak['px', f'ip{ip_n}']) < 1e-6:
                 # Vertical crossing
                 assert np.isclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
                 assert np.isclose(
                     2*ee_weak.phi,
-                    tw_weak[f'ip{ip_n}', 'py'] - tw_strong[f'ip{ip_n}', 'py'],
+                    tw_weak['py', f'ip{ip_n}'] - tw_strong['py', f'ip{ip_n}'],
                     atol=2e-7, rtol=0)
             else:
                 # Horizontal crossing
                 assert np.isclose(ee_weak.alpha, 0, atol=5e-3, rtol=0)
                 assert np.isclose(
                     2*ee_weak.phi,
-                    tw_weak[f'ip{ip_n}', 'px'] - tw_strong[f'ip{ip_n}', 'px'],
+                    tw_weak['px', f'ip{ip_n}'] - tw_strong['px', f'ip{ip_n}'],
                     atol=2e-7, rtol=0)
 
             # Check intensity

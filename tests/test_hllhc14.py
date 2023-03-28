@@ -503,7 +503,7 @@ def test_hllhc14_3_bb_config():
                 assert np.isclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
                 assert np.isclose(
                     2*ee_weak.phi,
-                    tw_weak['py', f'ip{ip_n}'] - tw_strong[f'ip{ip_n}', 'py'],
+                    tw_weak['py', f'ip{ip_n}'] - tw_strong['py', f'ip{ip_n}'],
                     atol=2e-7, rtol=0)
             else:
                 # Horizontal crossing
