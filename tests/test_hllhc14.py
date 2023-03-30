@@ -285,7 +285,7 @@ def test_hllhc14_3_bb_config():
 
         # The bb lenses are setup based on the twiss taken with the bb off
         print('Twiss(es) (with bb off)')
-        with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
+        with xt._temp_knobs(collider, knobs={'beambeam_scale': 0}):
             tw_weak = collider[name_weak].twiss()
             tw_strong = collider[name_strong].twiss().reverse()
 
@@ -374,7 +374,7 @@ def test_hllhc14_3_bb_config():
 
         # Measure crabbing angle
         z_crab_test = 0.01 # This is the z for the reversed strong beam (e.g. b2 and not b4)
-        with xt.tracker._temp_knobs(collider, knobs={'beambeam_scale': 0}):
+        with xt._temp_knobs(collider, knobs={'beambeam_scale': 0}):
             tw_z_crab_plus = collider[name_strong].twiss(
                 zeta0=-(z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
                 method='4d',
