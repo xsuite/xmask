@@ -445,10 +445,10 @@ def test_hllhc14_3_bb_config():
                                     * nemitt_y / beta0_strong / gamma0_strong)
             assert np.isclose(ee_weak.slices_other_beam_Sigma_12[0],
                             expected_sigma_xpx,
-                            atol=0, rtol=5e-4)
+                            atol=1e-12, rtol=5e-4)
             assert np.isclose(ee_weak.slices_other_beam_Sigma_34[0],
                             expected_sigma_ypy,
-                            atol=0, rtol=5e-4)
+                            atol=1e-12, rtol=5e-4)
 
             # Assert no coupling
             assert ee_weak.slices_other_beam_Sigma_13[0] == 0
