@@ -209,6 +209,8 @@ def test_hllhc14_3_bb_config():
         num_particles=2.2e11,
         nemitt_x=2e-6, nemitt_y=3e-6)
 
+    collider.to_json('collider_hllhc14_02.json')
+
     ip_bb_config= {
         'ip1': {'num_lr_per_side': 25},
         'ip2': {'num_lr_per_side': 20},
