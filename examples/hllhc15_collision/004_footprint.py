@@ -1,6 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 import xtrack as xt
 
 
@@ -23,6 +20,7 @@ fp_ua_with_rescale = collider['lhcb1'].get_footprint(
     )
 
 #!end-doc-part
+import matplotlib.pyplot as plt
 
 plt.close('all')
 
