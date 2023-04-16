@@ -12,6 +12,8 @@ fp_polar_with_rescale = collider['lhcb1'].get_footprint(
         xt.LinearRescale(knob_name='beambeam_scale', v0=0.0, dv=0.1)]
     )
 
+#!end-doc-part
+
 fp_ua_with_rescale = collider['lhcb1'].get_footprint(
     nemitt_x=2.5e-6, nemitt_y=2.5e-6,
     mode='uniform_action_grid',
@@ -19,7 +21,6 @@ fp_ua_with_rescale = collider['lhcb1'].get_footprint(
         xt.LinearRescale(knob_name='beambeam_scale', v0=0.0, dv=0.1)]
     )
 
-#!end-doc-part
 import matplotlib.pyplot as plt
 
 plt.close('all')
