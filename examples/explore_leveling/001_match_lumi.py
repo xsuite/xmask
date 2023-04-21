@@ -23,7 +23,7 @@ ll = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2)
+    twiss_b2=twiss_b2.reverse())
 
 def _lumi_to_match(tw):
     return lumi.luminosity_from_twiss(
@@ -34,7 +34,7 @@ def _lumi_to_match(tw):
         nemitt_y=nemitt_y,
         sigma_z=sigma_z,
         twiss_b1=tw['lhcb1'],
-        twiss_b2=tw['lhcb2'])
+        twiss_b2=tw['lhcb2'].reverse())
 
 xt.match.match_line(
     verbose=True,

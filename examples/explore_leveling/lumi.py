@@ -4,13 +4,13 @@ from scipy.constants import c as clight
 from scipy.constants import e as qe
 
 
-def beta(z, beta0, alpha_z0):
+def beta(s, beta0, alpha_s0):
     '''Beta function in drift space'''
-    return beta0-2*alpha_z0*z+(1+alpha_z0**2)/beta0*z**2
+    return beta0-2*alpha_s0*s+(1+alpha_s0**2)/beta0*s**2
 
-def dispersion(z, d0, dp0):
+def dispersion(s, d0, dp0):
     '''Dispersion in drift space'''
-    return d0+z*dp0
+    return d0+s*dp0
 
 def sigma(beta, epsilon0, betagamma):
     '''Betatronic sigma'''
@@ -35,12 +35,13 @@ def luminosity(f, nb,
       dy_1, dy_2,
       dpx_1, dpx_2,
       dpy_1, dpy_2,
-      CC_V_x_1=0, CC_f_x_1=0, CC_phase_x_1=0,
-      CC_V_x_2=0, CC_f_x_2=0, CC_phase_x_2=0,
-      CC_V_y_1=0, CC_f_y_1=0, CC_phase_y_1=0,
-      CC_V_y_2=0, CC_f_y_2=0, CC_phase_y_2=0,
-      R12_1=0, R22_1=0, R34_1=0, R44_1=0,
-      R12_2=0, R22_2=0, R34_2=0, R44_2=0,
+      crab_crossing=dict(
+        CC_V_x_1=0, CC_f_x_1=0, CC_phase_x_1=0,
+        CC_V_x_2=0, CC_f_x_2=0, CC_phase_x_2=0,
+        CC_V_y_1=0, CC_f_y_1=0, CC_phase_y_1=0,
+        CC_V_y_2=0, CC_f_y_2=0, CC_phase_y_2=0,
+        R12_1=0, R22_1=0, R34_1=0, R44_1=0,
+        R12_2=0, R22_2=0, R34_2=0, R44_2=0),
       verbose=False, sigma_integration=3, rest_mass_b1=0.93827231, rest_mass_b2=0.93827231):
     '''
     Returns luminosity in Hz/cm^2.
@@ -115,29 +116,54 @@ def luminosity(f, nb,
     # NOT TRUE FOR CC! In any case the Moeller efficiency is almost equal to 1 in most cases...
     Moeller_efficiency=np.sqrt(clight**2*np.dot(diff_v,diff_v)-np.dot(cross_v,cross_v))/clight**2/2
 
-    def sx1(z):
+    def sx1(s):
         '''The sigma_x of B1, quadratic sum of betatronic and dispersive sigma'''
-        return np.sqrt(sigma(beta(z, beta_x1, alpha_x1), epsilon_x1, betagamma_1)**2 \
-                       + (dispersion(z, br_1*dx_1, br_1*dpx_1)*deltap_p0_1)**2)
+        return np.sqrt(sigma(beta(s, beta_x1, alpha_x1), epsilon_x1, betagamma_1)**2 \
+                       + (dispersion(s, br_1*dx_1, br_1*dpx_1)*deltap_p0_1)**2)
 
-    def sy1(z):
+    def sy1(s):
         '''The sigma_y of B1, quadratic sum of betatronic and dispersive sigma'''
-        return np.sqrt(sigma(beta(z, beta_y1, alpha_y1), epsilon_y1, betagamma_1)**2 \
-                       + (dispersion(z, br_1*dy_1, br_1*dpy_1)*deltap_p0_1)**2)
+        return np.sqrt(sigma(beta(s, beta_y1, alpha_y1), epsilon_y1, betagamma_1)**2 \
+                       + (dispersion(s, br_1*dy_1, br_1*dpy_1)*deltap_p0_1)**2)
 
-    def sx2(z):
+    def sx2(s):
         '''The sigma_x of B2, quadratic sum of betatronic and dispersive sigma'''
-        return np.sqrt(sigma(beta(z, beta_x2, alpha_x2), epsilon_x2, betagamma_2)**2 \
-                       + (dispersion(z, br_2*dx_2, br_2*dpx_2)*deltap_p0_2)**2)
+        return np.sqrt(sigma(beta(s, beta_x2, alpha_x2), epsilon_x2, betagamma_2)**2 \
+                       + (dispersion(s, br_2*dx_2, br_2*dpx_2)*deltap_p0_2)**2)
 
-    def sy2(z):
+    def sy2(s):
         '''The sigma_y of B2, quadratic sum of betatronic and dispersive sigma'''
-        return np.sqrt(sigma(beta(z, beta_y2, alpha_y2), epsilon_y2, betagamma_2)**2 \
-                       + (dispersion(z, br_2*dy_2,  br_2*dpy_2)*deltap_p0_2)**2)
+        return np.sqrt(sigma(beta(s, beta_y2, alpha_y2), epsilon_y2, betagamma_2)**2 \
+                       + (dispersion(s, br_2*dy_2,  br_2*dpy_2)*deltap_p0_2)**2)
 
     sigma_z=np.max([sigma_z1, sigma_z2])
 
-    if not [CC_V_x_1, CC_V_y_1, CC_V_x_2, CC_V_y_2]==[0,0,0,0]:
+    if crab_crossing is not None and 'CC_V_x_1' in crab_crossing.keys():
+
+        CC_V_x_1 = crab_crossing['CC_V_x_1']
+        CC_V_y_1 = crab_crossing['CC_V_y_1']
+        CC_V_x_2 = crab_crossing['CC_V_x_2']
+        CC_V_y_2 = crab_crossing['CC_V_y_2']
+
+        CC_phase_x_1 = crab_crossing['CC_phase_x_1']
+        CC_phase_y_1 = crab_crossing['CC_phase_y_1']
+        CC_phase_x_2 = crab_crossing['CC_phase_x_2']
+        CC_phase_y_2 = crab_crossing['CC_phase_y_2']
+
+        CC_f_x_1 = crab_crossing['CC_f_x_1']
+        CC_f_y_1 = crab_crossing['CC_f_y_1']
+        CC_f_x_2 = crab_crossing['CC_f_x_2']
+        CC_f_y_2 = crab_crossing['CC_f_y_2']
+
+        R12_1 = crab_crossing['R12_1']
+        R22_1 = crab_crossing['R22_1']
+        R12_2 = crab_crossing['R12_2']
+        R22_2 = crab_crossing['R22_2']
+        R34_1 = crab_crossing['R34_1']
+        R44_1 = crab_crossing['R44_1']
+        R34_2 = crab_crossing['R34_2']
+        R44_2 = crab_crossing['R44_2']
+
         def theta_x_1(delta_z):
             # Eq. 3 of https://espace.cern.ch/acc-tec-sector/Chamonix/Chamx2012/papers/RC_9_04.pdf
             return CC_V_x_1/energy_tot1/1e9*np.sin(CC_phase_x_1 + 2*np.pi*CC_f_x_1/c*delta_z)
@@ -151,56 +177,86 @@ def luminosity(f, nb,
         def theta_y_2(delta_z):
             return CC_V_y_2/energy_tot2/1e9*np.sin(CC_phase_y_2 + 2*np.pi*CC_f_y_2/c*delta_z)
 
-        def mx1(z, t):
+        def mx1(s, t):
             '''The mu_x of B1 as straight line'''
-            return x_1 + R12_1*theta_x_1(z-c*t) + (px_1+R22_1*theta_x_1(z-c*t))*z
+            return x_1 + R12_1*theta_x_1(s-c*t) + (px_1+R22_1*theta_x_1(s-c*t))*s
 
-        def my1(z, t):
+        def my1(s, t):
             '''The mu_y of B1 as straight line'''
-            return y_1 + R34_1*theta_y_1(z-c*t) + (py_1+R44_1*theta_y_1(z-c*t))*z
+            return y_1 + R34_1*theta_y_1(s-c*t) + (py_1+R44_1*theta_y_1(s-c*t))*s
 
-        def mx2(z, t):
+        def mx2(s, t):
             '''The mu_x of B2 as straight line'''
-            return x_2 + R12_2*theta_x_2(z+c*t) + (px_2+R22_2*theta_x_2(z+c*t))*z
+            return x_2 + R12_2*theta_x_2(s+c*t) + (px_2+R22_2*theta_x_2(s+c*t))*s
 
-        def my2(z, t):
+        def my2(s, t):
             '''The mu_y of B2 as straight line'''
-            return y_2 + R34_2*theta_y_2(z+c*t) + (py_2+R44_2*theta_y_2(z+c*t))*z
+            return y_2 + R34_2*theta_y_2(s+c*t) + (py_2+R44_2*theta_y_2(s+c*t))*s
 
-        def kernel_double_integral(t, z):
-            return np.exp(0.5*(-(mx1(z, t) - mx2(z, t))**2/(sx1(z)**2 + sx2(z)**2) \
-                               -(my1(z, t) - my2(z, t))**2/(sy1(z)**2 + sy2(z)**2) \
-                               -(-br_1*c*t+z)**2/(sigma_z1**2) \
-                               -( br_2*c*t+z)**2/(sigma_z2**2))) \
-        /np.sqrt((sx1(z)**2 + sx2(z)**2)*(sy1(z)**2 + sy2(z)**2))/sigma_z1/sigma_z2
+        def kernel_double_integral(t, s):
+            return np.exp(0.5*(-(mx1(s, t) - mx2(s, t))**2/(sx1(s)**2 + sx2(s)**2) \
+                               -(my1(s, t) - my2(s, t))**2/(sy1(s)**2 + sy2(s)**2) \
+                               -(-br_1*c*t+s)**2/(sigma_z1**2) \
+                               -( br_2*c*t+s)**2/(sigma_z2**2))) \
+        /np.sqrt((sx1(s)**2 + sx2(s)**2)*(sy1(s)**2 + sy2(s)**2))/sigma_z1/sigma_z2
 
-        integral=integrate.dblquad((lambda t, z: kernel_double_integral(t, z)),
+        integral=integrate.dblquad((lambda t, s: kernel_double_integral(t, s)),
                                    -sigma_integration*sigma_z, sigma_integration*sigma_z,-sigma_integration*sigma_z/c, sigma_integration*sigma_z/c)
         L0=f*N1*N2*nb*c/2/np.pi**(2)*integral[0]
-    else:
-        def mx1(z):
+
+    elif crab_crossing is not None and 'phi_crab_x_1' in crab_crossing:
+
+        phi_crab_x_1 = crab_crossing['phi_crab_x_1']
+        phi_crab_y_1 = crab_crossing['phi_crab_y_1']
+        phi_crab_x_2 = crab_crossing['phi_crab_x_2']
+        phi_crab_y_2 = crab_crossing['phi_crab_y_2']
+
+        def mx1(s, t):
             '''The mu_x of B1 as straight line'''
-            return x_1 + px_1*z
+            return x_1 + px_1 * s + phi_crab_x_1 * c * t
 
-        def my1(z):
+        def my1(s, t):
             '''The mu_y of B1 as straight line'''
-            return y_1 + py_1*z
+            return y_1 + py_1 * s + phi_crab_y_1 * c * t
 
-        def mx2(z):
+
+
+        # def my1(s, t):
+        #     '''The mu_y of B1 as straight line'''
+        #     return y_1 + R34_1*theta_y_1(s-c*t) + (py_1+R44_1*theta_y_1(s-c*t))*s
+
+        # def mx2(s, t):
+        #     '''The mu_x of B2 as straight line'''
+        #     return x_2 + R12_2*theta_x_2(s+c*t) + (px_2+R22_2*theta_x_2(s+c*t))*s
+
+        # def my2(s, t):
+        #     '''The mu_y of B2 as straight line'''
+        #     return y_2 + R34_2*theta_y_2(s+c*t) + (py_2+R44_2*theta_y_2(s+c*t))*s
+
+    else:
+        def mx1(s):
+            '''The mu_x of B1 as straight line'''
+            return x_1 + px_1*s
+
+        def my1(s):
+            '''The mu_y of B1 as straight line'''
+            return y_1 + py_1*s
+
+        def mx2(s):
             '''The mu_x of B2 as straight line'''
-            return x_2 + px_2*z
+            return x_2 + px_2*s
 
-        def my2(z):
+        def my2(s):
             '''The mu_y of B2 as straight line'''
-            return y_2 + py_2*z
+            return y_2 + py_2*s
 
-        def kernel_single_integral(z):
-            return np.exp(0.5*(-(mx1(z) - mx2(z))**2/(sx1(z)**2 + sx2(z)**2) \
-                               -(my1(z) - my2(z))**2/(sy1(z)**2 + sy2(z)**2) \
-                               -((br_1+br_2)**2*z**2)/(br_2**2*sigma_z1**2 + br_1**2*sigma_z2**2))) \
-            /np.sqrt((sx1(z)**2 + sx2(z)**2)*(sy1(z)**2 + sy2(z)**2)*(sigma_z1**2 + sigma_z2**2))
+        def kernel_single_integral(s):
+            return np.exp(0.5*(-(mx1(s) - mx2(s))**2/(sx1(s)**2 + sx2(s)**2) \
+                               -(my1(s) - my2(s))**2/(sy1(s)**2 + sy2(s)**2) \
+                               -((br_1+br_2)**2*s**2)/(br_2**2*sigma_z1**2 + br_1**2*sigma_z2**2))) \
+            /np.sqrt((sx1(s)**2 + sx2(s)**2)*(sy1(s)**2 + sy2(s)**2)*(sigma_z1**2 + sigma_z2**2))
 
-        integral=integrate.quad(lambda z: kernel_single_integral(z), -20*sigma_z, 20*sigma_z)
+        integral=integrate.quad(lambda s: kernel_single_integral(s), -20*sigma_z, 20*sigma_z)
         L0=f*N1*N2*nb/np.sqrt(2)/np.pi**(3/2)*integral[0]
     result= L0*Moeller_efficiency/1e4
     if verbose:
@@ -261,12 +317,7 @@ def luminosity_from_twiss(
         dpx_2=twiss_b2['dpx', ip_name],
         dpy_1=twiss_b1['dpy', ip_name],
         dpy_2=twiss_b2['dpy', ip_name],
-        CC_V_x_1=0, CC_f_x_1=0, CC_phase_x_1=0,
-        CC_V_x_2=0, CC_f_x_2=0, CC_phase_x_2=0,
-        CC_V_y_1=0, CC_f_y_1=0, CC_phase_y_1=0,
-        CC_V_y_2=0, CC_f_y_2=0, CC_phase_y_2=0,
-        R12_1=0, R22_1=0, R34_1=0, R44_1=0,
-        R12_2=0, R22_2=0, R34_2=0, R44_2=0,
+        crab_crossing=None,
         verbose=False, sigma_integration=3)
 
     return lumi
