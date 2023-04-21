@@ -219,19 +219,13 @@ def luminosity(f, nb,
             '''The mu_y of B1 as straight line'''
             return y_1 + py_1 * s + phi_crab_y_1 * c * t
 
+        def mx2(s, t):
+            '''The mu_x of B2 as straight line'''
+            return x_2 + px_2 * s + phi_crab_x_2 * c * t
 
-
-        # def my1(s, t):
-        #     '''The mu_y of B1 as straight line'''
-        #     return y_1 + R34_1*theta_y_1(s-c*t) + (py_1+R44_1*theta_y_1(s-c*t))*s
-
-        # def mx2(s, t):
-        #     '''The mu_x of B2 as straight line'''
-        #     return x_2 + R12_2*theta_x_2(s+c*t) + (px_2+R22_2*theta_x_2(s+c*t))*s
-
-        # def my2(s, t):
-        #     '''The mu_y of B2 as straight line'''
-        #     return y_2 + R34_2*theta_y_2(s+c*t) + (py_2+R44_2*theta_y_2(s+c*t))*s
+        def my2(s, t):
+            '''The mu_y of B2 as straight line'''
+            return y_2 + py_2 * s + phi_crab_y_2 * c * t
 
     else:
         def mx1(s):
