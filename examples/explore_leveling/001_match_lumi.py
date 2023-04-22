@@ -1,3 +1,5 @@
+import numpy as np
+
 import xtrack as xt
 
 import lumi
@@ -25,6 +27,8 @@ ll = lumi.luminosity_from_twiss(
     twiss_b1=twiss_b1,
     twiss_b2=twiss_b2)
 
+assert np.isclose(ll, 3.66e32, rtol=1e-2, atol=0)
+
 def _lumi_to_match(tw):
     return lumi.luminosity_from_twiss(
         n_colliding_bunches=n_colliding_bunches,
@@ -42,3 +46,16 @@ xt.match.match_line(
     lines=['lhcb1', 'lhcb2'],
     vary=[xt.Vary('on_sep8', step=1e-6)],
     targets=[xt.Target(_lumi_to_match, 2e32, tol=1e30)])
+
+tw_after_match = collider.twiss(lines=['lhcb1', 'lhcb2'])
+ll_after_match = lumi.luminosity_from_twiss(
+    n_colliding_bunches=n_colliding_bunches,
+    num_particles_per_bunch=num_particles_per_bunch,
+    ip_name=ip_name,
+    nemitt_x=nemitt_x,
+    nemitt_y=nemitt_y,
+    sigma_z=sigma_z,
+    twiss_b1=tw_after_match['lhcb1'],
+    twiss_b2=tw_after_match['lhcb2'])
+
+assert np.isclose(ll_after_match, 2e32, rtol=1e-2, atol=0)
