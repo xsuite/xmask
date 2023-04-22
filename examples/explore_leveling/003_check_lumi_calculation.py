@@ -67,3 +67,28 @@ ll_ip5 = lumi.luminosity_from_twiss(
 
 assert np.isclose(ll_ip5, 1.0e+34, rtol=1e-2, atol=0)
 
+twiss_b1.dx_zeta = np.array([0, -285e-6/2, 0])
+twiss_b1.dy_zeta = np.array([-285e-6/2, 0, -285e-6/2])
+
+twiss_b2.dx_zeta = np.array([0, 285e-6/2, 0])
+twiss_b2.dy_zeta = np.array([285e-6/2, 0, 285e-6/2])
+
+ll_ip1_crab = lumi.luminosity_from_twiss(
+    n_colliding_bunches=n_colliding_bunches,
+    num_particles_per_bunch=num_particles_per_bunch,
+    ip_name='ip1',
+    nemitt_x=nemitt_x,
+    nemitt_y=nemitt_y,
+    sigma_z=sigma_z,
+    twiss_b1=twiss_b1,
+    twiss_b2=twiss_b2)
+
+ll_ip5_crab = lumi.luminosity_from_twiss(
+    n_colliding_bunches=n_colliding_bunches,
+    num_particles_per_bunch=num_particles_per_bunch,
+    ip_name='ip5',
+    nemitt_x=nemitt_x,
+    nemitt_y=nemitt_y,
+    sigma_z=sigma_z,
+    twiss_b1=twiss_b1,
+    twiss_b2=twiss_b2)

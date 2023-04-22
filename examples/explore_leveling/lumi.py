@@ -163,43 +163,43 @@ def luminosity(f, nb,
 
         def theta_x_1(delta_z):
             # Eq. 3 of https://espace.cern.ch/acc-tec-sector/Chamonix/Chamx2012/papers/RC_9_04.pdf
-            return CC_V_x_1/energy_tot1/1e9*np.sin(CC_phase_x_1 + 2*np.pi*CC_f_x_1/c*delta_z)
+            return CC_V_x_1/energy_tot1/1e9*np.sin(CC_phase_x_1 + 2*np.pi*CC_f_x_1/clight * delta_z)
 
         def theta_y_1(delta_z):
-            return CC_V_y_1/energy_tot1/1e9*np.sin(CC_phase_y_1 + 2*np.pi*CC_f_y_1/c*delta_z)
+            return CC_V_y_1/energy_tot1/1e9*np.sin(CC_phase_y_1 + 2*np.pi*CC_f_y_1/clight * delta_z)
 
         def theta_x_2(delta_z):
-            return CC_V_x_2/energy_tot2/1e9*np.sin(CC_phase_x_2 + 2*np.pi*CC_f_x_2/c*delta_z)
+            return CC_V_x_2/energy_tot2/1e9*np.sin(CC_phase_x_2 + 2*np.pi*CC_f_x_2/clight * delta_z)
 
         def theta_y_2(delta_z):
-            return CC_V_y_2/energy_tot2/1e9*np.sin(CC_phase_y_2 + 2*np.pi*CC_f_y_2/c*delta_z)
+            return CC_V_y_2/energy_tot2/1e9*np.sin(CC_phase_y_2 + 2*np.pi*CC_f_y_2/clight * delta_z)
 
         def mx1(s, t):
             '''The mu_x of B1 as straight line'''
-            return x_1 + R12_1*theta_x_1(s-c*t) + (px_1+R22_1*theta_x_1(s-c*t))*s
+            return x_1 + R12_1*theta_x_1(s-clight * t) + (px_1+R22_1*theta_x_1(s-clight * t))*s
 
         def my1(s, t):
             '''The mu_y of B1 as straight line'''
-            return y_1 + R34_1*theta_y_1(s-c*t) + (py_1+R44_1*theta_y_1(s-c*t))*s
+            return y_1 + R34_1*theta_y_1(s-clight * t) + (py_1+R44_1*theta_y_1(s-clight * t))*s
 
         def mx2(s, t):
             '''The mu_x of B2 as straight line'''
-            return x_2 + R12_2*theta_x_2(s+c*t) + (px_2+R22_2*theta_x_2(s+c*t))*s
+            return x_2 + R12_2*theta_x_2(s+clight * t) + (px_2+R22_2*theta_x_2(s+clight * t))*s
 
         def my2(s, t):
             '''The mu_y of B2 as straight line'''
-            return y_2 + R34_2*theta_y_2(s+c*t) + (py_2+R44_2*theta_y_2(s+c*t))*s
+            return y_2 + R34_2*theta_y_2(s+clight * t) + (py_2+R44_2*theta_y_2(s+clight * t))*s
 
         def kernel_double_integral(t, s):
             return np.exp(0.5*(-(mx1(s, t) - mx2(s, t))**2/(sx1(s)**2 + sx2(s)**2) \
                                -(my1(s, t) - my2(s, t))**2/(sy1(s)**2 + sy2(s)**2) \
-                               -(-br_1*c*t+s)**2/(sigma_z1**2) \
-                               -( br_2*c*t+s)**2/(sigma_z2**2))) \
+                               -(-br_1*clight * t+s)**2/(sigma_z1**2) \
+                               -( br_2*clight * t+s)**2/(sigma_z2**2))) \
         /np.sqrt((sx1(s)**2 + sx2(s)**2)*(sy1(s)**2 + sy2(s)**2))/sigma_z1/sigma_z2
 
         integral=integrate.dblquad((lambda t, s: kernel_double_integral(t, s)),
                                    -sigma_integration*sigma_z, sigma_integration*sigma_z,-sigma_integration*sigma_z/c, sigma_integration*sigma_z/c)
-        L0=f*N1*N2*nb*c/2/np.pi**(2)*integral[0]
+        L0=f*N1*N2*nb * clight/2/np.pi**(2)*integral[0]
 
     elif crab_crossing is not None and 'phi_crab_x_1' in crab_crossing:
 
@@ -210,19 +210,33 @@ def luminosity(f, nb,
 
         def mx1(s, t):
             '''The mu_x of B1 as straight line'''
-            return x_1 + px_1 * s + phi_crab_x_1 * c * t
+            return x_1 + px_1 * s + phi_crab_x_1 * clight * t
 
         def my1(s, t):
             '''The mu_y of B1 as straight line'''
-            return y_1 + py_1 * s + phi_crab_y_1 * c * t
+            return y_1 + py_1 * s + phi_crab_y_1 * clight * t
 
         def mx2(s, t):
             '''The mu_x of B2 as straight line'''
-            return x_2 + px_2 * s + phi_crab_x_2 * c * t
+            return x_2 + px_2 * s + phi_crab_x_2 * clight * t
 
         def my2(s, t):
             '''The mu_y of B2 as straight line'''
-            return y_2 + py_2 * s + phi_crab_y_2 * c * t
+            return y_2 + py_2 * s + phi_crab_y_2 * clight * t
+
+        def kernel_double_integral(t, s):
+            return np.exp(0.5*(-(mx1(s, t) - mx2(s, t))**2/(sx1(s)**2 + sx2(s)**2) \
+                               -(my1(s, t) - my2(s, t))**2/(sy1(s)**2 + sy2(s)**2) \
+                               -(-br_1*clight * t+s)**2/(sigma_z1**2) \
+                               -( br_2*clight * t+s)**2/(sigma_z2**2))) \
+        /np.sqrt((sx1(s)**2 + sx2(s)**2)*(sy1(s)**2 + sy2(s)**2))/sigma_z1/sigma_z2
+
+        integral=integrate.dblquad((lambda t, s: kernel_double_integral(t, s)),
+                                   -sigma_integration*sigma_z,
+                                   sigma_integration*sigma_z,
+                                   -sigma_integration*sigma_z/clight,
+                                   sigma_integration*sigma_z/clight)
+        L0=f*N1*N2*nb * clight/2/np.pi**(2)*integral[0]
 
     else:
         def mx1(s):
