@@ -9,38 +9,68 @@ import lumi
 
 twiss_b1 = xt.twiss.TwissTable(
     data=dict(
-        s=np.array([0, 15000, 27000]),
-        name=np.array(['ip1', 'ip5', 'end_ring']),
-        betx=np.array([55.0e-2, 55.0e-2, 55.0e-2]),
-        bety=np.array([55.0e-2, 55.0e-2, 55.0e-2]),
-        alfx=np.array([0.0, 0.0, 0.0]),
-        alfy=np.array([0.0, 0.0, 0.0]),
-        dx=np.array([0.0, 0.0, 0.0]),
-        dpx=np.array([0.0, 0.0, 0.0]),
-        dy=np.array([0.0, 0.0, 0.0]),
-        dpy=np.array([0.0, 0.0, 0.0]),
-        x=np.array([0.0, 0.0, 0.0]),
-        px=np.array([0, 285e-6/2, 0]),
-        y=np.array([0.0, 0.0, 0.0]),
-        py=np.array([285e-6/2, 0, 285e-6/2]),
-        dx_zeta=np.array([0.0, 0.0, 0.0]),
-        dy_zeta=np.array([0.0, 0.0, 0.0]),
+        s=np.array([0, 0, 0, 0, 0, 0]),
+        name=np.array(['ip3',   'ip5',    'ip5_exit', 'ip1',    'ip1_exit',    'end_ring']),
+        betx=np.array([0,       55.0e-2,  55.0e-2,    55.0e-2,  55.0e-2,       0]),
+        bety=np.array([0,       55.0e-2,  55.0e-2,    55.0e-2,  55.0e-2,       0]),
+        px=np.array([  0,       285e-6/2, 285e-6/2,   0,        0,             0]),
+        py=np.array([  0,       0,        0,          285e-6/2, 285e-6/2,       0 ]),
+        alfx=np.array([0,       0,        0,          0,        0,             0]),
+        alfy=np.array([0,       0,        0,          0,        0,             0]),
+        dx=np.array([0,        0,        0,          0,        0,             0]),
+        dpx=np.array([0,       0,        0,          0,        0,             0]),
+        dy=np.array([0,        0,        0,          0,        0,             0]),
+        dpy=np.array([0,       0,        0,          0,        0,             0]),
+        x=np.array([0,        0,        0,          0,        0,             0]),
+        y=np.array([0,        0,        0,          0,        0,             0]),
+        dx_zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        dy_zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
 
         # Just not to upset the reverse
-        zeta = np.array([0.0, 0.0, 0.0]),
-        delta=np.array([0.0, 0.0, 0.0]),
-        ptau=np.array([0.0, 0.0, 0.0]),
-        gamx=np.array([0.0, 0.0, 0.0]),
-        gamy=np.array([0.0, 0.0, 0.0]),
-        mux=np.array([0.0, 0.0, 0.0]),
-        muy=np.array([0.0, 0.0, 0.0]),
-        muzeta=np.array([0.0, 0.0, 0.0]),
-        dzeta=np.array([0.0, 0.0, 0.0]),
-        W_matrix=np.zeros(shape=(3, 6, 6)),
+        zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        delta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        ptau=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        gamx=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        gamy=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        mux=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        muy=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        muzeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        dzeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        W_matrix=np.zeros(shape=(6, 6, 6))
     ))
 
-twiss_b2 = xt.twiss.TwissTable(data=deepcopy(twiss_b1._data))
-twiss_b2.px = -twiss_b2.px
+twiss_b2 = xt.twiss.TwissTable(
+    data=dict(
+        s=np.array([0, 0, 0, 0, 0,0]),
+        name=np.array(['ip3',   'ip1',    'ip1_exit', 'ip5',    'ip5_exit',    'end_ring']),
+        betx=np.array([0,       55.0e-2,  55.0e-2,    55.0e-2,  55.0e-2,       0]),
+        bety=np.array([0,       55.0e-2,  55.0e-2,    55.0e-2,  55.0e-2,       0]),
+        px=np.array([  0,       0,        0,         -285e-6/2, -285e-6/2,       0]),
+        py=np.array([  0,       285e-6/2, 285e-6/2,         0,       0,        0]),
+        alfx=np.array([0,       0,        0,          0,        0,             0]),
+        alfy=np.array([0,       0,        0,          0,        0,             0]),
+        dx=np.array([0,        0,        0,          0,        0,             0]),
+        dpx=np.array([0,       0,        0,          0,        0,             0]),
+        dy=np.array([0,        0,        0,          0,        0,             0]),
+        dpy=np.array([0,       0,        0,          0,        0,             0]),
+        x=np.array([0,        0,        0,          0,        0,             0]),
+        y=np.array([0,        0,        0,          0,        0,             0]),
+        dx_zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        dy_zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+
+        # Just not to upset the reverse
+        zeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        delta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        ptau=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        gamx=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        gamy=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        mux=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        muy=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        muzeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        dzeta=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+       W_matrix=np.zeros(shape=(6, 6, 6))
+    ))
+
 
 twiss_b1._data['T_rev0'] = 8.892446333483924e-05
 twiss_b1._data['particle_on_co'] = xp.Particles(mass0=xp.PROTON_MASS_EV, q0=1, p0c=7e12)
