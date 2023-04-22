@@ -137,6 +137,8 @@ def luminosity(f, nb,
 
     if crab_crossing is not None and 'CC_V_x_1' in crab_crossing.keys():
 
+        raise NotImplementedError('Crab crossing not tested yet')
+
         CC_V_x_1 = crab_crossing['CC_V_x_1']
         CC_V_y_1 = crab_crossing['CC_V_y_1']
         CC_V_x_2 = crab_crossing['CC_V_x_2']
@@ -216,6 +218,7 @@ def luminosity(f, nb,
             '''The mu_y of B1 as straight line'''
             return y_1 + py_1 * s + phi_crab_y_1 * clight * t
 
+        # Signs of the crab terms are guessed...
         def mx2(s, t):
             '''The mu_x of B2 as straight line'''
             return x_2 + px_2 * s + phi_crab_x_2 * clight * t
@@ -280,14 +283,16 @@ def luminosity_from_twiss(
     sigma_z,
     twiss_b1,
     twiss_b2,
-    crab=True):
+    crab=False):
+
+    twiss_b2_rev = twiss_b2.reverse()
 
     if crab:
         crab_crossing = {
                 'phi_crab_x_1': twiss_b1['dx_zeta', ip_name],
-                'phi_crab_x_2': twiss_b2['dx_zeta', ip_name],
+                'phi_crab_x_2': twiss_b2_rev['dx_zeta', ip_name],
                 'phi_crab_y_1': twiss_b1['dy_zeta', ip_name],
-                'phi_crab_y_2': twiss_b2['dy_zeta', ip_name],
+                'phi_crab_y_2': twiss_b2_rev['dy_zeta', ip_name],
             }
     else:
         crab_crossing = None
@@ -295,20 +300,20 @@ def luminosity_from_twiss(
     lumi = luminosity(
         f=1/twiss_b1.T_rev0,
         rest_mass_b1=twiss_b1.particle_on_co.mass0 * 1e-9, # GeV
-        rest_mass_b2=twiss_b2.particle_on_co.mass0 * 1e-9, # GeV
+        rest_mass_b2=twiss_b2_rev.particle_on_co.mass0 * 1e-9, # GeV
         nb=n_colliding_bunches,
         N1=num_particles_per_bunch,
         N2=num_particles_per_bunch,
         x_1=twiss_b1['x', ip_name],
-        x_2=twiss_b2['x', ip_name],
+        x_2=twiss_b2_rev['x', ip_name],
         y_1=twiss_b1['y', ip_name],
-        y_2=twiss_b2['y', ip_name],
+        y_2=twiss_b2_rev['y', ip_name],
         px_1=twiss_b1['px', ip_name],
-        px_2=twiss_b2['px', ip_name],
+        px_2=twiss_b2_rev['px', ip_name],
         py_1=twiss_b1['py', ip_name],
-        py_2=twiss_b2['py', ip_name],
+        py_2=twiss_b2_rev['py', ip_name],
         energy_tot1=twiss_b1.particle_on_co.energy0[0]*1e-9, # GeV
-        energy_tot2=twiss_b2.particle_on_co.energy0[0]*1e-9, # GeV
+        energy_tot2=twiss_b2_rev.particle_on_co.energy0[0]*1e-9, # GeV
         deltap_p0_1=0, # energy spread (for now we neglect effect of dispersion)
         deltap_p0_2=0, # energy spread (for now we neglect effect of dispersion)
         epsilon_x1=nemitt_x,
@@ -318,21 +323,21 @@ def luminosity_from_twiss(
         sigma_z1=sigma_z,
         sigma_z2=sigma_z,
         beta_x1=twiss_b1['betx', ip_name],
-        beta_x2=twiss_b2['betx', ip_name],
+        beta_x2=twiss_b2_rev['betx', ip_name],
         beta_y1=twiss_b1['bety', ip_name],
-        beta_y2=twiss_b2['bety', ip_name],
+        beta_y2=twiss_b2_rev['bety', ip_name],
         alpha_x1=twiss_b1['alfx', ip_name],
-        alpha_x2=twiss_b2['alfx', ip_name],
+        alpha_x2=twiss_b2_rev['alfx', ip_name],
         alpha_y1=twiss_b1['alfy', ip_name],
-        alpha_y2=twiss_b2['alfy', ip_name],
+        alpha_y2=twiss_b2_rev['alfy', ip_name],
         dx_1=twiss_b1['dx', ip_name],
-        dx_2=twiss_b2['dx', ip_name],
+        dx_2=twiss_b2_rev['dx', ip_name],
         dy_1=twiss_b1['dy', ip_name],
-        dy_2=twiss_b2['dy', ip_name],
+        dy_2=twiss_b2_rev['dy', ip_name],
         dpx_1=twiss_b1['dpx', ip_name],
-        dpx_2=twiss_b2['dpx', ip_name],
+        dpx_2=twiss_b2_rev['dpx', ip_name],
         dpy_1=twiss_b1['dpy', ip_name],
-        dpy_2=twiss_b2['dpy', ip_name],
+        dpy_2=twiss_b2_rev['dpy', ip_name],
         crab_crossing=crab_crossing,
         verbose=False, sigma_integration=3)
 

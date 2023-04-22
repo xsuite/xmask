@@ -13,7 +13,7 @@ nemitt_y = 3.75e-6
 sigma_z = 0.0755
 
 twiss_b1 = collider.lhcb1.twiss()
-twiss_b2 = collider.lhcb2.twiss().reverse()
+twiss_b2 = collider.lhcb2.twiss()
 
 ll = lumi.luminosity_from_twiss(
     n_colliding_bunches=n_colliding_bunches,
@@ -23,7 +23,7 @@ ll = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2.reverse())
+    twiss_b2=twiss_b2)
 
 def _lumi_to_match(tw):
     return lumi.luminosity_from_twiss(
@@ -34,7 +34,7 @@ def _lumi_to_match(tw):
         nemitt_y=nemitt_y,
         sigma_z=sigma_z,
         twiss_b1=tw['lhcb1'],
-        twiss_b2=tw['lhcb2'].reverse())
+        twiss_b2=tw['lhcb2'])
 
 xt.match.match_line(
     verbose=True,

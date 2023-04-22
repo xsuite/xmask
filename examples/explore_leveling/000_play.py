@@ -1,3 +1,4 @@
+import numpy as np
 import xtrack as xt
 
 import lumi
@@ -13,7 +14,7 @@ nemitt_y = 3.75e-6
 sigma_z = 0.0755
 
 twiss_b1 = collider.lhcb1.twiss()
-twiss_b2 = collider.lhcb2.twiss().reverse()
+twiss_b2 = collider.lhcb2.twiss()
 
 lumi = lumi.luminosity_from_twiss(
     n_colliding_bunches=n_colliding_bunches,
@@ -24,3 +25,5 @@ lumi = lumi.luminosity_from_twiss(
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
     twiss_b2=twiss_b2)
+
+assert np.isclose(lumi, 3.66e32, rtol=1e-2, atol=0)
