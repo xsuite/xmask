@@ -23,6 +23,8 @@ twiss_b1 = xt.twiss.TwissTable(
         px=np.array([0, 285e-6/2, 0]),
         y=np.array([0.0, 0.0, 0.0]),
         py=np.array([285e-6/2, 0, 285e-6/2]),
+        dx_zeta=np.array([0.0, 0.0, 0.0]),
+        dy_zeta=np.array([0.0, 0.0, 0.0]),
     ))
 
 twiss_b2 = xt.twiss.TwissTable(data=deepcopy(twiss_b1._data))
@@ -51,6 +53,8 @@ ll_ip1 = lumi.luminosity_from_twiss(
     twiss_b1=twiss_b1,
     twiss_b2=twiss_b2)
 
+assert np.isclose(ll_ip1, 1.0e+34, rtol=1e-2, atol=0)
+
 ll_ip5 = lumi.luminosity_from_twiss(
     n_colliding_bunches=n_colliding_bunches,
     num_particles_per_bunch=num_particles_per_bunch,
@@ -60,3 +64,6 @@ ll_ip5 = lumi.luminosity_from_twiss(
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
     twiss_b2=twiss_b2)
+
+assert np.isclose(ll_ip5, 1.0e+34, rtol=1e-2, atol=0)
+

@@ -35,13 +35,7 @@ def luminosity(f, nb,
       dy_1, dy_2,
       dpx_1, dpx_2,
       dpy_1, dpy_2,
-      crab_crossing=dict(
-        CC_V_x_1=0, CC_f_x_1=0, CC_phase_x_1=0,
-        CC_V_x_2=0, CC_f_x_2=0, CC_phase_x_2=0,
-        CC_V_y_1=0, CC_f_y_1=0, CC_phase_y_1=0,
-        CC_V_y_2=0, CC_f_y_2=0, CC_phase_y_2=0,
-        R12_1=0, R22_1=0, R34_1=0, R44_1=0,
-        R12_2=0, R22_2=0, R34_2=0, R44_2=0),
+      crab_crossing=None,
       verbose=False, sigma_integration=3, rest_mass_b1=0.93827231, rest_mass_b2=0.93827231):
     '''
     Returns luminosity in Hz/cm^2.
@@ -80,6 +74,9 @@ def luminosity(f, nb,
     ps = p0(1+deltap). We assume that dpx is the z-derivative of the px.
     '''
 
+    if deltap_p0_1 != 0 or deltap_p0_2 != 0:
+        raise ValueError('effect of dispersion not included yet (untested).')
+
     gamma1 = energy_tot1 / rest_mass_b1
     br_1 = np.sqrt(1-1/gamma1**2)
     betagamma_1 = br_1*gamma1
@@ -90,7 +87,7 @@ def luminosity(f, nb,
 
     # module of B1 speed
     v0_1=br_1*clight
-    # paraxial hypothesis 
+    # paraxial hypothesis
     vx_1=v0_1*px_1
     vy_1=v0_1*py_1
     vz_1=v0_1*np.sqrt(1-px_1**2-py_1**2)
@@ -268,7 +265,18 @@ def luminosity_from_twiss(
     nemitt_y,
     sigma_z,
     twiss_b1,
-    twiss_b2):
+    twiss_b2,
+    crab=True):
+
+    if crab:
+        crab_crossing = {
+                'phi_crab_x_1': twiss_b1['dx_zeta', ip_name],
+                'phi_crab_x_2': twiss_b2['dx_zeta', ip_name],
+                'phi_crab_y_1': twiss_b1['dy_zeta', ip_name],
+                'phi_crab_y_2': twiss_b2['dy_zeta', ip_name],
+            }
+    else:
+        crab_crossing = None
 
     lumi = luminosity(
         f=1/twiss_b1.T_rev0,
@@ -311,7 +319,7 @@ def luminosity_from_twiss(
         dpx_2=twiss_b2['dpx', ip_name],
         dpy_1=twiss_b1['dpy', ip_name],
         dpy_2=twiss_b2['dpy', ip_name],
-        crab_crossing=None,
+        crab_crossing=crab_crossing,
         verbose=False, sigma_integration=3)
 
     return lumi
