@@ -26,6 +26,7 @@ class TargetLuminosity(xt.Target):
         self.scale = scale
 
     def compute_luminosity(self, tw):
+        assert len(tw._line_names) == 2
         return lumi.luminosity_from_twiss(
             n_colliding_bunches=self.num_colliding_bunches,
             num_particles_per_bunch=self.num_particles_per_bunch,
@@ -33,8 +34,8 @@ class TargetLuminosity(xt.Target):
             nemitt_x=self.nemitt_x,
             nemitt_y=self.nemitt_y,
             sigma_z=self.sigma_z,
-            twiss_b1=tw['lhcb1'],
-            twiss_b2=tw['lhcb2'],
+            twiss_b1=tw[tw._line_names[0]],
+            twiss_b2=tw[tw._line_names[1]],
             crab=self.crab)
 
 num_colliding_bunches = 2808
