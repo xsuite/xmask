@@ -283,7 +283,9 @@ def luminosity_from_twiss(
     sigma_z,
     twiss_b1,
     twiss_b2,
-    crab=False):
+    crab=None):
+
+    assert crab is not None, 'crab crossing information is required'
 
     twiss_b2_rev = twiss_b2.reverse()
 
