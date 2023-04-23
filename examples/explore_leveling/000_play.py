@@ -24,6 +24,7 @@ lumi = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2)
+    twiss_b2=twiss_b2,
+    crab=False)
 
 assert np.isclose(lumi, 3.66e32, rtol=1e-2, atol=0)

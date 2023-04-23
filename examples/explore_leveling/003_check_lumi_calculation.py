@@ -94,7 +94,8 @@ ll_ip1 = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2)
+    twiss_b2=twiss_b2,
+    crab=False)
 
 assert np.isclose(ll_ip1, 1.0e+34, rtol=1e-2, atol=0)
 
@@ -106,7 +107,8 @@ ll_ip5 = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2)
+    twiss_b2=twiss_b2,
+    crab=False)
 
 assert np.isclose(ll_ip5, 1.0e+34, rtol=1e-2, atol=0)
 

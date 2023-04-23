@@ -25,7 +25,8 @@ ll = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=twiss_b1,
-    twiss_b2=twiss_b2)
+    twiss_b2=twiss_b2,
+    crab=False)
 
 assert np.isclose(ll, 3.66e32, rtol=1e-2, atol=0)
 
@@ -38,7 +39,8 @@ def _lumi_to_match(tw):
         nemitt_y=nemitt_y,
         sigma_z=sigma_z,
         twiss_b1=tw['lhcb1'],
-        twiss_b2=tw['lhcb2'])
+        twiss_b2=tw['lhcb2'],
+        crab=False)
 
 xt.match.match_line(
     verbose=True,
@@ -56,6 +58,7 @@ ll_after_match = lumi.luminosity_from_twiss(
     nemitt_y=nemitt_y,
     sigma_z=sigma_z,
     twiss_b1=tw_after_match['lhcb1'],
-    twiss_b2=tw_after_match['lhcb2'])
+    twiss_b2=tw_after_match['lhcb2'],
+    crab=False)
 
 assert np.isclose(ll_after_match, 2e32, rtol=1e-2, atol=0)
