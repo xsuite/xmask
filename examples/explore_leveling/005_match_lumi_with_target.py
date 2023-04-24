@@ -189,13 +189,22 @@ collider.match(
     lines=['lhcb1', 'lhcb2'],
     vary=[xt.Vary('on_sep2', step=1e-4)],
     targets=[
-        TargetSeparation(ip_name='ip2', separation_norm=2, plane='x', tol=1e-4,
+        TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                          nemitt_x=nemitt_x, nemitt_y=nemitt_y),
     ],
 )
 print(f'Knobs after matching: on_sep2 = {collider.vars["on_sep2"]._value}')
 
+tw_after_ip2_match = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
+# Check normalized separation
+mean_betx = (tw_after_ip2_match['lhcb1']['betx', 'ip2']
+                + tw_after_ip2_match['lhcb2']['betx', 'ip2']) / 2
+gamma0 = tw_after_ip2_match['lhcb1'].particle_on_co.gamma0[0]
+beta0 = tw_after_ip2_match['lhcb1'].particle_on_co.beta0[0]
+sigmax = np.sqrt(nemitt_x * mean_betx /gamma0 / beta0)
+
+assert np.isclose(collider.vars['on_sep2']._value/1000, 3*sigmax/2, atol=1e-4)
 
 # 1e-4 per testare
 
