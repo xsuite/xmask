@@ -20,6 +20,9 @@ nemitt_y = 3.75e-6
 sigma_z = 0.0755
 
 collider.match(
+    ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
+    ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
+    twiss_init='preserve',
     lines=['lhcb1', 'lhcb2'],
     vary=[xt.Vary('on_sep8h', step=1e-4),
           xt.Vary('on_sep8v', step=1e-4),],
