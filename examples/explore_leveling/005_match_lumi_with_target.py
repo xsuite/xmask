@@ -118,8 +118,8 @@ class TargetSeparation(xt.Target):
                 / tw2.particle_on_co.gamma0[0] / tw2.particle_on_co.beta0[0])
 
             sigma = np.sqrt(sigma1*sigma2) # geometric mean of sigmas
-            sep_norm = (tw1[self.plane, self.ip_name] - tw2[self.plane, self.ip_name]
-                        ) / sigma
+            sep_norm = np.abs((tw1[self.plane, self.ip_name] - tw2[self.plane, self.ip_name]
+                        )) / sigma
 
             return sep_norm
 
