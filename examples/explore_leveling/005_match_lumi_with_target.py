@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.constants import c as clight
 
 import xtrack as xt
 
@@ -19,6 +20,8 @@ nemitt_x = 3.75e-6
 nemitt_y = 3.75e-6
 sigma_z = 0.0755
 
+beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
+
 collider.match(
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
@@ -29,6 +32,7 @@ collider.match(
     targets=[xt.TargetLuminosity(ip_name='ip8',
                                 luminosity=2e32,
                                 tol=1e30,
+                                f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight)),
                                 num_colliding_bunches=num_colliding_bunches,
                                 num_particles_per_bunch=num_particles_per_bunch,
                                 nemitt_x=nemitt_x, nemitt_y=nemitt_y,
