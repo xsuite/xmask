@@ -12,31 +12,26 @@ collider.vars['phi_ir8'] = 90.
 
 tw_before_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-# Introduce some quadrupolar errors
-collider.vars['kqx.r8'] *= (1 + 1e-3)
-collider.vars['kq4.r8b1'] *= (1 - 0.5e-4)
-collider.vars['kq5.r8b1'] *= (1 - 0.8e-4)
-collider.vars['kq4.r8b2'] *= (1 + 0.3e-4)
-collider.vars['kq5.r8b2'] *= (1 - 0.6e-4)
-collider.vars['kqx.l8'] *= (1 - 0.7e-3)
-collider.vars['kq4.l8b1'] *= (1 + 0.6e-4)
-collider.vars['kq5.l8b1'] *= (1 - 0.9e-4)
-collider.vars['kq4.l8b2'] *= (1 + 0.4e-4)
-collider.vars['kq5.l8b2'] *= (1 - 0.7e-)
+# Introduce dipolar errors in D1 and D2
+collider.lhcb1['mqxa.1l8..5'].knl[0] = +2e-6
+collider.lhcb1['mqxa.1l8..5'].ksl[0] = -3e-6
+collider.lhcb1['mqxa.1r8..5'].knl[0] = -1e-6
+collider.lhcb1['mqxa.1r8..5'].ksl[0] = +4e-6
 
 tw_after_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-prrrr
+for line_name in ['lhcb1', 'lhcb2']:
+    xm.machine_tuning(line=collider[line_name],
+        enable_closed_orbit_correction=True,
+        enable_linear_coupling_correction=False,
+        enable_tune_correction=False,
+        enable_chromaticity_correction=False,
+        knob_names=[],
+        targets=None,
+        line_co_ref=collider[line_name+'_co_ref'],
+        co_corr_config=f'../hllhc15_collision/corr_co_{line_name}.json')
 
-xm.machine_tuning(line=collider[line_name],
-    enable_closed_orbit_correction=True,
-    enable_linear_coupling_correction=True,
-    enable_tune_correction=True,
-    enable_chromaticity_correction=True,
-    knob_names=knob_names,
-    targets=targets,
-    line_co_ref=collider[line_name+'_co_ref'],
-    co_corr_config=conf_knobs_and_tuning['closed_orbit_correction'][line_name])
+tw_after_orbit_correction = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
 print(f'Knobs before matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
