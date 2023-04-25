@@ -4,8 +4,18 @@ from scipy.constants import c as clight
 import xtrack as xt
 import xmask as xm
 
+
 collider = xt.Multiline.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
 collider.build_trackers()
+
+
+num_colliding_bunches = 2808
+num_particles_per_bunch = 1.15e11
+nemitt_x = 3.75e-6
+nemitt_y = 3.75e-6
+sigma_z = 0.0755
+beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
+f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
 
 # Move to external vertical crossing
 collider.vars['phi_ir8'] = 90.
@@ -13,10 +23,18 @@ collider.vars['phi_ir8'] = 90.
 tw_before_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
 # Add errors
-collider.lhcb1['mqxb.a2r8..5'].knl[1] = collider.lhcb1['mqxb.a2r8..4'].knl[1] * 1.3
-collider.lhcb1['mqxb.a2l8..5'].knl[1] = collider.lhcb1['mqxb.a2l8..4'].knl[1] * 1.3
-collider.lhcb1['mqy.a4l8.b1..1'].knl[1] = collider.lhcb1['mqy.a4l8.b1..2'].knl[1] * 1.1
-collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1] * 1.1
+for line_name in ['lhcb1', 'lhcb2']:
+    collider[line_name]['mqxb.a2r8..5'].knl[0] = 1e-5
+    collider[line_name]['mqxb.a2l8..5'].knl[0] = -0.7e-5
+    collider[line_name]['mqxb.a2r8..5'].ksl[0] = -1.3e-5
+    collider[line_name]['mqxb.a2l8..5'].ksl[0] = 0.9e-5
+
+    collider[line_name]['mqxb.a2r8..5'].knl[1] = collider[line_name]['mqxb.a2r8..4'].knl[1] * 1.3
+    collider[line_name]['mqxb.a2l8..5'].knl[1] = collider[line_name]['mqxb.a2l8..4'].knl[1] * 1.3
+collider.lhcb1['mqy.a4l8.b1..1'].knl[1] = collider.lhcb1['mqy.a4l8.b1..2'].knl[1] * 0.7
+collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1] * 1.2
+collider.lhcb2['mqy.a4l8.b2..1'].knl[1] = collider.lhcb2['mqy.a4l8.b2..2'].knl[1] * 1.1
+collider.lhcb2['mqy.a4r8.b2..1'].knl[1] = collider.lhcb2['mqy.a4r8.b2..2'].knl[1] * 1.1
 
 
 tw_after_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
@@ -34,17 +52,8 @@ for line_name in ['lhcb1', 'lhcb2']:
 
 tw_after_orbit_correction = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-
 print(f'Knobs before matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
-
-num_colliding_bunches = 2808
-num_particles_per_bunch = 1.15e11
-nemitt_x = 3.75e-6
-nemitt_y = 3.75e-6
-sigma_z = 0.0755
-beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
-f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
 
 # Correction assuming ideal behavior of the knobs
 knob_values_before_ideal_matching = {
@@ -76,7 +85,6 @@ collider.match(
 )
 
 tw_after_ideal_lumi_matching = collider.twiss(lines=['lhcb1', 'lhcb2'])
-
 
 # Reset knobs
 collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
@@ -129,6 +137,40 @@ print(f'After full matching:   px = {tw_after_full_match["lhcb1"]["px", "ip8"]:.
 print(f'Before ideal matching: py = {tw_after_orbit_correction["lhcb1"]["py", "ip8"]:.3e} ')
 print(f'After ideal matching:  py = {tw_after_ideal_lumi_matching["lhcb1"]["py", "ip8"]:.3e} ')
 print(f'After full matching:   py = {tw_after_full_match["lhcb1"]["py", "ip8"]:.3e} ')
+
+for place in ['ip1', 'ip8']:
+    # Check that the errors are perturbing the crossing angles
+    assert np.abs(tw_after_errors.lhcb1['px', place] - tw_before_errors.lhcb1['px', place]) > 10e-6
+    assert np.abs(tw_after_errors.lhcb2['px', place] - tw_before_errors.lhcb2['px', place]) > 10e-6
+    assert np.abs(tw_after_errors.lhcb1['py', place] - tw_before_errors.lhcb1['py', place]) > 10e-6
+    assert np.abs(tw_after_errors.lhcb2['py', place] - tw_before_errors.lhcb2['py', place]) > 10e-6
+
+    # Check that the orbit correction is restoring the crossing angles
+    assert np.isclose(tw_after_orbit_correction.lhcb1['px', place],
+                        tw_before_errors.lhcb1['px', place], atol=1e-6, rtol=0)
+    assert np.isclose(tw_after_orbit_correction.lhcb2['px', place],
+                        tw_before_errors.lhcb2['px', place], atol=1e-6, rtol=0)
+    assert np.isclose(tw_after_orbit_correction.lhcb1['py', place],
+                        tw_before_errors.lhcb1['py', place], atol=1e-6, rtol=0)
+    assert np.isclose(tw_after_orbit_correction.lhcb2['py', place],
+                        tw_before_errors.lhcb2['py', place], atol=1e-6, rtol=0)
+
+    # Check that the ideal lumi matching is perturbing the crossing angles
+    assert np.abs(tw_after_ideal_lumi_matching.lhcb1['px', place] - tw_before_errors.lhcb1['px', place]) > 1e-6
+    assert np.abs(tw_after_ideal_lumi_matching.lhcb2['px', place] - tw_before_errors.lhcb2['px', place]) > 1e-6
+    assert np.abs(tw_after_ideal_lumi_matching.lhcb1['py', place] - tw_before_errors.lhcb1['py', place]) > 1e-6
+    assert np.abs(tw_after_ideal_lumi_matching.lhcb2['py', place] - tw_before_errors.lhcb2['py', place]) > 1e-6
+
+    # Check that the full matching is preserving the crossing angles
+    assert np.isclose(tw_after_full_match.lhcb1['px', place],
+                        tw_before_errors.lhcb1['px', place], atol=1e-7, rtol=0)
+    assert np.isclose(tw_after_full_match.lhcb2['px', place],
+                        tw_before_errors.lhcb2['px', place], atol=1e-7, rtol=0)
+    assert np.isclose(tw_after_full_match.lhcb1['py', place],
+                        tw_before_errors.lhcb1['py', place], atol=1e-7, rtol=0)
+    assert np.isclose(tw_after_full_match.lhcb2['py', place],
+                        tw_before_errors.lhcb2['py', place], atol=1e-7, rtol=0)
+
 
 ll_after_match = xt.lumi.luminosity_from_twiss(
     n_colliding_bunches=num_colliding_bunches,
