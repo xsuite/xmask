@@ -12,27 +12,11 @@ collider.vars['phi_ir8'] = 90.
 
 tw_before_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-# Introduce dipolar errors in D1 and D2
-# collider.lhcb1['mqxa.1l8..5'].knl[0] = +2e-6
-# collider.lhcb1['mqxa.1l8..5'].ksl[0] = -3e-6
-# collider.lhcb1['mqxa.1r8..5'].knl[0] = -1e-6
-# collider.lhcb1['mqxa.1r8..5'].ksl[0] = +4e-6
-
-# collider.lhcb1['mqxa.1r8..5'].knl[1] *= 0.7
-# collider.lhcb1['mqxa.1r8..5'].knl[1] *= 1.5
-
+# Add errors
 collider.lhcb1['mqxb.a2r8..5'].knl[1] = collider.lhcb1['mqxb.a2r8..4'].knl[1] * 1.3
 collider.lhcb1['mqxb.a2l8..5'].knl[1] = collider.lhcb1['mqxb.a2l8..4'].knl[1] * 1.3
 collider.lhcb1['mqy.a4l8.b1..1'].knl[1] = collider.lhcb1['mqy.a4l8.b1..2'].knl[1] * 1.1
 collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1] * 1.1
-
-
-# collider.lhcb1['mqxb.a2r8..5'].ksl[1] = 0.001
-# collider.lhcb1['mqy.a4l8.b1..1'].knl[1] *= 1.3
-# collider.lhcb1['mqy.a4r8.b1..1'].knl[1] *= 0.8
-# collider.lhcb1['mqxa.1r8..5'].knl[1] *= 0.7
-
-
 
 
 tw_after_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
@@ -93,14 +77,9 @@ collider.match(
 tw_after_ideal_lumi_matching = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
 
-
-print(f'Before ideal matching: px = {tw_after_orbit_correction["lhcb1"]["px", "ip8"]:.3e} ')
-print(f'After ideal matching:  px = {tw_after_ideal_lumi_matching["lhcb1"]["px", "ip8"]:.3e} ')
-print(f'Before ideal matching: py = {tw_after_orbit_correction["lhcb1"]["py", "ip8"]:.3e} ')
-print(f'After ideal matching:  py = {tw_after_ideal_lumi_matching["lhcb1"]["py", "ip8"]:.3e} ')
-
-
-prrrr
+# Reset knobs
+collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
+collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
 collider.match(
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
@@ -118,20 +97,20 @@ collider.match(
         xt.Vary('corr_co_acbyvs4.r8b2', step=1e-7),
         xt.Vary('corr_co_acbyhs4.r8b2', step=1e-7),
 
-        # # Correctors to close the bumps
-        # xt.Vary('corr_co_acbyvs4.r8b1', step=1e-7),
-        # xt.Vary('corr_co_acbyhs4.r8b1', step=1e-7),
-        # xt.Vary('corr_co_acbyvs4.l8b2', step=1e-7),
-        # xt.Vary('corr_co_acbyhs4.l8b2', step=1e-7),
-        # xt.Vary('corr_co_acbyvs5.r8b1', step=1e-7),
-        # xt.Vary('corr_co_acbyhs5.r8b1', step=1e-7),
-        # xt.Vary('corr_co_acbcvs5.l8b2', step=1e-7),
-        # xt.Vary('corr_co_acbchs5.l8b2', step=1e-7),
+        # Correctors to close the bumps
+        xt.Vary('corr_co_acbyvs4.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyvs4.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbyvs5.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyhs5.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbcvs5.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbchs5.l8b2', step=1e-7),
         ],
     targets=[
         xt.TargetLuminosity(ip_name='ip8',
-                                luminosity=2e32,
-                                tol=1e28,
+                                luminosity=2e14,
+                                tol=1e12,
                                 f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight)),
                                 num_colliding_bunches=num_colliding_bunches,
                                 num_particles_per_bunch=num_particles_per_bunch,
@@ -143,15 +122,15 @@ collider.match(
         xt.Target('py', at='ip8', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
         xt.Target('px', at='ip8', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
         xt.Target('py', at='ip8', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
-        # # Close the bumps
-        # xt.Target('x', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
-        # xt.Target('px', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
-        # xt.Target('y', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
-        # xt.Target('py', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
-        # xt.Target('x', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
-        # xt.Target('px', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
-        # xt.Target('y', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
-        # xt.Target('py', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
+        # Close the bumps
+        xt.Target('x', at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
+        xt.Target('px', at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
+        xt.Target('y', at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
+        xt.Target('py', at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
+        xt.Target('x', at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
+        xt.Target('px', at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+        xt.Target('y', at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
+        xt.Target('py', at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
         ],
 )
 
@@ -159,6 +138,14 @@ print (f'Knobs after matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
 
 tw_after_ip8_match = collider.twiss(lines=['lhcb1', 'lhcb2'])
+
+print(f'Before ideal matching: px = {tw_after_orbit_correction["lhcb1"]["px", "ip8"]:.3e} ')
+print(f'After ideal matching:  px = {tw_after_ideal_lumi_matching["lhcb1"]["px", "ip8"]:.3e} ')
+print(f'After full matching:   px = {tw_after_ip8_match["lhcb1"]["px", "ip8"]:.3e} ')
+print(f'Before ideal matching: py = {tw_after_orbit_correction["lhcb1"]["py", "ip8"]:.3e} ')
+print(f'After ideal matching:  py = {tw_after_ideal_lumi_matching["lhcb1"]["py", "ip8"]:.3e} ')
+print(f'After full matching:   py = {tw_after_ip8_match["lhcb1"]["py", "ip8"]:.3e} ')
+
 ll_after_match = xt.lumi.luminosity_from_twiss(
     n_colliding_bunches=num_colliding_bunches,
     num_particles_per_bunch=num_particles_per_bunch,
@@ -170,7 +157,7 @@ ll_after_match = xt.lumi.luminosity_from_twiss(
     twiss_b2=tw_after_ip8_match['lhcb2'],
     crab=False)
 
-assert np.isclose(ll_after_match, 2e32, rtol=1e-2, atol=0)
+assert np.isclose(ll_after_match, 2e14, rtol=1e-2, atol=0)
 
 # Check orthogonality
 tw_b1 = tw_after_ip8_match['lhcb1']
@@ -214,18 +201,6 @@ sigmax = np.sqrt(nemitt_x * mean_betx /gamma0 / beta0)
 
 assert np.isclose(collider.vars['on_sep2']._value/1000, 3*sigmax/2, rtol=1e-3, atol=0)
 
-# 1e-4 per testare
-
-# First match
-# range: s.ds - ip
-# Target
-#     TargetLuminosity,
-#     TargetSeparationOrthogonalCrossing
-#     px, py b1 @ ip
-#     px, py b2 @ ip
-# Vary
-#     on_seph on_sepv,
-#     as many many correctors as needed
 
 
 
