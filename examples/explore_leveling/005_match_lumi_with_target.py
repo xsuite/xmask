@@ -2,14 +2,41 @@ import numpy as np
 from scipy.constants import c as clight
 
 import xtrack as xt
+import xmask as xm
 
 collider = xt.Multiline.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
 collider.build_trackers()
 
-
-
 # Move to external vertical crossing
 collider.vars['phi_ir8'] = 90.
+
+tw_before_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
+
+# Introduce some quadrupolar errors
+collider.vars['kqx.r8'] *= (1 + 1e-3)
+collider.vars['kq4.r8b1'] *= (1 - 0.5e-4)
+collider.vars['kq5.r8b1'] *= (1 - 0.8e-4)
+collider.vars['kq4.r8b2'] *= (1 + 0.3e-4)
+collider.vars['kq5.r8b2'] *= (1 - 0.6e-4)
+collider.vars['kqx.l8'] *= (1 - 0.7e-3)
+collider.vars['kq4.l8b1'] *= (1 + 0.6e-4)
+collider.vars['kq5.l8b1'] *= (1 - 0.9e-4)
+collider.vars['kq4.l8b2'] *= (1 + 0.4e-4)
+collider.vars['kq5.l8b2'] *= (1 - 0.7e-)
+
+tw_after_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
+
+prrrr
+
+xm.machine_tuning(line=collider[line_name],
+    enable_closed_orbit_correction=True,
+    enable_linear_coupling_correction=True,
+    enable_tune_correction=True,
+    enable_chromaticity_correction=True,
+    knob_names=knob_names,
+    targets=targets,
+    line_co_ref=collider[line_name+'_co_ref'],
+    co_corr_config=conf_knobs_and_tuning['closed_orbit_correction'][line_name])
 
 print(f'Knobs before matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
