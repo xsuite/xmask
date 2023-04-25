@@ -54,7 +54,6 @@ def build_sequence(mad, mylhcbeam, **kwargs):
       '''
     )
 
-
 def apply_optics(mad, optics_file):
     mad.call(optics_file)
     # A knob redefinition
