@@ -95,19 +95,6 @@ collider.match(
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
     twiss_init='preserve',
-    vary=[
-        xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4), # to control separation
-        xt.VaryList([
-            # correctors to control the crossing angles
-            'corr_co_acbyvs4.l8b1', 'corr_co_acbyhs4.l8b1',
-            'corr_co_acbyvs4.r8b2', 'corr_co_acbyhs4.r8b2',
-             # correctors to close the bumps
-            'corr_co_acbyvs4.l8b2', 'corr_co_acbyhs4.l8b2',
-            'corr_co_acbyvs4.r8b1', 'corr_co_acbyhs4.r8b1',
-            'corr_co_acbcvs5.l8b2', 'corr_co_acbchs5.l8b2',
-            'corr_co_acbyvs5.r8b1', 'corr_co_acbyhs5.r8b1'],
-            step=1e-7),
-    ],
     targets=[
         xt.TargetLuminosity(
             ip_name='ip8', luminosity=2e14, tol=1e12, f_rev=f_rev,
@@ -124,6 +111,19 @@ collider.match(
         xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
         xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
         ],
+    vary=[
+        xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4), # to control separation
+        xt.VaryList([
+            # correctors to control the crossing angles
+            'corr_co_acbyvs4.l8b1', 'corr_co_acbyhs4.l8b1',
+            'corr_co_acbyvs4.r8b2', 'corr_co_acbyhs4.r8b2',
+             # correctors to close the bumps
+            'corr_co_acbyvs4.l8b2', 'corr_co_acbyhs4.l8b2',
+            'corr_co_acbyvs4.r8b1', 'corr_co_acbyhs4.r8b1',
+            'corr_co_acbcvs5.l8b2', 'corr_co_acbchs5.l8b2',
+            'corr_co_acbyvs5.r8b1', 'corr_co_acbyhs5.r8b1'],
+            step=1e-7),
+    ],
 )
 
 print (f'Knobs after matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
