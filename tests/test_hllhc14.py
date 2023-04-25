@@ -745,13 +745,35 @@ def test_co_correction_and_lumi_leveling():
     # Match separation to 2 sigmas in IP2
     print(f'Knobs before matching: on_sep2 = {collider.vars["on_sep2"]._value}')
     collider.match(
-        verbose=True,
         lines=['lhcb1', 'lhcb2'],
-        vary=[xt.Vary('on_sep2', step=1e-4)],
+        ele_start=['e.ds.l2.b1', 's.ds.r2.b2'],
+        ele_stop=['s.ds.r2.b1', 'e.ds.l2.b2'],
+        twiss_init='preserve',
         targets=[
             xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                             nemitt_x=nemitt_x, nemitt_y=nemitt_y),
+            # Preserve crossing angle
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+            # Close the bumps
+            xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
         ],
+        vary=
+            [xt.Vary('on_sep2', step=1e-4),
+            xt.VaryList([
+                # correctors to control the crossing angles
+                'corr_co_acbyvs4.l2b1', 'corr_co_acbyhs4.l2b1',
+                'corr_co_acbyvs4.r2b2', 'corr_co_acbyhs4.r2b2',
+                # correctors to close the bumps
+                'corr_co_acbyvs4.l2b2', 'corr_co_acbyhs4.l2b2',
+                'corr_co_acbyvs4.r2b1', 'corr_co_acbyhs4.r2b1',
+                'corr_co_acbyhs5.l2b2', 'corr_co_acbyvs5.l2b2',
+                'corr_co_acbchs5.r2b1', 'corr_co_acbcvs5.r2b1'],
+                step=1e-7),
+            ],
     )
     print(f'Knobs after matching: on_sep2 = {collider.vars["on_sep2"]._value}')
 
