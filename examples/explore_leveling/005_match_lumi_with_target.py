@@ -27,9 +27,29 @@ collider.match(
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
     twiss_init='preserve',
     lines=['lhcb1', 'lhcb2'],
-    vary=[xt.Vary('on_sep8h', step=1e-4),
-          xt.Vary('on_sep8v', step=1e-4),],
-    targets=[xt.TargetLuminosity(ip_name='ip8',
+    vary=[
+        # Knobs to control the separation
+        xt.Vary('on_sep8h', step=1e-4),
+        xt.Vary('on_sep8v', step=1e-4),
+
+        # Correctors to preserve crossing angle
+        xt.Vary('corr_co_acbyvs4.l8b1', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.l8b1', step=1e-7),
+        xt.Vary('corr_co_acbyvs4.r8b2', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.r8b2', step=1e-7),
+
+        # Correctors to close the bumps
+        xt.Vary('corr_co_acbyvs4.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyvs4.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbyhs4.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbyvs5.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbyhs5.r8b1', step=1e-7),
+        xt.Vary('corr_co_acbcvs5.l8b2', step=1e-7),
+        xt.Vary('corr_co_acbchs5.l8b2', step=1e-7),
+        ],
+    targets=[
+        xt.TargetLuminosity(ip_name='ip8',
                                 luminosity=2e32,
                                 tol=1e30,
                                 f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight)),
@@ -37,7 +57,22 @@ collider.match(
                                 num_particles_per_bunch=num_particles_per_bunch,
                                 nemitt_x=nemitt_x, nemitt_y=nemitt_y,
                                 sigma_z=sigma_z, crab=False),
-             xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8')],
+        xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'),
+        # Preserve crossing angle
+        xt.Target('px', at='ip8', line='lhcb1', value='preserve'),
+        xt.Target('py', at='ip8', line='lhcb1', value='preserve'),
+        xt.Target('px', at='ip8', line='lhcb2', value='preserve'),
+        xt.Target('py', at='ip8', line='lhcb2', value='preserve'),
+        # Close the bumps
+        xt.Target('x', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
+        xt.Target('px', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
+        xt.Target('y', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
+        xt.Target('py', at='s.ds.r8.b1', line='lhcb1', value='preserve'),
+        xt.Target('x', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
+        xt.Target('px', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
+        xt.Target('y', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
+        xt.Target('py', at='e.ds.l8.b2', line='lhcb2', value='preserve'),
+        ],
 )
 
 print (f'Knobs after matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
