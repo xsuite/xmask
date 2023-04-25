@@ -20,8 +20,12 @@ tw_before_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
 # collider.lhcb1['mqxa.1r8..5'].knl[1] *= 0.7
 # collider.lhcb1['mqxa.1r8..5'].knl[1] *= 1.5
-# collider.lhcb1['mqxa.1l8..5'].ksl[1] = 0.001
+
 collider.lhcb1['mqxb.a2r8..5'].knl[1] = collider.lhcb1['mqxb.a2r8..4'].knl[1] * 1.3
+collider.lhcb1['mqxb.a2l8..5'].knl[1] = collider.lhcb1['mqxb.a2l8..4'].knl[1] * 1.3
+collider.lhcb1['mqy.a4l8.b1..1'].knl[1] = collider.lhcb1['mqy.a4l8.b1..2'].knl[1] * 1.1
+collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1] * 1.1
+
 
 # collider.lhcb1['mqxb.a2r8..5'].ksl[1] = 0.001
 # collider.lhcb1['mqy.a4l8.b1..1'].knl[1] *= 1.3
