@@ -36,9 +36,9 @@ collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1
 collider.lhcb2['mqy.a4l8.b2..1'].knl[1] = collider.lhcb2['mqy.a4l8.b2..2'].knl[1] * 1.1
 collider.lhcb2['mqy.a4r8.b2..1'].knl[1] = collider.lhcb2['mqy.a4r8.b2..2'].knl[1] * 1.1
 
-
 tw_after_errors = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
+# Correct closed orbit
 for line_name in ['lhcb1', 'lhcb2']:
     xm.machine_tuning(line=collider[line_name],
         enable_closed_orbit_correction=True,
@@ -55,7 +55,7 @@ tw_after_orbit_correction = collider.twiss(lines=['lhcb1', 'lhcb2'])
 print(f'Knobs before matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
 
-# Correction assuming ideal behavior of the knobs
+# Leveling assuming ideal behavior of the knobs
 knob_values_before_ideal_matching = {
     'on_sep8h': collider.vars['on_sep8h']._value,
     'on_sep8v': collider.vars['on_sep8v']._value,
@@ -90,17 +90,20 @@ tw_after_ideal_lumi_matching = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
 collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
+# Leveling with crossing angle and bump rematching
 collider.match(
     lines=['lhcb1', 'lhcb2'],
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
     twiss_init='preserve',
     targets=[
+        # Luminosity
         xt.TargetLuminosity(
-            ip_name='ip8', luminosity=2e14, tol=1e12, f_rev=f_rev,
-            num_colliding_bunches=num_colliding_bunches,
-            num_particles_per_bunch=num_particles_per_bunch,
-            nemitt_x=nemitt_x, nemitt_y=nemitt_y, sigma_z=sigma_z, crab=False),
+            ip_name='ip8', luminosity=2e14, tol=1e12,
+            f_rev=f_rev, num_colliding_bunches=num_colliding_bunches,
+            num_particles_per_bunch=num_particles_per_bunch, sigma_z=sigma_z,
+            nemitt_x=nemitt_x, nemitt_y=nemitt_y, crab=False),
+        # Separation plane inclination
         xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'),
         # Preserve crossing angle
         xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
