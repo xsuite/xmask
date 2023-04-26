@@ -4,10 +4,10 @@ from pathlib import Path
 import xtrack as xt
 
 def machine_tuning(line,
-        enable_closed_orbit_correction=True,
-        enable_linear_coupling_correction=True,
-        enable_tune_correction=True,
-        enable_chromaticity_correction=True,
+        enable_closed_orbit_correction=False,
+        enable_linear_coupling_correction=False,
+        enable_tune_correction=False,
+        enable_chromaticity_correction=False,
         knob_names=None,
         targets=None,
         line_co_ref=None, co_corr_config=None,

@@ -256,7 +256,7 @@ def _dependent_variables_df(mad):
     Returns:
         The pandas DF of the dependent variables. The columns of the DF correspond to the
         - the numerical value of the dependent variable (value)
-        - the string corrensponding to the MAD-X expression (expression)
+        - the string corresponding to the MAD-X expression (expression)
         - the list of parameters used in the expression (parameters)
         - the list of the fundamental independent variables.
             These are independent variables that control numerical values of the variable (knobs).
