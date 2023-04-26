@@ -17,7 +17,7 @@ config_mad:
     enable_imperfections: false
 
     # Enable knob synthesis (for coupling correction, if no imperfections)
-    enable_knob_synthesis: true
+    enable_knob_synthesis: false
 
     # Optics version, for choice of correction algorithms
     # (ver_lhc_run or ver_hllhc_optics)
