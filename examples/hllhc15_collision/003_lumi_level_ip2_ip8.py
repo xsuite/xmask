@@ -131,3 +131,5 @@ for line_name in ['lhcb1', 'lhcb2']:
     xm.machine_tuning(line=collider[line_name],
         enable_tune_correction=True, enable_chromaticity_correction=True,
         knob_names=knob_names, targets=targets)
+
+collider.to_json('collider_03_tuned_and_leveled_bb_off.json')
