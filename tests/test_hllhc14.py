@@ -207,9 +207,25 @@ def test_hllhc14_3_level_ip2_ip8():
     collider = xt.Multiline.from_json('collider_hllhc14_02.json')
     collider.build_trackers()
 
-    # Read knobs and tuning settings from config file
-    with open('config.yaml','r') as fid:
-        config = xm.yaml.load(fid)
+    config={
+        'config_beambeam': {
+            'sigma_z': 0.076,
+            'num_particles_per_bunch': 2.2e11,
+            'nemitt_x': 2.5e-6,
+            'nemitt_y': 2.5e-6,
+        },
+        'config_lumi_leveling_ip2_ip8': {
+            'ip2': {
+                'plane': 'x',
+                'separation_in_sigmas': 5,
+            },
+            'ip8': {
+                'impose_separation_orthogonal_to_crossing': False,
+                'luminosity': 2.0e+33,
+                'num_colliding_bunches': 2572
+            }
+        }
+    }
 
     config_lumi_leveling_ip2_ip8 = config['config_lumi_leveling_ip2_ip8']
     config_beambeam = config['config_beambeam']
