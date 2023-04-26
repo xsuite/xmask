@@ -199,7 +199,8 @@ def test_hllhc14_2_tuning():
     collider.to_json('collider_hllhc14_02.json')
 
     # Check optics, orbit, rf, etc.
-    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
+                           sep_h_ip2=-0.138e-3, sep_v_ip8=-0.043e-3) # Setting in yaml file
 
 def test_hllhc14_3_level_ip2_ip8():
 
@@ -334,15 +335,16 @@ def test_hllhc14_3_level_ip2_ip8():
     )
 
     # Re-match tunes, and chromaticities
-    conf_knobs_and_tuning = config['config_knobs_and_tuning']
+    tune_chorma_targets = yaml.safe_load(tune_chroma_yaml_str)
+    knob_names_lines = yaml.safe_load(knob_names_yaml_str)
 
     for line_name in ['lhcb1', 'lhcb2']:
-        knob_names = conf_knobs_and_tuning['knob_names'][line_name]
+        knob_names = knob_names_lines[line_name]
         targets = {
-            'qx': conf_knobs_and_tuning['qx'][line_name],
-            'qy': conf_knobs_and_tuning['qy'][line_name],
-            'dqx': conf_knobs_and_tuning['dqx'][line_name],
-            'dqy': conf_knobs_and_tuning['dqy'][line_name],
+            'qx': tune_chorma_targets['qx'][line_name],
+            'qy': tune_chorma_targets['qy'][line_name],
+            'dqx': tune_chorma_targets['dqx'][line_name],
+            'dqy': tune_chorma_targets['dqy'][line_name],
         }
         xm.machine_tuning(line=collider[line_name],
             enable_tune_correction=True, enable_chromaticity_correction=True,
@@ -353,16 +355,6 @@ def test_hllhc14_3_level_ip2_ip8():
     # Checks
     import numpy as np
     tw = collider.twiss(lines=['lhcb1', 'lhcb2'])
-
-    assert np.isclose(tw.lhcb1['qx'], 62.31, rtol=0, atol=1e-5)
-    assert np.isclose(tw.lhcb1['qy'], 60.32, rtol=0, atol=1e-5)
-    assert np.isclose(tw.lhcb2['qx'], 62.31, rtol=0, atol=1e-5)
-    assert np.isclose(tw.lhcb2['qy'], 60.32, rtol=0, atol=1e-5)
-
-    assert np.isclose(tw.lhcb1['dqx'], 5, rtol=0, atol=0.01)
-    assert np.isclose(tw.lhcb1['dqy'], 6, rtol=0, atol=0.01)
-    assert np.isclose(tw.lhcb2['dqx'], 5, rtol=0, atol=0.01)
-    assert np.isclose(tw.lhcb2['dqy'], 6, rtol=0, atol=0.01)
 
     # Check luminosity in ip8
     ll_ip8 = xt.lumi.luminosity_from_twiss(
@@ -389,7 +381,11 @@ def test_hllhc14_3_level_ip2_ip8():
                       5 * sigmax / 2, rtol=1e-3, atol=0)
 
     # Check optics, orbit, rf, etc.
-    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
+                           # From lumi leveling
+                           sep_h_ip2=-0.00014330344100935583, # checked against normalized sep
+                           sep_v_ip8=-3.441222062677253e-05, # checked against lumi
+                           )
 
 def test_hllhc14_4_bb_config():
 
@@ -730,7 +726,11 @@ def test_hllhc14_4_bb_config():
 
     # Check optics and orbit with bb off
     collider.vars['beambeam_scale'] = 0
-    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
+                           # From lumi leveling
+                           sep_h_ip2=-0.00014330344100935583, # checked against normalized sep
+                           sep_v_ip8=-3.441222062677253e-05, # checked against lumi
+                           )
 
 def test_stress_co_correction_and_lumi_leveling():
 

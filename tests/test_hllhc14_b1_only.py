@@ -169,7 +169,8 @@ def test_hllhc14_b1_only_2_tuning():
     collider.to_json('collider_hllhc14_b1_only_02.json')
 
     # Check optics, orbit, rf, etc.
-    check_optics_orbit_etc(collider, line_names=['lhcb1'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1'],
+                           sep_h_ip2=-0.138e-3, sep_v_ip8=-0.043e-3) # Setting in yaml file
 
 def test_hllhc14_b1_only_3_bb_config():
 
@@ -513,4 +514,5 @@ def test_hllhc14_b1_only_3_bb_config():
 
     # Check optics and orbit with bb off
     collider.vars['beambeam_scale'] = 0
-    check_optics_orbit_etc(collider, line_names=['lhcb1'])
+    check_optics_orbit_etc(collider, line_names=['lhcb1'],
+                           sep_h_ip2=-0.138e-3, sep_v_ip8=-0.043e-3) # Setting in yaml file

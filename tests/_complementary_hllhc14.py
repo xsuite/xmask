@@ -1,7 +1,7 @@
 import numpy as np
 import xmask.lhc as xmlhc
 
-def check_optics_orbit_etc(collider, line_names):
+def check_optics_orbit_etc(collider, line_names, sep_h_ip2, sep_v_ip8):
 
     for line_name in line_names:
 
@@ -37,15 +37,19 @@ def check_optics_orbit_etc(collider, line_names):
         assert np.isclose(tw['x', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
         assert np.isclose(tw['y', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
 
-        assert np.isclose(tw['x', 'ip2'],
-                -0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
-                rtol=0, atol=4e-6)
+        if sep_h_ip2 is not None:
+            assert np.isclose(tw['x', 'ip2'],
+                    #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
+                    sep_h_ip2 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
+                    rtol=0, atol=4e-6)
         assert np.isclose(tw['y', 'ip2'], 0, rtol=0, atol=5e-8)
 
         assert np.isclose(tw['x', 'ip8'], 0, rtol=0, atol=5e-8)
-        assert np.isclose(tw['y', 'ip8'],
-                -0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
-                rtol=0, atol=5e-8)
+        if sep_v_ip8 is not None:
+            assert np.isclose(tw['y', 'ip8'],
+                    #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
+                    sep_v_ip8 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                    rtol=0, atol=5e-8)
 
         # Check crossing angles
         assert np.isclose(tw['px', 'ip1'],
