@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 import xtrack as xt
 
@@ -42,6 +43,28 @@ collider.configure_beambeam_interactions(
     crab_strong_beam=False
 )
 
-fp = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y,)
+collider.lhcb1.matrix_stability_tol = 1e-2
+collider.lhcb2.matrix_stability_tol = 1e-2
+
+tw_bb_on = collider.lhcb1.twiss()
+collider.vars['beambeam_scale'] = 0
+tw_bb_off = collider.lhcb1.twiss()
+
+tune_shift_x = tw_bb_on.qx - tw_bb_off.qx
+tune_shift_y = tw_bb_on.qy - tw_bb_off.qy
+
+plt.close('all')
+fig1 = plt.figure(1)
+ax1 = fig1.add_subplot(111)
+collider.vars['beambeam_scale'] = 1
+fp_b1_bb_on = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
+fp_b1_bb_on.plot(ax=ax1, color='k')
+
+collider.vars['beambeam_scale'] = 0
+fp_b2_bb_off = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
+fp_b2_bb_off.plot(ax=ax1, color='g')
+
+
+plt.show()
 
 
