@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.constants import c as clight
+from scipy.constants import e as qe
+from scipy.constants import epsilon_0
 
 import xtrack as xt
 
@@ -52,6 +55,14 @@ tw_bb_off = collider.lhcb1.twiss()
 
 tune_shift_x = tw_bb_on.qx - tw_bb_off.qx
 tune_shift_y = tw_bb_on.qy - tw_bb_off.qy
+
+# Analytical tune shift
+
+q0 = collider.lhcb1.particle_ref.q0
+mass0 = collider.lhcb1.particle_ref.mass0 # eV
+
+# classical particle radius
+r0 = 1 / (4 * np.pi * epsilon_0) * q0**2 * qe / mass0
 
 plt.close('all')
 fig1 = plt.figure(1)
