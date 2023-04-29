@@ -49,20 +49,39 @@ collider.configure_beambeam_interactions(
 collider.lhcb1.matrix_stability_tol = 1e-2
 collider.lhcb2.matrix_stability_tol = 1e-2
 
-tw_bb_on = collider.lhcb1.twiss()
+tw_bb_on = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.vars['beambeam_scale'] = 0
-tw_bb_off = collider.lhcb1.twiss()
+tw_bb_off = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-tune_shift_x = tw_bb_on.qx - tw_bb_off.qx
-tune_shift_y = tw_bb_on.qy - tw_bb_off.qy
+tune_shift_x = tw_bb_on.lhcb1.qx - tw_bb_off.lhcb1.qx
+tune_shift_y = tw_bb_on.lhcb1.qy - tw_bb_off.lhcb1.qy
 
 # Analytical tune shift
 
 q0 = collider.lhcb1.particle_ref.q0
 mass0 = collider.lhcb1.particle_ref.mass0 # eV
+gamma0 = collider.lhcb1.particle_ref.gamma0[0]
+beta0 = collider.lhcb1.particle_ref.beta0[0]
 
 # classical particle radius
 r0 = 1 / (4 * np.pi * epsilon_0) * q0**2 * qe / mass0
+
+betx_weak = tw_bb_off.lhcb1['betx', 'ip1']
+bety_weak = tw_bb_off.lhcb1['bety', 'ip1']
+
+betx_strong = tw_bb_off.lhcb2['betx', 'ip1']
+bety_strong = tw_bb_off.lhcb2['bety', 'ip1']
+
+sigma_x_strong = np.sqrt(betx_strong * nemitt_x / beta0 / gamma0)
+sigma_y_strong = np.sqrt(bety_strong * nemitt_y / beta0 / gamma0)
+
+delta_qx = -(num_particles * r0 * betx_weak
+            / (2 * np.pi * gamma0 * sigma_x_strong * (sigma_x_strong + sigma_y_strong)))
+delta_qy = -(num_particles * r0 * bety_weak
+            / (2 * np.pi * gamma0 * sigma_y_strong * (sigma_x_strong + sigma_y_strong)))
+
+assert np.isclose(delta_qx, tune_shift_x, atol=0, rtol=1e-2)
+assert np.isclose(delta_qy, tune_shift_y, atol=0, rtol=1e-2)
 
 plt.close('all')
 fig1 = plt.figure(1)
@@ -70,12 +89,12 @@ ax1 = fig1.add_subplot(111)
 collider.vars['beambeam_scale'] = 1
 fp_b1_bb_on = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
 fp_b1_bb_on.plot(ax=ax1, color='k')
-plt.plot(np.mod(tw_bb_on.qx, 1), np.mod(tw_bb_on.qy, 1), 'ko', markersize=10)
+plt.plot(np.mod(tw_bb_on.lhcb1.qx, 1), np.mod(tw_bb_on.lhcb1.qy, 1), 'ko', markersize=10)
 
 collider.vars['beambeam_scale'] = 0
 fp_b2_bb_off = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
 fp_b2_bb_off.plot(ax=ax1, color='g')
-plt.plot(np.mod(tw_bb_off.qx, 1), np.mod(tw_bb_off.qy, 1), 'go', markersize=10)
+plt.plot(np.mod(tw_bb_off.lhcb1.qx, 1), np.mod(tw_bb_off.lhcb1.qy, 1), 'go', markersize=10)
 
 
 plt.show()
