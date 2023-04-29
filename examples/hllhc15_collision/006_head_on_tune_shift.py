@@ -59,10 +59,12 @@ ax1 = fig1.add_subplot(111)
 collider.vars['beambeam_scale'] = 1
 fp_b1_bb_on = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
 fp_b1_bb_on.plot(ax=ax1, color='k')
+plt.plot(np.mod(tw_bb_on.qx, 1), np.mod(tw_bb_on.qy, 1), 'ko', markersize=10)
 
 collider.vars['beambeam_scale'] = 0
 fp_b2_bb_off = collider.lhcb1.get_footprint(nemitt_x=nemitt_x, nemitt_y=nemitt_y)
 fp_b2_bb_off.plot(ax=ax1, color='g')
+plt.plot(np.mod(tw_bb_off.qx, 1), np.mod(tw_bb_off.qy, 1), 'go', markersize=10)
 
 
 plt.show()
