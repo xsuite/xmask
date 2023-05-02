@@ -52,13 +52,34 @@ assert (dframes['anticlockwise'].loc['bb_lr.l8b2_05', 'delay_in_slots'] == 3564 
 filling_pattern_cw *= 0 # Reset
 filling_pattern_acw *= 0 # Reset
 
-filling_pattern_cw[0] = 1
-filling_pattern_acw[0] = 1
+filling_pattern_cw[1000] = 1
+filling_pattern_acw[1000] = 1
 
-i_bunch_cw = 0
-i_bunch_acw = 0
+i_bunch_cw = 1000
+i_bunch_acw = 1000
 
 collider.apply_filling_pattern(
     filling_pattern_cw=filling_pattern_cw,
     filling_pattern_acw=filling_pattern_acw,
     i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
+
+twb1 = collider.lhcb1.twiss()
+twb2 = collider.lhcb2.twiss()
+
+# Check that only head-on lenses in ip1 and ip5 are enabled
+all_bb_lenses_b1 = twb1.rows['bb_.*'].name
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in all_bb_lenses_b1]) == 22 # 11 in IP1 and 11 in IP5
+all_bb_lenses_b2 = twb2.rows['bb_.*'].name
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in all_bb_lenses_b2]) == 22 # 11 in IP1 and 11 in IP5
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*1b1.*'].name]) == 11 # 11 in IP1
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*5b1.*'].name]) == 11 # 11 in IP5
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*1b2.*'].name]) == 11 # 11 in IP1
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*5b2.*'].name]) == 11 # 11 in IP5
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*2b1.*'].name]) == 0 # 0 in IP2
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*8b1.*'].name]) == 0 # 0 in IP8
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*2b2.*'].name]) == 0 # 0 in IP2
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*8b2.*'].name]) == 0 # 0 in IP8
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.*'].name]) == 0 # Long range
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.*'].name]) == 0 # Long range
