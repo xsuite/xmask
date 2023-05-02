@@ -95,6 +95,8 @@ i_bunch_acw = 0
 
 # Work on clockwise
 orientation_self = 'clockwise'
+line_name_self = collider._bb_config[orientation_self + '_line']
+line_self = collider[line_name_self]
 filling_pattern_self = np.array(filling_pattern_cw)
 filling_pattern_other = np.array(filling_pattern_acw)
 i_bunch_self = i_bunch_cw
@@ -104,9 +106,14 @@ assert set(list(filling_pattern_other)).issubset({0, 1})
 
 assert filling_pattern_cw[i_bunch_self] == 1, "Selected bunch is not in the filling scheme"
 
-partner_bunch_index = dframes[orientation_self]['delay_in_slots'] + i_bunch_self
-is_active = filling_pattern_other[partner_bunch_index] == 1
+temp_df = dframes[orientation_self].loc[:, ['delay_in_slots', 'ip_name']].copy()
+temp_df['partner_bunch_index'] = dframes[orientation_self]['delay_in_slots'] + i_bunch_self
+temp_df['is_active'] = filling_pattern_other[temp_df['partner_bunch_index']] == 1
 
+for nn, state in temp_df['is_active'].items():
+    if state:
+        collider.vars[nn + '_scale_strength'] = collider.vars['beambeam_scale']
+    else:
+        collider.vars[nn + '_scale_strength'] = 0
 
-
-
+# Check that only the right lenses are activated
