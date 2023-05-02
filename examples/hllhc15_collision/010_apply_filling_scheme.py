@@ -28,7 +28,7 @@ for orientation in ['clockwise', 'anticlockwise']:
         delay_at_ips_dict = {iipp: dd
                              for iipp, dd in zip(ip_names, delay_at_ips_slots)}
     elif orientation == 'anticlockwise':
-        delay_at_ips_dict = {iipp: ring_length_in_slots - dd
+        delay_at_ips_dict = {iipp: np.mod(ring_length_in_slots - dd, ring_length_in_slots)
                              for iipp, dd in zip(ip_names, delay_at_ips_slots)}
     else:
         raise ValueError('?!')
@@ -54,4 +54,15 @@ for orientation in ['clockwise', 'anticlockwise']:
     bbdf['delay_in_slots'] = delay_in_slots
 
 
+# Some checks
+dframes = collider._bb_config['dataframes']
+assert (dframes['clockwise'].loc['bb_ho.c1b1_00', 'delay_in_slots'] == 0)
+assert (dframes['clockwise'].loc['bb_ho.c5b1_00', 'delay_in_slots'] == 0)
+assert (dframes['clockwise'].loc['bb_ho.c2b1_00', 'delay_in_slots'] == 891)
+assert (dframes['clockwise'].loc['bb_ho.c8b1_00', 'delay_in_slots'] == 2670)
+
+assert (dframes['anticlockwise'].loc['bb_ho.c1b2_00', 'delay_in_slots'] == 0)
+assert (dframes['anticlockwise'].loc['bb_ho.c5b2_00', 'delay_in_slots'] == 0)
+assert (dframes['anticlockwise'].loc['bb_ho.c2b2_00', 'delay_in_slots'] == 3564 - 891)
+assert (dframes['anticlockwise'].loc['bb_ho.c8b2_00', 'delay_in_slots'] == 3564 - 2670)
 
