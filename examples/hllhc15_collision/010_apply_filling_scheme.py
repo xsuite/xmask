@@ -5,13 +5,8 @@ import xtrack as xt
 collider = xt.Multiline.from_json('./collider_04_tuned_and_leveled_bb_on.json')
 collider.build_trackers()
 
-filling_pattern_b1 = np.zeros(3564, dtype=int)
-filling_pattern_b2 = np.zeros(3564, dtype=int)
-
-# Fill 50 bunches around bunch 500
-filling_pattern_b1[500-25:500+25] = 1
-filling_pattern_b2[500-25:500+25] = 1
-
+filling_pattern_cw = np.zeros(3564, dtype=int)
+filling_pattern_acw = np.zeros(3564, dtype=int)
 
 harmonic_number = 35640
 bunch_spacing_buckets = 10
@@ -85,3 +80,33 @@ assert (dframes['anticlockwise'].loc['bb_lr.l1b2_05', 'delay_in_slots'] == 0 + 5
 assert (dframes['anticlockwise'].loc['bb_lr.l5b2_05', 'delay_in_slots'] == 0 + 5)
 assert (dframes['anticlockwise'].loc['bb_lr.l2b2_05', 'delay_in_slots'] == 3564 - 891 + 5)
 assert (dframes['anticlockwise'].loc['bb_lr.l8b2_05', 'delay_in_slots'] == 3564 - 2670 + 5)
+
+# Apply filling scheme
+
+# Single in bucket 0
+filling_pattern_cw *= 0 # Reset
+filling_pattern_acw *= 0 # Reset
+
+filling_pattern_cw[0] = 1
+filling_pattern_acw[0] = 1
+
+i_bunch_cw = 0
+i_bunch_acw = 0
+
+# Work on clockwise
+orientation_self = 'clockwise'
+filling_pattern_self = np.array(filling_pattern_cw)
+filling_pattern_other = np.array(filling_pattern_acw)
+i_bunch_self = i_bunch_cw
+
+assert set(list(filling_pattern_self)).issubset({0, 1})
+assert set(list(filling_pattern_other)).issubset({0, 1})
+
+assert filling_pattern_cw[i_bunch_self] == 1, "Selected bunch is not in the filling scheme"
+
+partner_bunch_index = dframes[orientation_self]['delay_in_slots'] + i_bunch_self
+is_active = filling_pattern_other[partner_bunch_index] == 1
+
+
+
+
