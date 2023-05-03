@@ -238,3 +238,71 @@ assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.*'].
 
 assert collider.lhcb1['bb_lr.r2b1_05'].scale_strength == 1
 assert collider.lhcb2['bb_lr.r2b2_05'].scale_strength == 1
+
+#####################################
+# Many long ranges only on one side #
+#####################################
+
+filling_pattern_cw *= 0 # Reset
+filling_pattern_acw *= 0 # Reset
+
+filling_pattern_cw[1565 : 1565 + 48] = 1
+filling_pattern_acw[718 : 718 + 48] = 1
+filling_pattern_acw[1612 : 1612 + 48] = 1
+
+i_bunch_cw = 1612
+i_bunch_acw = 1612
+
+collider.apply_filling_pattern(
+    filling_pattern_cw=filling_pattern_cw,
+    filling_pattern_acw=filling_pattern_acw,
+    i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
+
+all_bb_lenses_b1 = twb1.rows['bb_.*'].name
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in all_bb_lenses_b1]) == (
+      11 # head on IP1
+    + 25 # long-range on one side of IP1
+    + 11 # head on IP5
+    + 25 # long-range on one side of IP5
+    + 11 # head on IP2
+    + 20 # long-range on one side of IP8
+)
+all_bb_lenses_b2 = twb2.rows['bb_.*'].name
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in all_bb_lenses_b2]) == (
+      11 # head on IP1
+    + 25 # long-range on one side of IP1
+    + 11 # head on IP5
+    + 25 # long-range on one side of IP5
+)
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*1b1.*'].name]) == 11  # IP1
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*5b1.*'].name]) == 11  # IP5
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*1b2.*'].name]) == 11  # IP1
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*5b2.*'].name]) == 11  # IP5
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*2b1.*'].name]) == 0   # IP2
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*8b1.*'].name]) == 11  # IP8
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*2b2.*'].name]) == 0   # IP2
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*8b2.*'].name]) == 0   # IP8
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.r1b1_.*'].name]) == 25
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.l1b1_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.r1b2_.*'].name]) == 25
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.l1b2_.*'].name]) == 0
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.r5b1_.*'].name]) == 25
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.l5b1_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.r5b2_.*'].name]) == 25
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.l5b2_.*'].name]) == 0
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.r2b1_.*'].name]) == 0
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.l2b1_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.r2b2_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.l2b2_.*'].name]) == 0
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.r8b1_.*'].name]) == 20
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.l8b1_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.r8b2_.*'].name]) == 0
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.l8b2_.*'].name]) == 0
+
+
+
