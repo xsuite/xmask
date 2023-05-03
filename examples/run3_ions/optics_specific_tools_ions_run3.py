@@ -1,4 +1,4 @@
-from xmask.lhc import install_errors_placeholders_hllhc
+import warnings
 
 def build_sequence(mad, mylhcbeam, **kwargs):
 
@@ -51,3 +51,7 @@ def build_sequence(mad, mylhcbeam, **kwargs):
         if my_sequence in list(mad.sequence):
             mad.input(f'seqedit, sequence={my_sequence}; flatten;'
                         'cycle, start=IP3; flatten; endedit;')
+
+def apply_optics(mad, optics_file):
+    mad.call(optics_file)
+    mad.call('ir7_strengths.madx')

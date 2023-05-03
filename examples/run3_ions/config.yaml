@@ -4,44 +4,50 @@ config_mad:
       optics_runII: ../../../runII
       optics_runIII: ../../../runIII
 
-#     # Optics file
-#     optics_file: acc-models-lhc/round/opt_round_150_1500_thin.madx
+    # Optics file
+    optics_file: optics_runII/2018/ION/opticsfile.21
 
-#     # Beam parameters
-#     beam_config:
-#       lhcb1:
-#         beam_energy_tot: 7000           # [GeV]
-#       lhcb2:
-#         beam_energy_tot: 7000           # [GeV]
+    # Beam parameters
+    beam_config:
+      lhcb1:
+        # Lead ions
+        beam_energy_tot: 522340.03591029  # [GeV] corresponds to p0c=6.37 Z TeV
+        particle_mass: 193.6872729        # [GeV]
+        particle_charge: 82
+      lhcb2:
+        # Lead ions
+        beam_energy_tot: 522340.03591029  # [GeV] corresponds to p0c=6.37 Z TeV
+        particle_mass: 193.6872729        # [GeV]
+        particle_charge: 82
 
-#     # Enable machine imperfections
-#     enable_imperfections: false
+    # Enable machine imperfections
+    enable_imperfections: false
 
-#     # Enable knob synthesis (for coupling correction, if no imperfections)
-#     enable_knob_synthesis: false
+    # Enable knob synthesis (for coupling correction, if no imperfections)
+    enable_knob_synthesis: false
 
-#     # Optics version, for choice of correction algorithms
-#     # (ver_lhc_run or ver_hllhc_optics)
-#     ver_hllhc_optics: 1.5
-#     ver_lhc_run: null
+    # Optics version, for choice of correction algorithms
+    # (ver_lhc_run or ver_hllhc_optics)
+    ver_hllhc_optics: 0
+    ver_lhc_run: 3
 
-#     # Parameters for machine imperfections
-#     pars_for_imperfections:
-#       par_myseed: 1
-#       par_correct_for_D2: 0
-#       par_correct_for_MCBX: 0
-#       par_on_errors_LHC: 1
-#       par_off_errors_Q4_inIP15: 0
-#       par_off_errors_Q5_inIP15: 0
-#       par_on_errors_MBH: 1
-#       par_on_errors_Q4: 1
-#       par_on_errors_D2: 1
-#       par_on_errors_D1: 1
-#       par_on_errors_IT: 1
-#       par_on_errors_MCBRD: 0
-#       par_on_errors_MCBXF: 0
-#       par_on_errors_NLC: 0
-#       par_write_errortable: 1
+    # Parameters for machine imperfections
+    pars_for_imperfections:
+      par_myseed: 1
+      par_correct_for_D2: 0
+      par_correct_for_MCBX: 0
+      par_on_errors_LHC: 1
+      par_off_errors_Q4_inIP15: 0
+      par_off_errors_Q5_inIP15: 0
+      par_on_errors_MBH: 1
+      par_on_errors_Q4: 1
+      par_on_errors_D2: 1
+      par_on_errors_D1: 1
+      par_on_errors_IT: 1
+      par_on_errors_MCBRD: 0
+      par_on_errors_MCBXF: 0
+      par_on_errors_NLC: 0
+      par_write_errortable: 1
 
 # config_knobs_and_tuning:
 

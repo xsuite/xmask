@@ -63,6 +63,9 @@ def attach_beam_to_sequence(sequence, beam_to_configure=1, beam_configuration=No
         charge={particle_charge};
     ''')
 
+    # Used for the rescaling of spectrometers
+    mad.globals.nrj = sequence.beam.energy / sequence.beam.charge
+
 def save_lines_for_closed_orbit_reference(sequence_clockwise, sequence_anticlockwise):
 
     lines_co_ref = {}
