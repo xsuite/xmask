@@ -159,3 +159,41 @@ assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*8b2
 
 assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.*'].name]) == 0 # Long range
 assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.*'].name]) == 0 # Long range
+
+# Single long range in IP1 and IP5
+filling_pattern_cw *= 0 # Reset
+filling_pattern_acw *= 0 # Reset
+filling_pattern_cw[1000 + 5] = 1
+filling_pattern_acw[1000] = 1
+
+i_bunch_cw = 1000 + 5 # Long range expected on the left
+i_bunch_acw = 1000
+
+collider.apply_filling_pattern(
+    filling_pattern_cw=filling_pattern_cw,
+    filling_pattern_acw=filling_pattern_acw,
+    i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
+
+
+# Check that only head-on lenses in ip1 and ip5 are enabled
+all_bb_lenses_b1 = twb1.rows['bb_.*'].name
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in all_bb_lenses_b1]) == 2 # one long range in each of the main ips
+all_bb_lenses_b2 = twb2.rows['bb_.*'].name
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in all_bb_lenses_b2]) == 2 # one long range in each of the main ips
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*1b1.*'].name]) == 0 # IP1
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*5b1.*'].name]) == 0 # IP5
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*1b2.*'].name]) == 0 # IP1
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*5b2.*'].name]) == 0 # IP5
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*2b1.*'].name]) == 0 # IP2
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_ho.*8b1.*'].name]) == 0 # IP8
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*2b2.*'].name]) == 0 # IP2
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_ho.*8b2.*'].name]) == 0 # IP8
+
+assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.*'].name]) == 2 # Long range
+assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.*'].name]) == 2 # Long range
+
+assert collider.lhcb1['bb_lr.l5b1_05'].scale_strength == 1
+assert collider.lhcb1['bb_lr.l1b1_05'].scale_strength == 1
+assert collider.lhcb2['bb_lr.l5b2_05'].scale_strength == 1
+assert collider.lhcb2['bb_lr.l1b2_05'].scale_strength == 1
