@@ -304,5 +304,30 @@ assert np.sum([collider.lhcb1[nn].scale_strength for nn in twb1.rows['bb_lr.l8b1
 assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.r8b2_.*'].name]) == 0
 assert np.sum([collider.lhcb2[nn].scale_strength for nn in twb2.rows['bb_lr.l8b2_.*'].name]) == 0
 
+###############################################
+# A case where all bb lenses should be active #
+###############################################
 
+filling_pattern_cw *= 0 # Reset
+filling_pattern_acw *= 0 # Reset
 
+filling_pattern_cw[881 : 881 + 72] = 1
+filling_pattern_cw[1775 : 1775 + 72] = 1
+filling_pattern_cw[2669 : 2669 + 72] = 1
+
+filling_pattern_acw[881 : 881 + 72] = 1
+filling_pattern_acw[1775 : 1775 + 72] = 1
+filling_pattern_acw[2669 : 2669 + 72] = 1
+
+i_bunch_cw = 1775 + 36
+i_bunch_acw = 1775 + 36
+
+collider.apply_filling_pattern(
+    filling_pattern_cw=filling_pattern_cw,
+    filling_pattern_acw=filling_pattern_acw,
+    i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
+
+all_bb_lenses_b1 = twb1.rows['bb_.*'].name
+assert np.all(np.array([collider.lhcb1[nn].scale_strength for nn in all_bb_lenses_b1]) == 1)
+all_bb_lenses_b2 = twb2.rows['bb_.*'].name
+assert np.all(np.array([collider.lhcb2[nn].scale_strength for nn in all_bb_lenses_b2]) == 1)
