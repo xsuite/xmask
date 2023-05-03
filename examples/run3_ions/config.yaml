@@ -53,23 +53,23 @@ config_knobs_and_tuning:
 
     knob_settings:
 
-      # # Orbit knobs
-      # on_x1: 170          # [urad]
-      # on_sep1: 1.0e-08    # [mm]
-      # on_x2: 170          # [urad]
-      # on_sep2: 1.0e-08    # [mm]
-      # on_x5: 170          # [urad]
-      # on_sep5: 1.0e-08    # [mm]
-      # on_x8: -170         # [urad]
-      # on_sep8: 1.0e-08    # [mm]
-      # on_ov2: 0.0         # [mm]
-      # on_ov5: 0.0         # [mm]
-      # on_disp: 0
-      # on_alice_normalized: -1
-      # on_lhcb_normalized: -1
-      # on_sol_atlas: 0
-      # on_sol_cms: 0
-      # on_sol_alice: 0
+      # Orbit knobs
+      on_x1: 170          # [urad]
+      on_sep1: 1.0e-08    # [mm]
+      on_x2: 170          # [urad]
+      on_sep2: 1.0e-08    # [mm]
+      on_x5: 170          # [urad]
+      on_sep5: 1.0e-08    # [mm]
+      on_x8: -170         # [urad]
+      on_sep8: 1.0e-08    # [mm]
+      on_ov2: 0.0         # [mm]
+      on_ov5: 0.0         # [mm]
+      on_disp: 0
+      on_alice_normalized: -1
+      on_lhcb_normalized: -1
+      on_sol_atlas: 0
+      on_sol_cms: 0
+      on_sol_alice: 0
 
       # RF voltage and phases
       vrf400:       16.0            # [MV]

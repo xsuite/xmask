@@ -38,7 +38,7 @@ def attach_beam_to_sequence(sequence, beam_to_configure=1, beam_configuration=No
     else:
         particle_charge = 1.
 
-    gamma_rel = (particle_charge*beam_configuration['beam_energy_tot'])/particle_mass
+    gamma_rel = (beam_configuration['beam_energy_tot'])/particle_mass
     # bv and bv_aux flags
     if beam_to_configure == 1:
         ss_beam_bv, ss_bv_aux = 1, 1
@@ -52,7 +52,7 @@ def attach_beam_to_sequence(sequence, beam_to_configure=1, beam_configuration=No
     mad.globals['bv_aux'] = ss_bv_aux
     mad.input(f'''
     beam, particle={particle_type},sequence={sequence.name},
-        energy={beam_configuration['beam_energy_tot']*particle_charge},
+        energy={beam_configuration['beam_energy_tot']},
         sigt={beam_configuration.get('beam_sigt', 0.0001)},
         bv={ss_beam_bv},
         npart={beam_configuration.get('beam_npart', 1)},
