@@ -93,24 +93,13 @@ for line_name in ['lhcb1', 'lhcb2']:
         xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1e3),
     ]
 
-vary += [
-        xt.VaryList([
-            # correctors to control the crossing angles
-            'corr_co_acbyvs4.l8b1', 'corr_co_acbyhs4.l8b1',
-            'corr_co_acbyvs4.r8b2', 'corr_co_acbyhs4.r8b2',
-            # correctors to close the bumps
-            'corr_co_acbyvs4.l8b2', 'corr_co_acbyhs4.l8b2',
-            'corr_co_acbyvs4.r8b1', 'corr_co_acbyhs4.r8b1',
-            'corr_co_acbcvs5.l8b2', 'corr_co_acbchs5.l8b2',
-            'corr_co_acbyvs5.r8b1', 'corr_co_acbyhs5.r8b1'],
-            step=1e-7),
-    ]
+vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
 
 # Leveling with crossing angle and bump rematching
 collider.match(
     lines=['lhcb1', 'lhcb2'],
-    ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
-    ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
+    ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
+    ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
     twiss_init='preserve',
     targets=targets,
     vary=vary

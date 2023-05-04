@@ -151,3 +151,16 @@ config_lumi_leveling_ip2_ip8:
           - e.ds.l8.b2
       preserve_angles_at_ip: true
       preserve_bump_closure: true
+      corrector_knob_names:
+       - corr_co_acbyvs4.l8b1
+       - corr_co_acbyhs4.l8b1
+       - corr_co_acbyvs4.r8b2
+       - corr_co_acbyhs4.r8b2
+       - corr_co_acbyvs4.l8b2
+       - corr_co_acbyhs4.l8b2
+       - corr_co_acbyvs4.r8b1
+       - corr_co_acbyhs4.r8b1
+       - corr_co_acbcvs5.l8b2
+       - corr_co_acbchs5.l8b2
+       - corr_co_acbyvs5.r8b1
+       - corr_co_acbyhs5.r8b1
