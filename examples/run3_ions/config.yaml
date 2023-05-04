@@ -126,7 +126,10 @@ config_beambeam:
     num_particles_per_bunch: 180000000.0
     nemitt_x: 1.65e-6
     nemitt_y: 1.65e-6
-
+    mask_with_filling_pattern:
+      pattern_fname: filling.json
+      i_bunch_b1: 488
+      i_bunch_b2: 488
 
 config_lumi_leveling:
 
