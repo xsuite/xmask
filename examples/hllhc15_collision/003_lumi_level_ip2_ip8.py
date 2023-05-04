@@ -2,6 +2,7 @@ from scipy.constants import c as clight
 
 import xtrack as xt
 import xmask as xm
+import xmask.lhc as xlhc
 
 # Load collider anf build trackers
 collider = xt.Multiline.from_json('collider_02_tuned_bb_off.json')
@@ -14,70 +15,9 @@ with open('config.yaml','r') as fid:
 config_lumi_leveling_ip2_ip8 = config['config_lumi_leveling_ip2_ip8']
 config_beambeam = config['config_beambeam']
 
-for ip_name in config_lumi_leveling_ip2_ip8.keys():
-
-    print(f'\n --- Leveling in {ip_name} ---')
-
-    config_this_ip = config_lumi_leveling_ip2_ip8[ip_name]
-    bump_range = config_this_ip['bump_range']
-
-    beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
-    f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
-
-    targets=[]
-    vary=[]
-
-    if 'luminosity' in config_this_ip.keys():
-        targets.append(
-            xt.TargetLuminosity(
-                ip_name=ip_name, luminosity=config_this_ip['luminosity'], crab=False,
-                tol=0.01 * config_this_ip['luminosity'],
-                f_rev=f_rev, num_colliding_bunches=config_this_ip['num_colliding_bunches'],
-                num_particles_per_bunch=config_beambeam['num_particles_per_bunch'],
-                sigma_z=config_beambeam['sigma_z'],
-                nemitt_x=config_beambeam['nemitt_x'],
-                nemitt_y=config_beambeam['nemitt_y'])
-        )
-    elif 'separation_in_sigmas' in config_this_ip.keys():
-        targets.append(
-            xt.TargetSeparation(
-                ip_name=ip_name,
-                separation_norm=config_this_ip['separation_in_sigmas'],
-                tol=1e-4, # in sigmas
-                plane=config_this_ip['plane'],
-                nemitt_x=config_beambeam['nemitt_x'],
-                nemitt_y=config_beambeam['nemitt_y'])
-        )
-    else:
-        raise ValueError('Either `luminosity` or `separation_in_sigmas` must be specified')
-
-    if config_this_ip['impose_separation_orthogonal_to_crossing']:
-        targets.append(
-            xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
-    vary.append(
-        xt.VaryList(config_this_ip['knobs'], step=1e-4)) # to control separation in x and y
-
-    # Target and knobs to rematch the crossing angles and close the bumps
-    for line_name in ['lhcb1', 'lhcb2']:
-        targets += [
-            # Preserve crossing angle
-            xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value='preserve', tol=1e-7, scale=1e3),
-            # Close the bumps
-            xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1e3),
-        ]
-
-    vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
-
-    # Leveling with crossing angle and bump rematching
-    collider.match(
-        lines=['lhcb1', 'lhcb2'],
-        ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
-        ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
-        twiss_init='preserve',
-        targets=targets,
-        vary=vary
-    )
+xlhc.luminosity_leveling(
+    collider, config_lumi_leveling=config_lumi_leveling_ip2_ip8,
+    config_beambeam=config_beambeam)
 
 # Re-match tunes, and chromaticities
 conf_knobs_and_tuning = config['config_knobs_and_tuning']
