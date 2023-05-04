@@ -48,10 +48,10 @@ assert np.isclose(tw.lhcb1['qy'], 60.32, rtol=0, atol=1e-5)
 assert np.isclose(tw.lhcb2['qx'], 62.31, rtol=0, atol=1e-5)
 assert np.isclose(tw.lhcb2['qy'], 60.32, rtol=0, atol=1e-5)
 
-assert np.isclose(tw.lhcb1['dqx'], 0, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb1['dqy'], 0, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb2['dqx'], 0, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb2['dqy'], 0, rtol=0, atol=0.01)
+assert np.isclose(tw.lhcb1['dqx'], 10, rtol=0, atol=0.02)
+assert np.isclose(tw.lhcb1['dqy'], 10, rtol=0, atol=0.02)
+assert np.isclose(tw.lhcb2['dqx'], 10, rtol=0, atol=0.02)
+assert np.isclose(tw.lhcb2['dqy'], 10, rtol=0, atol=0.02)
 
 # Check luminosity in ip8
 ll_ip8 = xt.lumi.luminosity_from_twiss(

@@ -134,7 +134,6 @@ config_lumi_leveling:
       luminosity: 6.4e+27
       num_colliding_bunches: 1088
       impose_separation_orthogonal_to_crossing: false
-      impose_separation_orthogonal_to_crossing: false
       knobs:
         - on_sep1
       bump_range:
