@@ -137,8 +137,17 @@ config_lumi_leveling_ip2_ip8:
       separation_in_sigmas: 5
       plane: 'x'
     ip8:
-      impose_separation_orthogonal_to_crossing: false
       luminosity: 2.0e+33
       num_colliding_bunches: 2572
+      impose_separation_orthogonal_to_crossing: false
       knobs:
         - on_sep8
+      bump_range:
+        lhcb1:
+          - e.ds.l8.b1
+          - s.ds.r8.b1
+        lhcb2:
+          - s.ds.r8.b2
+          - e.ds.l8.b2
+      preserve_angles_at_ip: true
+      preserve_bump_closure: true

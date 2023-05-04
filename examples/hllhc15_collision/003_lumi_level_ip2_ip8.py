@@ -57,6 +57,7 @@ collider.match(
 print('\n --- Leveling in IP8 ---')
 ip_name = 'ip8'
 config_this_ip = config_lumi_leveling_ip2_ip8[ip_name]
+bump_range = config_this_ip['bump_range']
 
 beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
 f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
@@ -83,22 +84,21 @@ vary.append(
     xt.VaryList(config_this_ip['knobs'], step=1e-4)) # to control separation in x and y
 
 # Target and knobs to rematch the crossing angles and close the bumps
-targets += [
-    # Preserve crossing angle
-    xt.TargetList(['px', 'py'], at=ip_name, line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-    xt.TargetList(['px', 'py'], at=ip_name, line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
-    # Close the bumps
-    xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
-    xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
-    xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
-    xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+for line_name in ['lhcb1', 'lhcb2']:
+    targets += [
+        # Preserve crossing angle
+        xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value='preserve', tol=1e-7, scale=1e3),
+        # Close the bumps
+        xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1),
+        xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1e3),
     ]
+
 vary += [
         xt.VaryList([
             # correctors to control the crossing angles
             'corr_co_acbyvs4.l8b1', 'corr_co_acbyhs4.l8b1',
             'corr_co_acbyvs4.r8b2', 'corr_co_acbyhs4.r8b2',
-             # correctors to close the bumps
+            # correctors to close the bumps
             'corr_co_acbyvs4.l8b2', 'corr_co_acbyhs4.l8b2',
             'corr_co_acbyvs4.r8b1', 'corr_co_acbyhs4.r8b1',
             'corr_co_acbcvs5.l8b2', 'corr_co_acbchs5.l8b2',
