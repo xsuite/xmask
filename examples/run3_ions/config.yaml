@@ -11,12 +11,12 @@ config_mad:
     beam_config:
       lhcb1:
         # Lead ions
-        beam_energy_tot: 522340.03591029  # [GeV] corresponds to p0c=6.37 Z TeV
+        beam_energy_tot: 574000           # [GeV] corresponds to 7 Z TeV
         particle_mass: 193.6872729        # [GeV]
         particle_charge: 82
       lhcb2:
         # Lead ions
-        beam_energy_tot: 522340.03591029  # [GeV] corresponds to p0c=6.37 Z TeV
+        beam_energy_tot: 574000           # [GeV] corresponds to 7 Z TeV
         particle_mass: 193.6872729        # [GeV]
         particle_charge: 82
 
@@ -55,13 +55,13 @@ config_knobs_and_tuning:
 
       # Orbit knobs
       on_x1: 170          # [urad]
-      on_sep1: 1.0e-08    # [mm]
+      on_sep1: 1.0e-3     # [mm]
       on_x2: 170          # [urad]
-      on_sep2: 1.0e-08    # [mm]
+      on_sep2: 1.0e-3     # [mm]
       on_x5: 170          # [urad]
-      on_sep5: 1.0e-08    # [mm]
-      on_x8: -170         # [urad]
-      on_sep8: 1.0e-08    # [mm]
+      on_sep5: 1.0e-3     # [mm]
+      on_x8: 170          # [urad]
+      on_sep8: 1.0e-03    # [mm]
       on_ov2: 0.0         # [mm]
       on_ov5: 0.0         # [mm]
       on_disp: 0
@@ -72,13 +72,13 @@ config_knobs_and_tuning:
       on_sol_alice: 0
 
       # RF voltage and phases
-      vrf400:       16.0            # [MV]
+      vrf400:       14.0            # [MV]
       lagrf400.b1:   0.5            # [rad]
       lagrf400.b2:   0.             # [rad]
 
       # Octupoles
-      i_oct_b1:     0           # [A]
-      i_oct_b2:     0            # [A]
+      i_oct_b1:     250             # [A]
+      i_oct_b2:     250             # [A]
 
     closed_orbit_correction:
       lhcb1: corr_co_lhcb1.json
@@ -92,11 +92,11 @@ config_knobs_and_tuning:
       lhcb1: 60.32
       lhcb2: 60.32
     dqx:
-      lhcb1: 0
-      lhcb2: 0
+      lhcb1: 10
+      lhcb2: 10
     dqy:
-      lhcb1: 0
-      lhcb2: 0
+      lhcb1: 10
+      lhcb2: 10
 
     knob_names:
       lhcb1:

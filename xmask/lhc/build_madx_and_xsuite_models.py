@@ -130,18 +130,24 @@ def build_xsuite_collider(
         # Prepare coupling and octupole knobs
         rename_coupling_knobs_and_coefficients(line=line,
                                             beamn=int(sequence_name[-1]))
-        define_octupole_current_knobs(line=line, beamn=int(sequence_name[-1]))
+
         lines_to_track[sequence_name] = line
 
     lines = {}
     lines.update(lines_to_track)
     lines.update(lines_co_ref)
-    collider = xt.Multiline(lines=lines)
 
     if 'lhcb1' in lines_to_track:
-        collider['lhcb1_co_ref'].particle_ref = collider['lhcb1'].particle_ref.copy()
+        lines['lhcb1_co_ref'].particle_ref = lines['lhcb1'].particle_ref.copy()
     if 'lhcb2' in lines_to_track:
-        collider['lhcb2_co_ref'].particle_ref = collider['lhcb2'].particle_ref.copy()
+        lines['lhcb2_co_ref'].particle_ref = lines['lhcb2'].particle_ref.copy()
+
+    for lname, bnumber in zip(['lhcb1', 'lhcb2', 'lhcb1_co_ref', 'lhcb2_co_ref'],
+                              [1, 2, 1, 2]):
+        import pdb; pdb.set_trace()
+        define_octupole_current_knobs(line=lines[lname], beamn=int(bnumber))
+
+    collider = xt.Multiline(lines=lines)
 
     add_correction_term_to_dipole_correctors(collider)
 

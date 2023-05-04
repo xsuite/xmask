@@ -34,6 +34,7 @@ def rename_coupling_knobs_and_coefficients(line, beamn):
                                 * line.vars[f'c_minus_{nn}_b{beamn}'])
 
 def define_octupole_current_knobs(line, beamn):
+
     line.vars[f'p0c_b{beamn}'] = line.particle_ref.p0c[0]
     line.vars[f'q0_b{beamn}'] = line.particle_ref.q0
     line.vars[f'brho0_b{beamn}'] = (line.vars[f'p0c_b{beamn}']
