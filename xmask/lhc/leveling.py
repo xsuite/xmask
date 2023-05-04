@@ -10,6 +10,11 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         config_this_ip = config_lumi_leveling[ip_name]
         bump_range = config_this_ip['bump_range']
 
+        assert config_this_ip['preserve_angles_at_ip'], (
+            'Only preserve_angles_at_ip=True is supported for now')
+        assert config_this_ip['preserve_bump_closure'], (
+            'Only preserve_bump_closure=True is supported for now')
+
         beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
         f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
 
