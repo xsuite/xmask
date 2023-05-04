@@ -55,46 +55,45 @@ collider.match(
 
 # Leveling in IP8
 print('\n --- Leveling in IP8 ---')
-config_ip8 = config_lumi_leveling_ip2_ip8['ip8']
+ip_name = 'ip8'
+config_this_ip = config_lumi_leveling_ip2_ip8[ip_name]
 
 beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
 f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
 
-targets_ip8=[]
-vary_ip8=[]
+targets=[]
+vary=[]
 
-targets_ip8.append(
+
+targets.append(
     xt.TargetLuminosity(
-        ip_name='ip8', luminosity=config_ip8['luminosity'], crab=False,
-        tol=0.01 * config_ip8['luminosity'],
-        f_rev=f_rev, num_colliding_bunches=config_ip8['num_colliding_bunches'],
+        ip_name=ip_name, luminosity=config_this_ip['luminosity'], crab=False,
+        tol=0.01 * config_this_ip['luminosity'],
+        f_rev=f_rev, num_colliding_bunches=config_this_ip['num_colliding_bunches'],
         num_particles_per_bunch=config_beambeam['num_particles_per_bunch'],
         sigma_z=config_beambeam['sigma_z'],
         nemitt_x=config_beambeam['nemitt_x'],
         nemitt_y=config_beambeam['nemitt_y'])
 )
 
-if config_ip8['impose_separation_orthogonal_to_crossing']:
-    targets_ip8.append(
+if config_this_ip['impose_separation_orthogonal_to_crossing']:
+    targets.append(
         xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
-    vary_ip8.append(
-        xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4)) # to control separation in x and y
-else:
-    vary_ip8.append(
-        xt.Vary('on_sep8', step=1e-4)) # to control separation in the separation plane defined by the optics
+vary.append(
+    xt.VaryList(config_this_ip['knobs'], step=1e-4)) # to control separation in x and y
 
 # Target and knobs to rematch the crossing angles and close the bumps
-targets_ip8 += [
+targets += [
     # Preserve crossing angle
-    xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-    xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+    xt.TargetList(['px', 'py'], at=ip_name, line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
+    xt.TargetList(['px', 'py'], at=ip_name, line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
     # Close the bumps
     xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
     xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
     xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
     xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
     ]
-vary_ip8 += [
+vary += [
         xt.VaryList([
             # correctors to control the crossing angles
             'corr_co_acbyvs4.l8b1', 'corr_co_acbyhs4.l8b1',
@@ -113,8 +112,8 @@ collider.match(
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
     twiss_init='preserve',
-    targets=targets_ip8,
-    vary=vary_ip8
+    targets=targets,
+    vary=vary
 )
 
 # Re-match tunes, and chromaticities

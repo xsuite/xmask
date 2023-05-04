@@ -123,9 +123,9 @@ config_beambeam:
       ip5: 25
       ip8: 20
     sigma_z: 0.0824
-    # num_particles_per_bunch: 2.2e11
-    # nemitt_x: 2.5e-6
-    # nemitt_y: 2.5e-6
+    num_particles_per_bunch: 180000000.0
+    nemitt_x: 1.65e-6
+    nemitt_y: 1.65e-6
 
 # config_lumi_leveling_ip2_ip8:
 #     ip2:
