@@ -467,6 +467,85 @@ dqy:
 
 """
 
+leveling_yaml_str = """
+config_lumi_leveling:
+    ip2:
+        separation_in_sigmas: 5
+        plane: 'x'
+        impose_separation_orthogonal_to_crossing: false
+        knobs:
+        - on_sep2
+        bump_range:
+            lhcb1:
+                - e.ds.l2.b1
+                - s.ds.r2.b1
+            lhcb2:
+                - s.ds.r2.b2
+                - e.ds.l2.b2
+        preserve_angles_at_ip: true
+        preserve_bump_closure: true
+        corrector_knob_names:
+        # to preserve angles at ip
+        - corr_co_acbyvs4.l2b1
+        - corr_co_acbyhs4.l2b1
+        - corr_co_acbyvs4.r2b2
+        - corr_co_acbyhs4.r2b2
+        # to close the bumps
+        - corr_co_acbyvs4.l2b2
+        - corr_co_acbyhs4.l2b2
+        - corr_co_acbyvs4.r2b1
+        - corr_co_acbyhs4.r2b1
+        - corr_co_acbyhs5.l2b2
+        - corr_co_acbyvs5.l2b2
+        - corr_co_acbchs5.r2b1
+        - corr_co_acbcvs5.r2b1
+
+    ip8:
+        luminosity: 2.0e+33
+        num_colliding_bunches: 2572
+        impose_separation_orthogonal_to_crossing: false
+        knobs:
+        - on_sep8
+        bump_range:
+            lhcb1:
+                - e.ds.l8.b1
+                - s.ds.r8.b1
+            lhcb2:
+                - s.ds.r8.b2
+                - e.ds.l8.b2
+        preserve_angles_at_ip: true
+        preserve_bump_closure: true
+        corrector_knob_names:
+        # to preserve angles at ip
+        - corr_co_acbyvs4.l8b1
+        - corr_co_acbyhs4.l8b1
+        - corr_co_acbyvs4.r8b2
+        - corr_co_acbyhs4.r8b2
+        # to close the bumps
+        - corr_co_acbyvs4.l8b2
+        - corr_co_acbyhs4.l8b2
+        - corr_co_acbyvs4.r8b1
+        - corr_co_acbyhs4.r8b1
+        - corr_co_acbcvs5.l8b2
+        - corr_co_acbchs5.l8b2
+        - corr_co_acbyvs5.r8b1
+        - corr_co_acbyhs5.r8b1
+
+config_beambeam:
+    bunch_spacing_buckets: 10
+    num_slices_head_on: 11
+    num_long_range_encounters_per_side:
+      ip1: 25
+      ip2: 20
+      ip5: 25
+      ip8: 20
+    sigma_z: 0.076
+    num_particles_per_bunch: 2.2e11
+    nemitt_x: 2.5e-6
+    nemitt_y: 2.5e-6
+
+"""
+
 def _get_z_centroids(ho_slices, sigmaz):
     from scipy.stats import norm
     z_cuts = norm.ppf(
