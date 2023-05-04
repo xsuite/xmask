@@ -36,6 +36,9 @@ for line_name in ['lhcb1', 'lhcb2']:
 
 collider.to_json('collider_03_tuned_and_leveled_bb_off.json')
 
+
+
+
 # Checks
 import numpy as np
 tw = collider.twiss(lines=['lhcb1', 'lhcb2'])
@@ -45,30 +48,63 @@ assert np.isclose(tw.lhcb1['qy'], 60.32, rtol=0, atol=1e-5)
 assert np.isclose(tw.lhcb2['qx'], 62.31, rtol=0, atol=1e-5)
 assert np.isclose(tw.lhcb2['qy'], 60.32, rtol=0, atol=1e-5)
 
-assert np.isclose(tw.lhcb1['dqx'], 5, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb1['dqy'], 6, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb2['dqx'], 5, rtol=0, atol=0.01)
-assert np.isclose(tw.lhcb2['dqy'], 6, rtol=0, atol=0.01)
+assert np.isclose(tw.lhcb1['dqx'], 0, rtol=0, atol=0.01)
+assert np.isclose(tw.lhcb1['dqy'], 0, rtol=0, atol=0.01)
+assert np.isclose(tw.lhcb2['dqx'], 0, rtol=0, atol=0.01)
+assert np.isclose(tw.lhcb2['dqy'], 0, rtol=0, atol=0.01)
 
 # Check luminosity in ip8
 ll_ip8 = xt.lumi.luminosity_from_twiss(
-    n_colliding_bunches=2572,
-    num_particles_per_bunch=2.2e11,
+    n_colliding_bunches=398,
+    num_particles_per_bunch=180000000.,
     ip_name='ip8',
-    nemitt_x=2.5e-6,
-    nemitt_y=2.5e-6,
-    sigma_z=0.076,
+    nemitt_x=1.65e-6,
+    nemitt_y=1.65e-6,
+    sigma_z=0.0824,
     twiss_b1=tw.lhcb1,
     twiss_b2=tw.lhcb2,
     crab=False)
 
-assert np.isclose(ll_ip8, 2e33, rtol=1e-2, atol=0)
+assert np.isclose(ll_ip8, 1.0e+27 , rtol=1e-2, atol=0)
 
-# Check separation in ip2
-mean_betx = np.sqrt(tw['lhcb1']['betx', 'ip2']
-                 *tw['lhcb2']['betx', 'ip2'])
-gamma0 = tw['lhcb1'].particle_on_co.gamma0[0]
-beta0 = tw['lhcb1'].particle_on_co.beta0[0]
-sigmax = np.sqrt(2.5e-6 * mean_betx /gamma0 / beta0)
+# Check luminosity in ip2
+ll_ip2 = xt.lumi.luminosity_from_twiss(
+    n_colliding_bunches=1088,
+    num_particles_per_bunch=180000000.,
+    ip_name='ip2',
+    nemitt_x=1.65e-6,
+    nemitt_y=1.65e-6,
+    sigma_z=0.0824,
+    twiss_b1=tw.lhcb1,
+    twiss_b2=tw.lhcb2,
+    crab=False)
 
-assert np.isclose(collider.vars['on_sep2']._value/1000, 5*sigmax/2, rtol=1e-3, atol=0)
+assert np.isclose(ll_ip2, 6.4e+27 , rtol=1e-2, atol=0)
+
+# Check luminosity in ip1
+ll_ip1 = xt.lumi.luminosity_from_twiss(
+    n_colliding_bunches=1088,
+    num_particles_per_bunch=180000000.,
+    ip_name='ip1',
+    nemitt_x=1.65e-6,
+    nemitt_y=1.65e-6,
+    sigma_z=0.0824,
+    twiss_b1=tw.lhcb1,
+    twiss_b2=tw.lhcb2,
+    crab=False)
+
+assert np.isclose(ll_ip1, 6.4e+27 , rtol=1e-2, atol=0)
+
+# Check luminosity in ip5
+ll_ip5 = xt.lumi.luminosity_from_twiss(
+    n_colliding_bunches=1088,
+    num_particles_per_bunch=180000000.,
+    ip_name='ip1',
+    nemitt_x=1.65e-6,
+    nemitt_y=1.65e-6,
+    sigma_z=0.0824,
+    twiss_b1=tw.lhcb1,
+    twiss_b2=tw.lhcb2,
+    crab=False)
+
+assert np.isclose(ll_ip5, 6.4e+27 , rtol=1e-2, atol=0)

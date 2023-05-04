@@ -129,6 +129,67 @@ config_beambeam:
 
 
 config_lumi_leveling:
+
+    ip1:
+      luminosity: 6.4e+27
+      num_colliding_bunches: 1088
+      impose_separation_orthogonal_to_crossing: false
+      impose_separation_orthogonal_to_crossing: false
+      knobs:
+        - on_sep1
+      bump_range:
+        lhcb1:
+          - e.ds.l1.b1
+          - s.ds.r1.b1
+        lhcb2:
+          - s.ds.r1.b2
+          - e.ds.l1.b2
+      preserve_angles_at_ip: true
+      preserve_bump_closure: true
+      corrector_knob_names:
+        - corr_co_acbyvs4.l1b1
+        - corr_co_acbyhs4.l1b1
+        - corr_co_acbyvs4.r1b2
+        - corr_co_acbyhs4.r1b2
+        - corr_co_acbyhs4.r1b1
+        - corr_co_acbyvs4.r1b1
+        - corr_co_acbyhs4.l1b2
+        - corr_co_acbyvs4.l1b2
+        - corr_co_acbcv5.l1b1
+        - corr_co_acbch5.r1b1
+        - corr_co_acbcv5.r1b2
+        - corr_co_acbch5.l1b2
+
+    ip5:
+      luminosity: 6.4e+27
+      num_colliding_bunches: 1088
+      impose_separation_orthogonal_to_crossing: false
+      impose_separation_orthogonal_to_crossing: false
+      knobs:
+        - on_sep5
+      bump_range:
+        lhcb1:
+          - e.ds.l5.b1
+          - s.ds.r5.b1
+        lhcb2:
+          - s.ds.r5.b2
+          - e.ds.l5.b2
+      preserve_angles_at_ip: true
+      preserve_bump_closure: true
+      corrector_knob_names:
+        - corr_co_acbcv5.l5b1
+        - corr_co_acbch5.r5b1
+        - corr_co_acbyhs4.l5b1
+        - corr_co_acbyhs4.r5b1
+        - corr_co_acbyvs4.l5b1
+        - corr_co_acbyvs4.r5b1
+        - corr_co_acbcv5.r5b2
+        - corr_co_acbch5.l5b2
+        - corr_co_acbyhs4.l5b2
+        - corr_co_acbyhs4.r5b2
+        - corr_co_acbyvs4.l5b2
+        - corr_co_acbyvs4.r5b2
+
     ip2:
       luminosity: 6.4e+27
       num_colliding_bunches: 1088
