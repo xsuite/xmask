@@ -36,9 +36,6 @@ for line_name in ['lhcb1', 'lhcb2']:
 
 collider.to_json('collider_03_tuned_and_leveled_bb_off.json')
 
-
-
-
 # Checks
 import numpy as np
 tw = collider.twiss(lines=['lhcb1', 'lhcb2'])
