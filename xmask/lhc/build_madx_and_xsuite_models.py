@@ -142,12 +142,10 @@ def build_xsuite_collider(
     if 'lhcb2' in lines_to_track:
         lines['lhcb2_co_ref'].particle_ref = lines['lhcb2'].particle_ref.copy()
 
-    for lname, bnumber in zip(['lhcb1', 'lhcb2', 'lhcb1_co_ref', 'lhcb2_co_ref'],
-                              [1, 2, 1, 2]):
-        import pdb; pdb.set_trace()
-        define_octupole_current_knobs(line=lines[lname], beamn=int(bnumber))
-
     collider = xt.Multiline(lines=lines)
+
+    define_octupole_current_knobs(line=collider.lhcb1, beamn=1)
+    define_octupole_current_knobs(line=collider.lhcb2, beamn=2)
 
     add_correction_term_to_dipole_correctors(collider)
 
