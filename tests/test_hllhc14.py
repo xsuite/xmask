@@ -65,6 +65,7 @@ def test_hllhc14_1_install_beambeam():
     clockwise_line='lhcb1',
     anticlockwise_line='lhcb2',
     ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+    delay_at_ips_slots=[0, 891, 0, 2670],
     num_long_range_encounters_per_side={
         'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
     num_slices_head_on=11,
