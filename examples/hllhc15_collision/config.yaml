@@ -132,7 +132,7 @@ config_beambeam:
     nemitt_x: 2.5e-6
     nemitt_y: 2.5e-6
 
-config_lumi_leveling_ip2_ip8:
+config_lumi_leveling:
     ip2:
       separation_in_sigmas: 5
       plane: 'x'
