@@ -72,14 +72,13 @@ def build_xsuite_collider(
         if sequence is None: continue
         xm.attach_beam_to_sequence(sequence, beam_to_configure=beam_n,
                             beam_configuration=beam_config[sequence.name])
-        sequence._madx.globals.nrj = beam_config[sequence.name]['beam_energy_tot']
         # Warm up (seems I need to twiss for mad to load everything)
         sequence._madx.use(sequence.name)
         sequence._madx.twiss()
 
     # Store energy in nrj
     if sequence_b4 is not None:
-        sequence_b4._madx.globals.nrj = beam_config[sequence_b4.name]['beam_energy_tot']
+        sequence_b4._madx.globals.nrj = sequence_b2._madx.globals.nrj
 
     # Generate beam 4
     if sequence_b4 is not None:

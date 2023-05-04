@@ -64,6 +64,7 @@ def attach_beam_to_sequence(sequence, beam_to_configure=1, beam_configuration=No
     ''')
 
     # Used for the rescaling of spectrometers
+    mad.use(sequence.name)
     mad.globals.nrj = sequence.beam.energy / sequence.beam.charge
 
 def save_lines_for_closed_orbit_reference(sequence_clockwise, sequence_anticlockwise):

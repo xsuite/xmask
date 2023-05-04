@@ -55,3 +55,5 @@ def build_sequence(mad, mylhcbeam, **kwargs):
 def apply_optics(mad, optics_file):
     mad.call(optics_file)
     mad.call('ir7_strengths.madx')
+    mad.input('on_alice := on_alice_normalized * 7000./nrj;')
+    mad.input('on_lhcb := on_lhcb_normalized * 7000./nrj;')
