@@ -4,7 +4,7 @@ def build_sequence(mad, mylhcbeam, **kwargs):
 
     # Select beam
 
-    # slicefactor = 2 # For testing
+    #slicefactor = 2 # For testing
     slicefactor = 8 # For production
 
     mylhcbeam = int(mylhcbeam)
