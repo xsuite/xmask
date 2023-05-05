@@ -2,8 +2,8 @@ _config_ion_yaml_str = """
 config_mad:
     # Links to be made for tools and scripts
     links:
-      optics_runII: ../../test_data/lhc_ion/runII
-      optics_runIII: ../../test_data/lhc_ion/runIII
+      optics_runII: ../test_data/lhc_ion/runII
+      optics_runIII: ../test_data/lhc_ion/runIII
 
     # Optics file
     optics_file: optics_runII/2018/ION/opticsfile.21

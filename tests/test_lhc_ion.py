@@ -1,15 +1,17 @@
+import numpy as np
+
 from cpymad.madx import Madx
 import xtrack as xt
 
 import xmask as xm
 import xmask.lhc as xmlhc
+import yaml
 
 # Import user-defined optics-specific tools
-import optics_specific_tools_ions_run3 as ost
+from _complementary_run3_ions import _config_ion_yaml_str, build_sequence, apply_optics
 
 # Read config file
-with open('config.yaml','r') as fid:
-    config = xm.yaml.load(fid)
+config = yaml.safe_load(_config_ion_yaml_str)
 config_mad_model = config['config_mad']
 
 # Make mad environment
@@ -20,11 +22,11 @@ mad_b1b2 = Madx(command_log="mad_collider.log")
 mad_b4 = Madx(command_log="mad_b4.log")
 
 # Build sequences
-ost.build_sequence(mad_b1b2, mylhcbeam=1)
-ost.build_sequence(mad_b4, mylhcbeam=4)
+build_sequence(mad_b1b2, mylhcbeam=1)
+build_sequence(mad_b4, mylhcbeam=4)
 
 # Apply optics (only for b1b2, b4 will be generated from b1b2)
-ost.apply_optics(mad_b1b2, optics_file=config_mad_model['optics_file'])
+apply_optics(mad_b1b2, optics_file=config_mad_model['optics_file'])
 
 # Build xsuite collider
 collider = xmlhc.build_xsuite_collider(
@@ -38,8 +40,19 @@ collider = xmlhc.build_xsuite_collider(
     ver_lhc_run=config_mad_model['ver_lhc_run'],
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])
 
+
+assert len(collider.lines.keys()) == 4
+
+for line_name in collider.lines.keys():
+    pref = collider[line_name].particle_ref
+    assert np.isclose(pref.q0, 82, rtol=1e-10, atol=0)
+    assert np.isclose(pref.energy0[0], 5.74e14, rtol=1e-10, atol=0)
+    assert np.isclose(pref.mass0, 193687272900.0, rtol=1e-10, atol=0)
+    assert np.isclose(pref.gamma0[0], 2963.54, rtol=1e-6, atol=0)
+
 # Save to file
-collider.to_json('collider_00_from_mad.json')
+collider.to_json('collider_lhc_ion_00_from_mad.json')
+
 
 
 
