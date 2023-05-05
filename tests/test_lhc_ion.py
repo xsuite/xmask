@@ -135,3 +135,76 @@ def test_lhc_ion_1_install_beambeam():
 
         assert np.isclose(tw1_b1['s', f'ip{ipn}'], tw0_b1['s', f'ip{ipn}'], rtol=1e-10, atol=0)
         assert np.isclose(tw1_b2['s', f'ip{ipn}'], tw0_b2['s', f'ip{ipn}'], rtol=1e-10, atol=0)
+
+
+def test_hllhc14_2_tuning():
+
+    collider = xt.Multiline.from_json('collider_lhc_ion_01.json')
+
+    # Read config file
+    config = yaml.safe_load(_config_ion_yaml_str)
+    conf_knobs_and_tuning = config['config_knobs_and_tuning']
+
+    knob_settings = conf_knobs_and_tuning['knob_settings']
+    tune_chorma_targets = conf_knobs_and_tuning
+    knob_names_lines = conf_knobs_and_tuning['knob_names']
+
+    # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
+    # experimental magnets, etc.)
+    for kk, vv in knob_settings.items():
+        collider.vars[kk] = vv
+
+    # Build trackers
+    collider.build_trackers()
+
+    # Check coupling knobs are responding
+    collider.vars['cmrs.b1_sq'] = 1e-3
+    collider.vars['cmis.b1_sq'] = 1e-3
+    assert np.isclose(collider['lhcb1'].twiss().c_minus, 1.4e-3,
+                      rtol=0, atol=2e-4)
+    assert np.isclose(collider['lhcb2'].twiss().c_minus, 0,
+                      rtol=0, atol=2e-4)
+    collider.vars['cmrs.b1_sq'] = 0
+    collider.vars['cmis.b1_sq'] = 0
+    collider.vars['cmrs.b2_sq'] = 1e-3
+    collider.vars['cmis.b2_sq'] = 1e-3
+    assert np.isclose(collider['lhcb1'].twiss().c_minus, 0,
+                        rtol=0, atol=2e-4)
+    assert np.isclose(collider['lhcb2'].twiss().c_minus, 1.4e-3,
+                        rtol=0, atol=2e-4)
+    collider.vars['cmrs.b2_sq'] = 0
+    collider.vars['cmis.b2_sq'] = 0
+
+    # Introduce some coupling to check correction
+    collider.vars['cmrs.b1_sq'] = 0.4e-3
+    collider.vars['cmis.b1_sq'] = 0.7e-3
+    collider.vars['cmrs.b2_sq'] = 0.5e-3
+    collider.vars['cmis.b2_sq'] = 0.6e-3
+
+    # Tunings
+    for line_name in ['lhcb1', 'lhcb2']:
+
+        knob_names = knob_names_lines[line_name]
+
+        targets = {
+            'qx': tune_chorma_targets['qx'][line_name],
+            'qy': tune_chorma_targets['qy'][line_name],
+            'dqx': tune_chorma_targets['dqx'][line_name],
+            'dqy': tune_chorma_targets['dqy'][line_name],
+        }
+
+        xm.machine_tuning(line=collider[line_name],
+            enable_closed_orbit_correction=True,
+            enable_linear_coupling_correction=True,
+            enable_tune_correction=True,
+            enable_chromaticity_correction=True,
+            knob_names=knob_names,
+            targets=targets,
+            line_co_ref=collider[line_name+'_co_ref'],
+            co_corr_config=orbit_correction_config[line_name])
+
+    collider.to_json('collider_lhc_ion_02.json')
+
+    # Check optics, orbit, rf, etc.
+    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
+                           sep_h_ip2=-0.138e-3, sep_v_ip8=-0.043e-3) # Setting in yaml file
