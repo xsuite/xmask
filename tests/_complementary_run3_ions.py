@@ -552,6 +552,21 @@ orbit_correction_config['lhcb2'] = {
     ),
 }
 
+
+def _get_z_centroids(ho_slices, sigmaz):
+    from scipy.stats import norm
+    z_cuts = norm.ppf(
+        np.linspace(0, 1, ho_slices + 1)[1:int((ho_slices + 1) / 2)]) * sigmaz
+    z_centroids = []
+    z_centroids.append(-sigmaz / np.sqrt(2*np.pi)
+        * np.exp(-z_cuts[0]**2 / (2 * sigmaz * sigmaz)) * float(ho_slices))
+    for ii,jj in zip(z_cuts[0:-1],z_cuts[1:]):
+        z_centroids.append(-sigmaz / np.sqrt(2*np.pi)
+            * (np.exp(-jj**2 / (2 * sigmaz * sigmaz))
+               - np.exp(-ii**2 / (2 * sigmaz * sigmaz))
+            ) * ho_slices)
+    return np.array(z_centroids + [0] + [-ii for ii in z_centroids[-1::-1]])
+
 def check_optics_orbit_etc(collider, line_names, sep_h_ip1, sep_h_ip2,
                            sep_v_ip5, sep_v_ip8):
 
