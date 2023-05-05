@@ -76,7 +76,7 @@ config_knobs_and_tuning:
       on_sol_alice: 0
 
       # RF voltage and phases
-      vrf400:       14.0            # [MV]
+      vrf400:       1148            # [MV] (14 * 82 = 1148 MV, madx convention)
       lagrf400.b1:   0.5            # [rad]
       lagrf400.b2:   0.             # [rad]
 

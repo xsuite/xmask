@@ -8,7 +8,9 @@ import xmask.lhc as xmlhc
 import yaml
 
 # Import user-defined optics-specific tools
-from _complementary_run3_ions import _config_ion_yaml_str, build_sequence, apply_optics
+from _complementary_run3_ions import (
+    _config_ion_yaml_str, build_sequence, apply_optics, orbit_correction_config,
+    check_optics_orbit_etc)
 
 def test_lhc_ion_0_create_collider():
     # Read config file
@@ -207,4 +209,5 @@ def test_hllhc14_2_tuning():
 
     # Check optics, orbit, rf, etc.
     check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
-                           sep_h_ip2=-0.138e-3, sep_v_ip8=-0.043e-3) # Setting in yaml file
+                           sep_h_ip1=1e-6, sep_h_ip2=1e-6,
+                           sep_v_ip5=1e-6, sep_v_ip8=1e-6) # Setting in yaml file

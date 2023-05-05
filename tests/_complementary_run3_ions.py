@@ -1,3 +1,5 @@
+import numpy as np
+
 _config_ion_yaml_str = """
 config_mad:
     # Links to be made for tools and scripts
@@ -73,7 +75,7 @@ config_knobs_and_tuning:
       on_sol_alice: 0
 
       # RF voltage and phases
-      vrf400:       14.0            # [MV]
+      vrf400:       1148            # [MV] (14 * 82 = 1148 MV)
       lagrf400.b1:   0.5            # [rad]
       lagrf400.b2:   0.             # [rad]
 
@@ -317,3 +319,344 @@ def apply_optics(mad, optics_file):
     mad.call('optics_runIII/ir7_strengths.madx')
     mad.input('on_alice := on_alice_normalized * 7000./nrj;')
     mad.input('on_lhcb := on_lhcb_normalized * 7000./nrj;')
+
+
+orbit_correction_config = {}
+orbit_correction_config['lhcb1'] = {
+    'IR1 left': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.r8.b1',
+        end='e.ds.l1.b1',
+        vary=(
+            'corr_co_acbh14.l1b1',
+            'corr_co_acbh12.l1b1',
+            'corr_co_acbv15.l1b1',
+            'corr_co_acbv13.l1b1',
+            ),
+        targets=('e.ds.l1.b1',),
+    ),
+    'IR1 right': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r1.b1',
+        end='s.ds.l2.b1',
+        vary=(
+            'corr_co_acbh13.r1b1',
+            'corr_co_acbh15.r1b1',
+            'corr_co_acbv12.r1b1',
+            'corr_co_acbv14.r1b1',
+            ),
+        targets=('s.ds.l2.b1',),
+    ),
+    'IR5 left': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.r4.b1',
+        end='e.ds.l5.b1',
+        vary=(
+            'corr_co_acbh14.l5b1',
+            'corr_co_acbh12.l5b1',
+            'corr_co_acbv15.l5b1',
+            'corr_co_acbv13.l5b1',
+            ),
+        targets=('e.ds.l5.b1',),
+    ),
+    'IR5 right': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r5.b1',
+        end='s.ds.l6.b1',
+        vary=(
+            'corr_co_acbh13.r5b1',
+            'corr_co_acbh15.r5b1',
+            'corr_co_acbv12.r5b1',
+            'corr_co_acbv14.r5b1',
+            ),
+        targets=('s.ds.l6.b1',),
+    ),
+    'IP1': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l1.b1',
+        end='s.ds.r1.b1',
+        vary=(
+            'corr_co_acbch6.l1b1',
+            'corr_co_acbcv5.l1b1',
+            'corr_co_acbch5.r1b1',
+            'corr_co_acbcv6.r1b1',
+            'corr_co_acbyhs4.l1b1',
+            'corr_co_acbyhs4.r1b1',
+            'corr_co_acbyvs4.l1b1',
+            'corr_co_acbyvs4.r1b1',
+        ),
+        targets=('ip1', 's.ds.r1.b1'),
+    ),
+    'IP2': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l2.b1',
+        end='s.ds.r2.b1',
+        vary=(
+            'corr_co_acbyhs5.l2b1',
+            'corr_co_acbchs5.r2b1',
+            'corr_co_acbyvs5.l2b1',
+            'corr_co_acbcvs5.r2b1',
+            'corr_co_acbyhs4.l2b1',
+            'corr_co_acbyhs4.r2b1',
+            'corr_co_acbyvs4.l2b1',
+            'corr_co_acbyvs4.r2b1',
+        ),
+        targets=('ip2', 's.ds.r2.b1'),
+    ),
+    'IP5': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l5.b1',
+        end='s.ds.r5.b1',
+        vary=(
+            'corr_co_acbch6.l5b1',
+            'corr_co_acbcv5.l5b1',
+            'corr_co_acbch5.r5b1',
+            'corr_co_acbcv6.r5b1',
+            'corr_co_acbyhs4.l5b1',
+            'corr_co_acbyhs4.r5b1',
+            'corr_co_acbyvs4.l5b1',
+            'corr_co_acbyvs4.r5b1',
+        ),
+        targets=('ip5', 's.ds.r5.b1'),
+    ),
+    'IP8': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l8.b1',
+        end='s.ds.r8.b1',
+        vary=(
+            'corr_co_acbch5.l8b1',
+            'corr_co_acbyhs4.l8b1',
+            'corr_co_acbyhs4.r8b1',
+            'corr_co_acbyhs5.r8b1',
+            'corr_co_acbcvs5.l8b1',
+            'corr_co_acbyvs4.l8b1',
+            'corr_co_acbyvs4.r8b1',
+            'corr_co_acbyvs5.r8b1',
+        ),
+        targets=('ip8', 's.ds.r8.b1'),
+    ),
+}
+
+orbit_correction_config['lhcb2'] = {
+    'IR1 left': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l1.b2',
+        end='e.ds.r8.b2',
+        vary=(
+            'corr_co_acbh13.l1b2',
+            'corr_co_acbh15.l1b2',
+            'corr_co_acbv12.l1b2',
+            'corr_co_acbv14.l1b2',
+            ),
+        targets=('e.ds.r8.b2',),
+    ),
+    'IR1 right': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.l2.b2',
+        end='s.ds.r1.b2',
+        vary=(
+            'corr_co_acbh12.r1b2',
+            'corr_co_acbh14.r1b2',
+            'corr_co_acbv13.r1b2',
+            'corr_co_acbv15.r1b2',
+            ),
+        targets=('s.ds.r1.b2',),
+    ),
+    'IR5 left': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='e.ds.l5.b2',
+        end='e.ds.r4.b2',
+        vary=(
+            'corr_co_acbh13.l5b2',
+            'corr_co_acbh15.l5b2',
+            'corr_co_acbv12.l5b2',
+            'corr_co_acbv14.l5b2',
+            ),
+        targets=('e.ds.r4.b2',),
+    ),
+    'IR5 right': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.l6.b2',
+        end='s.ds.r5.b2',
+        vary=(
+            'corr_co_acbh12.r5b2',
+            'corr_co_acbh14.r5b2',
+            'corr_co_acbv13.r5b2',
+            'corr_co_acbv15.r5b2',
+            ),
+        targets=('s.ds.r5.b2',),
+    ),
+    'IP1': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r1.b2',
+        end='e.ds.l1.b2',
+        vary=(
+            'corr_co_acbch6.r1b2',
+            'corr_co_acbcv5.r1b2',
+            'corr_co_acbch5.l1b2',
+            'corr_co_acbcv6.l1b2',
+            'corr_co_acbyhs4.l1b2',
+            'corr_co_acbyhs4.r1b2',
+            'corr_co_acbyvs4.l1b2',
+            'corr_co_acbyvs4.r1b2',
+        ),
+        targets=('ip1', 'e.ds.l1.b2',),
+    ),
+    'IP2': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r2.b2',
+        end='e.ds.l2.b2',
+        vary=(
+            'corr_co_acbyhs5.l2b2',
+            'corr_co_acbchs5.r2b2',
+            'corr_co_acbyvs5.l2b2',
+            'corr_co_acbcvs5.r2b2',
+            'corr_co_acbyhs4.l2b2',
+            'corr_co_acbyhs4.r2b2',
+            'corr_co_acbyvs4.l2b2',
+            'corr_co_acbyvs4.r2b2',
+        ),
+        targets=('ip2', 'e.ds.l2.b2'),
+    ),
+    'IP5': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r5.b2',
+        end='e.ds.l5.b2',
+        vary=(
+            'corr_co_acbch6.r5b2',
+            'corr_co_acbcv5.r5b2',
+            'corr_co_acbch5.l5b2',
+            'corr_co_acbcv6.l5b2',
+            'corr_co_acbyhs4.l5b2',
+            'corr_co_acbyhs4.r5b2',
+            'corr_co_acbyvs4.l5b2',
+            'corr_co_acbyvs4.r5b2',
+        ),
+        targets=('ip5', 'e.ds.l5.b2',),
+    ),
+    'IP8': dict(
+        ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
+        start='s.ds.r8.b2',
+        end='e.ds.l8.b2',
+        vary=(
+            'corr_co_acbchs5.l8b2',
+            'corr_co_acbyhs5.r8b2',
+            'corr_co_acbcvs5.l8b2',
+            'corr_co_acbyvs5.r8b2',
+            'corr_co_acbyhs4.l8b2',
+            'corr_co_acbyhs4.r8b2',
+            'corr_co_acbyvs4.l8b2',
+            'corr_co_acbyvs4.r8b2',
+        ),
+        targets=('ip8', 'e.ds.l8.b2',),
+    ),
+}
+
+def check_optics_orbit_etc(collider, line_names, sep_h_ip1, sep_h_ip2,
+                           sep_v_ip5, sep_v_ip8):
+
+    for line_name in line_names:
+
+        assert collider[line_name].particle_ref.q0 == 82
+        assert np.isclose(collider[line_name].particle_ref.p0c, 5.73999967e+14,
+                        atol=0, rtol=1e-5)
+        assert np.isclose(collider[line_name].particle_ref.mass0, 193687272900.0,
+                            atol=0, rtol=1e-5)
+
+        tw = collider[line_name].twiss()
+
+        if line_name == 'lhcb1':
+            assert np.isclose(tw.qx, 62.31, atol=1e-4, rtol=0)
+            assert np.isclose(tw.qy, 60.32, atol=1e-4, rtol=0)
+            assert np.isclose(tw.dqx, 10, atol=0.1, rtol=0)
+            assert np.isclose(tw.dqy, 10, atol=0.1, rtol=0)
+        elif line_name == 'lhcb2':
+            assert np.isclose(tw.qx, 62.31, atol=1e-4, rtol=0)
+            assert np.isclose(tw.qy, 60.32, atol=1e-4, rtol=0)
+            assert np.isclose(tw.dqx, 10, atol=0.1, rtol=0)
+            assert np.isclose(tw.dqy, 10, atol=0.1, rtol=0)
+        else:
+            raise ValueError(f'Unknown line name {line_name}')
+
+        assert np.isclose(tw.qs, 0.00198862, atol=1e-4, rtol=0) # Checks that RF is well set
+
+        assert np.isclose(tw.c_minus, 0, atol=1e-4, rtol=0)
+        assert np.allclose(tw.zeta, 0, rtol=0, atol=1e-4) # Check RF phase
+
+        if sep_h_ip1 is not None:
+            assert np.isclose(tw['x', 'ip1'],
+                    #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
+                    sep_h_ip1 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
+                    rtol=0, atol=4e-6)
+        assert np.isclose(tw['y', 'ip1'], 0, rtol=0, atol=5e-8)
+
+        if sep_h_ip2 is not None:
+            assert np.isclose(tw['x', 'ip2'],
+                    #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
+                    sep_h_ip2 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
+                    rtol=0, atol=4e-6)
+        assert np.isclose(tw['y', 'ip2'], 0, rtol=0, atol=5e-8)
+
+        assert np.isclose(tw['x', 'ip8'], 0, rtol=0, atol=5e-8)
+        if sep_v_ip8 is not None:
+            assert np.isclose(tw['y', 'ip8'],
+                    #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
+                    sep_v_ip8 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                    rtol=0, atol=5e-8)
+
+        if sep_v_ip5 is not None:
+            assert np.isclose(tw['y', 'ip5'],
+                    #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
+                    sep_v_ip5 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                    rtol=0, atol=5e-8)
+        assert np.isclose(tw['x', 'ip5'], 0, rtol=0, atol=5e-8)
+
+
+        # Check crossing angles
+        assert np.isclose(tw['px', 'ip5'],
+                170e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['py', 'ip5'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['px', 'ip1'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['py', 'ip1'], 170e-6, rtol=0, atol=0.5e-6)
+
+        assert np.isclose(tw['px', 'ip2'], 0, rtol=0, atol=0.5e-6)
+        assert np.isclose(tw['py', 'ip2'], 100e-6 , rtol=0, atol=0.5e-6) # accounts for spectrometer
+
+        assert np.isclose(tw['px', 'ip8'],
+                35e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
+        assert np.isclose(tw['py', 'ip8'], -2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
+
+        assert np.isclose(tw['betx', 'ip1'], 50e-2, rtol=2e-2, atol=0) # beta beating coming from on_disp
+        assert np.isclose(tw['bety', 'ip1'], 50e-2, rtol=3e-2, atol=0)
+        assert np.isclose(tw['betx', 'ip5'], 50e-2, rtol=2e-2, atol=0)
+        assert np.isclose(tw['bety', 'ip5'], 50e-2, rtol=2e-2, atol=0)
+
+        assert np.isclose(tw['betx', 'ip2'], 50e-2, rtol=4e-2, atol=0)
+        assert np.isclose(tw['bety', 'ip2'], 50e-2, rtol=3e-2, atol=0)
+
+        assert np.isclose(tw['betx', 'ip8'], 1.5, rtol=3e-2, atol=0)
+        assert np.isclose(tw['bety', 'ip8'], 1.5, rtol=2e-2, atol=0)
+
+        # Check crab cavities
+        z_crab_test = 1e-2
+        phi_crab_1 = ((
+            collider[line_name].twiss(method='4d', zeta0=z_crab_test)['x', 'ip1']
+        - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['x', 'ip1'])
+        / 2 / z_crab_test)
+
+        phi_crab_5 = ((
+            collider[line_name].twiss(method='4d', zeta0=z_crab_test)['y', 'ip5']
+        - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['y', 'ip5'])
+        / 2 / z_crab_test)
+
+        assert np.isclose(phi_crab_1, 0 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+                        rtol=0, atol=5e-7)
+        assert np.isclose(phi_crab_5, 0, rtol=0, atol=5e-7)
+
+        # Check one octupole strength
+        if line_name == 'lhcb1':
+            assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*250/235,
+                          rtol=1e-3, atol=0)
+        elif line_name == 'lhcb2':
+            assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169*250/235,
+                            rtol=1e-3, atol=0)
