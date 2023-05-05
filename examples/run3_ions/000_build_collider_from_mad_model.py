@@ -34,6 +34,7 @@ collider = xmlhc.build_xsuite_collider(
     beam_config=config_mad_model['beam_config'],
     enable_imperfections=config_mad_model['enable_imperfections'],
     enable_knob_synthesis=config_mad_model['enable_knob_synthesis'],
+    rename_coupling_knobs=config_mad_model['rename_coupling_knobs'],
     pars_for_imperfections=config_mad_model['pars_for_imperfections'],
     ver_lhc_run=config_mad_model['ver_lhc_run'],
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])

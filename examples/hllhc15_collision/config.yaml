@@ -19,6 +19,10 @@ config_mad:
     # Enable knob synthesis (for coupling correction, if no imperfections)
     enable_knob_synthesis: false
 
+    # Rename the coupling knobs to avoid conflict between b1 and b2
+    # (for hllhc using old fortran code to generate the knobs)
+    rename_coupling_knobs: true
+
     # Optics version, for choice of correction algorithms
     # (ver_lhc_run or ver_hllhc_optics)
     ver_hllhc_optics: 1.5

@@ -25,6 +25,7 @@ def build_xsuite_collider(
     enable_imperfections,
     install_apertures=False,
     enable_knob_synthesis=False,
+    rename_coupling_knobs=False,
     pars_for_imperfections={},
     ver_lhc_run=None,
     ver_hllhc_optics=None,
@@ -127,8 +128,9 @@ def build_xsuite_collider(
             q0 = mad_beam.charge, mass0 = mad_beam.mass*1e9)
 
         # Prepare coupling and octupole knobs
-        rename_coupling_knobs_and_coefficients(line=line,
-                                            beamn=int(sequence_name[-1]))
+        if rename_coupling_knobs:
+            rename_coupling_knobs_and_coefficients(line=line,
+                                    beamn=int(sequence_name[-1]))
 
         lines_to_track[sequence_name] = line
 
