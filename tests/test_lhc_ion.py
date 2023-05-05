@@ -68,16 +68,16 @@ def test_lhc_ion_1_install_beambeam():
     collider = xt.Multiline.from_json('collider_lhc_ion_00.json')
 
     collider.install_beambeam_interactions(
-    clockwise_line='lhcb1',
-    anticlockwise_line='lhcb2',
-    ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
-    delay_at_ips_slots=[0, 891, 0, 2670],
-    num_long_range_encounters_per_side={
-        'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
-    num_slices_head_on=11,
-    harmonic_number=35640,
-    bunch_spacing_buckets=10,
-    sigmaz=0.076)
+        clockwise_line='lhcb1',
+        anticlockwise_line='lhcb2',
+        ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+        delay_at_ips_slots=[0, 891, 0, 2670],
+        num_long_range_encounters_per_side={
+            'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
+        num_slices_head_on=11,
+        harmonic_number=35640,
+        bunch_spacing_buckets=10,
+        sigmaz=0.0824)
 
     collider.to_json('collider_lhc_ion_01.json')
 
@@ -627,7 +627,7 @@ def test_lhc_ion_4_bb_config():
             else:
                 # Horizontal crossing
                 assert np.isclose(ee_weak.alpha,
-                    (-15e-3 if ip_n==8 else 0)*{'lhcb1': 1, 'lhcb2': -1}[name_weak],
+                    (-52e-3 if ip_n==8 else 0)*{'lhcb1': 1, 'lhcb2': -1}[name_weak],
                     atol=5e-3, rtol=0)
                 assert np.isclose(
                     2*ee_weak.phi,
