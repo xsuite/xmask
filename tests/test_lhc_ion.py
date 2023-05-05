@@ -211,3 +211,105 @@ def test_lhc_ion_2_tuning():
     check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
                            sep_h_ip1=1e-6, sep_h_ip2=1e-6,
                            sep_v_ip5=1e-6, sep_v_ip8=1e-6) # Setting in yaml file
+
+def test_lhc_ion_3_leveling():
+
+    # Load collider and build trackers
+    collider = xt.Multiline.from_json('collider_lhc_ion_02.json')
+    collider.build_trackers()
+
+    config = yaml.safe_load(_config_ion_yaml_str)
+    conf_knobs_and_tuning = config['config_knobs_and_tuning']
+    config_lumi_leveling = config['config_lumi_leveling']
+    config_beambeam = config['config_beambeam']
+
+    xmlhc.luminosity_leveling(
+        collider, config_lumi_leveling=config_lumi_leveling,
+        config_beambeam=config_beambeam)
+
+    # Re-match tunes, and chromaticities
+    tune_chorma_targets = conf_knobs_and_tuning
+    knob_names_lines = conf_knobs_and_tuning['knob_names']
+
+    for line_name in ['lhcb1', 'lhcb2']:
+        knob_names = knob_names_lines[line_name]
+        targets = {
+            'qx': tune_chorma_targets['qx'][line_name],
+            'qy': tune_chorma_targets['qy'][line_name],
+            'dqx': tune_chorma_targets['dqx'][line_name],
+            'dqy': tune_chorma_targets['dqy'][line_name],
+        }
+        xm.machine_tuning(line=collider[line_name],
+            enable_tune_correction=True, enable_chromaticity_correction=True,
+            knob_names=knob_names, targets=targets)
+
+    collider.to_json('collider_lhc_ion_03.json')
+
+    # Checks
+    import numpy as np
+    tw = collider.twiss(lines=['lhcb1', 'lhcb2'])
+
+    # Check luminosity in ip1
+    ll_ip1 = xt.lumi.luminosity_from_twiss(
+        n_colliding_bunches=1088,
+        num_particles_per_bunch=180000000.0,
+        ip_name='ip1',
+        nemitt_x=1.65e-6,
+        nemitt_y=1.65e-6,
+        sigma_z=0.0824,
+        twiss_b1=tw.lhcb1,
+        twiss_b2=tw.lhcb2,
+        crab=False)
+
+    assert np.isclose(ll_ip1, 6.4e+27, rtol=1e-2, atol=0)
+
+    # Check luminosity in ip2
+    ll_ip2 = xt.lumi.luminosity_from_twiss(
+        n_colliding_bunches=1088,
+        num_particles_per_bunch=180000000.0,
+        ip_name='ip2',
+        nemitt_x=1.65e-6,
+        nemitt_y=1.65e-6,
+        sigma_z=0.0824,
+        twiss_b1=tw.lhcb1,
+        twiss_b2=tw.lhcb2,
+        crab=False)
+
+    assert np.isclose(ll_ip2, 6.4e+27, rtol=1e-2, atol=0)
+
+    # Check luminosity in ip5
+    ll_ip5 = xt.lumi.luminosity_from_twiss(
+        n_colliding_bunches=1088,
+        num_particles_per_bunch=180000000.0,
+        ip_name='ip5',
+        nemitt_x=1.65e-6,
+        nemitt_y=1.65e-6,
+        sigma_z=0.0824,
+        twiss_b1=tw.lhcb1,
+        twiss_b2=tw.lhcb2,
+        crab=False)
+
+    assert np.isclose(ll_ip5, 6.4e+27, rtol=1e-2, atol=0)
+
+    # Check luminosity in ip8
+    ll_ip8 = xt.lumi.luminosity_from_twiss(
+        n_colliding_bunches=398,
+        num_particles_per_bunch=180000000.0,
+        ip_name='ip8',
+        nemitt_x=1.65e-6,
+        nemitt_y=1.65e-6,
+        sigma_z=0.0824,
+        twiss_b1=tw.lhcb1,
+        twiss_b2=tw.lhcb2,
+        crab=False)
+
+    assert np.isclose(ll_ip8, 1e+27, rtol=1e-2, atol=0)
+
+    # Check optics, orbit, rf, etc.
+    check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
+                           # From lumi leveling
+                           sep_h_ip1=0.00920e-3,
+                           sep_h_ip2=0.01132e-3,
+                           sep_v_ip5=0.00918e-3,
+                           sep_v_ip8=0.01623e-3,
+                           )
