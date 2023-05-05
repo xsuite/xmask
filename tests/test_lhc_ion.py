@@ -139,7 +139,7 @@ def test_lhc_ion_1_install_beambeam():
         assert np.isclose(tw1_b2['s', f'ip{ipn}'], tw0_b2['s', f'ip{ipn}'], rtol=1e-10, atol=0)
 
 
-def test_hllhc14_2_tuning():
+def test_lhc_ion_2_tuning():
 
     collider = xt.Multiline.from_json('collider_lhc_ion_01.json')
 

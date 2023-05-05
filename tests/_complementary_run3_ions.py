@@ -587,29 +587,29 @@ def check_optics_orbit_etc(collider, line_names, sep_h_ip1, sep_h_ip2,
             assert np.isclose(tw['x', 'ip1'],
                     #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
                     sep_h_ip1 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
-                    rtol=0, atol=4e-6)
-        assert np.isclose(tw['y', 'ip1'], 0, rtol=0, atol=5e-8)
+                    rtol=0, atol=1e-7)
+        assert np.isclose(tw['y', 'ip1'], 0, rtol=0, atol=1e-7)
 
         if sep_h_ip2 is not None:
             assert np.isclose(tw['x', 'ip2'],
                     #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
                     sep_h_ip2 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
-                    rtol=0, atol=4e-6)
-        assert np.isclose(tw['y', 'ip2'], 0, rtol=0, atol=5e-8)
+                    rtol=0, atol=1e-7)
+        assert np.isclose(tw['y', 'ip2'], 0, rtol=0, atol=1e-7)
 
-        assert np.isclose(tw['x', 'ip8'], 0, rtol=0, atol=5e-8)
+        assert np.isclose(tw['x', 'ip8'], 0, rtol=0, atol=1e-7)
         if sep_v_ip8 is not None:
             assert np.isclose(tw['y', 'ip8'],
                     #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
                     sep_v_ip8 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
-                    rtol=0, atol=5e-8)
+                    rtol=0, atol=1e-7)
 
         if sep_v_ip5 is not None:
             assert np.isclose(tw['y', 'ip5'],
                     #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
                     sep_v_ip5 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
-                    rtol=0, atol=5e-8)
-        assert np.isclose(tw['x', 'ip5'], 0, rtol=0, atol=5e-8)
+                    rtol=0, atol=1e-7)
+        assert np.isclose(tw['x', 'ip5'], 0, rtol=0, atol=1e-7)
 
 
         # Check crossing angles
@@ -655,8 +655,8 @@ def check_optics_orbit_etc(collider, line_names, sep_h_ip1, sep_h_ip2,
 
         # Check one octupole strength
         if line_name == 'lhcb1':
-            assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*250/235,
+            assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], 2.2169*250/235,
                           rtol=1e-3, atol=0)
         elif line_name == 'lhcb2':
-            assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169*250/235,
+            assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], 2.2169*250/235,
                             rtol=1e-3, atol=0)
