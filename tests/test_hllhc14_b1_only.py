@@ -44,6 +44,7 @@ def test_hllhc14_b1_only_0_create_collider():
         beam_config={'lhcb1':{'beam_energy_tot': 7000}},
         enable_imperfections=False,
         enable_knob_synthesis='_mock_for_testing',
+        rename_coupling_knobs=True,
         pars_for_imperfections={},
         ver_lhc_run=None,
         ver_hllhc_optics=1.4)

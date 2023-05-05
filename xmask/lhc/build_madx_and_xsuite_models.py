@@ -50,6 +50,8 @@ def build_xsuite_collider(
         If True, apertures are installed
     enable_knob_synthesis: bool
         If True, knobs (linear coupling) are synthesized
+    rename_coupling_knobs: bool
+        If True, coupling knobs are renamed to avoid clashes between b1 and b2
     pars_for_imperfections: dict
         Dictionary with parameters for imperfections configuration (see examples)
     ver_lhc_run: str
