@@ -147,8 +147,10 @@ def build_xsuite_collider(
 
     collider = xt.Multiline(lines=lines)
 
-    define_octupole_current_knobs(line=collider.lhcb1, beamn=1)
-    define_octupole_current_knobs(line=collider.lhcb2, beamn=2)
+    if 'lhcb1' in lines_to_track:
+        define_octupole_current_knobs(line=collider.lhcb1, beamn=1)
+    if 'lhcb2' in lines_to_track:
+        define_octupole_current_knobs(line=collider.lhcb2, beamn=2)
 
     add_correction_term_to_dipole_correctors(collider)
 
