@@ -1,3 +1,4 @@
+import numpy as np
 import xtrack as xt
 
 import lumi
@@ -11,8 +12,10 @@ assert 'mqs.23r2.b1' in tw.lhcb1.name
 assert 'mqs.23l4.b2' in tw.lhcb2.name
 assert tw.lhcb1['s', 'ip5'] < tw.lhcb1['s', 'ip6']
 assert tw.lhcb2['s', 'ip5'] > tw.lhcb2['s', 'ip6']
-
-
+assert np.isclose(tw.lhcb1.qx, 62.31, atol=1e-4, rtol=0)
+assert np.isclose(tw.lhcb1.qy, 60.32, atol=1e-4, rtol=0)
+assert np.isclose(tw.lhcb2.qx, 62.31, atol=1e-4, rtol=0)
+assert np.isclose(tw.lhcb2.qy, 60.32, atol=1e-4, rtol=0)
 
 collider.match(
     lines=['lhcb1', 'lhcb2'],
@@ -30,4 +33,13 @@ collider.match(
         ]
     )
 
-
+tw1 = collider.twiss(lines=['lhcb1', 'lhcb2'])
+assert tuple(tw1._line_names) == ('lhcb1', 'lhcb2')
+assert 'mqs.23r2.b1' in tw1.lhcb1.name
+assert 'mqs.23l4.b2' in tw1.lhcb2.name
+assert tw1.lhcb1['s', 'ip5'] < tw1.lhcb1['s', 'ip6']
+assert tw1.lhcb2['s', 'ip5'] > tw1.lhcb2['s', 'ip6']
+assert np.isclose(tw1.lhcb1.qx, 62.317, atol=1e-4, rtol=0)
+assert np.isclose(tw1.lhcb1.qy, 60.327, atol=1e-4, rtol=0)
+assert np.isclose(tw1.lhcb2.qx, 62.315, atol=1e-4, rtol=0)
+assert np.isclose(tw1.lhcb2.qy, 60.325, atol=1e-4, rtol=0)
