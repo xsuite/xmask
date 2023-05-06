@@ -10,10 +10,9 @@ import xmask as xm
 import xmask.lhc as xmlhc
 import yaml
 
-# Import user-defined optics-specific tools
 from _complementary_run3_ions import (
     _config_ion_yaml_str, build_sequence, apply_optics, orbit_correction_config,
-    check_optics_orbit_etc, _get_z_centroids)
+    check_optics_orbit_etc, _get_z_centroids, filling_scheme)
 
 def test_lhc_ion_0_create_collider():
     # Read config file
@@ -664,3 +663,49 @@ def test_lhc_ion_4_bb_config():
                            sep_v_ip5=0.00918e-3,
                            sep_v_ip8=0.01623e-3,
                            )
+
+def test_lhc_ion_5_filling_scheme():
+    collider = xt.Multiline.from_json('collider_lhc_ion_04.json')
+    collider.build_trackers()
+
+    twb1 = collider.lhcb1.twiss()
+    twb2 = collider.lhcb2.twiss()
+
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                for nn in twb1.rows['bb_lr.r1b1_.*'].name]) == 25
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r1b2_.*'].name]) == 25
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r2b1_.*'].name]) == 20
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r2b2_.*'].name]) == 20
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r5b1_.*'].name]) == 25
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r5b2_.*'].name]) == 25
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r8b1_.*'].name]) == 20
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r8b2_.*'].name]) == 20
+
+    collider.apply_filling_pattern(
+        filling_pattern_cw=filling_scheme['beam1'],
+        filling_pattern_acw=filling_scheme['beam2'],
+        i_bunch_cw=488, i_bunch_acw=488)
+
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                for nn in twb1.rows['bb_lr.r1b1_.*'].name]) == 11
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r1b2_.*'].name]) == 11
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r2b1_.*'].name]) == 9
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r2b2_.*'].name]) == 9
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r5b1_.*'].name]) == 11
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r5b2_.*'].name]) == 11
+    assert np.sum([collider.lhcb1[nn].scale_strength
+                    for nn in twb1.rows['bb_lr.r8b1_.*'].name]) == 9
+    assert np.sum([collider.lhcb2[nn].scale_strength
+                    for nn in twb2.rows['bb_lr.r8b2_.*'].name]) == 9
