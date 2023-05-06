@@ -1,6 +1,8 @@
+from itertools import product
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-from itertools import product
 
 from cpymad.madx import Madx
 import xtrack as xt
@@ -14,13 +16,19 @@ from _complementary_run3_ions import (
     _config_ion_yaml_str, build_sequence, apply_optics, orbit_correction_config,
     check_optics_orbit_etc, _get_z_centroids, filling_scheme)
 
+test_data_dir = Path(__file__).parent.parent / "test_data"
+
 def test_lhc_ion_0_create_collider():
     # Read config file
     config = yaml.safe_load(_config_ion_yaml_str)
     config_mad_model = config['config_mad']
 
     # Make mad environment
-    xm.make_mad_environment(links=config_mad_model['links'])
+    xm.make_mad_environment(links={
+        "optics_runII": test_data_dir / 'lhc_ion/runII',
+        "optics_runIII": test_data_dir / 'lhc_ion/runIII',
+        }
+    )
 
     # Start mad
     mad_b1b2 = Madx(command_log="mad_collider.log")
