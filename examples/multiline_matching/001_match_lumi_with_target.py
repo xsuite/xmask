@@ -63,8 +63,9 @@ knob_values_before_ideal_matching = {
 
 res = collider.match(
     # allow_twiss_failure=False,
-    # verbose=True,
-    solver='fsolve',
+    verbose=True,
+    #solver='fsolve',
+    solver_options={'n_bisections': 3, 'min_step': 0, 'n_steps_max': 1000},
 
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
@@ -89,6 +90,8 @@ res = collider.match(
 )
 
 tw_after_ideal_lumi_matching = collider.twiss(lines=['lhcb1', 'lhcb2'])
+
+prrrr
 
 # Reset knobs
 collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
