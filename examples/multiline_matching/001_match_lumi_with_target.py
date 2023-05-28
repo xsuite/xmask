@@ -61,7 +61,11 @@ knob_values_before_ideal_matching = {
     'on_sep8v': collider.vars['on_sep8v']._value,
 }
 
-collider.match(
+res = collider.match(
+    # allow_twiss_failure=False,
+    # verbose=True,
+    solver='fsolve',
+
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
     twiss_init='preserve',
@@ -92,6 +96,7 @@ collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
 # Leveling with crossing angle and bump rematching
 collider.match(
+    solver='fsolve',
     lines=['lhcb1', 'lhcb2'],
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
