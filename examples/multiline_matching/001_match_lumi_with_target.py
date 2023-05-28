@@ -63,9 +63,9 @@ knob_values_before_ideal_matching = {
 
 res = collider.match(
     # allow_twiss_failure=False,
-    verbose=True,
+    #verbose=True,
     #solver='fsolve',
-    solver_options={'n_bisections': 3, 'min_step': 0, 'n_steps_max': 1000},
+    solver_options={'n_bisections': 3, 'min_step': 1e-5, 'n_steps_max': 200},
 
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
@@ -91,7 +91,8 @@ res = collider.match(
 
 tw_after_ideal_lumi_matching = collider.twiss(lines=['lhcb1', 'lhcb2'])
 
-prrrr
+print (f'Knobs after ideal matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
+        f'on_sep8v = {collider.vars["on_sep8v"]._value}')
 
 # Reset knobs
 collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
@@ -99,7 +100,8 @@ collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
 # Leveling with crossing angle and bump rematching
 collider.match(
-    solver='fsolve',
+    # solver='fsolve',
+    solver_options={'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
     lines=['lhcb1', 'lhcb2'],
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
@@ -137,7 +139,7 @@ collider.match(
     ],
 )
 
-print (f'Knobs after matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
+print (f'Knobs after full matching: on_sep8h = {collider.vars["on_sep8h"]._value} '
         f'on_sep8v = {collider.vars["on_sep8v"]._value}')
 
 tw_after_full_match = collider.twiss(lines=['lhcb1', 'lhcb2'])
