@@ -712,6 +712,9 @@ def test_stress_co_correction_and_lumi_leveling():
 
     # Lumi leveling with orbit correction
     collider.match(
+        solver_options={ # Standard jacobian settings not sufficient
+                         #(fsolve makes it in less iterations)
+            'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
         lines=['lhcb1', 'lhcb2'],
         ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
         ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
