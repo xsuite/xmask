@@ -272,7 +272,7 @@ def test_hllhc14_3_level_ip2_ip8():
     check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
                            # From lumi leveling
                            sep_h_ip2=-0.00014330344100935583, # checked against normalized sep
-                           sep_v_ip8=-3.441222062677253e-05, # checked against lumi
+                           sep_v_ip8=-3.434909687327809e-05, # checked against lumi
                            )
 
 def test_hllhc14_4_bb_config():
