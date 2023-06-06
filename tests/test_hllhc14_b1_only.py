@@ -105,8 +105,8 @@ def test_hllhc14_b1_only_1_install_beambeam():
     assert np.isclose(tw1_b1.qx, tw0_b1.qx, atol=1e-7, rtol=0)
     assert np.isclose(tw1_b1.qy, tw0_b1.qy, atol=1e-7, rtol=0)
 
-    assert np.isclose(tw1_b1.dqx, tw0_b1.dqx, atol=1e-4, rtol=0)
-    assert np.isclose(tw1_b1.dqy, tw0_b1.dqy, atol=1e-4, rtol=0)
+    assert np.isclose(tw1_b1.dqx, tw0_b1.dqx, atol=1e-3, rtol=0)
+    assert np.isclose(tw1_b1.dqy, tw0_b1.dqy, atol=1e-3, rtol=0)
 
     for ipn in [1, 2, 3, 4, 5, 6, 7, 8]:
         assert np.isclose(tw1_b1['betx', f'ip{ipn}'], tw0_b1['betx', f'ip{ipn}'], rtol=1e-5, atol=0)

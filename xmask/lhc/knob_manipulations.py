@@ -54,7 +54,7 @@ def define_octupole_current_knobs(line, beamn):
 def add_correction_term_to_dipole_correctors(line):
     # Add correction term to all dipole correctors
     line.vars['on_corr_co'] = 1
-    for kk in list(line.vars._owner.keys()):
+    for kk in list(line.vars.keys()):
         if kk.startswith('acb'):
             line.vars['corr_co_'+kk] = 0
             line.vars[kk] += (line.vars['corr_co_'+kk] * line.vars['on_corr_co'])
