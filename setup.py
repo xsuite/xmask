@@ -42,6 +42,7 @@ setup(
         'numpy>=1.0',
         'pyyaml',
         'xfields',
+        'irnl_rdt_correction>=1.1.0',
         ],
     extras_require={
         'tests': ['cpymad', 'pytest'],

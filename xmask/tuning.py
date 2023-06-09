@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from xmask.lhc import correct_ir_rdts
 
 import xtrack as xt
 
@@ -11,6 +12,7 @@ def machine_tuning(line,
         knob_names=None,
         targets=None,
         line_co_ref=None, co_corr_config=None,
+        enable_ir_rdt_correction=False, ir_rdt_corr_config=None,
         verbose=False):
 
     # Correct closed orbit
@@ -39,6 +41,21 @@ def machine_tuning(line,
                 xt.Vary(name=knob_names['c_minus_knob_2'],
                         limits=[-0.5e-2, 0.5e-2], step=1e-5)],
             targets=[xt.Target('c_minus', 0, tol=1e-4)])
+    
+    # Correct nonlinear errors in the IRs
+    if enable_ir_rdt_correction:
+        print('Correcting nonlinear errors in the IRs')
+        if isinstance(ir_rdt_corr_config, (str, Path)):
+            with open(ir_rdt_corr_config, 'r') as fid:
+                ir_rdt_corr_config = json.load(fid)
+
+        irnl_correction = correct_ir_rdts.calculate_correction(
+            line, 
+            beams=[int(ir_rdt_corr_config.pop('line_name')[-1])],
+            **ir_rdt_corr_config,
+        )
+        correct_ir_rdts.apply_correction(line, correction=irnl_correction)
+        
 
     # Match tune and chromaticity
     if enable_tune_correction or enable_chromaticity_correction:

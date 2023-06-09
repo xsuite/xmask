@@ -25,6 +25,7 @@ def build_xsuite_collider(
     enable_imperfections,
     install_apertures=False,
     enable_knob_synthesis=False,
+    enable_legacy_nl_corrections=True,
     rename_coupling_knobs=False,
     pars_for_imperfections={},
     ver_lhc_run=None,
@@ -115,6 +116,7 @@ def build_xsuite_collider(
         install_correct_errors_and_synthesisize_knobs(mad_track,
             enable_imperfections=enable_imperfections,
             enable_knob_synthesis=enable_knob_synthesis,
+            enable_legacy_nl_corrections=enable_legacy_nl_corrections,
             pars_for_imperfections=pars_for_imperfections,
             ver_lhc_run=ver_lhc_run,
             ver_hllhc_optics=ver_hllhc_optics)
