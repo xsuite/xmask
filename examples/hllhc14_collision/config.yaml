@@ -14,7 +14,7 @@ config_mad:
         beam_energy_tot: 7000           # [GeV]
 
     # Enable machine imperfections
-    enable_imperfections: false
+    enable_imperfections: true 
 
     # Enable knob synthesis (for coupling correction, if no imperfections)
     enable_knob_synthesis: false
