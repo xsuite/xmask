@@ -159,7 +159,7 @@ def configure_b4_from_b2(sequence_b4, sequence_b2,
     for nn in b2_dep.keys():
         if str(nn) in list(update_globals.keys()):
             continue
-        assert str(b4_dep[nn]) == str(b2_dep[nn])
+        assert str(b4_dep[nn]).replace(" ","") == str(b2_dep[nn]).replace(" ","")
 
     for nn in b4_dep.keys():
         if nn not in b2_dep.keys():
