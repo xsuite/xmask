@@ -64,11 +64,14 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
 
         # Match
-        collider.match(
+        opt = collider.match(
             lines=['lhcb1', 'lhcb2'],
             ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
             ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
             twiss_init='preserve',
             targets=targets,
-            vary=vary
+            vary=vary,
+            solve=False
         )
+        import pdb; pdb.set_trace()
+        opt.solve()
