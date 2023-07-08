@@ -30,21 +30,8 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
                     num_particles_per_bunch=config_beambeam['num_particles_per_bunch'],
                     sigma_z=config_beambeam['sigma_z'],
                     nemitt_x=config_beambeam['nemitt_x'],
-                    nemitt_y=config_beambeam['nemitt_y'])
-            )
-
-            # To make sure that beams are close enough to have enough luminosity to optomize on it
-            targets.append(
-                xt.TargetSeparation(
-                    ip_name=ip_name, separation_norm=5, ineq_sign='<', plane='x',
-                    nemitt_x=config_beambeam['nemitt_x'],
-                    nemitt_y=config_beambeam['nemitt_y'])
-            )
-            targets.append(
-                xt.TargetSeparation(
-                    ip_name=ip_name, separation_norm=5, ineq_sign='<', plane='y',
-                    nemitt_x=config_beambeam['nemitt_x'],
-                    nemitt_y=config_beambeam['nemitt_y'])
+                    nemitt_y=config_beambeam['nemitt_y'],
+                    log=True)
             )
         elif 'separation_in_sigmas' in config_this_ip.keys():
             targets.append(
