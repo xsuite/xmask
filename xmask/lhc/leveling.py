@@ -78,7 +78,6 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             twiss_init='preserve',
             targets=targets,
             vary=vary,
-            solver_options={'n_bisections': 5},
             solve=False,
         )
         import pdb; pdb.set_trace()
