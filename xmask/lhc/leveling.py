@@ -49,8 +49,14 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         if config_this_ip['impose_separation_orthogonal_to_crossing']:
             targets.append(
                 xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
-        vary.append(
-            xt.VaryList(config_this_ip['knobs'], step=1e-4))
+        for knob_name in config_this_ip['knobs']:
+            vv = collider.vars[knob_name]._value
+            # Preserve knob sign
+            if vv >= 0:
+                ll = (0, 1e200)
+            else:
+                ll = (-1e200, 0)
+            vary.append(xt.Vary(name=knob_name, step=1e-7, limits=ll))
 
         # Target and knobs to rematch the crossing angles and close the bumps
         for line_name in ['lhcb1', 'lhcb2']:
