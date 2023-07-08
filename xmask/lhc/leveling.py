@@ -32,6 +32,20 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
                     nemitt_x=config_beambeam['nemitt_x'],
                     nemitt_y=config_beambeam['nemitt_y'])
             )
+
+            # To make sure that beams are close enough to have enough luminosity to optomize on it
+            targets.append(
+                xt.TargetSeparation(
+                    ip_name=ip_name, separation_norm=5, ineq_sign='<', plane='x',
+                    nemitt_x=config_beambeam['nemitt_x'],
+                    nemitt_y=config_beambeam['nemitt_y'])
+            )
+            targets.append(
+                xt.TargetSeparation(
+                    ip_name=ip_name, separation_norm=5, ineq_sign='<', plane='y',
+                    nemitt_x=config_beambeam['nemitt_x'],
+                    nemitt_y=config_beambeam['nemitt_y'])
+            )
         elif 'separation_in_sigmas' in config_this_ip.keys():
             targets.append(
                 xt.TargetSeparation(
@@ -71,7 +85,8 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             twiss_init='preserve',
             targets=targets,
             vary=vary,
-            solve=False
+            solver_options={'n_bisections': 5},
+            solve=False,
         )
         import pdb; pdb.set_trace()
         opt.solve()
