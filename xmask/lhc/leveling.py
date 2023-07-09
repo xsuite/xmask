@@ -25,7 +25,7 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             targets.append(
                 xt.TargetLuminosity(
                     ip_name=ip_name, luminosity=config_this_ip['luminosity'], crab=False,
-                    tol=0.01 * config_this_ip['luminosity'],
+                    tol=0.001 * config_this_ip['luminosity'],
                     f_rev=f_rev, num_colliding_bunches=config_this_ip['num_colliding_bunches'],
                     num_particles_per_bunch=config_beambeam['num_particles_per_bunch'],
                     sigma_z=config_beambeam['sigma_z'],
