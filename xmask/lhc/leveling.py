@@ -80,5 +80,4 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             vary=vary,
             solve=False,
         )
-        import pdb; pdb.set_trace()
         opt.solve()
