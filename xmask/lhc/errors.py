@@ -58,8 +58,10 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         mad_track.input(f'call, file="{scripts_folder}/submodule_04b_alignsep.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04c_errortables.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04d_efcomp.madx";')
+
+        # if enable_legacy_nl_corrections:
+        mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
         if enable_legacy_nl_corrections:
-            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_correction.madx";')
             mad_track.input(f'call, file="{scripts_folder}/submodule_04f_final.madx";')
 

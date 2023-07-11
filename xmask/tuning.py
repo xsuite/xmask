@@ -48,10 +48,14 @@ def machine_tuning(line,
         if isinstance(ir_rdt_corr_config, (str, Path)):
             with open(ir_rdt_corr_config, 'r') as fid:
                 ir_rdt_corr_config = json.load(fid)
+        
+        line_name = ir_rdt_corr_config.pop('line_name')
+        if "output" in ir_rdt_corr_config:
+            ir_rdt_corr_config["output"] = ir_rdt_corr_config["output"].format(line_name)
 
         irnl_correction = correct_ir_rdts.calculate_correction(
             line, 
-            beams=[int(ir_rdt_corr_config.pop('line_name')[-1])],
+            beams=[int(line_name[-1])],
             **ir_rdt_corr_config,
         )
         correct_ir_rdts.apply_correction(line, correction=irnl_correction)
