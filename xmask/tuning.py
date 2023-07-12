@@ -32,6 +32,8 @@ def machine_tuning(line,
         assert knob_names is not None
         assert 'c_minus_knob_1' in knob_names
         assert 'c_minus_knob_2' in knob_names
+        assert knob_names['c_minus_knob_1'] in line.vars
+        assert knob_names['c_minus_knob_2'] in line.vars
         # Match coupling
         print(f'Matching linear coupling')
         line.match(verbose=verbose,
