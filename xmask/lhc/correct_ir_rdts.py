@@ -8,6 +8,10 @@ provided which allow running the script with XTrack lines.
 In this correction, the powering for the correctors in the IRs
 are calculated by minimizing the local RDTs.
 
+This correction implicitly assumes, that each corrector magnet
+is powered by a single knob and that the KNL value of the magnet 
+is calculated by knob-value * length-of-magnet.
+
 See: https://github.com/pylhc/irnl_rdt_correction/blob/master/latex/note.pdf
 """
 from typing import Dict
@@ -30,7 +34,6 @@ XTRACK_TO_MADX: Dict[str, str] = {
     "ksl": "K{}SL",
 }
 
-
 def calculate_correction(*lines: Line, regex_filter: str = DEFAULT_IR_FILTER, **kwargs) -> DataFrame:
     """Run the correction with the given Line instances from XTrack.
     A combined correction including the optics of all given lines is performed.
@@ -47,12 +50,12 @@ def calculate_correction(*lines: Line, regex_filter: str = DEFAULT_IR_FILTER, **
             beams=kwargs.pop("beams", list(range(1, len(lines) + 1))),
             twiss=[convert_line_to_madx_twiss(line, regex_filter) for line in lines],
             errors=None,
-            ignore_missing_columns=True,  # required if errors not given
+            ignore_missing_columns=True,  # required, as errors are not given explicitly
             **kwargs,
     )
 
     for col in (NAME, CIRCUIT):
-        correction_df[col] = correction_df[col].str.lower()
+        correction_df[col] = correction_df[col].str.lower()  # convert back to xtrack style
     return correction_df
 
 
@@ -84,18 +87,22 @@ def convert_line_to_madx_twiss(line: Line, regex_filter: str = None) -> DataFram
             twiss_df.loc[element_name, columns] = kl_list
 
     twiss_df = twiss_df.fillna(0)
+    twiss_df[KEYWORD] = line.get_table()["element_type", twiss_df.index.to_list()]
+    twiss_df[KEYWORD] = twiss_df[KEYWORD].str.upper()
     twiss_df.index = twiss_df.index.str.upper()
-    twiss_df[KEYWORD] = MULTIPOLE
     return twiss_df
 
 
 def apply_correction(*lines: Line, correction: DataFrame) -> None:
     """Apply the given correction to the given lines.
+    NOTE: The values given in the correction DataFrame are
+    the KNL values, not the knob values.
+    They need therefore to be divided by the length of the magnet/element.
 
     Args:
         corrections (DataFrame): Correction as calculated by 
-        :meth:`irnl_rdt_correction.main.irnl_rdt_correction`. 
+        :func:`irnl_rdt_correction.main.irnl_rdt_correction`. 
     """        
-    for _, (circuit, value) in correction[[CIRCUIT, VALUE]].iterrows():
+    for _, (element, circuit, value) in correction[[NAME, CIRCUIT, VALUE]].iterrows():
         for line in lines:
-            line.vars[circuit] = value
+            line.vars[circuit] = value / line.element_dict[element].length

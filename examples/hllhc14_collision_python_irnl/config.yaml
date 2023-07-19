@@ -97,18 +97,17 @@ config_knobs_and_tuning:
       lhcb2: corr_co_lhcb2.json
 
     # Tunes and chromaticities
-    qx:
-      lhcb1: 62.31
-      lhcb2: 62.31
-    qy:
-      lhcb1: 60.32
-      lhcb2: 60.32
-    dqx:
-      lhcb1: 5
-      lhcb2: 5
-    dqy:
-      lhcb1: 6
-      lhcb2: 6
+    targets:
+      lhcb1:
+        qx: 62.31
+        qy: 60.32
+        dqx: 5
+        dqy: 6
+      lhcb2:
+        qx: 62.31
+        qy: 60.32
+        dqx: 5
+        dqy: 6
 
     knob_names:
       lhcb1:
@@ -136,7 +135,10 @@ config_knobs_and_tuning:
     ir_rdt_correction_enabled: True
     ir_rdt_correction:
       accel: 'hllhc'  # "lhc" or "hllhc" implemented (defaults to "lhc")
-      regex_filter: "M(QX|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
+      regex_filter: "M(QX.*\\.\\.1$|COX)" 
+      ips: [1]
+      rdts: ["F0004", "F4000"]
+      # regex_filter: "M(QX|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
       # regex_filter: "M(QS?X|BX|BRC|C[SODT]S?X)"       # elements that contribute errors + correctors 
       # regex_filter: "M(QS?X|BX|BRC|BRD|CBXF|C[SODT]S?X)"  # + correct for D2 and MCBXF
       # feeddown: 0           # include feeddown in RDT
