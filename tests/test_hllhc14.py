@@ -603,7 +603,7 @@ def test_hllhc14_4_bb_config():
             assert ee_weak.threshold_singular < 1e-27
             assert ee_weak.threshold_singular > 0
 
-            assert ee_weak._flag_beamstrahlung == 0
+            assert ee_weak.flag_beamstrahlung == 0
 
             assert ee_weak.scale_strength == 1
             assert ee_weak.other_beam_q0 == 1
