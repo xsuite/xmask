@@ -25,12 +25,13 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             targets.append(
                 xt.TargetLuminosity(
                     ip_name=ip_name, luminosity=config_this_ip['luminosity'], crab=False,
-                    tol=0.01 * config_this_ip['luminosity'],
+                    tol=0.001 * config_this_ip['luminosity'],
                     f_rev=f_rev, num_colliding_bunches=config_this_ip['num_colliding_bunches'],
                     num_particles_per_bunch=config_beambeam['num_particles_per_bunch'],
                     sigma_z=config_beambeam['sigma_z'],
                     nemitt_x=config_beambeam['nemitt_x'],
-                    nemitt_y=config_beambeam['nemitt_y'])
+                    nemitt_y=config_beambeam['nemitt_y'],
+                    log=True)
             )
         elif 'separation_in_sigmas' in config_this_ip.keys():
             targets.append(
@@ -48,8 +49,14 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         if config_this_ip['impose_separation_orthogonal_to_crossing']:
             targets.append(
                 xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
-        vary.append(
-            xt.VaryList(config_this_ip['knobs'], step=1e-4))
+        for knob_name in config_this_ip['knobs']:
+            vv = collider.vars[knob_name]._value
+            # Preserve knob sign
+            if vv >= 0:
+                ll = (0, 1e200)
+            else:
+                ll = (-1e200, 0)
+            vary.append(xt.Vary(name=knob_name, step=1e-7, limits=ll))
 
         # Target and knobs to rematch the crossing angles and close the bumps
         for line_name in ['lhcb1', 'lhcb2']:
@@ -64,11 +71,13 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
 
         # Match
-        collider.match(
+        opt = collider.match(
             lines=['lhcb1', 'lhcb2'],
             ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
             ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
             twiss_init='preserve',
             targets=targets,
-            vary=vary
+            vary=vary,
+            solve=False,
         )
+        opt.solve()

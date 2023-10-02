@@ -271,7 +271,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip1, 6.4e+27, rtol=1e-2, atol=0)
+    assert np.isclose(ll_ip1, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip2
     ll_ip2 = xt.lumi.luminosity_from_twiss(
@@ -285,7 +285,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip2, 6.4e+27, rtol=1e-2, atol=0)
+    assert np.isclose(ll_ip2, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip5
     ll_ip5 = xt.lumi.luminosity_from_twiss(
@@ -299,7 +299,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip5, 6.4e+27, rtol=1e-2, atol=0)
+    assert np.isclose(ll_ip5, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip8
     ll_ip8 = xt.lumi.luminosity_from_twiss(
@@ -313,7 +313,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip8, 1e+27, rtol=1e-2, atol=0)
+    assert np.isclose(ll_ip8, 1e+27, rtol=1e-3, atol=0)
 
     # Check optics, orbit, rf, etc.
     check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
@@ -321,7 +321,7 @@ def test_lhc_ion_3_leveling():
                            sep_h_ip1=0.00920e-3,
                            sep_h_ip2=0.01132e-3,
                            sep_v_ip5=0.00918e-3,
-                           sep_v_ip8=0.01623e-3,
+                           sep_v_ip8=0.01629e-3,
                            )
 
 def test_lhc_ion_4_bb_config():
@@ -652,7 +652,7 @@ def test_lhc_ion_4_bb_config():
             assert ee_weak.threshold_singular < 1e-27
             assert ee_weak.threshold_singular > 0
 
-            assert ee_weak._flag_beamstrahlung == 0
+            assert ee_weak.flag_beamstrahlung == 0
 
             assert ee_weak.scale_strength == 1
             assert ee_weak.other_beam_q0 == 82
