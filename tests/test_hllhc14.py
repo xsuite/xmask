@@ -256,7 +256,7 @@ def test_hllhc14_3_level_ip2_ip8():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip8, 2e33, rtol=1e-2, atol=0)
+    assert np.isclose(ll_ip8, 2e33, rtol=1e-3, atol=0)
 
     # Check separation in ip2
     mean_betx = np.sqrt(tw['lhcb1']['betx', 'ip2']
@@ -603,7 +603,7 @@ def test_hllhc14_4_bb_config():
             assert ee_weak.threshold_singular < 1e-27
             assert ee_weak.threshold_singular > 0
 
-            assert ee_weak._flag_beamstrahlung == 0
+            assert ee_weak.flag_beamstrahlung == 0
 
             assert ee_weak.scale_strength == 1
             assert ee_weak.other_beam_q0 == 1
@@ -807,7 +807,7 @@ def test_stress_co_correction_and_lumi_leveling():
         twiss_b2=tw_after_full_match['lhcb2'],
         crab=False)
 
-    assert np.isclose(ll_after_match, 2e14, rtol=1e-2, atol=0)
+    assert np.isclose(ll_after_match, 2e14, rtol=1e-3, atol=0)
 
     # Check orthogonality
     tw_b1 = tw_after_full_match['lhcb1']
