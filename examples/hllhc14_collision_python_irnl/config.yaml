@@ -135,10 +135,7 @@ config_knobs_and_tuning:
     ir_rdt_correction_enabled: True
     ir_rdt_correction:
       accel: 'hllhc'  # "lhc" or "hllhc" implemented (defaults to "lhc")
-      regex_filter: "M(QX.*\\.\\.1$|COX)" 
-      ips: [1]
-      rdts: ["F0004", "F4000"]
-      # regex_filter: "M(QX|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
+      regex_filter: "M(QX|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
       # regex_filter: "M(QS?X|BX|BRC|C[SODT]S?X)"       # elements that contribute errors + correctors 
       # regex_filter: "M(QS?X|BX|BRC|BRD|CBXF|C[SODT]S?X)"  # + correct for D2 and MCBXF
       # feeddown: 0           # include feeddown in RDT
@@ -151,6 +148,11 @@ config_knobs_and_tuning:
       # update_optics: true   # include corrector value in feeddown
       # iterations: 1         # number of correction calculation iterations 
       # ignore_corrector_settings: False  # ignore corrector settings in twiss
+      # ---------------------------------------------------
+      # For octupole correction test ---
+      # regex_filter: "M(QX.*\\.\\.1$|COX)" 
+      # ips: [1]
+      # rdts: ["F0004", "F4000"]
 
 config_beambeam:
     bunch_spacing_buckets: 10
