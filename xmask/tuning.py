@@ -10,7 +10,8 @@ def machine_tuning(line,
         enable_linear_coupling_correction=False,
         enable_tune_correction=False,
         enable_chromaticity_correction=False,
-        dual_pass_tune_and_chroma=True,
+        dual_pass_tune_and_chroma=False,
+        dual_pass_tol_factor: float = 2.,
         knob_names=None, 
         targets=None,
         coupling_correction_analytical_estimation=False,
@@ -38,6 +39,7 @@ def machine_tuning(line,
             enable_tune_correction=enable_tune_correction, 
             enable_chromaticity_correction=enable_chromaticity_correction,
             dual_pass_tune_and_chroma=dual_pass_tune_and_chroma,
+            dual_pass_tol_factor=dual_pass_tol_factor,
             knob_names=knob_names, 
             targets=targets, 
             verbose=verbose
@@ -66,7 +68,7 @@ def linear_coupling_correction(line: xt.Line,
         iterative_estimation: int = 0,
         targets: Sequence[str] = None,
         verbose: bool = False,
-        limits: Sequence[float, float] = None,
+        limits: Tuple[float, float] = None,
         step: float = 1e-8,
         tol: float = 1e-4,
     ):
@@ -240,7 +242,7 @@ def iterative_closest_tune_minimization(line: xt.Line,
 def tune_and_chromaticity_correction(line: xt.Line,
         enable_tune_correction: bool = False,
         enable_chromaticity_correction: bool = False,
-        dual_pass_tune_and_chroma: bool = True,
+        dual_pass_tune_and_chroma: bool = False,
         knob_names: Dict[str, str] = None, 
         targets: Dict[str, str] = None,
         verbose: bool = False,
@@ -248,6 +250,7 @@ def tune_and_chromaticity_correction(line: xt.Line,
         tol_tune: float = 1e-4,
         step_chroma: float = 1e-2,
         tol_chroma: float = 5e-2,
+        dual_pass_tol_factor: float = 2.,
     ):
     """Correct tune and chroma in the given line.
 
@@ -270,6 +273,7 @@ def tune_and_chromaticity_correction(line: xt.Line,
                                        Defaults to 1e-2.
         tol_chroma (float, optional): Tolerance of the chroma matching, see :class:`xtrack.Target`.
                                       Defaults to 5e-2.
+        dual_pass_tol_factor (float, optional): Tolerance factor for the individual matching. Defaults to 2.
     """
     vary_tune, vary_chroma = [], []
     targets_tune, targets_chroma = [], []
@@ -314,10 +318,18 @@ def tune_and_chromaticity_correction(line: xt.Line,
     
     if dual_pass_tune_and_chroma and enable_tune_correction and enable_chromaticity_correction:
         print('Matching tune')
-        line.match(verbose=verbose, vary=vary_tune, targets=targets_tune)
-
+        targets_tune_single = [
+            xt.Target('qx', targets['qx'], tol=dual_pass_tol_factor*tol_tune),
+            xt.Target('qy', targets['qy'], tol=dual_pass_tol_factor*tol_tune)
+        ]
+        line.match(verbose=verbose, vary=vary_tune, targets=targets_tune_single)
+        
         print('Matching chromaticity')
-        line.match(verbose=verbose, vary=vary_chroma, targets=targets_chroma)
+        targets_chroma_single = [
+            xt.Target('dqx', targets['dqx'], tol=dual_pass_tol_factor*tol_chroma),
+            xt.Target('dqy', targets['dqy'], tol=dual_pass_tol_factor*tol_chroma)
+        ]
+        line.match(verbose=verbose, vary=vary_chroma, targets=targets_chroma_single)
 
     print('Matching tune and chromaticity')
     line.match(verbose=verbose, vary=vary_tune+vary_chroma, targets=targets_tune+targets_chroma)

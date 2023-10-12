@@ -14,8 +14,8 @@ is calculated by knob-value * length-of-magnet.
 
 See: https://github.com/pylhc/irnl_rdt_correction/blob/master/latex/note.pdf
 """
-from typing import Dict
-from xtrack.line import Line
+from typing import Dict, Sequence
+import xtrack as xt
 from irnl_rdt_correction.main import irnl_rdt_correction
 from irnl_rdt_correction.constants import KEYWORD, MULTIPOLE
 import re
@@ -34,12 +34,15 @@ XTRACK_TO_MADX: Dict[str, str] = {
     "ksl": "K{}SL",
 }
 
-def calculate_correction(*lines: Line, regex_filter: str = DEFAULT_IR_FILTER, **kwargs) -> DataFrame:
+
+def calculate_correction(*lines: xt.Line,
+                         beams: Sequence[int], regex_filter: str = DEFAULT_IR_FILTER,
+                         **kwargs) -> DataFrame:
     """Run the correction with the given Line instances from XTrack.
     A combined correction including the optics of all given lines is performed.
 
     Args:
-        lines (Line): XTrack line objects to run the correction on. 
+        lines (xt.Line): XTrack line objects to run the correction on. 
         regex_filter (str): Regular expression to filter the elements, 
                             which contribute to the RDTs.
 
@@ -47,7 +50,7 @@ def calculate_correction(*lines: Line, regex_filter: str = DEFAULT_IR_FILTER, **
         See :meth:`irnl_rdt_correction.main.irnl_rdt_correction`
     """
     _, correction_df = irnl_rdt_correction(
-            beams=kwargs.pop("beams", list(range(1, len(lines) + 1))),
+            beams=beams,
             twiss=[convert_line_to_madx_twiss(line, regex_filter) for line in lines],
             errors=None,
             ignore_missing_columns=True,  # required, as errors are not given explicitly
@@ -59,7 +62,7 @@ def calculate_correction(*lines: Line, regex_filter: str = DEFAULT_IR_FILTER, **
     return correction_df
 
 
-def convert_line_to_madx_twiss(line: Line, regex_filter: str = None) -> DataFrame:
+def convert_line_to_madx_twiss(line: xt.Line, regex_filter: str = None) -> DataFrame:
     """Create a MAD-X twiss TfsDataFrame from the data given in line.
 
     Args:
@@ -93,15 +96,16 @@ def convert_line_to_madx_twiss(line: Line, regex_filter: str = None) -> DataFram
     return twiss_df
 
 
-def apply_correction(*lines: Line, correction: DataFrame) -> None:
+def apply_correction(*lines: xt.Line, correction: DataFrame) -> None:
     """Apply the given correction to the given lines.
     NOTE: The values given in the correction DataFrame are
     the KNL values, not the knob values.
     They need therefore to be divided by the length of the magnet/element.
 
     Args:
+        lines (xt.Line): Lines to apply corrections on.
         corrections (DataFrame): Correction as calculated by 
-        :func:`irnl_rdt_correction.main.irnl_rdt_correction`. 
+        :func:`irnl_rdt_correction.main.irnl_rdt_correction`.
     """        
     for _, (element, circuit, value) in correction[[NAME, CIRCUIT, VALUE]].iterrows():
         for line in lines:
