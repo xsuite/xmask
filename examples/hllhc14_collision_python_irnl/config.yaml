@@ -127,8 +127,7 @@ config_knobs_and_tuning:
 
     correct_magnetic_errors: 
       enable: true  # correct magnetic errors
-      pre_tuning: false  # run orbit, tune and chroma correction before error correction
-
+      
       ir_rdt_correction:
         # Correct nonlinear errors in the IRs by locally minimizing RDTs.
         # Legacy correction via fortran code can be activated in 
@@ -148,14 +147,14 @@ config_knobs_and_tuning:
         # regex_filter: "M(QS?X|BX|BRC|C[SODT]S?X)"       # elements that contribute errors + correctors 
         # regex_filter: "M(QS?X|BX|BRC|BRD|CBXF|C[SODT]S?X)"  # + correct for D2 and MCBXF
         # feeddown: 0           # include feeddown in RDT
-        output: 'corrections_ir_{}'  # write into output files (inlcude {}-placeholder for beam)
+        # output: 'corrections_ir_{}'  # write into output files (inlcude {}-placeholder for beam)
         # rdts: None            # RDTs to correct, e.g ["F0004", "F4000"]
         # rdts2: None           # only for dual-optics correction, not used
         # ips: [1, 2, 5, 8]     # IPs to minimize RDTs in
         # solver: 'lstsq'       # 'lstsq', 'inv' or 'linear'
         # update_optics: true   # include corrector value in feeddown
         # iterations: 1         # number of correction calculation iterations 
-        # ignore_corrector_settings: true  # ignore corrector settings in twiss
+        ignore_corrector_settings: true  # ignore corrector powering for optimization
         # --- Only Octupole Correction Example -------
         # regex_filter: "M(QX.*\\.\\.1$|COX)" 
         # ips: [1]

@@ -11,7 +11,6 @@ def machine_tuning(line,
         enable_tune_correction=False,
         enable_chromaticity_correction=False,
         dual_pass_tune_and_chroma=False,
-        dual_pass_tol_factor: float = 2.,
         knob_names=None, 
         targets=None,
         coupling_correction_analytical_estimation=False,
@@ -39,7 +38,6 @@ def machine_tuning(line,
             enable_tune_correction=enable_tune_correction, 
             enable_chromaticity_correction=enable_chromaticity_correction,
             dual_pass_tune_and_chroma=dual_pass_tune_and_chroma,
-            dual_pass_tol_factor=dual_pass_tol_factor,
             knob_names=knob_names, 
             targets=targets, 
             verbose=verbose
@@ -248,9 +246,11 @@ def tune_and_chromaticity_correction(line: xt.Line,
         verbose: bool = False,
         step_tune: float = 1e-5,
         tol_tune: float = 1e-4,
+        limits_tune: Tuple[float, float] = None,
         step_chroma: float = 1e-2,
         tol_chroma: float = 5e-2,
-        dual_pass_tol_factor: float = 2.,
+        limits_chroma: Tuple[float, float]  = None, 
+        **kwargs,
     ):
     """Correct tune and chroma in the given line.
 
@@ -269,11 +269,13 @@ def tune_and_chromaticity_correction(line: xt.Line,
                                      Defaults to 1e-5.
         tol_tune (float, optional): Tolerance of the tune matching, see :class:`xtrack.Target`.
                                     Defaults to 1e-4.
+        limits_tune (Tuple[float, float], optional): Limits of the tune matching, see :class:`xtrack.Vary`.
         step_chroma (float, optional): Step size of the chroma matching, see :class:`xtrack.Vary`. 
                                        Defaults to 1e-2.
         tol_chroma (float, optional): Tolerance of the chroma matching, see :class:`xtrack.Target`.
                                       Defaults to 5e-2.
-        dual_pass_tol_factor (float, optional): Tolerance factor for the individual matching. Defaults to 2.
+        limits_chroma (Tuple[float, float], optional): Limits of the chroma matching, see :class:`xtrack.Vary`.
+        kwargs: Arguments to be passed to the matching function.
     """
     vary_tune, vary_chroma = [], []
     targets_tune, targets_chroma = [], []
@@ -289,8 +291,8 @@ def tune_and_chromaticity_correction(line: xt.Line,
         assert 'qy' in targets
 
         vary_tune = [
-            xt.Vary(knob_names['q_knob_1'], step=step_tune),
-            xt.Vary(knob_names['q_knob_2'], step=step_tune)
+            xt.Vary(knob_names['q_knob_1'], step=step_tune, limits=limits_tune),
+            xt.Vary(knob_names['q_knob_2'], step=step_tune, limits=limits_tune)
         ]
         targets_tune = [
             xt.Target('qx', targets['qx'], tol=tol_tune),
@@ -308,8 +310,8 @@ def tune_and_chromaticity_correction(line: xt.Line,
         assert 'dqy' in targets
 
         vary_chroma = [
-            xt.Vary(knob_names['dq_knob_1'], step=step_chroma),
-            xt.Vary(knob_names['dq_knob_2'], step=step_chroma)
+            xt.Vary(knob_names['dq_knob_1'], step=step_chroma, limits=limits_chroma),
+            xt.Vary(knob_names['dq_knob_2'], step=step_chroma, limits=limits_chroma)
         ]
         targets_chroma = [
             xt.Target('dqx', targets['dqx'], tol=tol_chroma),
@@ -317,19 +319,12 @@ def tune_and_chromaticity_correction(line: xt.Line,
         ]
     
     if dual_pass_tune_and_chroma and enable_tune_correction and enable_chromaticity_correction:
+        # Correct Tune and Chroma individually first
         print('Matching tune')
-        targets_tune_single = [
-            xt.Target('qx', targets['qx'], tol=dual_pass_tol_factor*tol_tune),
-            xt.Target('qy', targets['qy'], tol=dual_pass_tol_factor*tol_tune)
-        ]
-        line.match(verbose=verbose, vary=vary_tune, targets=targets_tune_single)
+        line.match(verbose=verbose, vary=vary_tune, targets=targets_tune, **kwargs)
         
         print('Matching chromaticity')
-        targets_chroma_single = [
-            xt.Target('dqx', targets['dqx'], tol=dual_pass_tol_factor*tol_chroma),
-            xt.Target('dqy', targets['dqy'], tol=dual_pass_tol_factor*tol_chroma)
-        ]
-        line.match(verbose=verbose, vary=vary_chroma, targets=targets_chroma_single)
+        line.match(verbose=verbose, vary=vary_chroma, targets=targets_chroma, **kwargs)
 
     print('Matching tune and chromaticity')
-    line.match(verbose=verbose, vary=vary_tune+vary_chroma, targets=targets_tune+targets_chroma)
+    line.match(verbose=verbose, vary=vary_tune+vary_chroma, targets=targets_tune+targets_chroma, **kwargs)
