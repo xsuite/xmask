@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, fields
+from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 import pandas as pd
@@ -9,6 +9,7 @@ from xmask.lhc.correct_ir_rdts import (CIRCUIT, KEYWORD, MULTIPOLE, VALUE,
                                        convert_line_to_madx_twiss)
 
 
+
 def test_calculate_correction():
     """
     Unit test for calculate_correction function.
@@ -16,37 +17,15 @@ def test_calculate_correction():
     correctors. The beta-functions are all 1, so that the calculation 
     of the effective RDTs is straightforward.
     """
-
-    # Mock Input
-    @dataclass
-    class MockElement:
-        knl: List[float]
-        ksl: List[float]
-            
-
-    class MockLine:
-        def __init__(self):
-            self.element_dict = {
-                "mq.4l1": MockElement(knl=[0, 1], ksl=[0, 0]),
-                "mcqx.3l1": MockElement(knl=[0, 0], ksl=[0, 0]),
-                "mcqx.3r1": MockElement(knl=[0, 0], ksl=[0, 0]),
-                "mq.4r1": MockElement(knl=[0, 1], ksl=[0, 0]),
-            }
-
-        def twiss(self):
-            class MockTwiss:
-                def to_pandas(self):
-                    return pd.DataFrame({
-                        "name": ["mq.4l1", "mcqx.3l1", "mcqx.3r1", "mq.4r1"],
-                        "s": [1.0, 2.0, 3.0, 4.0],
-                        "betx": [1., 1., 1., 1.],
-                        "bety": [1., 1., 1., 1.]
-                    })
-            return MockTwiss()
-    line = MockLine()
+    line = MockLine(
+        MyElement(name="mq.4l1",   s=1, knl=[0, 1], ksl=[0, 0]),
+        MyElement(name="mcqx.3l1", s=2, knl=[0, 0], ksl=[0, 0]),
+        MyElement(name="mcqx.3r1", s=3, knl=[0, 0], ksl=[0, 0]),
+        MyElement(name="mq.4r1",   s=4, knl=[0, 1], ksl=[0, 0]),
+    )
 
     # Run Correction
-    correction = calculate_correction(line, regex_filter=r"M", **dict(ips=[1], rdts=["F2000"]))
+    correction = calculate_correction(line, beams=[1], regex_filter=r"M", **dict(ips=[1], rdts=["F2000"]))
 
     # Assert Results
     assert "kcqx3.l1" in correction[CIRCUIT].to_list()
@@ -62,33 +41,10 @@ def test_convert_line_to_madx_twiss():
     Uses a mock line object and regex filter. Asserts that the function returns a DataFrame with expected
     index names, columns names, and values.
     """
-    @dataclass
-    class MockElement:
-        knl: List[float]
-        ksl: List[float]
-            
-
-    class MockLine:
-        def __init__(self):
-            self.element_dict = {
-                "element1": MockElement(knl=[0.1, 0.2], ksl=[0.3, 0.4]),
-                "element2": MockElement(knl=[0.3, 0.4], ksl=[0.1, 0.2]),
-            }
-            self.vars = {"circuit1": 0.0, "circuit2": 0.0}
-
-        def twiss(self):
-            class MockTwiss:
-                def to_pandas(self):
-                    return pd.DataFrame({
-                        "name": ["element1", "element2"],
-                        "s": [1.0, 2.0],
-                        "betx": [1.1, 2.2],
-                        "bety": [3.3, 4.4]
-                    })
-            return MockTwiss()
-
-    # Run function with mock objects
-    line = MockLine()
+    line = MockLine(
+        MyElement(name="element1", s=1.0, betx=1.1, bety=3.3, knl=[0.1, 0.2], ksl=[0.3, 0.4]),
+        MyElement(name="element2", s=2.0, betx=2.2, bety=4.4, knl=[0.3, 0.4], ksl=[0.1, 0.2]),
+    )
     df = convert_line_to_madx_twiss(line, regex_filter="element\d")
 
     # Assert that the returned DataFrame is as expected
@@ -97,7 +53,6 @@ def test_convert_line_to_madx_twiss():
     assert df.columns.to_list() == ["S", "BETX", "BETY", "K0L", "K1L",  "K0SL", "K1SL", KEYWORD]
     assert df.loc["ELEMENT1"].to_list() == [1.0, 1.1, 3.3, 0.1, 0.2, 0.3, 0.4, MULTIPOLE]
     assert df.loc["ELEMENT2"].to_list() == [2.0, 2.2, 4.4, 0.3, 0.4, 0.1, 0.2, MULTIPOLE]            
-    
     
     df = convert_line_to_madx_twiss(line, regex_filter="ekdffs")
     assert df.empty
@@ -113,23 +68,86 @@ def test_apply_correction():
     """
     # Mock correction dataframe
     correction = pd.DataFrame({
+        "name": ["magnet1", "magnet2"],
         "circuit": ["circuit1", "circuit2"],
         "value": [1.0, 2.0]
     })
+
+    # Mock Element and Line (very few attributes needed)
+    @dataclass
+    class MockElement:
+        length: float
     
-    # Mock Line object
     class MockLine:
-        def __init__(self):
+        def __init__(self, length):
             self.vars = {"circuit1": 0.0, "circuit2": 0.0}
+            self.element_dict = {
+                "magnet1": MockElement(length=length),
+                "magnet2": MockElement(length=length)
+            }
 
-
-    lines = [MockLine(), MockLine()]
+    lines = [
+        MockLine(length=1.0), 
+        MockLine(length=2.0)
+    ]
 
     # Apply correction
     apply_correction(*lines, correction=correction)
 
-    # Assert that variables were updated correctly
-    assert lines[0].vars["circuit1"] == 1.0
-    assert lines[0].vars["circuit2"] == 2.0
-    assert lines[1].vars["circuit1"] == 1.0
-    assert lines[1].vars["circuit2"] == 2.0
+    correction = correction.set_index("name")
+
+    for line in lines:
+        for idx in (1, 2):
+            assert line.vars[f"circuit{idx}"] == (
+                correction.loc[f"magnet{idx}", "value"] / line.element_dict[f"magnet{idx}"].length
+            )
+
+
+# Some Classes to Mock XLine behaviour for the tests -------------------------------------------------------------------
+@dataclass
+class MyElement:
+    """ Mocks a line element in a sense that it has knl and ksl attributes, 
+    but is also used here to define the entries of an element in the element table/twiss pandas DataFrame."""
+    name: str
+    s: float
+    knl: List[float]
+    ksl: List[float]
+    betx: Optional[float] = 1
+    bety: Optional[float] = 1
+    element_type: Optional[str] = "multipole"
+
+    def to_data_dict(self):
+        d = {f.name: getattr(self, f.name) for f in fields(self) if f.name not in ["knl", "ksl"]}
+        d.update({f"k{idx}l": value for idx, value in enumerate(self.knl)})
+        d.update({f"k{idx}sl": value for idx, value in enumerate(self.ksl)})
+        return d
+
+
+@dataclass
+class MockElement:
+    """ Mocks a line element in a sense that it has knl and ksl attributes."""
+    knl: List[float]
+    ksl: List[float]
+
+
+class MockLine:
+    """ Creates a line-object that has the needed attributes of line as used in the tests."""
+    def __init__(self, *elements: MyElement):
+        self.element_dict = {element.name: MockElement(element.knl, element.ksl) for element in elements}
+        self._pandas = pd.DataFrame(
+                    index=self.element_dict.keys(),
+                    data=[element.to_data_dict() for element in elements],
+                )
+
+    def twiss(outer_self):
+        class MockTwiss:
+            def to_pandas(self):
+                return outer_self._pandas.copy().drop("element_type", axis=1)
+        return MockTwiss()
+    
+    def get_table(outer_self):
+        class MockTable:
+            def __getitem__(self, key):
+                df = outer_self._pandas.copy().drop(["betx", "bety"], axis=1)
+                return df.loc[key[1], key[0]]
+        return MockTable()
