@@ -1,5 +1,5 @@
 from dataclasses import dataclass, fields
-from typing import Dict, List, Optional, Sequence
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -7,7 +7,6 @@ import pandas as pd
 from xmask.lhc.correct_ir_rdts import (CIRCUIT, KEYWORD, MULTIPOLE, VALUE,
                                        apply_correction, calculate_correction,
                                        convert_line_to_madx_twiss)
-
 
 
 def test_calculate_correction():

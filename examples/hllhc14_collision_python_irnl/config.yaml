@@ -50,6 +50,7 @@ config_mad:
       par_write_errortable: 1
 
 config_knobs_and_tuning:
+    verbose: true  # verbose output for debugging
 
     knob_settings:
 
@@ -127,6 +128,7 @@ config_knobs_and_tuning:
 
     correct_magnetic_errors: 
       enable: true  # correct magnetic errors
+      pretuning: false  # match CO, tune and chroma before correction
       
       ir_rdt_correction:
         # Correct nonlinear errors in the IRs by locally minimizing RDTs.
@@ -143,7 +145,7 @@ config_knobs_and_tuning:
         #
         # --- Parameters passed on to the IRNL RDT correction module -------------
         accel: 'hllhc'  # "lhc" or "hllhc" implemented (defaults to "lhc")
-        regex_filter: "M(QX|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
+        regex_filter: "M(QS?X|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
         # regex_filter: "M(QS?X|BX|BRC|C[SODT]S?X)"       # elements that contribute errors + correctors 
         # regex_filter: "M(QS?X|BX|BRC|BRD|CBXF|C[SODT]S?X)"  # + correct for D2 and MCBXF
         # feeddown: 0           # include feeddown in RDT
@@ -151,6 +153,7 @@ config_knobs_and_tuning:
         # rdts: None            # RDTs to correct, e.g ["F0004", "F4000"]
         # rdts2: None           # only for dual-optics correction, not used
         # ips: [1, 2, 5, 8]     # IPs to minimize RDTs in
+        ips: [1, 5]             # IPs 2 and 8 are deactivated in 04e_correction
         # solver: 'lstsq'       # 'lstsq', 'inv' or 'linear'
         # update_optics: true   # include corrector value in feeddown
         # iterations: 1         # number of correction calculation iterations 

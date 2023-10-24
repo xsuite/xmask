@@ -46,7 +46,8 @@ def machine_tuning(line,
 
 def closed_orbit_correction(line: xt.Line, 
     line_co_ref=None, 
-    co_corr_config=None
+    co_corr_config=None,
+    verbose: bool = False,
     ):
     print(f'Correcting closed orbit')
     assert line_co_ref is not None
@@ -57,7 +58,9 @@ def closed_orbit_correction(line: xt.Line,
 
     line.correct_closed_orbit(
         reference=line_co_ref,
-        correction_config=co_corr_config)
+        correction_config=co_corr_config,
+        verbose=verbose,
+    )
 
 
 def linear_coupling_correction(line: xt.Line,
@@ -78,10 +81,6 @@ def linear_coupling_correction(line: xt.Line,
         analytical_estimation (bool, optional): Perform an analytical estimation of the coupling 
                                                 knob values before doing the matching. 
                                                 Defaults to False.
-        iterative_estimation (int, optional): Try to find a good start condition for the matching by 
-                                              iteratively reducing the closest tune approach.
-                                              This is the number of steps taken.
-                                              Defaults to 0, which means that this estimation is not performed.
         targets (Sequence[str], optional): Mapping of the generic tune targets, to the specific names of the line. 
                                            Only needed if iterative_estimation is not 0. 
                                            Defaults to None.
@@ -102,16 +101,6 @@ def linear_coupling_correction(line: xt.Line,
     if analytical_estimation:
         # Analytically choose a start condition
         analytical_coupling_correction(line, knob_names)
-
-    if iterative_estimation:
-        # Iteratively try to find a good start condition.
-        iterative_closest_tune_minimization(
-            line,
-            knob_names=knob_names,
-            iteration_steps=iterative_estimation,
-            targets=targets,
-            verbose=verbose, limits=limits, step=step, tol=tol
-        )
 
     # Match coupling
     print(f'Matching linear coupling')
@@ -155,86 +144,6 @@ def analytical_coupling_correction(line: xt.Line, knob_names: Dict[str, str]):
         c_minus_right = line.twiss().c_minus
         
         line.vars[knob_name] = knob_value0 + 0.5 * (c_minus_left**2 - c_minus_right**2) / c_minus0
-
-
-def iterative_closest_tune_minimization(line: xt.Line,
-        knob_names: Dict[str, str], 
-        iteration_steps: int = 5,
-        targets: Sequence[str] = None,
-        verbose: bool = False,
-        step: float = 1e-8,
-        tol: float = 1e-4,
-    ):
-    """Stepwise try reducing the closest tune approach via tune and coupling knobs, 
-       starting at a big tolerance and continuously reducing it until the desired 
-       tolerance is reached.
-
-    Args:
-        line (xt.Line): Current line in which to correct linear coupling.
-        knob_names (Dict[str, str]): Mapping from the generic knob names to the specific ones of the line.
-        iteration_steps (int, optional): Number of steps to reduce the closest tune approach. 
-                                         Defaults to 5.
-        targets (Sequence[str], optional): Mapping of the generic targets, qx, qy and cminus, 
-                                           to the specific names of the line. Defaults to None.
-        verbose (bool, optional): Verbose output of the matching. Defaults to False.
-        step (float, optional): Step size of the matching, see :class:`xtrack.Vary`. 
-                                Defaults to 1e-8.
-        tol (float, optional): Tolerance of the matching, see :class:`xtrack.Target`.
-                               Defaults to 1e-4.
-
-    """
-    assert iteration_steps > 0
-
-    assert knob_names is not None
-    assert 'c_minus_knob_1' in knob_names
-    assert 'c_minus_knob_2' in knob_names
-    assert knob_names['c_minus_knob_1'] in line.vars
-    assert knob_names['c_minus_knob_2'] in line.vars
-
-    assert 'q_knob_1' in knob_names
-    assert 'q_knob_2' in knob_names
-    assert knob_names['q_knob_1'] in line.vars
-    assert knob_names['q_knob_2'] in line.vars
-    assert targets is not None
-    assert 'qx' in targets
-    assert 'qy' in targets
-
-    qx_frac, qy_frac = targets['qx'] % 1, targets['qy'] % 1
-    qmid_frac = 0.5 * (qx_frac + qy_frac)
-    qx_mid = int(targets['qx']) + qmid_frac
-    qy_mid = int(targets['qy']) + qmid_frac
-    
-    for ii in range(iteration_steps):
-        print(f'Reducing closest tune approach ({ii+1}/{iteration_steps})')
-        current_tol = tol * 10**(iteration_steps-ii-1)  # ends at final tolerance
-        line.match(verbose=verbose,
-            vary=[
-                xt.Vary(name=knob_names['q_knob_1'], step=step),
-                xt.Vary(name=knob_names['q_knob_2'], step=step),
-            ],
-            targets=[
-                xt.Target('qx', qx_mid, tol=current_tol/2),
-                xt.Target('qy', qy_mid, tol=current_tol/2), 
-            ])
-        line.match(verbose=verbose,
-            vary=[
-                xt.Vary(name=knob_names['c_minus_knob_1'], step=step),
-                xt.Vary(name=knob_names['c_minus_knob_2'], step=step)],
-            targets=[
-                xt.Target('qx', qx_mid, tol=current_tol),
-                xt.Target('qy', qy_mid, tol=current_tol), 
-            ])
-    
-    print('Rematching tune')
-    line.match(verbose=verbose,
-        vary=[
-            xt.Vary(name=knob_names['q_knob_1'], step=step),
-            xt.Vary(name=knob_names['q_knob_2'], step=step),
-        ],
-        targets=[
-            xt.Target('qx', targets['qx'], tol=tol),
-            xt.Target('qy', targets['qy'], tol=tol), 
-        ])
 
 
 def tune_and_chromaticity_correction(line: xt.Line,
