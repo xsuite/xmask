@@ -82,7 +82,7 @@ def calculate_coupling_coefficients_per_sector(
     where RE and IM are the real and imaginary parts of the coupling coefficients, 
     and therefore the knobs we want to create.
     MQS12 - MQS81 is the total powering of the MQS per arc, which we steer with 
-    the knob. All MQS are assumed to be powered equally.
+    the knob. All MQS in a single arc are assumed to be powered equally.
 
     After building the matrix, we "solve" the equation system via pseudo-inverese M+
     and get therefore the definition of the coupling knob.
