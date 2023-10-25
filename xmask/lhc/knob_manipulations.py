@@ -104,10 +104,11 @@ def calculate_coupling_coefficients_per_sector(
         - Explain why some sectors are deactivated? Reference?
 
     Args:
-        df (tfs.TfsDataFrame): Dataframe containing the optics of the machine. 
-
-        beam (int): _description_
-        deactivate_sectors (bool, optional): _description_. Defaults to True.
+        df (tfs.TfsDataFrame): 
+            Dataframe containing the optics of the machine. 
+        deactivate_sectors (Sequence[str], optional): 
+            Deactivate these sectors, i.e. don't use their MQS. 
+            Defaults to ('12', '45', '56', '81').
     """
     BETX, BETY, MUX, MUY = "BETX", "BETY", "MUX", "MUY"
     MQS_PER_SECTOR = 4
@@ -115,16 +116,17 @@ def calculate_coupling_coefficients_per_sector(
     sectors = '12 23 34 45 56 67 78 81'.split()
     
     mqs_sectors = [fr"MQS.*(R{s[0]}|L{s[1]}).B" for s in sectors]
-    m = np.ndarray([2, len(mqs_sectors)])
+    m = np.ndarray([2, len(sectors)])
 
-    for isector, mqs_regex in enumerate(mqs_sectors):
-        sector_slices = df.index.str.match(mqs_regex)
-        df_sec = df.loc[sector_slices]
-        coeff = MQS_PER_SECTOR / len(sector_slices) * np.sqrt(df_sec[BETX] * df_sec[BETY])
-        phase = 2*np.pi * (df_sec[MUX] - df_sec[MUY])
+    for idx_sector, mqs_regex in enumerate(mqs_sectors):
+        sector_mqs_slices = df.index.str.match(mqs_regex)
+        df_mqs = df.loc[sector_mqs_slices]
+
+        coeff = MQS_PER_SECTOR / len(sector_mqs_slices) * np.sqrt(df_mqs[BETX] * df_mqs[BETY])
+        phase = 2*np.pi * (df_mqs[MUX] - df_mqs[MUY])
 
         for idx, fun in enumerate((np.cos, np.sin)):
-            m[idx, isector] =  (coeff * fun(phase)).sum() 
+            m[idx, idx_sector] =  (coeff * fun(phase)).sum() 
         
     m = m * 0.32  / (2 * np.pi)  # I think this is the tune split?
 
