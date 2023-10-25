@@ -114,7 +114,7 @@ def calculate_coupling_coefficients_per_sector(
 
     sectors = '12 23 34 45 56 67 78 81'.split()
     
-    mqs_sectors = [fr"MQS.*(R{i}|L{i+1}).B" for i in range(1, 9)]
+    mqs_sectors = [fr"MQS.*(R{s[0]}|L{s[1]}).B" for s in sectors]
     m = np.ndarray([2, len(mqs_sectors)])
 
     for isector, mqs_regex in enumerate(mqs_sectors):
