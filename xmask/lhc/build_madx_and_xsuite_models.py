@@ -148,6 +148,8 @@ def build_xsuite_collider(
                 if enable_legacy_mb_corrections:
                     raise ValueError('Python knob synthesis overrides a2 corrections in the MBs. Disable enable_legacy_mb_corrections.')
                 print("WARNING: Python knob synthesis overrides a2 corrections in the MBs, if any!")
+            # Needs to run in the same loop as install_correct_errors_and_synthesisize_knobs
+            # as this outputs the temp/optics_MB.mad file and overrides it per beam
             create_coupling_knobs(
                 line=line, 
                 beamn=int(sequence_name[-1]),
