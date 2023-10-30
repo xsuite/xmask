@@ -4,7 +4,7 @@ import xpart as xp
 import xmask as xm
 
 from .errors import install_correct_errors_and_synthesisize_knobs
-from .knob_manipulations import rename_coupling_knobs_and_coefficients
+from .knob_manipulations import create_coupling_knobs, rename_coupling_knobs_and_coefficients
 from .knob_manipulations import define_octupole_current_knobs
 from .knob_manipulations import add_correction_term_to_dipole_correctors
 
@@ -24,10 +24,11 @@ def build_xsuite_collider(
     sequence_b1, sequence_b2, sequence_b4, beam_config,
     enable_imperfections,
     install_apertures=False,
-    enable_knob_synthesis=False,
+    enable_legacy_mb_corrections=True,
     enable_legacy_nl_corrections=True,
     rename_coupling_knobs=False,
-    pars_for_imperfections={},
+    enable_knob_synthesis=False,
+    pars_for_imperfections=None,
     ver_lhc_run=None,
     ver_hllhc_optics=None,
     call_after_last_use=None,):
@@ -92,6 +93,9 @@ def build_xsuite_collider(
     lines_co_ref = xm.save_lines_for_closed_orbit_reference(
         sequence_clockwise=sequence_b1,
         sequence_anticlockwise=sequence_b4)
+    
+    if pars_for_imperfections is None:
+        pars_for_imperfections = {}
 
     lines_to_track = {}
     for sequence_to_track in [sequence_b1, sequence_b4]:
@@ -116,6 +120,7 @@ def build_xsuite_collider(
         install_correct_errors_and_synthesisize_knobs(mad_track,
             enable_imperfections=enable_imperfections,
             enable_knob_synthesis=enable_knob_synthesis,
+            enable_legacy_mb_corrections=enable_legacy_mb_corrections,
             enable_legacy_nl_corrections=enable_legacy_nl_corrections,
             pars_for_imperfections=pars_for_imperfections,
             ver_lhc_run=ver_lhc_run,
@@ -131,10 +136,22 @@ def build_xsuite_collider(
         line.particle_ref = xp.Particles(p0c = mad_beam.pc*1e9,
             q0 = mad_beam.charge, mass0 = mad_beam.mass*1e9)
 
-        # Prepare coupling and octupole knobs
+        # Prepare coupling knobs
         if rename_coupling_knobs:
+            if not enable_imperfections or not enable_legacy_mb_corrections:
+                raise ValueError('rename_coupling_knobs requires enable_imperfections=True and enable_legacy_mb_corrections=True')
             rename_coupling_knobs_and_coefficients(line=line,
                                     beamn=int(sequence_name[-1]))
+        
+        if enable_knob_synthesis:
+            if enable_imperfections:
+                if enable_legacy_mb_corrections:
+                    raise ValueError('Python knob synthesis overrides a2 corrections in the MBs. Disable enable_legacy_mb_corrections.')
+                print("WARNING: Python knob synthesis overrides a2 corrections in the MBs, if any!")
+            create_coupling_knobs(
+                line=line, 
+                beamn=int(sequence_name[-1]),
+            )
 
         lines_to_track[sequence_name] = line
 
@@ -149,6 +166,7 @@ def build_xsuite_collider(
 
     collider = xt.Multiline(lines=lines)
 
+    # Prepare  octupole knobs
     if 'lhcb1' in lines_to_track:
         define_octupole_current_knobs(line=collider.lhcb1, beamn=1)
     if 'lhcb2' in lines_to_track:

@@ -17,7 +17,8 @@ def install_errors_placeholders_hllhc(mad):
     ''')
 
 def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfections,
-                        enable_knob_synthesis, pars_for_imperfections, 
+                        pars_for_imperfections,
+                        enable_legacy_mb_corrections, 
                         enable_legacy_nl_corrections,
                         ver_lhc_run=None, ver_hllhc_optics=None):
 
@@ -59,22 +60,16 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         mad_track.input(f'call, file="{scripts_folder}/submodule_04c_errortables.madx";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04d_efcomp.madx";')
 
-        # if enable_legacy_nl_corrections:
-        mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
+        if enable_legacy_mb_corrections:
+            # also synthesizes coupling knobs
+            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_arc_correction_and_coupling_knobs.madx";')
+
         if enable_legacy_nl_corrections:
-            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_correction.madx";')
+            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_ir_nl_correction.madx";')
+
         mad_track.input(f'call, file="{scripts_folder}/submodule_04f_final.madx";')
 
         mad_track.input('exec, crossing_restore;')
     else:
-        # Mock for testing on mac
-        if enable_knob_synthesis == '_mock_for_testing':
-            if mad_track.globals['mylhcbeam'] == 1:
-                mad_track.call("acc-models-lhc/"
-                        "_for_test_cminus_knobs_15cm/MB_corr_setting_b1.mad")
-            else:
-                mad_track.call("acc-models-lhc/"
-                        "_for_test_cminus_knobs_15cm/MB_corr_setting_b2.mad")
-        elif enable_knob_synthesis:
-            mad_track.input(f'call, file="{scripts_folder}/submodule_04a_s1_prepare_nom_twiss_table.madx";')
-            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
+        # Nominal twiss tables needed currently for python knob-synthesis
+        mad_track.input(f'call, file="{scripts_folder}/submodule_04a_s1_prepare_nom_twiss_table.madx";')

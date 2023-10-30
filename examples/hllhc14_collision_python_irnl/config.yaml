@@ -16,10 +16,13 @@ config_mad:
     # Enable machine imperfections
     enable_imperfections: true 
     
+    # Enable legacy (fortran) MB corrections (also creates coupling knobs)
+    enable_legacy_mb_corrections: true
+    
     # Enable legacy (fortran) nonlinear corrections
     enable_legacy_nl_corrections: false
 
-    # Enable knob synthesis (for coupling correction, if no imperfections)
+    # Enable coupling-knob synthesis (if no imperfections)
     enable_knob_synthesis: false
 
     # Rename the coupling knobs to avoid conflict between b1 and b2

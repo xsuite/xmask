@@ -6,6 +6,9 @@ import tfs
 import xtrack as xt
 
 
+LHC_SECTORS = '12 23 34 45 56 67 78 81'
+
+
 def rename_coupling_knobs_and_coefficients(line, beamn):
 
     line.vars[f'c_minus_re_b{beamn}'] = 0
@@ -47,7 +50,7 @@ def define_octupole_current_knobs(line, beamn):
                                 / line.vars[f'q0_b{beamn}'] / clight)
 
     line.vars[f'i_oct_b{beamn}'] = 0
-    for ss in '12 23 34 45 56 67 78 81'.split():
+    for ss in LHC_SECTORS.split():
         line.vars[f'kof.a{ss}b{beamn}'] = (
             line.vars['kmax_mo']
             * line.vars[f'i_oct_b{beamn}'] / line.vars['imax_mo']
@@ -108,12 +111,12 @@ def calculate_coupling_coefficients_per_sector(
             Dataframe containing the optics of the machine. 
         deactivate_sectors (Sequence[str], optional): 
             Deactivate these sectors, i.e. don't use their MQS. 
-            Defaults to ('12', '45', '56', '81').
+            Defaults to ('12', '45', '56', '81'), the ATS sectors.
     """
     BETX, BETY, MUX, MUY = "BETX", "BETY", "MUX", "MUY"
     MQS_PER_SECTOR = 4
 
-    sectors = '12 23 34 45 56 67 78 81'.split()
+    sectors = LHC_SECTORS.split()
     
     mqs_sectors = [fr"MQS.*(R{s[0]}|L{s[1]}).B" for s in sectors]
     m = np.ndarray([2, len(sectors)])
@@ -172,6 +175,8 @@ def create_coupling_knobs(line: xt.Line, beamn: int, optics: Path = Path("temp/o
     beam_sign = 1 if beamn == 1 else -1
 
     df = tfs.read(optics, index="NAME")
+    assert int(df.headers["SEQUENCE"][-1]) == beamn, f"Wrong optics file for beam {beamn}!"
+
     df = beam_sign * calculate_coupling_coefficients_per_sector(df)
 
     knob_name_real =  f'c_minus_re_b{beamn}'
