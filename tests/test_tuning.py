@@ -45,7 +45,7 @@ def hllhc14_beam1(tmp_path_factory):
     is loaded anew. But tmp_path_factory scope is "session" so that if 
     it is saved once to a .json it is simply loaded. """
     tmp_path = tmp_path_factory.mktemp("hllhc14_b1_fixture")
-    # tmp_path = Path()  # for debugging
+    tmp_path = Path()  # for debugging
     json_path = tmp_path / 'collider_b1.json'
 
     if not json_path.is_file():

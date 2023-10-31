@@ -62,7 +62,7 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
 
         if enable_legacy_mb_corrections:
             # also synthesizes coupling knobs
-            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_arc_correction_and_coupling_knobs.madx";')
+            mad_track.input(f'call, file="{scripts_folder}/submodule_04e_mb_arc_correction_and_coupling_knobs.madx";')
 
         if enable_legacy_nl_corrections:
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_ir_nl_correction.madx";')

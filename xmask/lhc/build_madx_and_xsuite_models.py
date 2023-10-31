@@ -119,7 +119,6 @@ def build_xsuite_collider(
         # Install and correct errors
         install_correct_errors_and_synthesisize_knobs(mad_track,
             enable_imperfections=enable_imperfections,
-            enable_knob_synthesis=enable_knob_synthesis,
             enable_legacy_mb_corrections=enable_legacy_mb_corrections,
             enable_legacy_nl_corrections=enable_legacy_nl_corrections,
             pars_for_imperfections=pars_for_imperfections,

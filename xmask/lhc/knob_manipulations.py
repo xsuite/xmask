@@ -8,6 +8,12 @@ import xtrack as xt
 
 LHC_SECTORS = '12 23 34 45 56 67 78 81'
 
+SINGLE_KQS_LISTS = {
+# Sectors with commonly powered MQSs
+    1: ['23', '45', '67', '81'],
+    2: ['12', '34', '56', '78'], 
+}
+
 
 def rename_coupling_knobs_and_coefficients(line, beamn):
 
@@ -105,6 +111,7 @@ def calculate_coupling_coefficients_per_sector(
         - Use actual fractional tune split of the current machine (see also https://cds.cern.ch/record/2778887/files/CERN-ACC-NOTE-2021-0022.pdf)
         - Calculate also the contribution to f_1010 and try to set to zero
         - Explain why some sectors are deactivated? Reference?
+        - Does this still work when slicing the MQS?
 
     Args:
         df (tfs.TfsDataFrame): 
@@ -118,14 +125,15 @@ def calculate_coupling_coefficients_per_sector(
 
     sectors = LHC_SECTORS.split()
     
-    mqs_sectors = [fr"MQS.*(R{s[0]}|L{s[1]}).B" for s in sectors]
+    mqs_sectors = [fr"MQS\..*(R{s[0]}|L{s[1]})\.B" for s in sectors]
     m = np.ndarray([2, len(sectors)])
 
     for idx_sector, mqs_regex in enumerate(mqs_sectors):
         sector_mqs_slices = df.index.str.match(mqs_regex)
         df_mqs = df.loc[sector_mqs_slices]
 
-        coeff = MQS_PER_SECTOR / len(sector_mqs_slices) * np.sqrt(df_mqs[BETX] * df_mqs[BETY])
+        contribution_per_slice = MQS_PER_SECTOR / len(df_mqs)  # Knobs are not automatically normalized on slicing?
+        coeff = contribution_per_slice * np.sqrt(df_mqs[BETX] * df_mqs[BETY])
         phase = 2*np.pi * (df_mqs[MUX] - df_mqs[MUY])
 
         for idx, fun in enumerate((np.cos, np.sin)):
@@ -163,11 +171,6 @@ def create_coupling_knobs(line: xt.Line, beamn: int, optics: Path = Path("temp/o
                                  Defaults to Path("temp/optics0_MB.mad").
     """
     print(f"\n Creating Coupling Knobs for beam {beamn} ---")
-    SINGLE_KQS_LISTS = {
-    # Sectors with commonly powered MQSs
-        1: ['23', '45', '67', '81'],
-        2: ['12', '34', '56', '78'], 
-    }
 
     if beamn == 4:
         beamn = 2  # same behaviour in this case
