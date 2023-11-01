@@ -4,6 +4,7 @@ from xmask.lhc.knob_manipulations import create_coupling_knobs, LHC_SECTORS
 import re
 import math
 import pytest
+import xtrack as xt
 
 ROOT_DIR = Path(__file__).parent.parent
 DATA_DIR = ROOT_DIR / 'test_data' / 'hllhc14'
@@ -70,11 +71,28 @@ def test_coupling_knob_in_line(hllhc14_beam1_no_coupling_knobs):
         beamn=beamn, 
         optics=DATA_DIR / DATA_DIR_NAMING_SCHEME.format(beamn=beamn) / OPTICS_FILE
     )
+    _test_coupling_knob(line=line, beamn=beamn)
 
+
+def test_coupling_knob_in_xmask(hllhc14_beam1):
+    """ Test the coupling knobs directly in the line, as created by xmask (via enable_knob_synthesis). 
+    Check that the coefficients are applied correctly and that C- is changing as expected. """
+    
+    # Run with Beam 1. TODO: Include other lines in the test.
+    beamn = 1
+    line = hllhc14_beam1.lines['lhcb1']
+    line.twiss_default["method"] = "4d"
+    _test_coupling_knob(line=line, beamn=beamn)
+
+
+# Test Helper ------------------------------------------------------------------
+
+def _test_coupling_knob(line: xt.Line, beamn: int):
+    """ Run tests on the line to see if the coupling knobs work as expected."""
     knob_name_real =  f'c_minus_re_b{beamn}'
     knob_name_imag =  f'c_minus_im_b{beamn}'
 
-    # Test coefficients are respected ------------------------------------------
+    # Test coefficients are respected ---
     for idx_sector, sector in enumerate(LHC_SECTORS.split(), start=1):
         re_coeff = line.vv[_get_coeff_name(idx_sector=idx_sector, idx_knob=1, beamn=beamn)]
         im_coeff = line.vv[_get_coeff_name(idx_sector=idx_sector, idx_knob=2, beamn=beamn)]
@@ -86,11 +104,10 @@ def test_coupling_knob_in_line(hllhc14_beam1_no_coupling_knobs):
                 # we can do an exact comparison, as the calculation is the same
                 assert line.element_dict[m].ksl[1] == (re_coeff * is_re + im_coeff * (not is_re)) * LENGTH_MQS  
     
-    # Test that the knobs are actually changing C- in the correct way ----------
+    # Test that the knobs are actually changing C- in the correct way ----
     re_val = 0.001
     im_val = 0.0005
     eps = 1e-6  # guessed, seems to be the precicion we are working with here
-
 
     line.vars[knob_name_real], line.vars[knob_name_imag] = 0, 0
     c_minus0 = line.twiss().c_minus
