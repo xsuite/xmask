@@ -106,9 +106,9 @@ def calculate_coupling_coefficients_per_sector(
     TODO:
         - Get beta and phases from the beamline directly (instead of the TFS dataframe)
         - Make the number of MQS more flexible, could maybe be parsed from the beamline
-        - Why is there an absolute value in Eq. (59) but not in the code?
+        - Why is there an absolute value in Eq. (59) but not in the code? (see also https://cds.cern.ch/record/2778887/files/CERN-ACC-NOTE-2021-0022.pdf)
         - Add a2 correction to the KQS definition (as in corr_MB_ats_v4)
-        - Use actual fractional tune split of the current machine (see also https://cds.cern.ch/record/2778887/files/CERN-ACC-NOTE-2021-0022.pdf)
+        - Include the actual fractional tune split of the current machine (see also https://cds.cern.ch/record/2778887/files/CERN-ACC-NOTE-2021-0022.pdf)
         - Calculate also the contribution to f_1010 and try to set to zero
         - Explain why some sectors are deactivated? Reference?
         - Does this still work when slicing the MQS?
@@ -121,7 +121,8 @@ def calculate_coupling_coefficients_per_sector(
             Defaults to ('12', '45', '56', '81'), the ATS sectors.
     """
     BETX, BETY, MUX, MUY = "BETX", "BETY", "MUX", "MUY"
-    MQS_PER_SECTOR = 4
+    MQS_PER_SECTOR = 4  # TODO: get from line (?)
+    LENGTH_MQS = 0.32  # TODO: get from l.mqs
 
     sectors = LHC_SECTORS.split()
     
@@ -139,7 +140,7 @@ def calculate_coupling_coefficients_per_sector(
         for idx, fun in enumerate((np.cos, np.sin)):
             m[idx, idx_sector] =  (coeff * fun(phase)).sum() 
         
-    m = m * 0.32  / (2 * np.pi)  # I think this is the tune split?
+    m = m * LENGTH_MQS  / (2 * np.pi)  # kqs knobs are multiplied by the length of the MQS
 
     if deactivate_sectors:
         mask = [s in deactivate_sectors for s in sectors]

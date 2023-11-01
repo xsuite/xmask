@@ -5,15 +5,15 @@ import re
 import math
 import pytest
 
-from test_tuning import hllhc14_beam1
-
-
 ROOT_DIR = Path(__file__).parent.parent
 DATA_DIR = ROOT_DIR / 'test_data' / 'hllhc14'
 
 DATA_DIR_NAMING_SCHEME = "madx_temp_lhcb{beamn}"
 OPTICS_FILE = "optics0_MB.mad"
 CORRECTION_FILE = "MB_corr_setting.mad"
+
+LENGTH_MQS = 0.32
+MQS_PER_SECTOR = 4
 
 
 @pytest.mark.parametrize('beamn', [1, 2, 4])
@@ -55,10 +55,16 @@ def test_coupling_knob_synthesis_vs_madx(beamn):
         assert math.isclose(py_value, madx_value, rel_tol=eps, abs_tol=eps)
 
 
-
-def test_coupling_knob_in_line(hllhc14_beam1):
-    line = hllhc14_beam1.lines['lhcb1']
+def test_coupling_knob_in_line(hllhc14_beam1_no_coupling_knobs):
+    """ Test the coupling knobs directly in the line. Check that the 
+    coefficients are applied correctly and that C- is changing as expected. """
+    
+    # Run with Beam 1. TODO: Include other lines in the test.
     beamn = 1
+    line = hllhc14_beam1_no_coupling_knobs.lines['lhcb1']
+    line.twiss_default["method"] = "4d"
+
+    # Create and Install Knobs ---
     create_coupling_knobs(
         line=line, 
         beamn=beamn, 
@@ -68,17 +74,31 @@ def test_coupling_knob_in_line(hllhc14_beam1):
     knob_name_real =  f'c_minus_re_b{beamn}'
     knob_name_imag =  f'c_minus_im_b{beamn}'
 
-    # test coefficients are respected
-    for idx_sector, sector in enumerate(LHC_SECTORS, start=1):
-        re_coeff = line.vars[_get_coeff_name(idx_sector=idx_sector, idx_knob=1, beamn=beamn)]
-        im_coeff = line.vars[_get_coeff_name(idx_sector=idx_sector, idx_knob=2, beamn=beamn)]
-        magnets = [m for m in line.elements_dict.keys() if re.match(fr"MQS\..*(R{sector[0]}|L{sector[1]})\.B", m.name)]
-        assert len(magnets) == 4
+    # Test coefficients are respected ------------------------------------------
+    for idx_sector, sector in enumerate(LHC_SECTORS.split(), start=1):
+        re_coeff = line.vv[_get_coeff_name(idx_sector=idx_sector, idx_knob=1, beamn=beamn)]
+        im_coeff = line.vv[_get_coeff_name(idx_sector=idx_sector, idx_knob=2, beamn=beamn)]
+        magnets = [m for m in line.element_dict.keys() if re.match(fr"MQS\..*(R{sector[0]}|L{sector[1]})\.B\d$", m, flags=re.IGNORECASE)]
+        assert len(magnets) == MQS_PER_SECTOR
         for is_re in [True, False]:
-            hllhc14_beam1.vars[knob_name_real] = is_re
-            hllhc14_beam1.vars[knob_name_imag] = ~is_re
+            line.vars[knob_name_real], line.vars[knob_name_imag] = is_re, not is_re
             for m in magnets:
-                assert line.elements_dict[m].ksl[1] == re_coeff * is_re + im_coeff * ~is_re
+                # we can do an exact comparison, as the calculation is the same
+                assert line.element_dict[m].ksl[1] == (re_coeff * is_re + im_coeff * (not is_re)) * LENGTH_MQS  
+    
+    # Test that the knobs are actually changing C- in the correct way ----------
+    re_val = 0.001
+    im_val = 0.0005
+    eps = 1e-6  # guessed, seems to be the precicion we are working with here
+
+
+    line.vars[knob_name_real], line.vars[knob_name_imag] = 0, 0
+    c_minus0 = line.twiss().c_minus
+
+    line.vars[knob_name_real], line.vars[knob_name_imag] = re_val, im_val
+    c_minus1 = line.twiss().c_minus
+
+    assert math.isclose((re_val**2 + im_val**2)**0.5, c_minus1 - c_minus0, rel_tol=eps, abs_tol=eps)
 
 
 def _parse_coupling_knobs_from_fortran_output(madx_correction: Path, beamn: int) -> dict:
