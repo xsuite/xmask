@@ -56,7 +56,7 @@ def test_lhc_ion_0_create_collider():
 
     assert len(collider.lines.keys()) == 4
 
-    assert collider.vars['nrj'] == 7e12
+    assert collider.vars['nrj']._value == 7000
 
     for line_name in collider.lines.keys():
         pref = collider[line_name].particle_ref
