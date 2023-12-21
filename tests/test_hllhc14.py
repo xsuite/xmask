@@ -678,13 +678,14 @@ def test_stress_co_correction_and_lumi_leveling():
     }
 
     # Lumi leveling assuming ideal behavior of the knobs
+    tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         solver_options={ # Standard jacobian settings not sufficient
                          #(fsolve makes it in less iterations)
             'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
         ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
         ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-        twiss_init='preserve',
+        twiss_init=tw0, ele_init=xt.START,
         lines=['lhcb1', 'lhcb2'],
         vary=[
             # Knobs to control the separation
@@ -711,6 +712,7 @@ def test_stress_co_correction_and_lumi_leveling():
     collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
     # Lumi leveling with orbit correction
+    tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         solver_options={ # Standard jacobian settings not sufficient
                          #(fsolve makes it in less iterations)
@@ -718,7 +720,7 @@ def test_stress_co_correction_and_lumi_leveling():
         lines=['lhcb1', 'lhcb2'],
         ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
         ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-        twiss_init='preserve',
+        twiss_init=tw0, ele_init=xt.START,
         targets=[
             xt.TargetLuminosity(
                 ip_name='ip8', luminosity=2e14, tol=1e12, f_rev=f_rev,
@@ -727,13 +729,13 @@ def test_stress_co_correction_and_lumi_leveling():
                 nemitt_x=nemitt_x, nemitt_y=nemitt_y, sigma_z=sigma_z, crab=False),
             xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'),
             # Preserve crossing angle
-            xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-            xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
             # Close the bumps
-            xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
-            xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
             ],
         vary=[
             xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4), # to control separation
@@ -828,22 +830,23 @@ def test_stress_co_correction_and_lumi_leveling():
 
     # Match separation to 2 sigmas in IP2
     print(f'Knobs before matching: on_sep2 = {collider.vars["on_sep2"]._value}')
+    tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         lines=['lhcb1', 'lhcb2'],
         ele_start=['e.ds.l2.b1', 's.ds.r2.b2'],
         ele_stop=['s.ds.r2.b1', 'e.ds.l2.b2'],
-        twiss_init='preserve',
+        twiss_init=tw0, ele_init=xt.START,
         targets=[
             xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                             nemitt_x=nemitt_x, nemitt_y=nemitt_y),
             # Preserve crossing angle
-            xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-            xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
             # Close the bumps
-            xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
-            xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
+            xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
         ],
         vary=
             [xt.Vary('on_sep2', step=1e-4),
@@ -1578,11 +1581,12 @@ def test_multiline_match():
     assert np.isclose(tw1.lhcb2.qy, 60.323, atol=1e-4, rtol=0)
 
     # Match bumps in the two likes
+    tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         lines=['lhcb1', 'lhcb2'],
         ele_start=['mq.33l8.b1', 'mq.22l8.b2'],
         ele_stop=['mq.23l8.b1', 'mq.32l8.b2'],
-        twiss_init='preserve',
+        twiss_init=tw0, ele_init=xt.START,
         vary=[
             xt.VaryList([
                 'acbv30.l8b1', 'acbv28.l8b1', 'acbv26.l8b1', 'acbv24.l8b1'],
@@ -1597,10 +1601,10 @@ def test_multiline_match():
             xt.Target('y', at='mb.b27l8.b2', line='lhcb2', value=2e-3, tol=1e-4, scale=1),
             xt.Target('py', at='mb.b27l8.b2', line='lhcb2', value=0, tol=1e-6, scale=1000),
             # I want the bump to be closed
-            xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value='preserve', tol=1e-6, scale=1),
-            xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value='preserve', tol=1e-7, scale=1000),
-            xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value='preserve', tol=1e-6, scale=1),
-            xt.Target('py', at='mq.32l8.b2', line='lhcb2', value='preserve', tol=1e-10, scale=1000),
+            xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-6, scale=1),
+            xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-7, scale=1000),
+            xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-6, scale=1),
+            xt.Target('py', at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-10, scale=1000),
         ]
     )
     tw_bump = collider.twiss(lines=['lhcb1', 'lhcb2'])
