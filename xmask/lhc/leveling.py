@@ -46,6 +46,7 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         else:
             raise ValueError('Either `luminosity` or `separation_in_sigmas` must be specified')
 
+        tw0 = collider.twiss()
         if config_this_ip['impose_separation_orthogonal_to_crossing']:
             targets.append(
                 xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
@@ -62,10 +63,10 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         for line_name in ['lhcb1', 'lhcb2']:
             targets += [
                 # Preserve crossing angle
-                xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value='preserve', tol=1e-7, scale=1e3),
+                xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value=tw0, tol=1e-7, scale=1e3),
                 # Close the bumps
-                xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1),
-                xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value='preserve', tol=1e-5, scale=1e3),
+                xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, scale=1),
+                xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, scale=1e3),
             ]
 
         vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
@@ -75,7 +76,7 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             lines=['lhcb1', 'lhcb2'],
             ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
             ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
-            twiss_init='preserve',
+            twiss_init=tw0, ele_init=xt.START,
             targets=targets,
             vary=vary,
             solve=False,

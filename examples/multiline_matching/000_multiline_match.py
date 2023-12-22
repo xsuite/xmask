@@ -52,11 +52,12 @@ assert np.isclose(tw1.lhcb2.qx, 62.315, atol=1e-4, rtol=0)
 assert np.isclose(tw1.lhcb2.qy, 60.325, atol=1e-4, rtol=0)
 
 # Match bumps in the two likes
+tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     lines=['lhcb1', 'lhcb2'],
     ele_start=['mq.33l8.b1', 'mq.22l8.b2'],
     ele_stop=['mq.23l8.b1', 'mq.32l8.b2'],
-    twiss_init='preserve',
+    twiss_init=tw0, ele_init=xt.START,
     vary=[
         xt.VaryList([
             'acbv30.l8b1', 'acbv28.l8b1', 'acbv26.l8b1', 'acbv24.l8b1'],
@@ -71,10 +72,10 @@ collider.match(
         xt.Target('y', at='mb.b27l8.b2', line='lhcb2', value=2e-3, tol=1e-4, scale=1),
         xt.Target('py', at='mb.b27l8.b2', line='lhcb2', value=0, tol=1e-6, scale=1000),
         # I want the bump to be closed
-        xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value='preserve', tol=1e-6, scale=1),
-        xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value='preserve', tol=1e-7, scale=1000),
-        xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value='preserve', tol=1e-6, scale=1),
-        xt.Target('py', at='mq.32l8.b2', line='lhcb2', value='preserve', tol=1e-10, scale=1000),
+        xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-6, scale=1),
+        xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-7, scale=1000),
+        xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-6, scale=1),
+        xt.Target('py', at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-10, scale=1000),
     ]
 )
 tw_bump = collider.twiss(lines=['lhcb1', 'lhcb2'])
