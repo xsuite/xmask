@@ -60,12 +60,12 @@ knob_values_before_ideal_matching = {
     'on_sep8h': collider.vars['on_sep8h']._value,
     'on_sep8v': collider.vars['on_sep8v']._value,
 }
-
-res = collider.match(
+tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
+opt = collider.match(
     solver_options={'n_bisections': 3, 'min_step': 1e-5, 'n_steps_max': 200},
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-    twiss_init='preserve',
+    twiss_init=tw0, ele_init=xt.START,
     lines=['lhcb1', 'lhcb2'],
     vary=[
         # Knobs to control the separation
@@ -95,12 +95,13 @@ collider.vars['on_sep8h'] = knob_values_before_ideal_matching['on_sep8h']
 collider.vars['on_sep8v'] = knob_values_before_ideal_matching['on_sep8v']
 
 # Leveling with crossing angle and bump rematching
+tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     solver_options={'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
     lines=['lhcb1', 'lhcb2'],
     ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
     ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-    twiss_init='preserve',
+    twiss_init=tw0, ele_init=xt.START,
     targets=[
         # Luminosity
         xt.TargetLuminosity(
@@ -111,13 +112,13 @@ collider.match(
         # Separation plane inclination
         xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'),
         # Preserve crossing angle
-        xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-        xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+        xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
+        xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
         # Close the bumps
-        xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
-        xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
-        xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
-        xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+        xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
+        xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
+        xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
+        xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
         ],
     vary=[
         xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4), # to control separation
@@ -213,22 +214,23 @@ assert np.isclose(dpx_norm*dx_norm + dpy_norm*dy_norm, 0, atol=1e-6)
 
 # Match separation to 2 sigmas in IP2
 print(f'Knobs before matching: on_sep2 = {collider.vars["on_sep2"]._value}')
+tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     lines=['lhcb1', 'lhcb2'],
     ele_start=['e.ds.l2.b1', 's.ds.r2.b2'],
     ele_stop=['s.ds.r2.b1', 'e.ds.l2.b2'],
-    twiss_init='preserve',
+    twiss_init=tw0, ele_init=xt.START,
     targets=[
         xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                          nemitt_x=nemitt_x, nemitt_y=nemitt_y),
         # Preserve crossing angle
-        xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value='preserve', tol=1e-7, scale=1e3),
-        xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value='preserve', tol=1e-7, scale=1e3),
+        xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
+        xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
         # Close the bumps
-        xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1),
-        xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value='preserve', tol=1e-5, scale=1e3),
-        xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1),
-        xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value='preserve', tol=1e-5, scale=1e3),
+        xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
+        xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
+        xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
+        xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
     ],
     vary=
         [xt.Vary('on_sep2', step=1e-4),
