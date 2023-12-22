@@ -17,9 +17,9 @@ assert np.isclose(tw.lhcb2.qy, 60.32, atol=1e-4, rtol=0)
 
 tw_part = collider.twiss(
     lines=['lhcb1', 'lhcb2'],
-    ele_start=['ip5', 'ip6'],
-    ele_stop=['ip6', 'ip5'],
-    twiss_init=[tw.lhcb1.get_twiss_init(at_element='ip5'), tw.lhcb2.get_twiss_init(at_element='ip6')]
+    start=['ip5', 'ip6'],
+    end=['ip6', 'ip5'],
+    init=[tw.lhcb1.get_twiss_init(at_element='ip5'), tw.lhcb2.get_twiss_init(at_element='ip6')]
 )
 
 # Add some asserts here
@@ -55,9 +55,9 @@ assert np.isclose(tw1.lhcb2.qy, 60.325, atol=1e-4, rtol=0)
 tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     lines=['lhcb1', 'lhcb2'],
-    ele_start=['mq.33l8.b1', 'mq.22l8.b2'],
-    ele_stop=['mq.23l8.b1', 'mq.32l8.b2'],
-    twiss_init=tw0, ele_init=xt.START,
+    start=['mq.33l8.b1', 'mq.22l8.b2'],
+    end=['mq.23l8.b1', 'mq.32l8.b2'],
+    init=tw0, init_at=xt.START,
     vary=[
         xt.VaryList([
             'acbv30.l8b1', 'acbv28.l8b1', 'acbv26.l8b1', 'acbv24.l8b1'],

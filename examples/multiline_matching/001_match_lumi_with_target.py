@@ -63,9 +63,9 @@ knob_values_before_ideal_matching = {
 tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 opt = collider.match(
     solver_options={'n_bisections': 3, 'min_step': 1e-5, 'n_steps_max': 200},
-    ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
-    ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-    twiss_init=tw0, ele_init=xt.START,
+    start=['e.ds.l8.b1', 's.ds.r8.b2'],
+    end=['s.ds.r8.b1', 'e.ds.l8.b2'],
+    init=tw0, init_at=xt.START,
     lines=['lhcb1', 'lhcb2'],
     vary=[
         # Knobs to control the separation
@@ -99,9 +99,9 @@ tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     solver_options={'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
     lines=['lhcb1', 'lhcb2'],
-    ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
-    ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-    twiss_init=tw0, ele_init=xt.START,
+    start=['e.ds.l8.b1', 's.ds.r8.b2'],
+    end=['s.ds.r8.b1', 'e.ds.l8.b2'],
+    init=tw0, init_at=xt.START,
     targets=[
         # Luminosity
         xt.TargetLuminosity(
@@ -217,9 +217,9 @@ print(f'Knobs before matching: on_sep2 = {collider.vars["on_sep2"]._value}')
 tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
 collider.match(
     lines=['lhcb1', 'lhcb2'],
-    ele_start=['e.ds.l2.b1', 's.ds.r2.b2'],
-    ele_stop=['s.ds.r2.b1', 'e.ds.l2.b2'],
-    twiss_init=tw0, ele_init=xt.START,
+    start=['e.ds.l2.b1', 's.ds.r2.b2'],
+    end=['s.ds.r2.b1', 'e.ds.l2.b2'],
+    init=tw0, init_at=xt.START,
     targets=[
         xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                          nemitt_x=nemitt_x, nemitt_y=nemitt_y),

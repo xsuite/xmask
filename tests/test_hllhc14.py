@@ -683,9 +683,9 @@ def test_stress_co_correction_and_lumi_leveling():
         solver_options={ # Standard jacobian settings not sufficient
                          #(fsolve makes it in less iterations)
             'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
-        ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
-        ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-        twiss_init=tw0, ele_init=xt.START,
+        start=['e.ds.l8.b1', 's.ds.r8.b2'],
+        end=['s.ds.r8.b1', 'e.ds.l8.b2'],
+        init=tw0, init_at=xt.START,
         lines=['lhcb1', 'lhcb2'],
         vary=[
             # Knobs to control the separation
@@ -718,9 +718,9 @@ def test_stress_co_correction_and_lumi_leveling():
                          #(fsolve makes it in less iterations)
             'n_bisections': 3, 'min_step': 0, 'n_steps_max': 200},
         lines=['lhcb1', 'lhcb2'],
-        ele_start=['e.ds.l8.b1', 's.ds.r8.b2'],
-        ele_stop=['s.ds.r8.b1', 'e.ds.l8.b2'],
-        twiss_init=tw0, ele_init=xt.START,
+        start=['e.ds.l8.b1', 's.ds.r8.b2'],
+        end=['s.ds.r8.b1', 'e.ds.l8.b2'],
+        init=tw0, init_at=xt.START,
         targets=[
             xt.TargetLuminosity(
                 ip_name='ip8', luminosity=2e14, tol=1e12, f_rev=f_rev,
@@ -833,9 +833,9 @@ def test_stress_co_correction_and_lumi_leveling():
     tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         lines=['lhcb1', 'lhcb2'],
-        ele_start=['e.ds.l2.b1', 's.ds.r2.b2'],
-        ele_stop=['s.ds.r2.b1', 'e.ds.l2.b2'],
-        twiss_init=tw0, ele_init=xt.START,
+        start=['e.ds.l2.b1', 's.ds.r2.b2'],
+        end=['s.ds.r2.b1', 'e.ds.l2.b2'],
+        init=tw0, init_at=xt.START,
         targets=[
             xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                             nemitt_x=nemitt_x, nemitt_y=nemitt_y),
@@ -1546,9 +1546,9 @@ def test_multiline_match():
 
     tw_part = collider.twiss(
         lines=['lhcb1', 'lhcb2'],
-        ele_start=['ip5', 'ip6'],
-        ele_stop=['ip6', 'ip5'],
-        twiss_init=[tw.lhcb1.get_twiss_init(at_element='ip5'), tw.lhcb2.get_twiss_init(at_element='ip6')]
+        start=['ip5', 'ip6'],
+        end=['ip6', 'ip5'],
+        init=[tw.lhcb1.get_twiss_init(at_element='ip5'), tw.lhcb2.get_twiss_init(at_element='ip6')]
     )
 
     # Add some asserts here
@@ -1584,9 +1584,9 @@ def test_multiline_match():
     tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
     collider.match(
         lines=['lhcb1', 'lhcb2'],
-        ele_start=['mq.33l8.b1', 'mq.22l8.b2'],
-        ele_stop=['mq.23l8.b1', 'mq.32l8.b2'],
-        twiss_init=tw0, ele_init=xt.START,
+        start=['mq.33l8.b1', 'mq.22l8.b2'],
+        end=['mq.23l8.b1', 'mq.32l8.b2'],
+        init=tw0, init_at=xt.START,
         vary=[
             xt.VaryList([
                 'acbv30.l8b1', 'acbv28.l8b1', 'acbv26.l8b1', 'acbv24.l8b1'],

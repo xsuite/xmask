@@ -74,9 +74,9 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         # Match
         opt = collider.match(
             lines=['lhcb1', 'lhcb2'],
-            ele_start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
-            ele_stop=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
-            twiss_init=tw0, ele_init=xt.START,
+            start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
+            end=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
+            init=tw0, init_at=xt.START,
             targets=targets,
             vary=vary,
             solve=False,
