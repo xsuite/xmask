@@ -2,6 +2,7 @@ import yaml
 from pathlib import Path
 from itertools import product
 
+import pytest
 import numpy as np
 import pandas as pd
 from scipy.constants import c as clight
@@ -12,7 +13,7 @@ from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
 import xpart as xp
-
+import xobjects as xo
 import xmask as xm
 import xmask.lhc as xmlhc
 
@@ -278,12 +279,20 @@ def test_hllhc14_3_level_ip2_ip8():
 def test_hllhc14_4_bb_config():
 
     collider = xt.Multiline.from_json('collider_hllhc14_03.json')
-    collider.build_trackers()
-
+    
+    # Ensure that a non-CPU context raise a ValueError when configuring beam-beam
+    with pytest.raises(ValueError) as error_info:
+        collider.build_trackers(_context = xo.ContextPyopencl())
+        collider.configure_beambeam_interactions(
+            num_particles=2.2e11,
+            nemitt_x=2e-6, nemitt_y=3e-6)
+    assert "The trackers need to be built on CPU" in str(error_info)    
+    collider.discard_trackers()
+    
+    collider.build_trackers(_context = xo.ContextCpu())
     collider.configure_beambeam_interactions(
         num_particles=2.2e11,
         nemitt_x=2e-6, nemitt_y=3e-6)
-
     collider.to_json('collider_hllhc14_04.json')
 
     ip_bb_config= {
