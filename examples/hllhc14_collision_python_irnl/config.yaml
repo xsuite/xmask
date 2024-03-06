@@ -15,8 +15,14 @@ config_mad:
 
     # Enable machine imperfections
     enable_imperfections: true 
+    
+    # Enable legacy (fortran) MB corrections (also creates coupling knobs)
+    enable_legacy_mb_corrections: true
+    
+    # Enable legacy (fortran) nonlinear corrections
+    enable_legacy_nl_corrections: false
 
-    # Enable knob synthesis (for coupling correction, if no imperfections)
+    # Enable coupling-knob synthesis (if no imperfections)
     enable_knob_synthesis: false
 
     # Rename the coupling knobs to avoid conflict between b1 and b2
@@ -47,6 +53,7 @@ config_mad:
       par_write_errortable: 1
 
 config_knobs_and_tuning:
+    verbose: true  # verbose output for debugging
 
     knob_settings:
 
@@ -94,18 +101,17 @@ config_knobs_and_tuning:
       lhcb2: corr_co_lhcb2.json
 
     # Tunes and chromaticities
-    qx:
-      lhcb1: 62.31
-      lhcb2: 62.31
-    qy:
-      lhcb1: 60.32
-      lhcb2: 60.32
-    dqx:
-      lhcb1: 5
-      lhcb2: 5
-    dqy:
-      lhcb1: 6
-      lhcb2: 6
+    targets:
+      lhcb1:
+        qx: 62.31
+        qy: 60.32
+        dqx: 5
+        dqy: 6
+      lhcb2:
+        qx: 62.31
+        qy: 60.32
+        dqx: 5
+        dqy: 6
 
     knob_names:
       lhcb1:
@@ -122,6 +128,43 @@ config_knobs_and_tuning:
         dq_knob_2: ksd.b2
         c_minus_knob_1: c_minus_re_b2
         c_minus_knob_2: c_minus_im_b2
+
+    correct_magnetic_errors: 
+      enable: true  # correct magnetic errors
+      pretuning: false  # match CO, tune and chroma before correction
+      
+      ir_rdt_correction:
+        # Correct nonlinear errors in the IRs by locally minimizing RDTs.
+        # Legacy correction via fortran code can be activated in 
+        # config_mad.enable_legacy_nl_corrections. For detailed info about the 
+        # parameters see the irnl_rdt_correction documentation.
+        #
+        # !! DO NOT USE the parameters `twiss`, `errors`, `beams` and
+        # `ignore_missing_columns`, as they are programatically set.
+        # 
+        # --- Parameters for xmask -----------------------------------------------
+        enable: true  # deactivate if enable_legacy_nl_corrections is true
+        target_lines: ['lhcb1', 'lhcb2']  # calculate corrections based on this line(s)
+        #
+        # --- Parameters passed on to the IRNL RDT correction module -------------
+        accel: 'hllhc'  # "lhc" or "hllhc" implemented (defaults to "lhc")
+        regex_filter: "M(QS?X|BX|C[SODT]S?X)"  # elements that contribute errors in 04e_correction + correctors
+        # regex_filter: "M(QS?X|BX|BRC|C[SODT]S?X)"       # elements that contribute errors + correctors 
+        # regex_filter: "M(QS?X|BX|BRC|BRD|CBXF|C[SODT]S?X)"  # + correct for D2 and MCBXF
+        # feeddown: 0           # include feeddown in RDT
+        # output: 'corrections_ir_{}'  # write into output files (inlcude {}-placeholder for beam)
+        # rdts: None            # RDTs to correct, e.g ["F0004", "F4000"]
+        # rdts2: None           # only for dual-optics correction, not used
+        # ips: [1, 2, 5, 8]     # IPs to minimize RDTs in
+        ips: [1, 5]             # IPs 2 and 8 are deactivated in 04e_correction
+        # solver: 'lstsq'       # 'lstsq', 'inv' or 'linear'
+        # update_optics: true   # include corrector value in feeddown
+        # iterations: 1         # number of correction calculation iterations 
+        ignore_corrector_settings: true  # ignore corrector powering for optimization
+        # --- Only Octupole Correction Example -------
+        # regex_filter: "M(QX.*\\.\\.1$|COX)" 
+        # ips: [1]
+        # rdts: ["F0004", "F4000"]
 
 config_beambeam:
     bunch_spacing_buckets: 10

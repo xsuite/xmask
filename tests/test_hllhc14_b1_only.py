@@ -1,21 +1,20 @@
-import yaml
-from pathlib import Path
 from itertools import product
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
-from cpymad.madx import Madx
-import xtrack as xt
+import pytest
 import xfields as xf
+import xtrack as xt
+import yaml
+from _complementary_hllhc14 import (_get_z_centroids, apply_optics, build_sequence,
+                                    check_optics_orbit_etc, knob_names_yaml_str,
+                                    knob_settings_yaml_str, orbit_correction_config,
+                                    tune_chroma_yaml_str)
+from cpymad.madx import Madx
 
 import xmask as xm
 import xmask.lhc as xmlhc
-
-from _complementary_hllhc14 import (build_sequence, apply_optics,
-                                    check_optics_orbit_etc, orbit_correction_config,
-                                    knob_settings_yaml_str, knob_names_yaml_str,
-                                    tune_chroma_yaml_str, _get_z_centroids)
 
 # We assume that the tests will be run in order. In case of issues we could use
 # https://pypi.org/project/pytest-order/ to enforce the order.
@@ -43,8 +42,8 @@ def test_hllhc14_b1_only_0_create_collider():
         sequence_b4=None,
         beam_config={'lhcb1':{'beam_energy_tot': 7000}},
         enable_imperfections=False,
-        enable_knob_synthesis='_mock_for_testing',
-        rename_coupling_knobs=True,
+        enable_knob_synthesis=True,
+        rename_coupling_knobs=False,
         pars_for_imperfections={},
         ver_lhc_run=None,
         ver_hllhc_optics=1.4)

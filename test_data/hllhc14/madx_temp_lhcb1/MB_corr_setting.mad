@@ -71,44 +71,44 @@
    KQS.A81B1 := 0.00000000E+00 + B81 * CMRSKEW + B82 * CMISKEW ;
 
  !!! b3-correction for beam           1
-  KCS.a12B1  := -.00000000E+00    /l.MCS ;
-  KCS.a23B1  := -.00000000E+00    /l.MCS ;
-  KCS.a34B1  := -.00000000E+00    /l.MCS ;
-  KCS.a45B1  := -.00000000E+00    /l.MCS ;
-  KCS.a56B1  := -.00000000E+00    /l.MCS ;
-  KCS.a67B1  := -.00000000E+00    /l.MCS ;
-  KCS.a78B1  := -.00000000E+00    /l.MCS ;
-  KCS.a81B1  := -.00000000E+00    /l.MCS ;
+  KCS.a12B1  := -.91071216E-02    /l.MCS ;
+  KCS.a23B1  := -.92704138E-02    /l.MCS ;
+  KCS.a34B1  := -.48776357E-02    /l.MCS ;
+  KCS.a45B1  := -.87155182E-02    /l.MCS ;
+  KCS.a56B1  := -.72634666E-02    /l.MCS ;
+  KCS.a67B1  := -.10679280E-01    /l.MCS ;
+  KCS.a78B1  := -.15366286E-01    /l.MCS ;
+  KCS.a81B1  := -.84117374E-02    /l.MCS ;
 
  !!! a3-correction for beam           1
-  KSS.a12B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a23B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a34B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a45B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a56B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a67B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a78B1  := 0.00000000E+00    /l.MSS ;
-  KSS.a81B1  := 0.00000000E+00    /l.MSS ;
+  KSS.a12B1  := -.31441721E-01    /l.MSS ;
+  KSS.a23B1  := -.25588808E-01    /l.MSS ;
+  KSS.a34B1  := -.31139011E-01    /l.MSS ;
+  KSS.a45B1  := -.13983014E-01    /l.MSS ;
+  KSS.a56B1  := -.35312232E-02    /l.MSS ;
+  KSS.a67B1  := -.64762582E-02    /l.MSS ;
+  KSS.a78B1  := -.13517590E-01    /l.MSS ;
+  KSS.a81B1  := -.13256951E-01    /l.MSS ;
 
 
  !!! b4-correction for beam           1
-  KCO.a12B1  := -.00000000E+00    /l.MCO ;
-  KCO.a23B1  := -.00000000E+00    /l.MCO ;
-  KCO.a34B1  := -.00000000E+00    /l.MCO ;
-  KCO.a45B1  := -.00000000E+00    /l.MCO ;
-  KCO.a56B1  := -.00000000E+00    /l.MCO ;
-  KCO.a67B1  := -.00000000E+00    /l.MCO ;
-  KCO.a78B1  := -.00000000E+00    /l.MCO ;
-  KCO.a81B1  := -.00000000E+00    /l.MCO ;
+  KCO.a12B1  := 0.13817567E+00    /l.MCO ;
+  KCO.a23B1  := -.13817567E+00    /l.MCO ;
+  KCO.a34B1  := -.13817567E+00    /l.MCO ;
+  KCO.a45B1  := -.13817567E+00    /l.MCO ;
+  KCO.a56B1  := 0.13817567E+00    /l.MCO ;
+  KCO.a67B1  := 0.13817567E+00    /l.MCO ;
+  KCO.a78B1  := 0.13817567E+00    /l.MCO ;
+  KCO.a81B1  := -.13817567E+00    /l.MCO ;
 
  !!! b5-correction for beam           1
-  KCD.a12B1  := -.00000000E+00    /l.MCD ;
-  KCD.a23B1  := -.00000000E+00    /l.MCD ;
-  KCD.a34B1  := -.00000000E+00    /l.MCD ;
-  KCD.a45B1  := -.00000000E+00    /l.MCD ;
-  KCD.a56B1  := -.00000000E+00    /l.MCD ;
-  KCD.a67B1  := -.00000000E+00    /l.MCD ;
-  KCD.a78B1  := -.00000000E+00    /l.MCD ;
-  KCD.a81B1  := -.00000000E+00    /l.MCD ;
+  KCD.a12B1  := 0.48905704E+02    /l.MCD ;
+  KCD.a23B1  := 0.16286041E+02    /l.MCD ;
+  KCD.a34B1  := 0.36161596E+01    /l.MCD ;
+  KCD.a45B1  := 0.52116473E+02    /l.MCD ;
+  KCD.a56B1  := 0.77840691E+02    /l.MCD ;
+  KCD.a67B1  := 0.52028133E+01    /l.MCD ;
+  KCD.a78B1  := -.81279800E+02    /l.MCD ;
+  KCD.a81B1  := -.17211017E+02    /l.MCD ;
 
  Return;
