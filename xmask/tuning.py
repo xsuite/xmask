@@ -22,7 +22,7 @@ def machine_tuning(line,
             with open(co_corr_config, 'r') as fid:
                 co_corr_config = json.load(fid)
 
-        line.correct_closed_orbit(
+        line._xmask_correct_closed_orbit(
                                 reference=line_co_ref,
                                 correction_config=co_corr_config)
 
