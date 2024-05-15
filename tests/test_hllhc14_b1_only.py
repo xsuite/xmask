@@ -1,6 +1,7 @@
 import yaml
 from pathlib import Path
 from itertools import product
+import pytest
 
 import numpy as np
 import pandas as pd
@@ -8,7 +9,7 @@ import pandas as pd
 from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
-
+import xobjects as xo
 import xmask as xm
 import xmask.lhc as xmlhc
 
@@ -176,8 +177,17 @@ def test_hllhc14_b1_only_2_tuning():
 def test_hllhc14_b1_only_3_bb_config():
 
     collider = xt.Multiline.from_json('collider_hllhc14_b1_only_02.json')
-    collider.build_trackers()
 
+    # Ensure that a non-CPU context raise a ValueError when configuring beam-beam
+    with pytest.raises(ValueError) as error_info:
+        collider.build_trackers(_context = xo.ContextPyopencl())
+        collider.configure_beambeam_interactions(
+            num_particles=2.2e11,
+            nemitt_x=2e-6, nemitt_y=3e-6)
+    assert "The trackers need to be built on CPU" in str(error_info)
+    collider.discard_trackers()
+    
+    collider.build_trackers(_context = xo.ContextCpu())
     collider.configure_beambeam_interactions(
         num_particles=2.2e11,
         nemitt_x=2e-6, nemitt_y=3e-6,
