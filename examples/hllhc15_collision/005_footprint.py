@@ -1,7 +1,7 @@
 import xtrack as xt
 
 
-collider = xt.Multiline.from_json('./collider_04_tuned_and_leveled_bb_on.json')
+collider = xt.Environment.from_json('./collider_04_tuned_and_leveled_bb_on.json')
 collider.build_trackers()
 
 fp_polar_no_rescale = collider['lhcb1'].get_footprint(nemitt_x=2.5e-6, nemitt_y=2.5e-6)

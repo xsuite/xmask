@@ -61,22 +61,24 @@ def test_hllhc14_0_create_collider():
     assert len(collider.lines.keys()) == 4
 
     collider.to_json('collider_hllhc14_00.json')
+    assert collider.element_dict is collider.lhcb1.element_dict
 
 def test_hllhc14_1_install_beambeam():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_00.json')
+    assert collider.element_dict is collider.lhcb1.element_dict
 
     collider.install_beambeam_interactions(
-    clockwise_line='lhcb1',
-    anticlockwise_line='lhcb2',
-    ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
-    delay_at_ips_slots=[0, 891, 0, 2670],
-    num_long_range_encounters_per_side={
-        'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
-    num_slices_head_on=11,
-    harmonic_number=35640,
-    bunch_spacing_buckets=10,
-    sigmaz=0.076)
+        clockwise_line='lhcb1',
+        anticlockwise_line='lhcb2',
+        ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+        delay_at_ips_slots=[0, 891, 0, 2670],
+        num_long_range_encounters_per_side={
+            'ip1': 25, 'ip2': 20, 'ip5': 25, 'ip8': 20},
+        num_slices_head_on=11,
+        harmonic_number=35640,
+        bunch_spacing_buckets=10,
+        sigmaz=0.076)
 
     collider.to_json('collider_hllhc14_01.json')
 
@@ -84,7 +86,7 @@ def test_hllhc14_1_install_beambeam():
 
     collider_before_save = collider
     dct = collider.to_dict()
-    collider = xt.Multiline.from_dict(dct)
+    collider = xt.Environment.from_dict(dct)
     collider.build_trackers()
 
     assert collider._bb_config['dataframes']['clockwise'].shape == (
@@ -106,7 +108,7 @@ def test_hllhc14_1_install_beambeam():
     tw1_b1 = collider['lhcb1'].twiss(method='4d')
     tw1_b2 = collider['lhcb2'].twiss(method='4d')
 
-    collider_ref = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider_ref = xt.Environment.from_json('collider_hllhc14_00.json')
 
     collider_ref.build_trackers()
 
@@ -142,7 +144,7 @@ def test_hllhc14_1_install_beambeam():
 
 def test_hllhc14_2_tuning():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_01.json')
+    collider = xt.Environment.from_json('collider_hllhc14_01.json')
 
     knob_settings = yaml.safe_load(knob_settings_yaml_str)
     tune_chorma_targets = yaml.safe_load(tune_chroma_yaml_str)
@@ -211,7 +213,7 @@ def test_hllhc14_2_tuning():
 def test_hllhc14_3_level_ip2_ip8():
 
     # Load collider and build trackers
-    collider = xt.Multiline.from_json('collider_hllhc14_02.json')
+    collider = xt.Environment.from_json('collider_hllhc14_02.json')
     collider.build_trackers()
 
     config = yaml.safe_load(leveling_yaml_str)
@@ -277,7 +279,7 @@ def test_hllhc14_3_level_ip2_ip8():
 
 def test_hllhc14_4_bb_config():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_03.json')
+    collider = xt.Environment.from_json('collider_hllhc14_03.json')
     collider.build_trackers()
 
     collider.configure_beambeam_interactions(
@@ -622,7 +624,7 @@ def test_hllhc14_4_bb_config():
 
 def test_stress_co_correction_and_lumi_leveling():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_02.json')
+    collider = xt.Environment.from_json('collider_hllhc14_02.json')
     collider.build_trackers()
 
     num_colliding_bunches = 2808
@@ -882,7 +884,7 @@ def test_tune_shift_single_6d_bb_lens_proton():
     nemitt_x = 2.5e-6
     nemitt_y = 2.5e-6
 
-    collider = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_00.json')
     collider.build_trackers()
 
     # Switch off the crab cavities
@@ -960,7 +962,7 @@ def test_tune_shift_single_6d_bb_lens_ion():
     nemitt_x = 1.65e-6
     nemitt_y = 1.65e-6
 
-    collider = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_00.json')
     collider.build_trackers()
 
     # Switch to ions
@@ -1043,7 +1045,7 @@ def test_tune_shift_single_4d_bb_lens_protons():
     nemitt_x = 2.5e-6
     nemitt_y = 2.5e-6
 
-    collider = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_00.json')
     collider.build_trackers()
 
     # Switch off the crab cavities
@@ -1123,7 +1125,7 @@ def test_tune_shift_single_4d_bb_lens_ions():
     nemitt_x = 1.65e-6
     nemitt_y = 1.65e-6
 
-    collider = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_00.json')
     collider.build_trackers()
 
     # Switch off the crab cavities
@@ -1205,7 +1207,7 @@ def test_tune_shift_single_4d_bb_lens_ions():
 
 def test_apply_filling_scheme():
 
-    collider = xt.Multiline.from_json('./collider_hllhc14_04.json')
+    collider = xt.Environment.from_json('./collider_hllhc14_04.json')
     collider.build_trackers()
 
     filling_pattern_cw = np.zeros(3564, dtype=int)
@@ -1530,7 +1532,7 @@ def test_apply_filling_scheme():
     assert np.all(np.array([collider.lhcb2[nn].scale_strength for nn in all_bb_lenses_b2]) == 1)
 
 def test_multiline_match():
-    collider = xt.Multiline.from_json('collider_hllhc14_02.json')
+    collider = xt.Environment.from_json('collider_hllhc14_02.json')
     collider.build_trackers()
 
     tw = collider.twiss(lines=['lhcb1', 'lhcb2'])

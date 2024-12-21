@@ -64,7 +64,7 @@ def build_xsuite_collider(
 
     Returns
     -------
-    collider: xtrack.Multiline
+    collider: xtrack.Environment
 
     """
 
@@ -145,7 +145,7 @@ def build_xsuite_collider(
     if 'lhcb2' in lines_to_track:
         lines['lhcb2_co_ref'].particle_ref = lines['lhcb2'].particle_ref.copy()
 
-    collider = xt.Multiline(lines=lines)
+    collider = xt.Environment(lines=lines)
 
     if 'lhcb1' in lines_to_track:
         define_octupole_current_knobs(line=collider.lhcb1, beamn=1)

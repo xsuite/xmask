@@ -55,7 +55,7 @@ def test_hllhc14_b1_only_0_create_collider():
 
 def test_hllhc14_b1_only_1_install_beambeam():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_b1_only_00.json')
+    collider = xt.Environment.from_json('collider_hllhc14_b1_only_00.json')
 
     collider.install_beambeam_interactions(
         clockwise_line='lhcb1',
@@ -74,7 +74,7 @@ def test_hllhc14_b1_only_1_install_beambeam():
 
     collider_before_save = collider
     dct = collider.to_dict()
-    collider = xt.Multiline.from_dict(dct)
+    collider = xt.Environment.from_dict(dct)
     collider.build_trackers()
 
     assert collider._bb_config['dataframes']['clockwise'].shape == (
@@ -92,7 +92,7 @@ def test_hllhc14_b1_only_1_install_beambeam():
 
     tw1_b1 = collider['lhcb1'].twiss(method='4d')
 
-    collider_ref = xt.Multiline.from_json('collider_hllhc14_00.json')
+    collider_ref = xt.Environment.from_json('collider_hllhc14_00.json')
 
     collider_ref.build_trackers()
 
@@ -117,7 +117,7 @@ def test_hllhc14_b1_only_1_install_beambeam():
 
 def test_hllhc14_b1_only_2_tuning():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_b1_only_01.json')
+    collider = xt.Environment.from_json('collider_hllhc14_b1_only_01.json')
 
     knob_settings = yaml.safe_load(knob_settings_yaml_str)
     tune_chorma_targets = yaml.safe_load(tune_chroma_yaml_str)
@@ -175,7 +175,7 @@ def test_hllhc14_b1_only_2_tuning():
 
 def test_hllhc14_b1_only_3_bb_config():
 
-    collider = xt.Multiline.from_json('collider_hllhc14_b1_only_02.json')
+    collider = xt.Environment.from_json('collider_hllhc14_b1_only_02.json')
     collider.build_trackers()
 
     collider.configure_beambeam_interactions(
@@ -251,7 +251,7 @@ def test_hllhc14_b1_only_3_bb_config():
         np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
         np.allclose(tw_bb_on.y, tw_bb_off.y, atol=1e-10, rtol=0)
 
-    collider_ref = xt.Multiline.from_json('collider_hllhc14_02.json')
+    collider_ref = xt.Environment.from_json('collider_hllhc14_02.json')
     collider_ref.build_trackers()
 
     for name_weak, ip in product(['lhcb1'], ['ip1', 'ip2', 'ip5', 'ip8']):

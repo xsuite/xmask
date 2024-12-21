@@ -2,7 +2,7 @@ import xtrack as xt
 import xmask as xm
 
 # Load collider anf build trackers
-collider = xt.Multiline.from_json('collider_01_bb_off.json')
+collider = xt.Environment.from_json('collider_01_bb_off.json')
 collider.build_trackers()
 
 # Read knobs and tuning settings from config file

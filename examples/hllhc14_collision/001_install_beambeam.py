@@ -4,7 +4,7 @@ import xtrack as xt
 import xmask as xm
 
 # Load collider
-collider = xt.Multiline.from_json('collider_00_from_mad.json')
+collider = xt.Environment.from_json('collider_00_from_mad.json')
 
 # Read beam-beam config from config file
 with open('config.yaml','r') as fid:

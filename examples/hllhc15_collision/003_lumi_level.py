@@ -5,7 +5,7 @@ import xmask as xm
 import xmask.lhc as xlhc
 
 # Load collider anf build trackers
-collider = xt.Multiline.from_json('collider_02_tuned_bb_off.json')
+collider = xt.Environment.from_json('collider_02_tuned_bb_off.json')
 collider.build_trackers()
 
 # Read knobs and tuning settings from config file

@@ -72,7 +72,7 @@ def test_lhc_ion_0_create_collider():
 def test_lhc_ion_1_install_beambeam():
 
 
-    collider = xt.Multiline.from_json('collider_lhc_ion_00.json')
+    collider = xt.Environment.from_json('collider_lhc_ion_00.json')
 
     collider.install_beambeam_interactions(
         clockwise_line='lhcb1',
@@ -92,7 +92,7 @@ def test_lhc_ion_1_install_beambeam():
 
     collider_before_save = collider
     dct = collider.to_dict()
-    collider = xt.Multiline.from_dict(dct)
+    collider = xt.Environment.from_dict(dct)
     collider.build_trackers()
 
     assert collider._bb_config['dataframes']['clockwise'].shape == (
@@ -114,7 +114,7 @@ def test_lhc_ion_1_install_beambeam():
     tw1_b1 = collider['lhcb1'].twiss(method='4d')
     tw1_b2 = collider['lhcb2'].twiss(method='4d')
 
-    collider_ref = xt.Multiline.from_json('collider_lhc_ion_00.json')
+    collider_ref = xt.Environment.from_json('collider_lhc_ion_00.json')
 
     collider_ref.build_trackers()
 
@@ -151,7 +151,7 @@ def test_lhc_ion_1_install_beambeam():
 
 def test_lhc_ion_2_tuning():
 
-    collider = xt.Multiline.from_json('collider_lhc_ion_01.json')
+    collider = xt.Environment.from_json('collider_lhc_ion_01.json')
 
     # Read config file
     config = yaml.safe_load(_config_ion_yaml_str)
@@ -225,7 +225,7 @@ def test_lhc_ion_2_tuning():
 def test_lhc_ion_3_leveling():
 
     # Load collider and build trackers
-    collider = xt.Multiline.from_json('collider_lhc_ion_02.json')
+    collider = xt.Environment.from_json('collider_lhc_ion_02.json')
     collider.build_trackers()
 
     config = yaml.safe_load(_config_ion_yaml_str)
@@ -326,7 +326,7 @@ def test_lhc_ion_3_leveling():
 
 def test_lhc_ion_4_bb_config():
 
-    collider = xt.Multiline.from_json('collider_lhc_ion_03.json')
+    collider = xt.Environment.from_json('collider_lhc_ion_03.json')
     collider.build_trackers()
 
     collider.configure_beambeam_interactions(
@@ -673,7 +673,7 @@ def test_lhc_ion_4_bb_config():
                            )
 
 def test_lhc_ion_5_filling_scheme():
-    collider = xt.Multiline.from_json('collider_lhc_ion_04.json')
+    collider = xt.Environment.from_json('collider_lhc_ion_04.json')
     collider.build_trackers()
 
     twb1 = collider.lhcb1.twiss()

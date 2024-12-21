@@ -5,7 +5,7 @@ import xtrack as xt
 import xmask as xm
 
 
-collider = xt.Multiline.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
+collider = xt.Environment.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
 collider.build_trackers()
 
 

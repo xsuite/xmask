@@ -1,7 +1,7 @@
 import numpy as np
 import xtrack as xt
 
-collider = xt.Multiline.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
+collider = xt.Environment.from_json('../hllhc15_collision/collider_02_tuned_bb_off.json')
 collider.build_trackers()
 
 tw = collider.twiss(lines=['lhcb1', 'lhcb2'])

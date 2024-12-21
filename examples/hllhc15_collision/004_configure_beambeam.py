@@ -9,7 +9,7 @@ with open('config.yaml','r') as fid:
 config_bb = config['config_beambeam']
 
 # Load collider and build trackers
-collider = xt.Multiline.from_json('collider_03_tuned_and_leveled_bb_off.json')
+collider = xt.Environment.from_json('collider_03_tuned_and_leveled_bb_off.json')
 collider.build_trackers()
 
 # Configure beam-beam lenses
