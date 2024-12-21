@@ -642,13 +642,14 @@ def test_stress_co_correction_and_lumi_leveling():
 
     # Add errors
     for line_name in ['lhcb1', 'lhcb2']:
-        collider[line_name]['mqxb.a2r8..5'].knl[0] = 1e-5
-        collider[line_name]['mqxb.a2l8..5'].knl[0] = -0.7e-5
-        collider[line_name]['mqxb.a2r8..5'].ksl[0] = -1.3e-5
-        collider[line_name]['mqxb.a2l8..5'].ksl[0] = 0.9e-5
+        suffix = {'lhcb2': '__lhcb2', 'lhcb1': ''}[line_name]
+        collider[line_name]['mqxb.a2r8..5' + suffix].knl[0] = 1e-5
+        collider[line_name]['mqxb.a2l8..5' + suffix].knl[0] = -0.7e-5
+        collider[line_name]['mqxb.a2r8..5' + suffix].ksl[0] = -1.3e-5
+        collider[line_name]['mqxb.a2l8..5' + suffix].ksl[0] = 0.9e-5
 
-        collider[line_name]['mqxb.a2r8..5'].knl[1] = collider[line_name]['mqxb.a2r8..4'].knl[1] * 1.3
-        collider[line_name]['mqxb.a2l8..5'].knl[1] = collider[line_name]['mqxb.a2l8..4'].knl[1] * 1.3
+        collider[line_name]['mqxb.a2r8..5' + suffix].knl[1] *= 1.3
+        collider[line_name]['mqxb.a2l8..5' + suffix].knl[1] *= 1.3
     collider.lhcb1['mqy.a4l8.b1..1'].knl[1] = collider.lhcb1['mqy.a4l8.b1..2'].knl[1] * 0.7
     collider.lhcb1['mqy.a4r8.b1..1'].knl[1] = collider.lhcb1['mqy.a4r8.b1..2'].knl[1] * 1.2
     collider.lhcb2['mqy.a4l8.b2..1'].knl[1] = collider.lhcb2['mqy.a4l8.b2..2'].knl[1] * 1.1
