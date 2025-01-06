@@ -642,7 +642,7 @@ def test_stress_co_correction_and_lumi_leveling():
 
     # Add errors
     for line_name in ['lhcb1', 'lhcb2']:
-        suffix = {'lhcb2': '__lhcb2', 'lhcb1': ''}[line_name]
+        suffix = {'lhcb2': '/lhcb2', 'lhcb1': '/lhcb1'}[line_name]
         collider[line_name]['mqxb.a2r8..5' + suffix].knl[0] = 1e-5
         collider[line_name]['mqxb.a2l8..5' + suffix].knl[0] = -0.7e-5
         collider[line_name]['mqxb.a2r8..5' + suffix].ksl[0] = -1.3e-5
