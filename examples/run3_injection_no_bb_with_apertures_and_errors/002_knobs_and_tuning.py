@@ -18,7 +18,7 @@ for kk, vv in conf_knobs_and_tuning['knob_settings'].items():
 # Tunings
 for line_name in ['lhcb1']: #, 'lhcb2']:
 
-    knob_names = conf_knobs_and_tuning['knob_names'][line_name]
+    knob_names = {kk: vv.lower() for kk, vv in conf_knobs_and_tuning['knob_names'][line_name].items()}
 
     targets = {
         'qx': conf_knobs_and_tuning['qx'][line_name],
