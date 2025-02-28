@@ -16,7 +16,7 @@ for kk, vv in conf_knobs_and_tuning['knob_settings'].items():
     collider.vars[kk] = vv
 
 # Tunings
-for line_name in ['lhcb1']: #, 'lhcb2']:
+for line_name in ['lhcb1', 'lhcb2']:
 
     knob_names = {kk: vv.lower() for kk, vv in conf_knobs_and_tuning['knob_names'][line_name].items()}
 
