@@ -76,16 +76,16 @@ config_knobs_and_tuning:
     lhcb2: 10.0
   knob_names:
     lhcb1:
-      q_knob_1: dQx.b1_sq
-      q_knob_2: dQy.b1_sq
-      dq_knob_1: dQpx.b1_sq
-      dq_knob_2: dQpy.b1_sq
-      c_minus_knob_1: CMRS.b1_sq
-      c_minus_knob_2: CMIS.b1_sq
+      q_knob_1: kqtf.b1
+      q_knob_2: kqtd.b1
+      dq_knob_1: dqpx.b1_sq
+      dq_knob_2: dqpy.b1_sq
+      c_minus_knob_1: cmrs.b1_sq
+      c_minus_knob_2: cmis.b1_sq
     lhcb2:
-      q_knob_1: dQx.b2_sq
-      q_knob_2: dQy.b2_sq
-      dq_knob_1: dQpx.b2_sq
-      dq_knob_2: dQpy.b2_sq
-      c_minus_knob_1: CMRS.b2_sq
-      c_minus_knob_2: CMIS.b2_sq
+      q_knob_1: kqtf.b2
+      q_knob_2: kqtd.b2
+      dq_knob_1: dqpx.b2_sq
+      dq_knob_2: dqpy.b2_sq
+      c_minus_knob_1: cmrs.b2_sq
+      c_minus_knob_2: cmis.b2_sq
