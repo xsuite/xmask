@@ -7,6 +7,7 @@ import pandas as pd
 from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
+import xobjects as xo
 
 import xmask as xm
 import xmask.lhc as xmlhc
@@ -60,10 +61,10 @@ def test_lhc_ion_0_create_collider():
 
     for line_name in collider.lines.keys():
         pref = collider[line_name].particle_ref
-        assert np.isclose(pref.q0, 82, rtol=1e-10, atol=0)
-        assert np.isclose(pref.energy0[0], 5.74e14, rtol=1e-10, atol=0)
-        assert np.isclose(pref.mass0, 193687272900.0, rtol=1e-10, atol=0)
-        assert np.isclose(pref.gamma0[0], 2963.54, rtol=1e-6, atol=0)
+        xo.assert_allclose(pref.q0, 82, rtol=1e-10, atol=0)
+        xo.assert_allclose(pref.energy0[0], 5.74e14, rtol=1e-10, atol=0)
+        xo.assert_allclose(pref.mass0, 193687272900.0, rtol=1e-10, atol=0)
+        xo.assert_allclose(pref.gamma0[0], 2963.54, rtol=1e-6, atol=0)
 
     # Save to file
     collider.to_json('collider_lhc_ion_00.json')
@@ -124,29 +125,29 @@ def test_lhc_ion_1_install_beambeam():
     tw0_b1 = collider_ref['lhcb1'].twiss(method='4d')
     tw0_b2 = collider_ref['lhcb2'].twiss(method='4d')
 
-    assert np.isclose(tw1_b1.qx, tw0_b1.qx, atol=1e-7, rtol=0)
-    assert np.isclose(tw1_b1.qy, tw0_b1.qy, atol=1e-7, rtol=0)
-    assert np.isclose(tw1_b2.qx, tw0_b2.qx, atol=1e-7, rtol=0)
-    assert np.isclose(tw1_b2.qy, tw0_b2.qy, atol=1e-7, rtol=0)
+    xo.assert_allclose(tw1_b1.qx, tw0_b1.qx, atol=1e-7, rtol=0)
+    xo.assert_allclose(tw1_b1.qy, tw0_b1.qy, atol=1e-7, rtol=0)
+    xo.assert_allclose(tw1_b2.qx, tw0_b2.qx, atol=1e-7, rtol=0)
+    xo.assert_allclose(tw1_b2.qy, tw0_b2.qy, atol=1e-7, rtol=0)
 
-    assert np.isclose(tw1_b1.dqx, tw0_b1.dqx, atol=1e-3, rtol=0)
-    assert np.isclose(tw1_b1.dqy, tw0_b1.dqy, atol=1e-3, rtol=0)
-    assert np.isclose(tw1_b2.dqx, tw0_b2.dqx, atol=1e-3, rtol=0)
-    assert np.isclose(tw1_b2.dqy, tw0_b2.dqy, atol=1e-3, rtol=0)
+    xo.assert_allclose(tw1_b1.dqx, tw0_b1.dqx, atol=1e-3, rtol=0)
+    xo.assert_allclose(tw1_b1.dqy, tw0_b1.dqy, atol=1e-3, rtol=0)
+    xo.assert_allclose(tw1_b2.dqx, tw0_b2.dqx, atol=1e-3, rtol=0)
+    xo.assert_allclose(tw1_b2.dqy, tw0_b2.dqy, atol=1e-3, rtol=0)
 
     for ipn in [1, 2, 3, 4, 5, 6, 7, 8]:
-        assert np.isclose(tw1_b1['betx', f'ip{ipn}'], tw0_b1['betx', f'ip{ipn}'], rtol=1e-5, atol=0)
-        assert np.isclose(tw1_b1['bety', f'ip{ipn}'], tw0_b1['bety', f'ip{ipn}'], rtol=1e-5, atol=0)
-        assert np.isclose(tw1_b2['betx', f'ip{ipn}'], tw0_b2['betx', f'ip{ipn}'], rtol=1e-5, atol=0)
-        assert np.isclose(tw1_b2['bety', f'ip{ipn}'], tw0_b2['bety', f'ip{ipn}'], rtol=1e-5, atol=0)
+        xo.assert_allclose(tw1_b1['betx', f'ip{ipn}'], tw0_b1['betx', f'ip{ipn}'], rtol=1e-5, atol=0)
+        xo.assert_allclose(tw1_b1['bety', f'ip{ipn}'], tw0_b1['bety', f'ip{ipn}'], rtol=1e-5, atol=0)
+        xo.assert_allclose(tw1_b2['betx', f'ip{ipn}'], tw0_b2['betx', f'ip{ipn}'], rtol=1e-5, atol=0)
+        xo.assert_allclose(tw1_b2['bety', f'ip{ipn}'], tw0_b2['bety', f'ip{ipn}'], rtol=1e-5, atol=0)
 
-        assert np.isclose(tw1_b1['px', f'ip{ipn}'], tw0_b1['px', f'ip{ipn}'], rtol=1e-6, atol=0)
-        assert np.isclose(tw1_b1['py', f'ip{ipn}'], tw0_b1['py', f'ip{ipn}'], rtol=1e-6, atol=0)
-        assert np.isclose(tw1_b2['px', f'ip{ipn}'], tw0_b2['px', f'ip{ipn}'], rtol=1e-6, atol=0)
-        assert np.isclose(tw1_b2['py', f'ip{ipn}'], tw0_b2['py', f'ip{ipn}'], rtol=1e-6, atol=0)
+        xo.assert_allclose(tw1_b1['px', f'ip{ipn}'], tw0_b1['px', f'ip{ipn}'], rtol=1e-6, atol=1e-10)
+        xo.assert_allclose(tw1_b1['py', f'ip{ipn}'], tw0_b1['py', f'ip{ipn}'], rtol=1e-6, atol=1e-10)
+        xo.assert_allclose(tw1_b2['px', f'ip{ipn}'], tw0_b2['px', f'ip{ipn}'], rtol=1e-6, atol=1e-10)
+        xo.assert_allclose(tw1_b2['py', f'ip{ipn}'], tw0_b2['py', f'ip{ipn}'], rtol=1e-6, atol=1e-10)
 
-        assert np.isclose(tw1_b1['s', f'ip{ipn}'], tw0_b1['s', f'ip{ipn}'], rtol=1e-10, atol=0)
-        assert np.isclose(tw1_b2['s', f'ip{ipn}'], tw0_b2['s', f'ip{ipn}'], rtol=1e-10, atol=0)
+        xo.assert_allclose(tw1_b1['s', f'ip{ipn}'], tw0_b1['s', f'ip{ipn}'], rtol=1e-10, atol=0)
+        xo.assert_allclose(tw1_b2['s', f'ip{ipn}'], tw0_b2['s', f'ip{ipn}'], rtol=1e-10, atol=0)
 
 
 def test_lhc_ion_2_tuning():
@@ -172,17 +173,17 @@ def test_lhc_ion_2_tuning():
     # Check coupling knobs are responding
     collider.vars['cmrs.b1_sq'] = 1e-3
     collider.vars['cmis.b1_sq'] = 1e-3
-    assert np.isclose(collider['lhcb1'].twiss().c_minus, 1.4e-3,
+    xo.assert_allclose(collider['lhcb1'].twiss().c_minus, 1.4e-3,
                       rtol=0, atol=2e-4)
-    assert np.isclose(collider['lhcb2'].twiss().c_minus, 0,
+    xo.assert_allclose(collider['lhcb2'].twiss().c_minus, 0,
                       rtol=0, atol=2e-4)
     collider.vars['cmrs.b1_sq'] = 0
     collider.vars['cmis.b1_sq'] = 0
     collider.vars['cmrs.b2_sq'] = 1e-3
     collider.vars['cmis.b2_sq'] = 1e-3
-    assert np.isclose(collider['lhcb1'].twiss().c_minus, 0,
+    xo.assert_allclose(collider['lhcb1'].twiss().c_minus, 0,
                         rtol=0, atol=2e-4)
-    assert np.isclose(collider['lhcb2'].twiss().c_minus, 1.4e-3,
+    xo.assert_allclose(collider['lhcb2'].twiss().c_minus, 1.4e-3,
                         rtol=0, atol=2e-4)
     collider.vars['cmrs.b2_sq'] = 0
     collider.vars['cmis.b2_sq'] = 0
@@ -271,7 +272,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip1, 6.4e+27, rtol=1e-3, atol=0)
+    xo.assert_allclose(ll_ip1, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip2
     ll_ip2 = xt.lumi.luminosity_from_twiss(
@@ -285,7 +286,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip2, 6.4e+27, rtol=1e-3, atol=0)
+    xo.assert_allclose(ll_ip2, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip5
     ll_ip5 = xt.lumi.luminosity_from_twiss(
@@ -299,7 +300,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip5, 6.4e+27, rtol=1e-3, atol=0)
+    xo.assert_allclose(ll_ip5, 6.4e+27, rtol=1e-3, atol=0)
 
     # Check luminosity in ip8
     ll_ip8 = xt.lumi.luminosity_from_twiss(
@@ -313,7 +314,7 @@ def test_lhc_ion_3_leveling():
         twiss_b2=tw.lhcb2,
         crab=False)
 
-    assert np.isclose(ll_ip8, 1e+27, rtol=1e-3, atol=0)
+    xo.assert_allclose(ll_ip8, 1e+27, rtol=1e-3, atol=0)
 
     # Check optics, orbit, rf, etc.
     check_optics_orbit_etc(collider, line_names=['lhcb1', 'lhcb2'],
@@ -389,12 +390,12 @@ def test_lhc_ion_4_bb_config():
         tw_bb_off = collider[line_name].twiss()
         collider.vars['beambeam_scale'] = 1
 
-        assert np.isclose(tw_bb_off.qx, qx_no_bb[line_name], rtol=0, atol=1e-4)
-        assert np.isclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
+        xo.assert_allclose(tw_bb_off.qx, qx_no_bb[line_name], rtol=0, atol=1e-4)
+        xo.assert_allclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
 
         # Check that there is a tune shift of the order of 7e-4
-        assert np.isclose(tw_bb_on.qx, qx_no_bb[line_name] - 7e-4, rtol=0, atol=4e-3)
-        assert np.isclose(tw_bb_on.qy, qy_no_bb[line_name] - 7e-4, rtol=0, atol=4e-3)
+        xo.assert_allclose(tw_bb_on.qx, qx_no_bb[line_name] - 7e-4, rtol=0, atol=4e-3)
+        xo.assert_allclose(tw_bb_on.qy, qy_no_bb[line_name] - 7e-4, rtol=0, atol=4e-3)
 
         # Check that there is no effect on the orbit
         np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
@@ -445,38 +446,38 @@ def test_lhc_ion_4_bb_config():
                                         * nemitt_y/beta0_strong/gamma0_strong)
 
                 # Beam sizes
-                assert np.isclose(ee_weak.other_beam_Sigma_11, expected_sigma_x**2,
+                xo.assert_allclose(ee_weak.other_beam_Sigma_11, expected_sigma_x**2,
                                 atol=0, rtol=1e-5)
-                assert np.isclose(ee_weak.other_beam_Sigma_33, expected_sigma_y**2,
+                xo.assert_allclose(ee_weak.other_beam_Sigma_33, expected_sigma_y**2,
                                 atol=0, rtol=1e-5)
 
                 # Check no coupling
                 assert ee_weak.other_beam_Sigma_13 == 0
 
                 # Orbit
-                assert np.isclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
+                xo.assert_allclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_x)
-                assert np.isclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
+                xo.assert_allclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
                                     rtol=0, atol=1e-4 * expected_sigma_y)
 
                 # Separation
-                assert np.isclose(ee_weak.other_beam_shift_x,
+                xo.assert_allclose(ee_weak.other_beam_shift_x,
                     tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
                     + survey_strong['X', nn_strong] - survey_weak['X', nn_weak],
                     rtol=0, atol=5e-4 * expected_sigma_x)
 
-                assert np.isclose(ee_weak.other_beam_shift_y,
+                xo.assert_allclose(ee_weak.other_beam_shift_y,
                     tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
                     + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak],
                     rtol=0, atol=5e-4 * expected_sigma_y)
 
                 # s position
-                assert np.isclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
+                xo.assert_allclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
                                 bunch_spacing_ds/2 * (iele+1) * sorting[side],
                                 rtol=0, atol=10e-6)
 
                 # Check intensity
-                assert np.isclose(ee_weak.other_beam_num_particles, num_particles,
+                xo.assert_allclose(ee_weak.other_beam_num_particles, num_particles,
                                 atol=0, rtol=1e-8)
 
                 # Other checks
@@ -489,9 +490,9 @@ def test_lhc_ion_4_bb_config():
         # Check head on encounters
 
         # Quick check on _get_z_centroids
-        assert np.isclose(np.mean(_get_z_centroids(100000, 5.)**2), 5**2,
+        xo.assert_allclose(np.mean(_get_z_centroids(100000, 5.)**2), 5**2,
                                 rtol=0, atol=5e-4)
-        assert np.isclose(np.mean(_get_z_centroids(100000, 5.)), 0,
+        xo.assert_allclose(np.mean(_get_z_centroids(100000, 5.)), 0,
                                 rtol=0, atol=1e-10)
 
         z_centroids = _get_z_centroids(num_slices_head_on, sigmaz)
@@ -538,7 +539,7 @@ def test_lhc_ion_4_bb_config():
 
             # s position
             expected_s = zz / 2
-            assert np.isclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
+            xo.assert_allclose(tw_weak['s', nn_weak] - tw_weak['s', f'ip{ip_n}'],
                             expected_s, atol=10e-6, rtol=0)
 
             # Beam sizes
@@ -547,10 +548,10 @@ def test_lhc_ion_4_bb_config():
             expected_sigma_y = np.sqrt(tw_strong['bety', nn_strong]
                                     * nemitt_y/beta0_strong/gamma0_strong)
 
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_11[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_11[0],
                             expected_sigma_x**2,
                             atol=0, rtol=1e-5)
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_33[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_33[0],
                             expected_sigma_y**2,
                             atol=0, rtol=1e-5)
 
@@ -558,10 +559,10 @@ def test_lhc_ion_4_bb_config():
                                         * nemitt_x/beta0_strong/gamma0_strong)
             expected_sigma_py = np.sqrt(tw_strong['gamy', nn_strong]
                                         * nemitt_y/beta0_strong/gamma0_strong)
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_22[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_22[0],
                             expected_sigma_px**2,
                             atol=0, rtol=1e-4)
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_44[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_44[0],
                             expected_sigma_py**2,
                             atol=0, rtol=1e-4)
 
@@ -569,10 +570,10 @@ def test_lhc_ion_4_bb_config():
                                     * nemitt_x / beta0_strong / gamma0_strong)
             expected_sigma_ypy = -(tw_strong['alfy', nn_strong]
                                     * nemitt_y / beta0_strong / gamma0_strong)
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_12[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_12[0],
                             expected_sigma_xpx,
                             atol=1e-12, rtol=5e-4)
-            assert np.isclose(ee_weak.slices_other_beam_Sigma_34[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_Sigma_34[0],
                             expected_sigma_ypy,
                             atol=1e-12, rtol=5e-4)
 
@@ -583,23 +584,23 @@ def test_lhc_ion_4_bb_config():
             assert ee_weak.slices_other_beam_Sigma_24[0] == 0
 
             # Orbit
-            assert np.isclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
+            xo.assert_allclose(ee_weak.ref_shift_x, tw_weak['x', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_x)
-            assert np.isclose(ee_weak.ref_shift_px, tw_weak['px', nn_weak],
+            xo.assert_allclose(ee_weak.ref_shift_px, tw_weak['px', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_px)
-            assert np.isclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
+            xo.assert_allclose(ee_weak.ref_shift_y, tw_weak['y', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_y)
-            assert np.isclose(ee_weak.ref_shift_py, tw_weak['py', nn_weak],
+            xo.assert_allclose(ee_weak.ref_shift_py, tw_weak['py', nn_weak],
                                 rtol=0, atol=1e-4 * expected_sigma_py)
-            assert np.isclose(ee_weak.ref_shift_zeta, tw_weak['zeta', nn_weak],
+            xo.assert_allclose(ee_weak.ref_shift_zeta, tw_weak['zeta', nn_weak],
                                 rtol=0, atol=1e-9)
-            assert np.isclose(ee_weak.ref_shift_pzeta,
+            xo.assert_allclose(ee_weak.ref_shift_pzeta,
                             tw_weak['ptau', nn_weak]/beta0_strong,
                             rtol=0, atol=1e-9)
 
             # Separation
             # for phi_crab definition, see Xsuite physics manual
-            assert np.isclose(ee_weak.other_beam_shift_x,
+            xo.assert_allclose(ee_weak.other_beam_shift_x,
                 (tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
                 + survey_strong['X', nn_strong] - survey_weak['X', nn_weak]
                 - phi_crab_x
@@ -608,7 +609,7 @@ def test_lhc_ion_4_bb_config():
                             * harmonic_number / tw_strong.circumference)),
                 rtol=0, atol=1e-6) # Not the cleanest, to be investigated
 
-            assert np.isclose(ee_weak.other_beam_shift_y,
+            xo.assert_allclose(ee_weak.other_beam_shift_y,
                 (tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
                 + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak]
                 - phi_crab_y
@@ -626,23 +627,23 @@ def test_lhc_ion_4_bb_config():
             # Assume that crossing is either in x or in y
             if np.abs(tw_weak['px', f'ip{ip_n}']) < 1e-6:
                 # Vertical crossing
-                assert np.isclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
-                assert np.isclose(
+                xo.assert_allclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
+                xo.assert_allclose(
                     2*ee_weak.phi,
                     tw_weak['py', f'ip{ip_n}'] - tw_strong['py', f'ip{ip_n}'],
                     atol=2e-7, rtol=0)
             else:
                 # Horizontal crossing
-                assert np.isclose(ee_weak.alpha,
+                xo.assert_allclose(ee_weak.alpha,
                     (-52e-3 if ip_n==8 else 0)*{'lhcb1': 1, 'lhcb2': -1}[name_weak],
                     atol=5e-3, rtol=0)
-                assert np.isclose(
+                xo.assert_allclose(
                     2*ee_weak.phi,
                     tw_weak['px', f'ip{ip_n}'] - tw_strong['px', f'ip{ip_n}'],
                     atol=2e-7, rtol=0)
 
             # Check intensity
-            assert np.isclose(ee_weak.slices_other_beam_num_particles[0],
+            xo.assert_allclose(ee_weak.slices_other_beam_num_particles[0],
                             num_particles/num_slices_head_on, atol=0, rtol=1e-8)
 
             # Other checks

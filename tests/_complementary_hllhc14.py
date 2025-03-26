@@ -1,80 +1,83 @@
 import numpy as np
+
 import xmask.lhc as xmlhc
+import xobjects as xo
+
 
 def check_optics_orbit_etc(collider, line_names, sep_h_ip2, sep_v_ip8):
 
     for line_name in line_names:
 
         assert collider[line_name].particle_ref.q0 == 1
-        assert np.isclose(collider[line_name].particle_ref.p0c, 7e12,
+        xo.assert_allclose(collider[line_name].particle_ref.p0c, 7e12,
                         atol=0, rtol=1e-5)
-        assert np.isclose(collider[line_name].particle_ref.mass0, 0.9382720813e9,
+        xo.assert_allclose(collider[line_name].particle_ref.mass0, 0.9382720813e9,
                             atol=0, rtol=1e-5)
 
         tw = collider[line_name].twiss()
 
         if line_name == 'lhcb1':
-            assert np.isclose(tw.qx, 62.31, atol=1e-4, rtol=0)
-            assert np.isclose(tw.qy, 60.32, atol=1e-4, rtol=0)
-            assert np.isclose(tw.dqx, 5, atol=0.1, rtol=0)
-            assert np.isclose(tw.dqy, 7, atol=0.1, rtol=0)
+            xo.assert_allclose(tw.qx, 62.31, atol=1e-4, rtol=0)
+            xo.assert_allclose(tw.qy, 60.32, atol=1e-4, rtol=0)
+            xo.assert_allclose(tw.dqx, 5, atol=0.1, rtol=0)
+            xo.assert_allclose(tw.dqy, 7, atol=0.1, rtol=0)
         elif line_name == 'lhcb2':
-            assert np.isclose(tw.qx, 62.315, atol=1e-4, rtol=0)
-            assert np.isclose(tw.qy, 60.325, atol=1e-4, rtol=0)
-            assert np.isclose(tw.dqx, 6, atol=0.1, rtol=0)
-            assert np.isclose(tw.dqy, 8, atol=0.1, rtol=0)
+            xo.assert_allclose(tw.qx, 62.315, atol=1e-4, rtol=0)
+            xo.assert_allclose(tw.qy, 60.325, atol=1e-4, rtol=0)
+            xo.assert_allclose(tw.dqx, 6, atol=0.1, rtol=0)
+            xo.assert_allclose(tw.dqy, 8, atol=0.1, rtol=0)
         else:
             raise ValueError(f'Unknown line name {line_name}')
 
-        assert np.isclose(tw.qs, 0.00212, atol=1e-4, rtol=0) # Checks that RF is well set
+        xo.assert_allclose(tw.qs, 0.00212, atol=1e-4, rtol=0) # Checks that RF is well set
 
-        assert np.isclose(tw.c_minus, 0, atol=1e-4, rtol=0)
+        xo.assert_allclose(tw.c_minus, 0, atol=1e-4, rtol=0)
         assert np.allclose(tw.zeta, 0, rtol=0, atol=1e-4) # Check RF phase
 
         # Check separations
-        assert np.isclose(tw['x', 'ip1'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
-        assert np.isclose(tw['y', 'ip1'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
-        assert np.isclose(tw['x', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
-        assert np.isclose(tw['y', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        xo.assert_allclose(tw['x', 'ip1'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        xo.assert_allclose(tw['y', 'ip1'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        xo.assert_allclose(tw['x', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
+        xo.assert_allclose(tw['y', 'ip5'], 0, rtol=0, atol=5e-8) # sigma is 4e-6
 
         if sep_h_ip2 is not None:
-            assert np.isclose(tw['x', 'ip2'],
+            xo.assert_allclose(tw['x', 'ip2'],
                     #-0.138e-3 * {'lhcb1': 1, 'lhcb2': 1}[line_name], # set separation
                     sep_h_ip2 * {'lhcb1': 1, 'lhcb2': 1}[line_name],
                     rtol=0, atol=4e-6)
-        assert np.isclose(tw['y', 'ip2'], 0, rtol=0, atol=5e-8)
+        xo.assert_allclose(tw['y', 'ip2'], 0, rtol=0, atol=5e-8)
 
-        assert np.isclose(tw['x', 'ip8'], 0, rtol=0, atol=5e-8)
+        xo.assert_allclose(tw['x', 'ip8'], 0, rtol=0, atol=5e-8)
         if sep_v_ip8 is not None:
-            assert np.isclose(tw['y', 'ip8'],
+            xo.assert_allclose(tw['y', 'ip8'],
                     #-0.043e-3 * {'lhcb1': 1, 'lhcb2': -1}[line_name], # set separation
                     sep_v_ip8 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
                     rtol=0, atol=5e-8)
 
         # Check crossing angles
-        assert np.isclose(tw['px', 'ip1'],
+        xo.assert_allclose(tw['px', 'ip1'],
                 250e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6)
-        assert np.isclose(tw['py', 'ip1'], 0, rtol=0, atol=0.5e-6)
-        assert np.isclose(tw['px', 'ip5'], 0, rtol=0, atol=0.5e-6)
-        assert np.isclose(tw['py', 'ip5'], 250e-6, rtol=0, atol=0.5e-6)
+        xo.assert_allclose(tw['py', 'ip1'], 0, rtol=0, atol=0.5e-6)
+        xo.assert_allclose(tw['px', 'ip5'], 0, rtol=0, atol=0.5e-6)
+        xo.assert_allclose(tw['py', 'ip5'], 250e-6, rtol=0, atol=0.5e-6)
 
-        assert np.isclose(tw['px', 'ip2'], 0, rtol=0, atol=0.5e-6)
-        assert np.isclose(tw['py', 'ip2'], -100e-6 , rtol=0, atol=0.5e-6) # accounts for spectrometer
+        xo.assert_allclose(tw['px', 'ip2'], 0, rtol=0, atol=0.5e-6)
+        xo.assert_allclose(tw['py', 'ip2'], -100e-6 , rtol=0, atol=0.5e-6) # accounts for spectrometer
 
-        assert np.isclose(tw['px', 'ip8'],
+        xo.assert_allclose(tw['px', 'ip8'],
                 -115e-6* {'lhcb1': 1, 'lhcb2': -1}[line_name], rtol=0, atol=0.5e-6) # accounts for spectrometer
-        assert np.isclose(tw['py', 'ip8'], 2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
+        xo.assert_allclose(tw['py', 'ip8'], 2e-6, rtol=0, atol=0.5e-6) # small effect from spectrometer (titled)
 
-        assert np.isclose(tw['betx', 'ip1'], 15e-2, rtol=2e-2, atol=0) # beta beating coming from on_disp
-        assert np.isclose(tw['bety', 'ip1'], 15e-2, rtol=3e-2, atol=0)
-        assert np.isclose(tw['betx', 'ip5'], 15e-2, rtol=2e-2, atol=0)
-        assert np.isclose(tw['bety', 'ip5'], 15e-2, rtol=2e-2, atol=0)
+        xo.assert_allclose(tw['betx', 'ip1'], 15e-2, rtol=2e-2, atol=0) # beta beating coming from on_disp
+        xo.assert_allclose(tw['bety', 'ip1'], 15e-2, rtol=3e-2, atol=0)
+        xo.assert_allclose(tw['betx', 'ip5'], 15e-2, rtol=2e-2, atol=0)
+        xo.assert_allclose(tw['bety', 'ip5'], 15e-2, rtol=2e-2, atol=0)
 
-        assert np.isclose(tw['betx', 'ip2'], 10., rtol=4e-2, atol=0)
-        assert np.isclose(tw['bety', 'ip2'], 10., rtol=3e-2, atol=0)
+        xo.assert_allclose(tw['betx', 'ip2'], 10., rtol=4e-2, atol=0)
+        xo.assert_allclose(tw['bety', 'ip2'], 10., rtol=3e-2, atol=0)
 
-        assert np.isclose(tw['betx', 'ip8'], 1.5, rtol=3e-2, atol=0)
-        assert np.isclose(tw['bety', 'ip8'], 1.5, rtol=2e-2, atol=0)
+        xo.assert_allclose(tw['betx', 'ip8'], 1.5, rtol=3e-2, atol=0)
+        xo.assert_allclose(tw['bety', 'ip8'], 1.5, rtol=2e-2, atol=0)
 
         # Check crab cavities
         z_crab_test = 1e-2
@@ -88,16 +91,16 @@ def check_optics_orbit_etc(collider, line_names, sep_h_ip2, sep_v_ip8):
         - collider[line_name].twiss(method='4d', zeta0=-z_crab_test)['y', 'ip5'])
         / 2 / z_crab_test)
 
-        assert np.isclose(phi_crab_1, -190e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
+        xo.assert_allclose(phi_crab_1, -190e-6 * {'lhcb1': 1, 'lhcb2': -1}[line_name],
                         rtol=1e-2, atol=0)
-        assert np.isclose(phi_crab_5, -170e-6, rtol=1e-2, atol=0)
+        xo.assert_allclose(phi_crab_5, -170e-6, rtol=1e-2, atol=0)
 
         # Check one octupole strength
         if line_name == 'lhcb1':
-            assert np.isclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
+            xo.assert_allclose(collider['lhcb1']['mo.33l4.b1'].knl[3], -2.2169*200/235,
                           rtol=1e-3, atol=0)
         elif line_name == 'lhcb2':
-            assert np.isclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
+            xo.assert_allclose(collider['lhcb2']['mo.33r4.b2'].knl[3], -2.2169,
                             rtol=1e-3, atol=0)
 
 
