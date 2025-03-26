@@ -1,0 +1,91 @@
+config_mad:
+    # Links to be made for tools and scripts
+    links:
+      run3seq: /eos/project-c/collimation-team/machine_configurations/acc-models/lhc/2025
+      run3opt: /afs/cern.ch/eng/lhc/optics/runIII
+      run3aper: /eos/project-c/collimation-team/machine_configurations/LHC_run3/madx_tools/patch_layout_db
+      extra: /eos/project-c/collimation-team/machine_configurations/LHC_run3/madx_tools
+
+    # Optics file
+    optics_file: run3opt/RunIII_dev/Proton_2025/NomH_RPV/opticsfile.1
+    # Beam parameters
+    beam_config:
+      lhcb1:
+        beam_energy_tot: 450           # [GeV]
+      lhcb2:
+        beam_energy_tot: 450           # [GeV]
+
+    install_apertures: true
+
+    # Enable machine imperfections
+    enable_imperfections: true
+
+    # Enable knob synthesis (for coupling correction, if no imperfections)
+    enable_knob_synthesis: true
+
+
+config_knobs_and_tuning:
+  knob_settings:
+    nrj: 450.0
+    on_x1: 170.0
+    on_x2h: 0
+    on_x2v: 170.0
+    on_x5: 170.0
+    on_x8h: -170.0
+    on_x8v: 0.0
+    on_sep1: -2.0
+    on_sep2h: -3.5
+    on_sep2v: 0
+    on_sep5: 2.0
+    on_sep8h: 0.0
+    on_sep8v: -3.5
+    on_a1: 0.0
+    on_a2: 40.0
+    on_a5: 0.0
+    on_a8: -40.0
+    on_o1: 0
+    on_o2: 0
+    on_o5: 0.0
+    on_o8: 0.0
+    on_disp: 1
+    on_alice_normalized: 15.555556
+    on_lhcb_normalized: -15.555556
+    on_sol_atlas: 0
+    on_sol_cms: 0
+    on_sol_alice: 0
+    vrf400: 5.0
+    lagrf400.b1: 0.499972
+    lagrf400.b2: 2.8e-05
+    i_oct_b1: 13.03797
+    i_oct_b2: 13.03797
+    phase_knob: 1.0
+  closed_orbit_correction:
+    lhcb1: corr_co_lhcb1.json
+    lhcb2: corr_co_lhcb2.json
+  qx:
+    lhcb1: 62.28
+    lhcb2: 62.28
+  qy:
+    lhcb1: 60.31
+    lhcb2: 60.31
+  dqx:
+    lhcb1: 10.0
+    lhcb2: 10.0
+  dqy:
+    lhcb1: 10.0
+    lhcb2: 10.0
+  knob_names:
+    lhcb1:
+      q_knob_1: kqtf.b1
+      q_knob_2: kqtd.b1
+      dq_knob_1: dqpx.b1_sq
+      dq_knob_2: dqpy.b1_sq
+      c_minus_knob_1: cmrs.b1_sq
+      c_minus_knob_2: cmis.b1_sq
+    lhcb2:
+      q_knob_1: kqtf.b2
+      q_knob_2: kqtd.b2
+      dq_knob_1: dqpx.b2_sq
+      dq_knob_2: dqpy.b2_sq
+      c_minus_knob_1: cmrs.b2_sq
+      c_minus_knob_2: cmis.b2_sq
