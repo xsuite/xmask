@@ -330,6 +330,10 @@ def test_lhc_ion_4_bb_config():
     collider = xt.Environment.from_json('collider_lhc_ion_03.json')
     collider.build_trackers()
 
+    # The dafault delta_chrom seems to be unlucky when looking for off-momentum orbit
+    collider.lhcb1.twiss_default['delta_chrom'] = 1e-5
+    collider.lhcb2.twiss_default['delta_chrom'] = 1e-5
+
     collider.configure_beambeam_interactions(
         num_particles=180000000.0,
         nemitt_x=1.65e-6, nemitt_y=1.65e-6)
