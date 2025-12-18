@@ -229,6 +229,10 @@ def test_lhc_ion_3_leveling():
     collider = xt.Environment.from_json('collider_lhc_ion_02.json')
     collider.build_trackers()
 
+    # The dafault delta_chrom seems to be unlucky when looking for off-momentum orbit
+    collider.lhcb1.twiss_default['delta_chrom'] = 1e-5
+    collider.lhcb2.twiss_default['delta_chrom'] = 1e-5
+
     config = yaml.safe_load(_config_ion_yaml_str)
     conf_knobs_and_tuning = config['config_knobs_and_tuning']
     config_lumi_leveling = config['config_lumi_leveling']
