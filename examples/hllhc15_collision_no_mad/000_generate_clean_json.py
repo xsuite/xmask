@@ -43,45 +43,77 @@ lhc.b1.set_particle_ref('proton', energy0=7000e9)
 lhc.b2.set_particle_ref('proton', energy0=7000e9)
 
 # Select circuits with appropriate weights
-vary=[xt.VaryList(['kqs.a23b1', 'kqs.a67b1'], step=5e-5),
+vary = {}
+vary['b1']=[xt.VaryList(['kqs.a23b1', 'kqs.a67b1'], step=5e-5),
       xt.VaryList(['kqs.l4b1', 'kqs.l8b1','kqs.r3b1', 'kqs.r7b1'],
                   weight=2, step=5e-5)]
 
-# Match c_minus_re.b1
-c_min_match = 1e-4
-opt_re = lhc.b1.match_knob(knob_name='c_minus_re.b1',
-    knob_value_start=0, knob_value_end=c_min_match,
-    run=False, method='4d',
-    vary=vary,
-    targets=[
-        xt.Target('c_minus_re_0', value=c_min_match, tol=1e-8),
-        xt.Target('c_minus_im_0', value=0,           tol=1e-8),
-    ])
-opt_re.solve()
-opt_re.generate_knob()
+vary['b2']=[xt.VaryList(['kqs.a34b2', 'kqs.a78b2'], step=5e-5),
+      xt.VaryList(['kqs.l3b2', 'kqs.r4b2','kqs.r6b2', 'kqs.l7b2','kqs.r8b2'],
+                  weight=2, step=5e-5)]
 
-# Match c_minus_im.b1
-opt_im = lhc.b1.match_knob(knob_name='c_minus_im.b1',
-    knob_value_start=0, knob_value_end=c_min_match,
-    run=False, method='4d',
-    vary=vary,
-    targets=[
-        xt.Target('c_minus_re_0', value=0,           tol=1e-8),
-        xt.Target('c_minus_im_0', value=c_min_match, tol=1e-8),
-    ])
-opt_im.solve()
-opt_im.generate_knob()
+for bb in ['b1', 'b2']:
+    c_min_match = 1e-4
+    opt_re = lhc[bb].match_knob(knob_name=f'c_minus_re.{bb}',
+        knob_value_start=0, knob_value_end=c_min_match,
+        run=False, method='4d',
+        vary=vary[bb],
+        targets=[
+            xt.Target('c_minus_re_0', value=c_min_match, tol=1e-8),
+            xt.Target('c_minus_im_0', value=0,           tol=1e-8),
+        ])
+    opt_re.solve()
+    opt_re.generate_knob()
 
-# Test the knob
+    # Match c_minus_im.b1
+    opt_im = lhc[bb].match_knob(knob_name=f'c_minus_im.{bb}',
+        knob_value_start=0, knob_value_end=c_min_match,
+        run=False, method='4d',
+        vary=vary[bb],
+        targets=[
+            xt.Target('c_minus_re_0', value=0,           tol=1e-8),
+            xt.Target('c_minus_im_0', value=c_min_match, tol=1e-8),
+        ])
+    opt_im.solve()
+    opt_im.generate_knob()
+
+# Test the knobs
 lhc.b1['c_minus_re.b1'] = 1e-3
+lhc.b1['c_minus_im.b1'] = 0
 tw = lhc.b1.twiss4d()
-tw.c_minus_re_0 # is 0.00099998
-tw.c_minus_im_0 # is 4.05e-09
+print('Test c_minus_re.b1 = 1e-3')
+print('c_minus_re_0 = ', tw.c_minus_re_0) # is 0.00099998
+print('c_minus_im_0 = ', tw.c_minus_im_0) # is 4.05e-09
 
 lhc.b1['c_minus_re.b1'] = 0
 lhc.b1['c_minus_im.b1'] = 1e-3
 tw = lhc.b1.twiss4d()
-tw.c_minus_re_0 # is 2.16e-8
-tw.c_minus_im_0 # is 0.001000003
+print('Test c_minus_im.b1 = 1e-3')
+print('c_minus_re_0 = ', tw.c_minus_re_0) # is 2.16e-8
+print('c_minus_im_0 = ', tw.c_minus_im_0) # is 0.001000003
 
+lhc.b2['c_minus_re.b2'] = 1e-3
+lhc.b2['c_minus_im.b2'] = 0
+tw = lhc.b2.twiss4d()
+print('Test c_minus_re.b2 = 1e-3')
+print('c_minus_re_0 = ', tw.c_minus_re_0) # is
+print('c_minus_im_0 = ', tw.c_minus_im_0) # is 4.05e-09
+
+lhc.b2['c_minus_re.b2'] = 0
+lhc.b2['c_minus_im.b2'] = 1e-3
+tw = lhc.b2.twiss4d()
+print('Test c_minus_im.b2 = 1e-3')
+print('c_minus_re_0 = ', tw.c_minus_re_0) # is 2.16e-8
+print('c_minus_im_0 = ', tw.c_minus_im_0) # is 0.001000003
+
+# All to zero
+lhc.b1['c_minus_re.b1'] = 0
+lhc.b1['c_minus_im.b1'] = 0
+lhc.b2['c_minus_re.b2'] = 0
+lhc.b2['c_minus_im.b2'] = 0
+
+
+
+lhc.b1.particle_ref = None
+lhc.b2.particle_ref = None
 lhc.to_json('lhc.json')
