@@ -69,6 +69,9 @@ for ll in ['b1', 'b2']:
 
 lhc.vars.load('opt_round_150_1500_thin.madx')
 
+# investigate difference
+lhc_ref = xt.load('../hllhc15_collision/collider_00_from_mad.json')
+
 prrrrr
 
 ########################
