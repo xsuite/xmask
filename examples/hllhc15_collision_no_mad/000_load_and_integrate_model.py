@@ -30,8 +30,10 @@ lhc['brho0_b1'] = lhc.ref['particle_ref_b1'].rigidity0[0]
 lhc['brho0_b2'] = lhc.ref['particle_ref_b2'].rigidity0[0]
 
 # Define new knobs
+lhc.vars.default_to_zero = True # for knobs defined implicitly within expressions
 for knob_name, knob_expr in config['new_knobs'].items():
     lhc[knob_name] = knob_expr
+lhc.vars.default_to_zero = False
 
 # Define experimental magnet knobs
 
