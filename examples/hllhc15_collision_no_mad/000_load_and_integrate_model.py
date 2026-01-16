@@ -1,5 +1,6 @@
 import xtrack as xt
 import xmask as xm
+import xmask.lhc as xlhc
 
 # Read config file
 with open('config.yaml','r') as fid:
@@ -15,19 +16,27 @@ lhc.b2.twiss_default.clear()
 # Load optics
 lhc.vars.load(config['optics_file'])
 
-# Create reference particles (TODO: generalize for ions)
-lhc.new_particle(f'particle_ref_b1',
-            energy0=config['beam_config']['b1']['beam_energy_tot'] * 1e9)
-lhc.new_particle(f'particle_ref_b2',
-            energy0=config['beam_config']['b2']['beam_energy_tot'] * 1e9)
+# # Create reference particles (TODO: generalize for ions)
+# lhc.new_particle(f'particle_ref_b1',
+#             energy0=config['beam_config']['b1']['beam_energy_tot'] * 1e9)
+# lhc.new_particle(f'particle_ref_b2',
+#             energy0=config['beam_config']['b2']['beam_energy_tot'] * 1e9)
 
-# Assign reference particles to beams
-lhc.b1.particle_ref = 'particle_ref_b1'
-lhc.b2.particle_ref = 'particle_ref_b2'
+# # Assign reference particles to beams
+# lhc.b1.particle_ref = 'particle_ref_b1'
+# lhc.b2.particle_ref = 'particle_ref_b2'
 
-# Define reference rigidity variables
-lhc['brho0_b1'] = lhc.ref['particle_ref_b1'].rigidity0[0]
-lhc['brho0_b2'] = lhc.ref['particle_ref_b2'].rigidity0[0]
+# Define reference energy and rigidity variables
+# lhc['energy0_b1'] = lhc.ref['particle_ref_b1'].energy0[0]
+# lhc['energy0_b2'] = lhc.ref['particle_ref_b2'].energy0[0]
+# lhc['brho0_b1'] = lhc.ref['particle_ref_b1'].rigidity0[0]
+# lhc['brho0_b2'] = lhc.ref['particle_ref_b2'].rigidity0[0]
+
+# Temp (waiting for xdeps fix), not that these are not deferred expressions
+# lhc['energy0_b1'] = lhc['particle_ref_b1'].energy0[0]
+# lhc['energy0_b2'] = lhc['particle_ref_b2'].energy0[0]
+# lhc['brho0_b1'] = lhc['particle_ref_b1'].rigidity0[0]
+# lhc['brho0_b2'] = lhc['particle_ref_b2'].rigidity0[0]
 
 # Define new knobs
 lhc.vars.default_to_zero = True # for knobs defined implicitly within expressions
@@ -35,18 +44,18 @@ for knob_name, knob_expr in config['new_knobs'].items():
     lhc[knob_name] = knob_expr
 lhc.vars.default_to_zero = False
 
-# Define experimental magnet knobs
-
 # Attach orbit correction knobs to all dipole correctors
+lhc['on_corr_co'] = 1
+for kk in list(lhc.vars.keys()):
+    if kk.startswith('acb'):
+        lhc['corr_co_'+kk] = 0
+        lhc.ref[kk] += (lhc.ref['corr_co_'+kk] * lhc.ref['on_corr_co'])
 
 # Prepare reference model for orbit correction
-
+lhc_ref = xlhc.build_closed_orbit_reference(lhc)
 
 twb1 = lhc.b1.twiss4d()
 twb2 = lhc.b2.twiss4d()
-
-
-
 
 
 
