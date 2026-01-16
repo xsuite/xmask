@@ -66,13 +66,9 @@ for ll in ['b1', 'b2']:
             xt.Strategy(name=r'mqtli\..*',  slicing=xt.Teapot(2)),
             xt.Strategy(name=r'mqt\..*',    slicing=xt.Teapot(2)),
 ])
+lhc.b1.configure_bend_model(edge='suppressed')
 
 lhc.vars.load('opt_round_150_1500_thin.madx')
-
-# investigate difference
-lhc_ref = xt.load('../hllhc15_collision/collider_00_from_mad.json')
-
-prrrrr
 
 ########################
 # Match coupling knobs #
@@ -154,3 +150,29 @@ lhc.b2['c_minus_im.b2'] = 0
 lhc.b1.particle_ref = None
 lhc.b2.particle_ref = None
 lhc.to_json('lhc.json')
+
+# A few checks
+lhc.b1.set_particle_ref('proton', energy0=7000e9)
+lhc.b2.set_particle_ref('proton', energy0=7000e9)
+
+tw1 = lhc.b1.twiss4d()
+tw2 = lhc.b2.twiss4d()
+
+import xobjects as xo
+xo.assert_allclose(tw1.qx, 62.31, atol=1e-5)
+xo.assert_allclose(tw1.qy, 60.32, atol=1e-5)
+xo.assert_allclose(tw2.qx, 62.31, atol=1e-5)
+xo.assert_allclose(tw2.qy, 60.32, atol=1e-5)
+
+xo.assert_allclose(tw1.dqx, 2, atol=1e-3)
+xo.assert_allclose(tw1.dqy, 2, atol=1e-3)
+xo.assert_allclose(tw2.dqx, 2, atol=1e-3)
+xo.assert_allclose(tw2.dqy, 2, atol=1e-3)
+
+xo.assert_allclose(tw1.betx[0], 0.15, atol=1e-4)
+xo.assert_allclose(tw1.bety[0], 0.15, atol=1e-4)
+xo.assert_allclose(tw2.betx[0], 0.15, atol=1e-4)
+xo.assert_allclose(tw2.bety[0], 0.15, atol=1e-4)
+
+xo.assert_allclose(tw1.c_minus, 0, atol=1e-8)
+xo.assert_allclose(tw2.c_minus, 0, atol=1e-8)
