@@ -9,8 +9,47 @@ beam_config:
   b2:
     beam_energy_tot: 7000           # [GeV]
 
+new_knobs:
+  kof.b1: kmax_mo / imax_mo * i_oct_b1 / brho0_b1
+  kof.b2: kmax_mo / imax_mo * i_oct_b2 / brho0_b2
+  kod.b1: kmax_mo / imax_mo * i_oct_b1 / brho0_b1
+  kod.b2: kmax_mo / imax_mo * i_oct_b2 / brho0_b2
 
+  kof.a12b1: kof.b1
+  kof.a23b1: kof.b1
+  kof.a34b1: kof.b1
+  kof.a45b1: kof.b1
+  kof.a56b1: kof.b1
+  kof.a67b1: kof.b1
+  kof.a78b1: kof.b1
+  kof.a81b1: kof.b1
 
+  kof.a12b2: kof.b2
+  kof.a23b2: kof.b2
+  kof.a34b2: kof.b2
+  kof.a45b2: kof.b2
+  kof.a56b2: kof.b2
+  kof.a67b2: kof.b2
+  kof.a78b2: kof.b2
+  kof.a81b2: kof.b2
+
+  kod.a12b1: kod.b1
+  kod.a23b1: kod.b1
+  kod.a34b1: kod.b1
+  kod.a45b1: kod.b1
+  kod.a56b1: kod.b1
+  kod.a67b1: kod.b1
+  kod.a78b1: kod.b1
+  kod.a81b1: kod.b1
+
+  kod.a12b2: kod.b2
+  kod.a23b2: kod.b2
+  kod.a34b2: kod.b2
+  kod.a45b2: kod.b2
+  kod.a56b2: kod.b2
+  kod.a67b2: kod.b2
+  kod.a78b2: kod.b2
+  kod.a81b2: kod.b2
 
 config_knobs_and_tuning:
 
