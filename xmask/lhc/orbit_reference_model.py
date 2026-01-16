@@ -6,7 +6,12 @@ def build_closed_orbit_reference(lhc):
     lhc_ref._var_management = None
     lhc_ref._init_var_management() # kills all knobs on the elements
     lhc_ref.vars.default_to_zero = True
-    lhc_ref.vars.update(lhc.vars.get_table().to_dict()) # transfer all knobs (no effect on the lattice)
+    source_dct = lhc.vars.get_table(compact=False).to_dict()
+    for nn, vv in source_dct.items():
+        if isinstance(vv, str):
+            lhc_ref.ref[nn] = eval(vv, locals=lhc_ref.ref_manager.containers)
+        else:
+            lhc_ref.ref[nn] = vv
     tt_ref = lhc_ref.elements.get_table()
     tt_correctors = tt_ref.rows.match(name='mcb.*')
 
