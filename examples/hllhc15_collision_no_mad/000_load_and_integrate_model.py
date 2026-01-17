@@ -45,9 +45,15 @@ for kk in list(lhc.vars.keys()):
         lhc['corr_co_'+kk] = 0
         lhc.ref[kk] += (lhc.ref['corr_co_'+kk] * lhc.ref['on_corr_co'])
 
+# Cycle both beams
+lhc.b1.cycle('ip3')
+lhc.b2.cycle('ip3')
+
 # Prepare reference model for orbit correction
 lhc_co_ref = xlhc.build_closed_orbit_reference(lhc)
 lhc_co_ref.to_json('lhc_co_ref.json')
+
+lhc.to_json('collider_00_prepared.json')
 
 # Check that both lines twiss without errors
 twb1 = lhc.b1.twiss4d()
