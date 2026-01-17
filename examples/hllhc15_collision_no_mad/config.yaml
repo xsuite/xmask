@@ -100,8 +100,8 @@ config_knobs_and_tuning:
       i_oct_b2:     -235            # [A]
 
     closed_orbit_correction:
-      b1: corr_co_lhcb1.json
-      b2: corr_co_lhcb2.json
+      b1: corr_co_b1.json
+      b2: corr_co_b2.json
 
     # Tunes and chromaticities
     qx:
