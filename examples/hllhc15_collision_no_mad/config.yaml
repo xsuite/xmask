@@ -112,7 +112,7 @@ config_knobs_and_tuning:
       b2: 60.32
     dqx:
       b1: 5
-      2: 5
+      b2: 5
     dqy:
       b1: 6
       b2: 6
@@ -123,15 +123,15 @@ config_knobs_and_tuning:
         q_knob_2: kqtd.b1
         dq_knob_1: ksf.b1
         dq_knob_2: ksd.b1
-        c_minus_knob_1: c_minus_re_b1
-        c_minus_knob_2: c_minus_im_b1
+        c_minus_knob_1: c_minus_re.b1
+        c_minus_knob_2: c_minus_im.b1
       b2:
         q_knob_1: kqtf.b2
         q_knob_2: kqtd.b2
         dq_knob_1: ksf.b2
         dq_knob_2: ksd.b2
-        c_minus_knob_1: c_minus_re_b2
-        c_minus_knob_2: c_minus_im_b2
+        c_minus_knob_1: c_minus_re.b2
+        c_minus_knob_2: c_minus_im.b2
 
 config_beambeam:
     bunch_spacing_buckets: 10
@@ -185,10 +185,10 @@ config_lumi_leveling:
       knobs:
         - on_sep8
       bump_range:
-        lhcb1:
+        b1:
           - e.ds.l8.b1
           - s.ds.r8.b1
-        lhcb2:
+        b2:
           - s.ds.r8.b2
           - e.ds.l8.b2
       preserve_angles_at_ip: true
