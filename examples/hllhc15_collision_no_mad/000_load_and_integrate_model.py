@@ -32,12 +32,6 @@ lhc['energy0_b2'] = lhc.ref['particle_ref_b2'].energy0[0]
 lhc['brho0_b1'] = lhc.ref['particle_ref_b1'].rigidity0[0]
 lhc['brho0_b2'] = lhc.ref['particle_ref_b2'].rigidity0[0]
 
-# Temp (waiting for xdeps fix), not that these are not deferred expressions
-# lhc['energy0_b1'] = lhc['particle_ref_b1'].energy0[0]
-# lhc['energy0_b2'] = lhc['particle_ref_b2'].energy0[0]
-# lhc['brho0_b1'] = lhc['particle_ref_b1'].rigidity0[0]
-# lhc['brho0_b2'] = lhc['particle_ref_b2'].rigidity0[0]
-
 # Define new knobs
 lhc.vars.default_to_zero = True # for knobs defined implicitly within expressions
 for knob_name, knob_expr in config['new_knobs'].items():
@@ -52,8 +46,10 @@ for kk in list(lhc.vars.keys()):
         lhc.ref[kk] += (lhc.ref['corr_co_'+kk] * lhc.ref['on_corr_co'])
 
 # Prepare reference model for orbit correction
-lhc_ref = xlhc.build_closed_orbit_reference(lhc)
+lhc_co_ref = xlhc.build_closed_orbit_reference(lhc)
+lhc_co_ref.to_json('lhc_co_ref.json')
 
+# Check that both lines twiss without errors
 twb1 = lhc.b1.twiss4d()
 twb2 = lhc.b2.twiss4d()
 
