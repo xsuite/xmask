@@ -1,19 +1,20 @@
 import xdeps as xd
+import xmask as xm
+
 
 def build_closed_orbit_reference(lhc):
 
     lhc_ref = lhc.copy() # deep copy
     lhc_ref._var_management = None
     lhc_ref._init_var_management() # kills all knobs on the elements
-    lhc_ref.vars.default_to_zero = True
-    source_dct = lhc.vars.get_table(compact=False).to_dict()
-    for nn, vv in source_dct.items():
-        if isinstance(vv, str):
-            lhc_ref.ref[nn] = eval(vv, locals=lhc_ref.ref_manager.containers)
-        else:
-            lhc_ref.ref[nn] = vv
+
+    xm.transfer_vars_to_env(lhc, lhc_ref)
+
     tt_ref = lhc_ref.elements.get_table()
     tt_correctors = tt_ref.rows.match(name='mcb.*')
+
+    old_default_to_zero = lhc_ref.vars.default_to_zero
+    lhc_ref.vars.default_to_zero = True
 
     formatter = xd.refs.CompactFormatter(scope=None)
     for nn in tt_correctors.name:
@@ -25,6 +26,6 @@ def build_closed_orbit_reference(lhc):
             expr_ksl = lhc.ref[nn].ksl[0]._expr
             if expr_ksl is not None:
                 lhc_ref[nn].ksl[0] = expr_ksl._formatted(formatter)
-    lhc_ref.vars.default_to_zero = False
+    lhc_ref.vars.default_to_zero = old_default_to_zero
 
     return lhc_ref

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import xtrack as xt
+import xmask as xm
 
 def machine_tuning(line,
         enable_closed_orbit_correction=False,
@@ -21,6 +22,9 @@ def machine_tuning(line,
         if isinstance(co_corr_config, (str, Path)):
             with open(co_corr_config, 'r') as fid:
                 co_corr_config = json.load(fid)
+
+        if line_co_ref.env is not line.env:
+            xm.transfer_vars_to_env(source=line, dest=line_co_ref)
 
         line._xmask_correct_closed_orbit(
                                 reference=line_co_ref,
@@ -74,3 +78,14 @@ def machine_tuning(line,
 
         print(f'Matching tune and chromaticity')
         line.match(verbose=verbose, vary=vary, targets=match_targets)
+
+def transfer_vars_to_env(source, dest):
+    old_default_to_zero = dest.vars.default_to_zero
+    dest.vars.default_to_zero = True
+    source_dct = source.vars.get_table(compact=False).to_dict()
+    for nn, vv in source_dct.items():
+        if isinstance(vv, str):
+            dest.ref[nn] = eval(vv, locals=dest.ref_manager.containers)
+        else:
+            dest.ref[nn] = vv
+    dest.vars.default_to_zero = old_default_to_zero
