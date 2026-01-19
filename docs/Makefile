@@ -1,8 +1,8 @@
-DOC= corr_tripD1_procedure
+DOCS= corr_tripD1_procedure corr_MB_procedure
 
-all: $(DOC).pdf
+all: $(DOCS:%=%.pdf)
 
-$(DOC).pdf: $(DOC).tex
+%.pdf: %.tex
 	latexmk -pdf -interaction=nonstopmode -halt-on-error $<
 
 clean:

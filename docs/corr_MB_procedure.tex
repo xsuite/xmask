@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Arc Dipole Multipole Correction Procedure (corr\_MB\_v3.f)}
+\author{Legacy code by S. Fartoukh (2010--2014)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Scope and Idea}
+This document explains the legacy Fortran procedure \texttt{corr\_MB\_v3.f} (LHC Project Report 501 style) that generates arc corrector settings to compensate field errors of the main dipoles (MB/MBH). The code:
+\begin{itemize}
+  \item reads optics and error tables (\texttt{optics0\_MB.mad}, \texttt{MB.errors});
+  \item converts integrated multipole errors into resonance-driving contributions using optics weights;
+  \item solves for per-sector corrector strengths to cancel these contributions locally;
+  \item distributes any remaining global skew terms using a pseudo-inverse;
+  \item writes a MAD-X file \texttt{MB\_corr\_setting.mad}.
+\end{itemize}
+Eight arc sectors are used (periodicity of the LHC ring):
+\[
+\text{sectors } s=1\dots 8:\; (R1/L2,\ R2/L3,\ R3/L4,\ R4/L5,\ R5/L6,\ R6/L7,\ R7/L8,\ R8/L1).
+\]
+Beam direction is inferred from the order of sectors in \texttt{optics0\_MB.mad} and affects sign conventions.
+
+\paragraph{Corrector families.} MQS (skew quads), MSS (skew sexts), MCS (normal sext spool), MCO (normal oct spool), MCD (normal deca spool), and MQT (normal quad trims, focus/defocus). Lengths are denoted $l.\mathrm{MQS}$, $l.\mathrm{MSS}$, etc. Integrated strengths printed in \texttt{MB\_corr\_setting.mad} are divided by these lengths.
+
+\section{Optics Weighting}
+For each MB slice the optics file provides $\beta_x,\beta_y, D_x, \Delta\mu_x, \Delta\mu_y$. Define
+\[
+\Delta\mu = 2\pi(\Delta\mu_x-\Delta\mu_y),\qquad c=\cos\Delta\mu,\qquad s=\sin\Delta\mu.
+\]
+Store per slice and sector $s$:
+\begin{align*}
+\text{b2 weights:}&\quad w_{b2,x}=\beta_x,\quad w_{b2,y}=\beta_y,\\
+\text{a2 weights:}&\quad w_{a2,c}=\sqrt{\beta_x\beta_y}\,c,\quad w_{a2,s}=\sqrt{\beta_x\beta_y}\,s,\\
+\text{a3 weights:}&\quad w_{a3,c}=\sqrt{\beta_x\beta_y}\,D_x\,c,\quad w_{a3,s}=\sqrt{\beta_x\beta_y}\,D_x\,s.
+\end{align*}
+Corrector responses are accumulated similarly:
+\begin{itemize}
+  \item MQS (skew quad): $a2_c(s) = \sum w_{a2}/(2\pi)\cdot \ell_{\mathrm{MQS}}$.
+  \item MSS (skew sext): $a3_c(s) = \sum w_{a3}/(2\pi)$.
+  \item MQT focus/defocus (normal quad trims): $b2_c^{F/D}(s) = \sum (\beta_x/2,\ -\beta_y/2)/(2\pi)\cdot \ell_{\mathrm{MQT}}$, with polarity chosen from sector parity, magnet index, and beam.
+\end{itemize}
+After counting slices, responses are renormalized (average over all corrector slices): $a2_c \gets a2_c\cdot 4/N_{\mathrm{MQS}}$, $b2_c^{F/D}\gets b2_c^{F/D}\cdot 8/N_{\mathrm{MQTF/D}}$; baseline strengths $k_{\mathrm{QTF/QTD}}$ are scaled accordingly.
+
+\section{Error Aggregation}
+From \texttt{MB.errors} each MB slice provides integrated multipoles $K_n, K_n^{(\mathrm{sk})}$. Per sector $s$ accumulate
+\begin{align*}
+b2_b &= \sum \bigl(w_{b2,x} K_1 - w_{b2,y} K_1\bigr)/(2\pi),\\
+a2_b &= \sum w_{a2}\, K_1^{(\mathrm{sk})}/(2\pi),\\
+a3_b &= \sum w_{a3}\, K_2^{(\mathrm{sk})}/(2\pi),\\
+b3_b &= \sum K_2,\qquad b4_b = \sum K_3,\qquad b5_b = \sum K_4.
+\end{align*}
+Counts of MCS/MCO/MCD spools are stored to average later.
+
+\section{First (Local) Correction}
+\paragraph{Normal quad (b2).} Each sector uses the two MQT families (focus/defocus) to solve
+\[
+\begin{bmatrix}
+b2_c^{F,x} & b2_c^{D,x}\\
+b2_c^{F,y} & b2_c^{D,y}
+\end{bmatrix}
+\begin{bmatrix} k_F\\ k_D \end{bmatrix}
+= - \begin{bmatrix} b2_b^x\\ b2_b^y \end{bmatrix},\qquad
+(k_F,k_D)\to b2(s).
+\]
+\paragraph{Skew quad (a2).} There is one skew-quad knob per sector, but the error has two phase components (cosine/sine). Model it as a 2D vector equation
+\[
+a2_{\mathrm{loc}}(s)\, \mathbf{a2}_c(s) + \mathbf{a2}_b(s) \approx \mathbf{0},
+\quad
+\mathbf{a2}_c(s)=\bigl(a2_c^1(s),\,a2_c^2(s)\bigr),\;
+\mathbf{a2}_b(s)=\bigl(a2_b^1(s),\,a2_b^2(s)\bigr).
+\]
+The best scalar $a2_{\mathrm{loc}}(s)$ that cancels along $\mathbf{a2}_c$ is the projection of $-\mathbf{a2}_b$ on $\mathbf{a2}_c$:
+\[
+a2_{\mathrm{loc}}(s) = -\frac{\mathbf{a2}_c\cdot\mathbf{a2}_b}{\|\mathbf{a2}_c\|^2}
+= -\frac{\sum_i a2_c^i(s)\,a2_b^i(s)}{\sum_i (a2_c^i(s))^2}.
+\]
+Whatever is orthogonal to $\mathbf{a2}_c$ cannot be corrected locally; the remaining 2D error is accumulated as a residual for the global step:
+\[
+a2_{\mathrm{res}}^i \mathrel{+}= a2_{\mathrm{loc}}(s)\,a2_c^i(s)+a2_b^i(s).
+\]
+Net effect: kill the component parallel to the local response, carry the perpendicular component forward.
+\paragraph{Skew sext (a3).} Same as a2 with $a3$ weights to get $a3_{\mathrm{loc}}(s)$ and residual vector $a3_{\mathrm{res}}$.
+\paragraph{Normal sext/oct/deca.} Simple averages over spools:
+\[
+b3(s)=-\frac{b3_b(s)}{N_{\mathrm{MCS}}},\quad
+b4(s)=-\frac{b4_b(s)}{N_{\mathrm{MCO}}},\quad
+b5(s)=-\frac{b5_b(s)}{N_{\mathrm{MCD}}}.
+\]
+At collision energy, magnitudes are clipped to hardware limits $k^{\max}_{\mathrm{MCS}},k^{\max}_{\mathrm{MCO}},k^{\max}_{\mathrm{MCD}}$.
+
+\section{Second (Global) Correction for a2 and a3}
+After the local step, each sector still leaves a 2D residual vector (cos/sin) for skew quads and skew sexts:
+\[
+\mathbf{a2}_{\mathrm{res}}=\bigl(a2_{\mathrm{res}}^1, a2_{\mathrm{res}}^2\bigr),\qquad
+\mathbf{a3}_{\mathrm{res}}=\bigl(a3_{\mathrm{res}}^1, a3_{\mathrm{res}}^2\bigr).
+\]
+Goal: distribute these two global components across all 8 sector knobs so that, when added up, they cancel the residual vector in a least-squares sense.
+
+\paragraph{Response matrix.} Collect the sector responses into an $8\times 2$ matrix
+\[
+A = \begin{bmatrix}
+a2_c^1(1) & a2_c^2(1)\\
+\vdots & \vdots\\
+a2_c^1(8) & a2_c^2(8)
+\end{bmatrix}.
+\]
+Each row is the two phase components of the skew-quad response in one sector.
+
+\paragraph{Pseudo-inverse.} The code builds
+\[
+B = -A^\top (A A^\top)^{-1}.
+\]
+This is the (negative) Moore–Penrose left pseudo-inverse of $A$; multiplying a 2D vector by $B$ yields an 8D vector of sector weights whose projection through $A$ best cancels that 2D vector in the least-squares sense.
+
+Then the final per-sector strengths are
+\[
+a2(s) = a2_{\mathrm{loc}}(s) + \sum_{j=1}^2 B_{s j}\, a2_{\mathrm{res}}^j,\qquad
+a3(s) = a3_{\mathrm{loc}}(s) + \sum_{j=1}^2 B_{s j}\, a3_{\mathrm{res}}^j.
+\]
+Interpretation:
+\begin{itemize}
+  \item $a2_{\mathrm{loc}}(s)$ (or $a3_{\mathrm{loc}}$) is what the sector did locally.
+  \item $B_{sj} a2_{\mathrm{res}}^j$ is that sector's share of the global residual component $j$, chosen so that the weighted sum of all sectors reproduces (and cancels) the residual vector as closely as possible.
+  \item Because there are 8 knobs but only 2 components to cancel, this distributes the correction smoothly across sectors rather than loading a single sector.
+\end{itemize}
+
+
+\section{Outputs}
+\begin{itemize}
+  \item \texttt{MB\_corr\_setting.mad} with:
+\begin{itemize}
+  \item Quadrupole trims: per-sector $\Delta$KQTF/KQTD and final KQTF/KQTD including baseline and beam sign.
+  \item Skew quad (KQS), skew sext (KSS), normal sext (KCS), normal oct (KCO), normal deca (KCD) per sector, divided by element lengths.
+\end{itemize}
+  \item Sign conventions: depend on beam (B1 vs B2; a special ibeam=4 case if beam 2 and reversed order). Beam direction flag $bv$ flips certain families; the sign choice matches the MAD-X convention for the two beams.
+  \item Saturation: at collision energy, spools are clipped to hardware limits ($k^{\max}_{\mathrm{MCS/MCO/MCD}}$) before printing.
+\end{itemize}
+
+\section{Reference Run}
+Reference inputs are \texttt{temp/optics0\_MB.mad} and \texttt{temp/MB.errors}; the legacy output is \texttt{temp/MB\_corr\_setting.mad} in the same folder, matching the method above and the strategy described in LHC Project Report 501.
+
+\paragraph{Reading tip.} If you want to trace a specific term: (i) find its weight in the optics section, (ii) see how it is multiplied by the corresponding $K_n$ column in \texttt{MB.errors}, (iii) note which corrector family and sector solve it (local) or receive a share via the pseudo-inverse (global skew terms).
+
+\end{document}
