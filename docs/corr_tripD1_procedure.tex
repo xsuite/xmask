@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Triplet and D1/D2 Local Correction Procedure}
+\author{Legacy code corr\_tripD1\_v6.f (S. Fartoukh, March 2012)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Scope and Philosophy}
+The program \texttt{corr\_tripD1\_v6.f} computes local corrector settings for the HL--LHC insertion regions (IR1/2/5/8) to compensate multipole errors in the triplets and D1/D2. It follows the project note approach: for each IR, the left/right sides form a pair of correctors that cancel the dominant resonance driving terms (RDTs) coming from the corresponding magnet pair. The output is a MAD-X file \texttt{temp/MCX\_setting.mad} with strengths for the dedicated corrector families (KQSX3, KCSSX3, KCOSX3, \ldots).
+
+\section{Indexing and Sides}
+\begin{itemize}
+  \item IR side index $i_c \in \{1,\dots,8\}$: L1, R1, L2, R2, L5, R5, L8, R8.
+  \item Magnet type index $\mathrm{im} \in \{1,\dots,6\}$: Q1, Q2a, Q2b, Q3, D1, D2.
+  \item Slice index $s \in \{1,\dots,N_{\max}\}$ inside a magnet; $N_{\max}=100$ in the code.
+  \item Beam direction flag $b_v \in \{-1,1\}$ detected from the order of elements; it flips the sign of skew/normal pairs when needed.
+\end{itemize}
+
+\section{Optics Weights}
+From \texttt{temp/optics0\_inser.mad} each slice provides $(\beta_x,\beta_y,x,y)$. Define
+\[
+R_{ij} = \sqrt{\beta_x}^{\,i}\,\sqrt{\beta_y}^{\,j} = \beta_x^{i/2}\beta_y^{j/2}.
+\]
+For feed-down terms a factor $y$ multiplies the relevant weight (e.g.\ the dipole component of sextupoles). These weights are stored both for the main magnets (arrays \texttt{a?aux}, \texttt{b?aux}) and for the dedicated corrector families (arrays \texttt{a?c}, \texttt{b?c}). They represent the linear response of a given multipole to the chosen RDT component.
+
+\section{Error Aggregation}
+From \texttt{temp/tripD1D2.errors} each slice provides integrated normal ($K_n$) and skew ($K_n^{(\mathrm{sk})}$) multipoles. For a given IR side $i_c$ and multipole order $n$, the accumulated RDT contributions are
+\[
+B_n(i_c) = \sum_{s} R^{(n)}_{s}\,K_n(s), \qquad
+A_n(i_c) = \sum_{s} R^{(n)}_{s}\,K_n^{(\mathrm{sk})}(s),
+\]
+where $R^{(n)}_s$ is the appropriate optics weight for the resonance considered (see Table~\ref{tab:targets}). Separate arrays are maintained for the left and right sides.
+
+\section{Pairwise Cancellation Strategy}
+For each IR, the left/right correctors form a two-element system that cancels two independent RDT components of the same multipole order. Let
+\[
+\begin{aligned}
+&c_L^{(1)},\,c_R^{(1)} &&\text{optics response of component 1 for left/right corrector},\\
+&c_L^{(2)},\,c_R^{(2)} &&\text{optics response of component 2 for left/right corrector},\\
+&b^{(1)}_L,\,b^{(1)}_R &&\text{error contribution of component 1 (left/right)},\\
+&b^{(2)}_L,\,b^{(2)}_R &&\text{error contribution of component 2 (left/right)}.
+\end{aligned}
+\]
+Two patterns are used:
+\begin{itemize}
+  \item \textbf{Difference cancellation} (antisymmetric): target $b^{(k)}_L - b^{(k)}_R = 0$ for $k=1,2$.
+  \item \textbf{Sum cancellation} (symmetric): target $b^{(k)}_L + b^{(k)}_R = 0$ for $k=1,2$.
+\end{itemize}
+After choosing sum or difference, the required corrector strengths $(k_L,k_R)$ solve the $2\times 2$ system
+\[
+\begin{bmatrix}
+ c_L^{(1)} & c_R^{(1)} \\
+ c_L^{(2)} & c_R^{(2)}
+\end{bmatrix}
+\begin{bmatrix}
+ k_L \\ k_R
+\end{bmatrix}
+= -
+\begin{bmatrix}
+ b^{(1)} \\ b^{(2)}
+\end{bmatrix},
+\]
+with determinant
+\[
+\Delta = c_L^{(1)}c_R^{(2)} - c_R^{(1)}c_L^{(2)}.
+\]
+The code implements
+\[
+k_L = \frac{-c_R^{(2)}\,b^{(1)} + c_R^{(1)}\,b^{(2)}}{\Delta}, \qquad
+k_R = \frac{-c_L^{(1)}\,b^{(2)} + c_L^{(2)}\,b^{(1)}}{\Delta},
+\]
+where $b^{(k)}$ are either $(b^{(k)}_L - b^{(k)}_R)$ or $(b^{(k)}_L + b^{(k)}_R)$ depending on the symmetry. The beam-direction flag $b_v$ flips the sign of some solutions so they follow the MAD-X convention for the two beams.
+
+\section{Targets and Correctors}
+Table~\ref{tab:targets} summarizes the components cancelled, the symmetry used, and the corrector families produced in \texttt{MCX\_setting.mad}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\hline
+Multipole & Components cancelled & Corrector families (per IR side) \\
+\hline
+Skew quad $a2$ & $(1,-1)$ local feed-down & KQSX3 (all IRs) \\
+Skew sext $a3$ & $(0,3)$, $(3,0)$ difference & KCSSX3 (all IRs) \\
+Skew oct $a4$ & $(1,3)$, $(3,1)$ sum & KCOSX3 (all IRs) \\
+Skew deca $a5$ & $(0,5)$, $(5,0)$ difference & KCDSX3 (IR1/5) \\
+Skew 14-pole $a6$ & $(5,1)$, $(1,5)$ sum & KCTSX3 (IR1/5) \\
+Normal sext $b3$ & $(1,2)$, $(2,1)$ difference & KCSX3 (all IRs) \\
+Normal oct $b4$ & $(0,4)$, $(4,0)$ sum & KCOX3 (all IRs) \\
+Normal deca $b5$ & $(5,0)$, $(0,5)$ difference & KCDX3 (IR1/5) \\
+Normal 14-pole $b6$ & $(6,0)$, $(0,6)$ sum & KCTX3 (all IRs) \\
+\hline
+\end{tabular}
+\caption{RDT components cancelled and associated corrector families. Orders follow the notation $(i,j)$ for $x^{i}y^{j}$ terms in the multipole expansion; ``difference'' means left/right subtraction, ``sum'' means left/right addition.}
+\label{tab:targets}
+\end{table}
+
+\section{Outputs}
+\begin{itemize}
+  \item \texttt{temp/MCX\_setting.mad}: MAD-X assignments (e.g.\ \texttt{KQSX3.L1 := value / l.MQSXF;}) for every IR side, scaled by the element length.
+  \item Console diagnostics: slice counts, beam direction, warnings on missing entries, and a detailed RDT dump before/after correction for all targeted components.
+\end{itemize}
+
+\section{Practical Notes}
+\begin{itemize}
+  \item Slice alignment: the optics table and error table must have matching slice counts for each magnet type; otherwise the program stops.
+  \item Expected entry counts: 836 optics slices and 776 error entries in the reference setup; deviations trigger warnings.
+  \item Feed-down: sextupole dipole feed-down uses the measured orbit $y$ in the optics file; left/right feed-down terms are swapped to maintain symmetry.
+  \item Beam direction: $b_v$ is inferred from the sequence (incrementing or decrementing $i_c$) and is applied to preserve the sign conventions between the two beams.
+\end{itemize}
+
+\end{document}
