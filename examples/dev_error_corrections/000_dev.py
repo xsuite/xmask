@@ -17,6 +17,10 @@ class RDTContrib:
         self.rdt_indices = rdt_indices
         self.rdt_terms = {}
 
+    def clear_corrections(self):
+        for kk in self.correction_knobs:
+            self.env[kk] = 0.0
+
     def run(self):
         tt = self.line.get_table(attr=True)
         tt_range = tt.rows[self.start:self.end]
@@ -46,15 +50,29 @@ class RDTContrib:
 
         return self.rdt_terms
 
+    def correct(self, n_steps=1):
+        action_rdt_contrib = xt.Action(self.run)
+
+        opt = env.match(
+            solve=False,
+            vary=xt.VaryList(rdt_contrib.correction_knobs, step=1e-5),
+            targets=[
+                action_rdt_contrib.target(rdtind, 0.0) for rdtind in rdt_contrib.rdt_indices
+            ])
+        opt.step(n_steps)
+
+        return opt
+
 
 # Usage:
-corrector = RDTContrib(env=env,
+rdt_contrib = RDTContrib(env=env,
                          tw=tw,
                          start='dfxj.4l5',
                          end='dfxj.4r5',
                          correction_knobs=['kcox3.l5', 'kcox3.r5'],
                          multipole='k3l',
                          rdt_indices=[(0, 4), (4, 0)])
-rdt_terms = corrector.run()
 
+rdt_contrib.clear_corrections()
+opt = rdt_contrib.correct()
 
