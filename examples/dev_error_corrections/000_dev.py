@@ -5,16 +5,16 @@ env = xt.load('collider_00_from_mad.json')
 
 tw = env.lhcb1_co_ref.twiss4d() # Reference twiss
 
-class RDTCorrector:
-    def __init__(self, env, tw):
+class RDTContrib:
+    def __init__(self, env, tw, start, end, correction_knobs, multipole, rdt_indices):
         self.env = env
         self.tw = tw
         self.line = env.lhcb1
-        self.start = 'dfxj.4l5'
-        self.end = 'dfxj.4r5'
-        self.correction_knobs = ['kcox3.l5', 'kcox3.r5']
-        self.multipole = 'k3l'
-        self.rdt_indices = [(0, 4), (4, 0)]
+        self.start = start
+        self.end = end
+        self.correction_knobs = correction_knobs
+        self.multipole = multipole
+        self.rdt_indices = rdt_indices
         self.rdt_terms = {}
 
     def run(self):
@@ -48,5 +48,13 @@ class RDTCorrector:
 
 
 # Usage:
-corrector = RDTCorrector(env, tw)
+corrector = RDTContrib(env=env,
+                         tw=tw,
+                         start='dfxj.4l5',
+                         end='dfxj.4r5',
+                         correction_knobs=['kcox3.l5', 'kcox3.r5'],
+                         multipole='k3l',
+                         rdt_indices=[(0, 4), (4, 0)])
 rdt_terms = corrector.run()
+
+
