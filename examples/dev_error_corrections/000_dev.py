@@ -39,7 +39,10 @@ class RDTContrib:
         mask_corr = tt_range.rows.mask[list(correction_elements)]
         tt_integral = tt_range.rows[(tt_range[self.multipole] != 0) | (mask_corr)]
 
+        # TODO: This is a patch to use the old json, needs to be removed when
+        # this is cleaned up
         ref_names = [nn.replace('/lhcb1', '') for nn in tt_integral.env_name]
+
         tw_integral = self.tw.rows[ref_names]
 
         for rdt_i in self.rdt_indices:
