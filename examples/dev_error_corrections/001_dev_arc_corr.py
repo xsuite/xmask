@@ -2,7 +2,7 @@ import xtrack as xt
 import xdeps as xd
 
 beam_name = 'b1'
-env = xt.load('collider_00_from_mad.json')
+env = xt.load('collider_00_from_mad_with_errors.json')
 line = env[f'lhc{beam_name}']
 
 tw = env.lhcb1_co_ref.twiss4d() # Reference twiss

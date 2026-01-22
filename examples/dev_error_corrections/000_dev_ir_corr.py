@@ -1,7 +1,9 @@
 import xtrack as xt
 import xdeps as xd
 
-env = xt.load('collider_00_from_mad.json')
+# TODO:
+
+env = xt.load('collider_00_from_mad_with_errors.json')
 
 tw = env.lhcb1_co_ref.twiss4d() # Reference twiss
 

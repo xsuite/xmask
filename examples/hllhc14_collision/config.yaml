@@ -21,7 +21,7 @@ config_mad:
 
     # Rename the coupling knobs to avoid conflict between b1 and b2
     # (for hllhc using old fortran code to generate the knobs)
-    rename_coupling_knobs: true
+    rename_coupling_knobs: false
 
     # Optics version, for choice of correction algorithms
     # (ver_lhc_run or ver_hllhc_optics)
