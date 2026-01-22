@@ -7,7 +7,7 @@ tw = env.lhcb1_co_ref.twiss4d() # Reference twiss
 
 class RDTContrib:
     def __init__(self, env, tw, start, end, correction_knobs,
-                 multipole, ip,rdt_indices):
+                 multipole, ip, rdt_indices, generated_knob_name):
         self.env = env
         self.tw = tw
         self.line = env.lhcb1
@@ -18,6 +18,7 @@ class RDTContrib:
         self.ip = ip
         self.rdt_indices = rdt_indices
         self.rdt_terms = {}
+        self.generated_knob_name = generated_knob_name
 
     def clear_corrections(self):
         for kk in self.correction_knobs:
@@ -55,13 +56,15 @@ class RDTContrib:
     def correct(self, n_steps=1):
         action_rdt_contrib = xt.Action(self.run)
 
-        opt = env.match(
-            solve=False,
+        opt = env.match_knob(
+            knob_name=self.generated_knob_name,
+            run=False,
             vary=xt.VaryList(rdt_contrib.correction_knobs, step=1e-5),
             targets=[
                 action_rdt_contrib.target(rdtind, 0.0) for rdtind in rdt_contrib.rdt_indices
             ])
         opt.step(n_steps)
+        opt.generate_knob()
 
         return opt
 
@@ -74,7 +77,8 @@ rdt_contrib = RDTContrib(env=env,
                          correction_knobs=['kcox3.l5', 'kcox3.r5'],
                          multipole='k3l',
                          ip='ip5',
-                         rdt_indices=[(0, 4), (4, 0)])
+                         rdt_indices=[(0, 4), (4, 0)],
+                         generated_knob_name='on_corr_k3_ip5')
 
 rdt_contrib.clear_corrections()
 opt = rdt_contrib.correct()
