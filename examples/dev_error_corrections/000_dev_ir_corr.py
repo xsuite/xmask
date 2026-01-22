@@ -2,17 +2,20 @@ import xtrack as xt
 import xdeps as xd
 
 # TODO:
+# - remember to handle left/right sign for different rdt
 
 env = xt.load('collider_00_from_mad_with_errors.json')
 
-tw = env.lhcb1_co_ref.twiss4d() # Reference twiss
+# Reference twiss
+env_no_err = xt.load('collider_00_from_mad_no_errors.json')
+tw = env_no_err.lhcb1.twiss4d() # Reference twiss
 
 class RDTContrib:
-    def __init__(self, env, tw, start, end, correction_knobs,
+    def __init__(self, env, line_name, tw, start, end, correction_knobs,
                  multipole, ip, rdt_indices, generated_knob_name):
         self.env = env
         self.tw = tw
-        self.line = env.lhcb1
+        self.line = env[line_name]
         self.start = start
         self.end = end
         self.correction_knobs = correction_knobs
@@ -41,11 +44,7 @@ class RDTContrib:
         mask_corr = tt_range.rows.mask[list(correction_elements)]
         tt_integral = tt_range.rows[(tt_range[self.multipole] != 0) | (mask_corr)]
 
-        # TODO: This is a patch to use the old json, needs to be removed when
-        # this is cleaned up
-        ref_names = [nn.replace('/lhcb1', '') for nn in tt_integral.env_name]
-
-        tw_integral = self.tw.rows[ref_names]
+        tw_integral = self.tw.rows[tt_integral.env_name]
 
         for rdt_i in self.rdt_indices:
             assert len(rdt_i) == 2
@@ -76,6 +75,7 @@ class RDTContrib:
 
 # Usage:
 rdt_contrib = RDTContrib(env=env,
+                         line_name='lhcb1',
                          tw=tw,
                          start='dfxj.4l5',
                          end='dfxj.4r5',
