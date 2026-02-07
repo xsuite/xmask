@@ -29,6 +29,10 @@ class RDTContrib:
         for kk in self.correction_knobs:
             self.env[kk] = 0.0
 
+    def print_corrections(self):
+        for kk in self.correction_knobs:
+            print(f"{kk} = {self.env[kk]}")
+
     def run(self):
         tt = self.line.get_table(attr=True)
         tt_range = tt.rows[self.start:self.end]
@@ -84,7 +88,16 @@ rdt_contrib = RDTContrib(env=env,
                          ip='ip5',
                          rdt_indices=[(0, 4), (4, 0)],
                          generated_knob_name='on_corr_k3_ip5')
+print("Original correction:")
+rdt_contrib.print_corrections()
 
 rdt_contrib.clear_corrections()
 opt = rdt_contrib.correct()
+
+print("Before setting the knob:")
+rdt_contrib.print_corrections()
+
+env[opt.knob_name] = 1.0
+print("After setting the knob:")
+rdt_contrib.print_corrections()
 
