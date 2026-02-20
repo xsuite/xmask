@@ -41,7 +41,6 @@ class RDTContrib:
         mysign[tt_range.rows.mask[self.ip:]] = -1
         tt_range['mysign'] = mysign
 
-
         # Identify elements controlled by correction knobs
         elements_in_range = set(tt_range.env_name)
         correction_elements = []
@@ -66,11 +65,18 @@ class RDTContrib:
                 )
                 integrand = rdts[f"{rdt_i}_integrand"]
             elif isinstance(rdt_i, tuple):
-                assert len(rdt_i) == 2
+                assert len(rdt_i) == 3
                 ii = rdt_i[0]
                 jj = rdt_i[1]
+                mode = rdt_i[2]
+                if mode == 'diff':
+                    thissign = tt_integral.mysign
+                elif mode == 'sum':
+                    thissign = 1
+                else:
+                    raise ValueError(f"Unknown mode {mode} in rdt_i {rdt_i}")
                 r_ii_jj = (tw_integral.betx ** (ii / 2) * tw_integral.bety ** (jj / 2)
-                       * tt_integral[self.multipole]) * tt_integral.mysign
+                       * tt_integral[self.multipole]) * thissign
                 integrand = r_ii_jj
 
             self.rdt_terms[rdt_i] = np.abs(integrand.sum())
@@ -95,14 +101,15 @@ class RDTContrib:
         return opt
 
 # Normal sextupole correction
-correction_knobs=['kcsx3.l5', 'kcsx3.r5']
-multipole='k2l'
-# rdt_indices=['f1020', 'f0120']
-rdt_indices=[(1, 2), (2, 1)]
+# correction_knobs=['kcsx3.l5', 'kcsx3.r5']
+# multipole='k2l'
+# ### rdt_indices=['f1020', 'f0120']
+# rdt_indices=[(1, 2, 'diff'), (2, 1, 'diff')]
 
 # # Normal octupole correction
-# correction_knobs=['kcox3.l5', 'kcox3.r5']
-# multipole='k3l'
+correction_knobs=['kcox3.l5', 'kcox3.r5']
+multipole='k3l'
+rdt_indices=[(0, 4, 'sum'), (4, 0, 'sum')]
 # rdt_indices=['f4000','f0040']
 
 # Usage:
