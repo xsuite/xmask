@@ -1,5 +1,6 @@
 import xtrack as xt
 import xdeps as xd
+import numpy as np
 
 # TODO:
 # - remember to handle left/right sign for different rdt
@@ -50,14 +51,33 @@ class RDTContrib:
 
         tw_integral = self.tw.rows[tt_integral.env_name]
 
+        rdts = xt.rdt_first_order_perturbation(
+            rdt=[f"f{ii}0{jj}0" for ii, jj in self.rdt_indices],
+            twiss=tw_integral,
+            strengths=tt_integral,
+            feed_down=False
+        )
+
+        mysign = tw_integral.s * 0 + 1
+        mysign[tw_integral.rows.mask['.*r5.*']] = -1
+
         for rdt_i in self.rdt_indices:
             assert len(rdt_i) == 2
             ii = rdt_i[0]
             jj = rdt_i[1]
 
+            # Computation done in old correction routines
             r_ii_jj = (tw_integral.betx ** (ii / 2) * tw_integral.bety ** (jj / 2)
-                       * tt_integral[self.multipole])
-            self.rdt_terms[rdt_i] = r_ii_jj.sum()
+                       * tt_integral[self.multipole]) * mysign
+            # self.rdt_terms[str(rdt_i)+'_sum'] = r_ii_jj.sum()
+            # self.rdt_terms[str(rdt_i)+'_integrand_loc'] = r_ii_jj
+
+            # integrand = rdts[f"f{ii}0{jj}0_integrand"]
+            integrand = r_ii_jj
+
+            self.rdt_terms[rdt_i] = np.abs(integrand.sum())
+            self.rdt_terms[str(rdt_i)+'_integrand_rdt'] = rdts[f"f{rdt_i[0]}0{rdt_i[1]}0_integrand"]
+        self.rdt_terms['s'] = tt_integral.s
 
         return self.rdt_terms
 
@@ -76,6 +96,15 @@ class RDTContrib:
 
         return opt
 
+# Normal sextupole correction
+correction_knobs=['kcsx3.l5', 'kcsx3.r5']
+multipole='k2l'
+rdt_indices=[(1, 2), (2, 1)]
+
+# # Normal octupole correction
+# correction_knobs=['kcox3.l5', 'kcox3.r5']
+# multipole='k3l'
+# rdt_indices=[(0, 4), (4, 0)]
 
 # Usage:
 rdt_contrib = RDTContrib(env=env,
@@ -83,10 +112,10 @@ rdt_contrib = RDTContrib(env=env,
                          tw=tw,
                          start='dfxj.4l5',
                          end='dfxj.4r5',
-                         correction_knobs=['kcox3.l5', 'kcox3.r5'],
-                         multipole='k3l',
+                         correction_knobs=correction_knobs,
+                         multipole=multipole,
                          ip='ip5',
-                         rdt_indices=[(0, 4), (4, 0)],
+                         rdt_indices=rdt_indices,
                          generated_knob_name='on_corr_k3_ip5')
 print("Original correction:")
 rdt_contrib.print_corrections()
@@ -101,3 +130,20 @@ env[opt.knob_name] = 1.0
 print("After setting the knob:")
 rdt_contrib.print_corrections()
 
+# oo = rdt_contrib.run()
+# integrand_rdt = oo['(0, 4)_integrand_rdt']
+# integrand_loc = oo['(0, 4)_integrand_loc']
+# s = oo['s']
+# integrand_rdt *= np.exp(-1j * np.angle(integrand_rdt[0]))
+
+# import matplotlib.pyplot as plt
+# plt.close('all')
+# plt.figure(1)
+# plt.plot(s, integrand_loc/np.max(np.abs(integrand_loc)), label='loc real')
+# plt.plot(s, -integrand_rdt.real/np.max(np.abs(integrand_rdt)), label='rdt real')
+# plt.plot(s, -integrand_rdt.imag/np.max(np.abs(integrand_rdt)), label='rdt imag')
+# plt.plot(s, np.abs(integrand_rdt)/np.max(np.abs(integrand_rdt)), label='rdt abs')
+# plt.legend()
+# plt.title('Integrand for f0040')
+
+# plt.show()
