@@ -38,6 +38,7 @@ class RDTContrib:
         tt = self.line.get_table(attr=True)
         tt_range = tt.rows[self.start:self.end]
         mysign = np.ones_like(tt_range.s)
+        assert self.ip in set(tt_range.name)
         mysign[tt_range.rows.mask[self.ip:]] = -1
         tt_range['mysign'] = mysign
 
