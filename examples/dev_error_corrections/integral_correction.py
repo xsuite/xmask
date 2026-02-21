@@ -5,7 +5,7 @@ import xdeps as xd
 class IntegralCorrection:
     def __init__(self, line, tw, start, end, correction_knobs,
                  multipole, ip, target_quantities, generated_knob_name,
-                 scale_multipole=None, feed_down=True):
+                 scale_multipole=None, feed_down=True, orbit=None):
         self.env = line.env
         self.tw = tw
         self.line = line
@@ -19,6 +19,7 @@ class IntegralCorrection:
         self.generated_knob_name = generated_knob_name
         self.scale_multipole = scale_multipole
         self.feed_down = feed_down
+        self.orbit = orbit
 
     def clear_corrections(self):
         for kk in self.correction_knobs:
@@ -54,6 +55,10 @@ class IntegralCorrection:
         tt_integral = tt_range.rows[(tt_range[self.multipole] != 0) | (mask_corr)]
 
         tw_integral = self.tw.rows[tt_integral.env_name]
+        orbit_integral = None
+        if self.orbit is not None:
+            assert len(self.orbit) == len(self.tw)
+            orbit_integral = self.orbit.rows[tt_integral.env_name]
 
         for nntq, ttqq in self.target_quantities.items():
 
@@ -62,7 +67,8 @@ class IntegralCorrection:
                     rdt=[ttqq],
                     twiss=tw_integral,
                     strengths=tt_integral,
-                    feed_down=self.feed_down
+                    feed_down=self.feed_down,
+                    orbit=orbit_integral
                 )
                 integrand = rdts[f"{ttqq}_integrand"]
             elif isinstance(ttqq, tuple):
