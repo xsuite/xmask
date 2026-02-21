@@ -99,7 +99,7 @@ class IntegralCorrection:
 
         return self.rdt_terms
 
-    def correct(self, n_steps=1):
+    def get_optimizer(self):
         action_rdt_contrib = xt.Action(self.run)
 
         opt = self.env.match_knob(
@@ -110,6 +110,11 @@ class IntegralCorrection:
                 action_rdt_contrib.target(nttqq, 0.0)
                     for nttqq in self.target_quantities.keys()
             ])
+        return opt
+
+    def correct(self, n_steps=1):
+
+        opt = self.get_optimizer()
         opt.step(n_steps)
         opt.generate_knob()
 
