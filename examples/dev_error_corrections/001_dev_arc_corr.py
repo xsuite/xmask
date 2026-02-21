@@ -1,8 +1,7 @@
+
+import numpy as np
 import xtrack as xt
 from integral_correction import IntegralCorrection
-
-# To do:
-# - Handle slice elements for correctors!!!
 
 beam_name = 'b1'
 env = xt.load('collider_00_from_mad_with_errors.json')
@@ -16,10 +15,15 @@ tw = env_no_err[f'lhc{beam_name}'].twiss4d() # Reference twiss
 
 arc_name = '45'
 start = f's.ds.r{arc_name[0]}.{beam_name}'
-end = f'e.ds.r{arc_name[1]}.{beam_name}'
+end = f'e.ds.l{arc_name[1]}.{beam_name}'
 correction_knobs = [f'kcd.a45{beam_name}']
 multipole = 'k4l'
 target_quantities={'k4l': lambda tw, tt: tt[multipole].sum()}
+
+tt = line.get_table()
+scale_multipole = np.zeros_like(tt.s)
+scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
+scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
 
 # Usage:
 rdt_contrib = IntegralCorrection(
@@ -31,7 +35,8 @@ rdt_contrib = IntegralCorrection(
                          multipole=multipole,
                          ip=None,
                          target_quantities=target_quantities,
-                         generated_knob_name='on_corr_k3_ip5')
+                         generated_knob_name='on_corr_k3_ip5',
+                         scale_multipole=scale_multipole)
 print("Original correction:")
 rdt_contrib.print_corrections()
 

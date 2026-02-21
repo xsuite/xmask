@@ -1,10 +1,6 @@
 import xtrack as xt
 from integral_correction import IntegralCorrection
 
-# TODO:
-# - remember to handle left/right sign for different rdt
-# - handle slice elements for correctors!!!
-
 env = xt.load('collider_00_from_mad_with_errors.json')
 
 # Reference twiss

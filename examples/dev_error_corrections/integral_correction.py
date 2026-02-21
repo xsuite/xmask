@@ -4,7 +4,8 @@ import xdeps as xd
 
 class IntegralCorrection:
     def __init__(self, line, tw, start, end, correction_knobs,
-                 multipole, ip, target_quantities, generated_knob_name):
+                 multipole, ip, target_quantities, generated_knob_name,
+                 scale_multipole=None):
         self.env = line.env
         self.tw = tw
         self.line = line
@@ -16,6 +17,7 @@ class IntegralCorrection:
         self.target_quantities = target_quantities
         self.rdt_terms = {}
         self.generated_knob_name = generated_knob_name
+        self.scale_multipole = scale_multipole
 
     def clear_corrections(self):
         for kk in self.correction_knobs:
@@ -27,6 +29,11 @@ class IntegralCorrection:
 
     def run(self):
         tt = self.line.get_table(attr=True)
+
+        if self.scale_multipole is not None:
+            assert len(self.scale_multipole) == len(tt)
+            tt[self.multipole] *= self.scale_multipole
+
         tt_range = tt.rows[self.start:self.end]
         mysign = np.ones_like(tt_range.s)
 
