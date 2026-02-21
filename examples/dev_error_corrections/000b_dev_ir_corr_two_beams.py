@@ -14,36 +14,40 @@ tw_b2 = env_no_err.lhcb2.twiss4d(reverse=False) # Reference twiss
 # multipole='k2l'
 # target_quantities={'c12': (1, 2, 'diff'), 'c21': (2, 1, 'diff')}
 
-# Normal octupole correction
+# Normal octupole correction ip5
+generated_knob_name='on_corr_k3_ip5'
 correction_knobs=['kcox3.l5', 'kcox3.r5']
 multipole='k3l'
 target_quantities_b1={'f4000_b1': 'f4000'}
 target_quantities_b2={'f4000_b2': 'f4000'}
+range_b1 = 'dfxj.4l5', 'dfxj.4r5'
+range_b2 = 'dfxj.4r5', 'dfxj.4l5'
+feed_down = False # to have same result as legacy
 
 # Usage:
 rdt_contrib_b1 = IntegralCorrection(
                          line=env['lhcb1'],
                          tw=tw_b1,
-                         start='dfxj.4l5',
-                         end='dfxj.4r5',
+                         start=range_b1[0],
+                         end=range_b1[1],
                          correction_knobs=correction_knobs,
                          multipole=multipole,
-                         ip='ip5',
-                         feed_down=False,
+                         ip=None, # not needed when RDT are used
+                         feed_down=feed_down,
                          target_quantities=target_quantities_b1,
-                         generated_knob_name='on_corr_k3_ip5')
+                         generated_knob_name=generated_knob_name)
 
 rdt_contrib_b2 = IntegralCorrection(
                          line=env['lhcb2'],
                          tw=tw_b2,
-                         start='dfxj.4r5',
-                         end='dfxj.4l5',
+                         start=range_b2[0],
+                         end=range_b2[1],
                          correction_knobs=[], # only targets here
                          multipole=multipole,
-                         ip='ip5',
-                         feed_down=False,
+                         ip=None, # not needed when RDT are used
+                         feed_down=feed_down,
                          target_quantities=target_quantities_b2,
-                         generated_knob_name='on_corr_k3_ip5')
+                         generated_knob_name=generated_knob_name)
 
 # knob_opt_b1 = rdt_contrib_b1.get_optimizer()
 # knob_opt_b2 = rdt_contrib_b2.get_optimizer()
