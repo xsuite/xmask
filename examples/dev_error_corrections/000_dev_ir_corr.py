@@ -56,33 +56,33 @@ class RDTContrib:
 
         tw_integral = self.tw.rows[tt_integral.env_name]
 
-        for rdt_i in self.target_quantities:
+        for nntq, ttqq in self.target_quantities.items():
 
-            if isinstance(rdt_i, str):
+            if isinstance(ttqq, str):
                 rdts = xt.rdt_first_order_perturbation(
-                    rdt=[rdt_i],
+                    rdt=[ttqq],
                     twiss=tw_integral,
                     strengths=tt_integral,
                     feed_down=False
                 )
-                integrand = rdts[f"{rdt_i}_integrand"]
-            elif isinstance(rdt_i, tuple):
-                assert len(rdt_i) == 3
-                ii = rdt_i[0]
-                jj = rdt_i[1]
-                mode = rdt_i[2]
+                integrand = rdts[f"{ttqq}_integrand"]
+            elif isinstance(ttqq, tuple):
+                assert len(ttqq) == 3
+                ii = ttqq[0]
+                jj = ttqq[1]
+                mode = ttqq[2]
                 if mode == 'diff':
                     thissign = tt_integral.mysign
                 elif mode == 'sum':
                     thissign = 1
                 else:
-                    raise ValueError(f"Unknown mode {mode} in rdt_i {rdt_i}")
+                    raise ValueError(f"Unknown mode {mode} in rdt_i {ttqq}")
                 r_ii_jj = (tw_integral.betx ** (ii / 2) * tw_integral.bety ** (jj / 2)
                        * tt_integral[self.multipole]) * thissign
                 integrand = r_ii_jj
 
-            self.rdt_terms[rdt_i] = np.abs(integrand.sum())
-            self.rdt_terms[str(rdt_i)+'_integrand'] = integrand
+            self.rdt_terms[nntq] = np.abs(integrand.sum())
+            self.rdt_terms[nntq+'_integrand'] = integrand
         self.rdt_terms['s'] = tt_integral.s
 
         return self.rdt_terms
@@ -95,7 +95,7 @@ class RDTContrib:
             run=False,
             vary=xt.VaryList(rdt_contrib.correction_knobs, step=1e-5),
             targets=[
-                action_rdt_contrib.target(rdtind, 0.0) for rdtind in rdt_contrib.target_quantities
+                action_rdt_contrib.target(nttqq, 0.0) for nttqq in rdt_contrib.target_quantities.keys()
             ])
         opt.step(n_steps)
         opt.generate_knob()
@@ -103,16 +103,15 @@ class RDTContrib:
         return opt
 
 # Normal sextupole correction
-# correction_knobs=['kcsx3.l5', 'kcsx3.r5']
-# multipole='k2l'
-# ### target_quantities=['f1020', 'f0120']
-# target_quantities=[(1, 2, 'diff'), (2, 1, 'diff')]
+correction_knobs=['kcsx3.l5', 'kcsx3.r5']
+multipole='k2l'
+target_quantities={'c12': (1, 2, 'diff'), 'c21': (2, 1, 'diff')}
 
-# # Normal octupole correction
-correction_knobs=['kcox3.l5', 'kcox3.r5']
-multipole='k3l'
-target_quantities=[(0, 4, 'sum'), (4, 0, 'sum')]
-# target_quantities=['f4000','f0040']
+# Normal octupole correction
+# correction_knobs=['kcox3.l5', 'kcox3.r5']
+# multipole='k3l'
+# target_quantities={'c04': (0, 4, 'sum'), 'c40': (4, 0, 'sum')}
+# # target_quantities={'f4000': 'f4000', 'f0040': 'f0040'}
 
 # Usage:
 rdt_contrib = RDTContrib(env=env,
