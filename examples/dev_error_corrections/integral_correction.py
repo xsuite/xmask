@@ -29,9 +29,10 @@ class IntegralCorrection:
         tt = self.line.get_table(attr=True)
         tt_range = tt.rows[self.start:self.end]
         mysign = np.ones_like(tt_range.s)
-        assert self.ip in set(tt_range.name)
-        mysign[tt_range.rows.mask[self.ip:]] = -1
-        tt_range['mysign'] = mysign
+
+        if self.ip is not None:
+            mysign[tt_range.rows.mask[self.ip:]] = -1
+            tt_range['mysign'] = mysign
 
         # Identify elements controlled by correction knobs
         elements_in_range = set(list(tt_range.env_name) + list(tt_range.parent_name))
@@ -58,6 +59,7 @@ class IntegralCorrection:
                 integrand = rdts[f"{ttqq}_integrand"]
             elif isinstance(ttqq, tuple):
                 assert len(ttqq) == 3
+                assert self.ip in set(tt_range.name)
                 ii = ttqq[0]
                 jj = ttqq[1]
                 mode = ttqq[2]
@@ -70,6 +72,9 @@ class IntegralCorrection:
                 r_ii_jj = (tw_integral.betx ** (ii / 2) * tw_integral.bety ** (jj / 2)
                        * tt_integral[self.multipole]) * thissign
                 integrand = r_ii_jj
+            else:
+                # I assume it's a callable
+                integrand = ttqq(tw_integral, tt_integral)
 
             self.rdt_terms[nntq] = np.abs(integrand.sum())
             self.rdt_terms[nntq+'_integrand'] = integrand
