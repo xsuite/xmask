@@ -28,7 +28,7 @@ rdt_contrib_b1 = IntegralCorrection(
                          multipole=multipole,
                          ip='ip5',
                          feed_down=False,
-                         target_quantities={'f4000_b1': 'f4000', 'f0040_b1': 'f0040'},
+                         target_quantities={'f4000_b1': 'f4000'},
                          generated_knob_name='on_corr_k3_ip5')
 
 rdt_contrib_b2 = IntegralCorrection(
@@ -40,7 +40,7 @@ rdt_contrib_b2 = IntegralCorrection(
                          multipole=multipole,
                          ip='ip5',
                          feed_down=False,
-                         target_quantities={'f4000_b2': 'f4000', 'f0040_b2': 'f0040'},
+                         target_quantities={'f4000_b2': 'f4000'},
                          generated_knob_name='on_corr_k3_ip5')
 
 # knob_opt_b1 = rdt_contrib_b1.get_optimizer()
