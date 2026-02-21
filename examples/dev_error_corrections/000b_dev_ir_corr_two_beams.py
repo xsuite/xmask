@@ -43,9 +43,6 @@ rdt_contrib_b2 = IntegralCorrection(
                          target_quantities={'f4000_b2': 'f4000', 'f0040_b2': 'f0040'},
                          generated_knob_name='on_corr_k3_ip5')
 
-# opt_b1 = rdt_contrib_b1.get_optimizer()
-# opt_b2 = rdt_contrib_b2.get_optimizer()
-
 # knob_opt_b1 = rdt_contrib_b1.get_optimizer()
 # knob_opt_b2 = rdt_contrib_b2.get_optimizer()
 
@@ -58,12 +55,21 @@ print("Original correction:")
 rdt_contrib_b1.print_corrections()
 
 rdt_contrib_b1.clear_corrections()
-opt = rdt_contrib_b1.correct()
+
+knob_opt_b1 = rdt_contrib_b1.get_optimizer()
+knob_opt_b2 = rdt_contrib_b2.get_optimizer()
+
+# opt = rdt_contrib_b1.correct() # correct only b1
+combined_opt = knob_opt_b1.opt.clone(add_targets=knob_opt_b2.opt.targets)
+combined_opt.step()
+knob_opt_b1.generate_knob()
+
+
 
 print("Before setting the knob:")
 rdt_contrib_b1.print_corrections()
 
-env[opt.knob_name] = 1.0
+env[knob_opt_b1.knob_name] = 1.0
 print("After setting the knob:")
 rdt_contrib_b1.print_corrections()
 
