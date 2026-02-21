@@ -21,6 +21,8 @@ class IntegralCorrection:
         self.feed_down = feed_down
         self.orbit = orbit
 
+        self.knob_opt = None
+
     def clear_corrections(self):
         for kk in self.correction_knobs:
             self.env[kk] = 0.0
@@ -99,10 +101,10 @@ class IntegralCorrection:
 
         return self.rdt_terms
 
-    def get_optimizer(self):
+    def _make_optimizer(self):
         action_rdt_contrib = xt.Action(self.run)
 
-        opt = self.env.match_knob(
+        knob_opt = self.env.match_knob(
             knob_name=self.generated_knob_name,
             run=False,
             vary=xt.VaryList(self.correction_knobs, step=1e-5),
@@ -110,7 +112,12 @@ class IntegralCorrection:
                 action_rdt_contrib.target(nttqq, 0.0)
                     for nttqq in self.target_quantities.keys()
             ])
-        return opt
+        self.knob_opt = knob_opt
+
+    def get_optimizer(self):
+        if self.knob_opt is None:
+            self._make_optimizer()
+        return self.knob_opt
 
     def correct(self, n_steps=1):
 
