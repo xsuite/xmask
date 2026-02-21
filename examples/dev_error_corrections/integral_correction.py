@@ -3,11 +3,11 @@ import xtrack as xt
 import xdeps as xd
 
 class IntegralCorrection:
-    def __init__(self, env, line_name, tw, start, end, correction_knobs,
+    def __init__(self, line, tw, start, end, correction_knobs,
                  multipole, ip, target_quantities, generated_knob_name):
-        self.env = env
+        self.env = line.env
         self.tw = tw
-        self.line = env[line_name]
+        self.line = line
         self.start = start
         self.end = end
         self.correction_knobs = correction_knobs

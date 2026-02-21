@@ -24,8 +24,8 @@ target_quantities={'c12': (1, 2, 'diff'), 'c21': (2, 1, 'diff')}
 # # target_quantities={'f4000': 'f4000', 'f0040': 'f0040'}
 
 # Usage:
-rdt_contrib = IntegralCorrection(env=env,
-                         line_name='lhcb1',
+rdt_contrib = IntegralCorrection(
+                         line=env['lhcb1'],
                          tw=tw,
                          start='dfxj.4l5',
                          end='dfxj.4r5',
