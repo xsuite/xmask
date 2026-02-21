@@ -13,7 +13,7 @@ tw = env_no_err.lhcb1.twiss4d() # Reference twiss
 
 class RDTContrib:
     def __init__(self, env, line_name, tw, start, end, correction_knobs,
-                 multipole, ip, rdt_indices, generated_knob_name):
+                 multipole, ip, target_quantities, generated_knob_name):
         self.env = env
         self.tw = tw
         self.line = env[line_name]
@@ -22,7 +22,7 @@ class RDTContrib:
         self.correction_knobs = correction_knobs
         self.multipole = multipole
         self.ip = ip
-        self.rdt_indices = rdt_indices
+        self.target_quantities = target_quantities
         self.rdt_terms = {}
         self.generated_knob_name = generated_knob_name
 
@@ -55,7 +55,7 @@ class RDTContrib:
 
         tw_integral = self.tw.rows[tt_integral.env_name]
 
-        for rdt_i in self.rdt_indices:
+        for rdt_i in self.target_quantities:
 
             if isinstance(rdt_i, str):
                 rdts = xt.rdt_first_order_perturbation(
@@ -94,7 +94,7 @@ class RDTContrib:
             run=False,
             vary=xt.VaryList(rdt_contrib.correction_knobs, step=1e-5),
             targets=[
-                action_rdt_contrib.target(rdtind, 0.0) for rdtind in rdt_contrib.rdt_indices
+                action_rdt_contrib.target(rdtind, 0.0) for rdtind in rdt_contrib.target_quantities
             ])
         opt.step(n_steps)
         opt.generate_knob()
@@ -104,14 +104,14 @@ class RDTContrib:
 # Normal sextupole correction
 # correction_knobs=['kcsx3.l5', 'kcsx3.r5']
 # multipole='k2l'
-# ### rdt_indices=['f1020', 'f0120']
-# rdt_indices=[(1, 2, 'diff'), (2, 1, 'diff')]
+# ### target_quantities=['f1020', 'f0120']
+# target_quantities=[(1, 2, 'diff'), (2, 1, 'diff')]
 
 # # Normal octupole correction
 correction_knobs=['kcox3.l5', 'kcox3.r5']
 multipole='k3l'
-rdt_indices=[(0, 4, 'sum'), (4, 0, 'sum')]
-# rdt_indices=['f4000','f0040']
+target_quantities=[(0, 4, 'sum'), (4, 0, 'sum')]
+# target_quantities=['f4000','f0040']
 
 # Usage:
 rdt_contrib = RDTContrib(env=env,
@@ -122,7 +122,7 @@ rdt_contrib = RDTContrib(env=env,
                          correction_knobs=correction_knobs,
                          multipole=multipole,
                          ip='ip5',
-                         rdt_indices=rdt_indices,
+                         target_quantities=target_quantities,
                          generated_knob_name='on_corr_k3_ip5')
 print("Original correction:")
 rdt_contrib.print_corrections()
