@@ -17,6 +17,8 @@ tw_b2 = env_no_err.lhcb2.twiss4d(reverse=False) # Reference twiss
 # Normal octupole correction
 correction_knobs=['kcox3.l5', 'kcox3.r5']
 multipole='k3l'
+target_quantities_b1={'f4000_b1': 'f4000'}
+target_quantities_b2={'f4000_b2': 'f4000'}
 
 # Usage:
 rdt_contrib_b1 = IntegralCorrection(
@@ -28,7 +30,7 @@ rdt_contrib_b1 = IntegralCorrection(
                          multipole=multipole,
                          ip='ip5',
                          feed_down=False,
-                         target_quantities={'f4000_b1': 'f4000'},
+                         target_quantities=target_quantities_b1,
                          generated_knob_name='on_corr_k3_ip5')
 
 rdt_contrib_b2 = IntegralCorrection(
@@ -40,7 +42,7 @@ rdt_contrib_b2 = IntegralCorrection(
                          multipole=multipole,
                          ip='ip5',
                          feed_down=False,
-                         target_quantities={'f4000_b2': 'f4000'},
+                         target_quantities=target_quantities_b2,
                          generated_knob_name='on_corr_k3_ip5')
 
 # knob_opt_b1 = rdt_contrib_b1.get_optimizer()
