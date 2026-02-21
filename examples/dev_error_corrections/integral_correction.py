@@ -29,6 +29,9 @@ class IntegralCorrection:
         for kk in self.correction_knobs:
             print(f"{kk} = {self.env[kk]}")
 
+    def get_corrections(self):
+        return {kk: self.env[kk] for kk in self.correction_knobs}
+
     def run(self):
         tt = self.line.get_table(attr=True)
 
