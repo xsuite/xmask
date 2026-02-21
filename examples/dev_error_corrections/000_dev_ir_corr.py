@@ -4,6 +4,7 @@ import numpy as np
 
 # TODO:
 # - remember to handle left/right sign for different rdt
+# - handle slice elements for correctors!!!
 
 env = xt.load('collider_00_from_mad_with_errors.json')
 
@@ -43,7 +44,7 @@ class RDTContrib:
         tt_range['mysign'] = mysign
 
         # Identify elements controlled by correction knobs
-        elements_in_range = set(tt_range.env_name)
+        elements_in_range = set(list(tt_range.env_name) + list(tt_range.parent_name))
         correction_elements = []
         for kk in self.correction_knobs:
             for tt in self.line.ref[kk]._find_dependant_targets():
