@@ -9,15 +9,15 @@ tw = env_no_err.lhcb1.twiss4d() # Reference twiss
 
 
 # Normal sextupole correction
-correction_knobs=['kcsx3.l5', 'kcsx3.r5']
-multipole='k2l'
-target_quantities={'c12': (1, 2, 'diff'), 'c21': (2, 1, 'diff')}
+# correction_knobs=['kcsx3.l5', 'kcsx3.r5']
+# multipole='k2l'
+# target_quantities={'c12': (1, 2, 'diff'), 'c21': (2, 1, 'diff')}
 
 # Normal octupole correction
-# correction_knobs=['kcox3.l5', 'kcox3.r5']
-# multipole='k3l'
-# target_quantities={'c04': (0, 4, 'sum'), 'c40': (4, 0, 'sum')}
-# # target_quantities={'f4000': 'f4000', 'f0040': 'f0040'}
+correction_knobs=['kcox3.l5', 'kcox3.r5']
+multipole='k3l'
+target_quantities={'c04': (0, 4, 'sum'), 'c40': (4, 0, 'sum')}
+# target_quantities={'f4000': 'f4000', 'f0040': 'f0040'}
 
 # Usage:
 rdt_contrib = IntegralCorrection(
@@ -28,6 +28,7 @@ rdt_contrib = IntegralCorrection(
                          correction_knobs=correction_knobs,
                          multipole=multipole,
                          ip='ip5',
+                         feed_down=False,
                          target_quantities=target_quantities,
                          generated_knob_name='on_corr_k3_ip5')
 print("Original correction:")
