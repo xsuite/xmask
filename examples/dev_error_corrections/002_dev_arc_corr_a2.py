@@ -62,3 +62,40 @@ for arc_name in arcs:
     env[opt.knob_name] = 1.0
     print("After setting the knob:")
     rdt_contrib.print_corrections()
+
+# Global correction
+start = tw.name[0]
+end = tw.name[-1]
+correction_knobs = [f'kss.a{arc_name}{beam_name}' for arc_name in arcs]
+generated_knob_name = f'on_corr_k2sl_global'
+multipole = 'k2sl'
+target_quantities={
+    'chrom_coupling_real': lambda tw, tt: chorm_coupling_integrand(tw, tt).real,
+    'chrom_coupling_imag': lambda tw, tt: chorm_coupling_integrand(tw, tt).imag
+}
+
+# Usage:
+rdt_contrib = IntegralCorrection(
+                        line=env['lhcb1'],
+                        tw=tw,
+                        feed_down=True,
+                        start=start,
+                        end=end,
+                        correction_knobs=correction_knobs,
+                        multipole=multipole,
+                        ip=None,
+                        target_quantities=target_quantities,
+                        generated_knob_name=generated_knob_name,
+                        scale_multipole=scale_multipole)
+print("Original correction:")
+rdt_contrib.print_corrections()
+
+rdt_contrib.clear_corrections()
+opt = rdt_contrib.correct()
+
+print("Before setting the knob:")
+rdt_contrib.print_corrections()
+
+env[opt.knob_name] = 1.0
+print("After setting the knob:")
+rdt_contrib.print_corrections()
