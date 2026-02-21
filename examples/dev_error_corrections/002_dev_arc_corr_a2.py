@@ -13,33 +13,32 @@ tw = env_no_err[f'lhc{beam_name}'].twiss4d() # Reference twiss
 
 # Let's have a look at the a3 (skew sextupole)
 
+def chorm_coupling_integrand(tw, tt):
+    return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety)  * np.exp(1j*(tw.mux - tw.muy))
+
 arc_name = '45'
 start = f's.ds.r{arc_name[0]}.{beam_name}'
 end = f'e.ds.l{arc_name[1]}.{beam_name}'
 correction_knobs = [f'kss.a45{beam_name}']
-multipole = 'k2sl' # We target the feed-down on coupling (off-momentum)
-target_quantities={'f1010': 'f1010', 'f1001': 'f1001'}
+multipole = 'k2sl'
+target_quantities={
+    'chrom_coupling_real': lambda tw, tt: chorm_coupling_integrand(tw, tt).real,
+    'chrom_coupling_imag': lambda tw, tt: chorm_coupling_integrand(tw, tt).imag
+}
 generated_knob_name = 'on_corr_k3sl_a45'
 
-orbit_table = xt.Table(data={
-    'name': tw.name,
-    's': tw.s,
-    'x': tw.dx,
-    'px': 0 * tw.dx,
-    'y': 0 * tw.dx,
-    'py': 0 * tw.dx,
-})
+
 
 tt = line.get_table()
 scale_multipole = np.zeros_like(tt.s)
 scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
 scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
+scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
 
 # Usage:
 rdt_contrib = IntegralCorrection(
                          line=env['lhcb1'],
                          tw=tw,
-                         orbit=orbit_table,
                          feed_down=True,
                          start=start,
                          end=end,
