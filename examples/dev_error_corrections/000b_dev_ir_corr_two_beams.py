@@ -111,8 +111,12 @@ ir_corrections = {
                     'feed_down': False}
         }
     },
-
-
+    'ip2': {'range_b1': ['bpmsx.4l2.b1', 'bpmsx.4r2.b1'],'range_b2': ['bpmsx.4r2.b2', 'bpmsx.4l2.b2'],
+            'corrections': {} # not corrected in the original script
+    },
+    'ip8': {'range_b1': ['bpmsx.4l8.b1', 'bpmsx.4r8.b1'],'range_b2': ['bpmsx.4r8.b2', 'bpmsx.4l8.b2'],
+            'corrections': {} # not corrected in the original script
+    }
 }
 
 all_correction_knobs = []
