@@ -50,6 +50,11 @@ ir_corrections = {
                     'target_quantities_b1': {'f5000_b1': 'f5000'},
                     'target_quantities_b2': {'f5000_b2': 'f5000'},
                     'feed_down': False},
+                'on_corr_k5_ip5': {
+                    'correction_knobs': ['kctx3.l5', 'kctx3.r5'], 'multipole': 'k5l',
+                    'target_quantities_b1': {'f6000_b1': 'f6000'},
+                    'target_quantities_b2': {'f6000_b2': 'f6000'},
+                    'feed_down': False},
                 'on_corr_k1s_ip5': {
                     'correction_knobs': ['kqsx3.l5', 'kqsx3.r5'], 'multipole': 'k1sl',
                     'target_quantities_b1': {'f1001_b1': 'f1001'},
@@ -60,7 +65,7 @@ ir_corrections = {
 }
 
 ip_name = 'ip5'
-correction_name = 'on_corr_k4_ip5'
+correction_name = 'on_corr_k5_ip5'
 
 ip_corrections = ir_corrections[ip_name]
 range_b1 = ip_corrections['range_b1']
