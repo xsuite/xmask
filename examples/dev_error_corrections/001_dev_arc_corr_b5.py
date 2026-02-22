@@ -18,7 +18,6 @@ arc_multipoles_to_suppress = {
     'k2l': 'kcs',
     'k3l': 'kco',
     'k4l': 'kcd',
-    'k2sl': 'kss',
 }
 
 arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
@@ -30,15 +29,15 @@ for beam_name in beams:
     tw = tw_b12[beam_name]
 
     tt = line.get_table()
-    scale_multipole = np.zeros_like(tt.s) + 1
-    # scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
-    # scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
+    scale_multipole = np.zeros_like(tt.s)
+    scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
+    scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
 
     for arc_name in arcs:
         start = f's.ds.r{arc_name[0]}.{beam_name}'
         end = f'e.ds.l{arc_name[1]}.{beam_name}'
         for multipole, knob_prefix in arc_multipoles_to_suppress.items():
-            correction_knobs = [f'{knob_prefix}.a45{beam_name}']
+            correction_knobs = [f'{knob_prefix}.a{arc_name}{beam_name}']
             target_quantities={'multipole_to_suppress': lambda tw, tt: tt[multipole].sum()}
 
             # Usage:
@@ -65,5 +64,3 @@ for beam_name in beams:
             env[opt.knob_name] = 1.0
             print("After setting the knob:")
             rdt_contrib.print_corrections()
-
-            prrrr
