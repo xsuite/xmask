@@ -70,12 +70,17 @@ ir_corrections = {
                     'target_quantities_b1': {'f1030_b1': 'f1030'},
                     'target_quantities_b2': {'f1030_b2': 'f1030'},
                     'feed_down': False},
+                'on_corr_k4s_ip5': {
+                    'correction_knobs': ['kcdsx3.l5', 'kcdsx3.r5'], 'multipole': 'k4sl',
+                    'target_quantities_b1': {'f0050_b1': 'f0050'},
+                    'target_quantities_b2': {'f0050_b2': 'f0050'},
+                    'feed_down': False},
         }
     }
 }
 
 ip_name = 'ip5'
-correction_name = 'on_corr_k3s_ip5'
+correction_name = 'on_corr_k4s_ip5'
 
 ip_corrections = ir_corrections[ip_name]
 range_b1 = ip_corrections['range_b1']
