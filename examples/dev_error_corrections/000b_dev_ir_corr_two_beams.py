@@ -84,6 +84,17 @@ ir_corrections = {
     }
 }
 
+all_correction_knobs = []
+for ip_name, ip_corrections in ir_corrections.items():
+    for correction_name, correction in ip_corrections['corrections'].items():
+        all_correction_knobs += correction['correction_knobs']
+
+original_values = {kk: env[kk] for kk in all_correction_knobs}
+
+# Clean original values
+for kk in all_correction_knobs:
+    env[kk] = 0.0
+
 ip_name = 'ip5'
 correction_name = 'on_corr_k5s_ip5'
 
@@ -124,14 +135,9 @@ rdt_contrib_b2 = IntegralCorrection(
                          target_quantities=target_quantities_b2,
                          generated_knob_name=generated_knob_name)
 
-print("Original correction:")
-rdt_contrib_b1.print_corrections()
-rdt_contrib_b1.clear_corrections()
-
 knob_opt_b1 = rdt_contrib_b1.get_optimizer()
 knob_opt_b2 = rdt_contrib_b2.get_optimizer()
 
-# opt = rdt_contrib_b1.correct() # correct only b1
 combined_opt = knob_opt_b1.opt.clone(add_targets=knob_opt_b2.opt.targets)
 combined_opt.step()
 knob_opt_b1.generate_knob()
@@ -143,3 +149,7 @@ env[knob_opt_b1.knob_name] = 1.0
 print("After setting the knob:")
 rdt_contrib_b1.print_corrections()
 
+print("Original values:")
+for kk in correction_knobs:
+    value = original_values[kk]
+    print(f"{kk}: {value}")
