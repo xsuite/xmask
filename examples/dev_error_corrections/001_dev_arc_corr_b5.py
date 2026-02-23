@@ -15,8 +15,8 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 # Let's have a look at the b5 (k4) # decapole
 
 arc_multipoles_to_suppress = {
-    # 'k2l': 'kcs',
-    'k3l': 'kco',
+    'k2l': 'kcs',
+    # 'k3l': 'kco',
     # 'k4l': 'kcd',
 }
 
