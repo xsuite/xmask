@@ -2,6 +2,9 @@ import numpy as np
 import xtrack as xt
 import xdeps as xd
 
+NORMAL_STRENGTHS_FROM_ATTR=['k0l', 'k1l', 'k2l', 'k3l', 'k4l', 'k5l']
+SKEW_STRENGTHS_FROM_ATTR=['k0sl', 'k1sl', 'k2sl', 'k3sl', 'k4sl', 'k5sl']
+
 class IntegralCorrection:
     def __init__(self, line, tw, start, end, correction_knobs,
                  multipole, ip, target_quantities, generated_knob_name,
@@ -35,14 +38,21 @@ class IntegralCorrection:
         return {kk: self.env[kk] for kk in self.correction_knobs}
 
     def run(self):
-        tt = self.line.get_table(attr=True)
+        if self.line.tracker is None:
+            self.line.build_tracker()
+        # I do this instead of get_table to be faster
+        tt0 = self.line.tracker._tracker_data_base._line_table
+        tt = xt.Table(data={'name': tt0['name'], 'env_name': tt0['env_name'],
+                            'parent_name': tt0['parent_name'], 's': tt0['s']})
+        for kk in NORMAL_STRENGTHS_FROM_ATTR + SKEW_STRENGTHS_FROM_ATTR:
+            tt[kk] = np.concatenate([self.line.attr[kk], [0]])
 
         if self.scale_multipole is not None:
             assert len(self.scale_multipole) == len(tt)
             tt[self.multipole] *= self.scale_multipole
 
         tt_range = tt.rows[self.start:self.end]
-        mysign = np.ones_like(tt_range.s)
+        mysign = np.zeros(len(tt_range))
 
         if self.ip is not None:
             mysign[tt_range.rows.mask[self.ip:]] = -1
