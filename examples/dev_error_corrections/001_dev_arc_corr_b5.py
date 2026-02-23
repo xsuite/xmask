@@ -16,8 +16,8 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 
 arc_multipoles_to_suppress = {
     # 'k2l': 'kcs',
-    # 'k3l': 'kco',
-    'k4l': 'kcd',
+    'k3l': 'kco',
+    # 'k4l': 'kcd',
 }
 
 arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
