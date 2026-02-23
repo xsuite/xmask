@@ -3,6 +3,8 @@ import numpy as np
 import xtrack as xt
 from integral_correction import IntegralCorrection
 
+from corrector_limits import corrector_limits
+
 env = xt.load('collider_00_from_mad_with_errors.json')
 
 # Reference twiss
@@ -16,8 +18,8 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 
 arc_multipoles_to_suppress = {
     'k2l': 'kcs',
-    # 'k3l': 'kco',
-    # 'k4l': 'kcd',
+    'k3l': 'kco',
+    'k4l': 'kcd',
 }
 
 arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
@@ -64,6 +66,13 @@ for beam_name in beams:
 
             rdt_contrib.clear_corrections()
             opt = rdt_contrib.correct()
+
+            # Clip to max
+            for kk, vv in opt.get_knob_values().items():
+                kk_limits = kk.split('_from_')[0]
+                ccll = corrector_limits[kk_limits]
+                vv_clip = np.clip(vv, ccll[0], ccll[1])
+                env.ref[kk] *= vv_clip / vv
 
             print("Before setting the knob:")
             rdt_contrib.print_corrections()
