@@ -21,7 +21,6 @@ arc_multipoles_to_suppress = {
 }
 
 arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
-arcs = ['45'] # for testing
 beams = ['b1', 'b2']
 
 for beam_name in beams:
@@ -35,12 +34,14 @@ for beam_name in beams:
     scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
 
     for arc_name in arcs:
+        # identify range for the arc
         if beam_name == 'b1':
             start = f's.ds.r{arc_name[0]}.{beam_name}'
             end = f'e.ds.l{arc_name[1]}.{beam_name}'
         else:
             start = f'e.ds.l{arc_name[1]}.{beam_name}'
             end = f's.ds.r{arc_name[0]}.{beam_name}'
+
         for multipole, knob_prefix in arc_multipoles_to_suppress.items():
             correction_knobs = [f'{knob_prefix}.a{arc_name}{beam_name}']
             target_quantities={'multipole_to_suppress': lambda tw, tt: tt[multipole].sum()}
@@ -57,6 +58,7 @@ for beam_name in beams:
                                     target_quantities=target_quantities,
                                     generated_knob_name=f'on_corr_{knob_prefix}_arc{arc_name}_{beam_name}',
                                     scale_multipole=scale_multipole)
+            print()
             print("Original correction:")
             rdt_contrib.print_corrections()
 
