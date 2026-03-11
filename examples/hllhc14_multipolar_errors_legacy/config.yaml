@@ -30,7 +30,7 @@ config_mad:
 
     # Parameters for machine imperfections
     pars_for_imperfections:
-      par_myseed: 1
+      par_myseed: 6
       par_correct_for_D2: 0
       par_correct_for_MCBX: 0
       par_on_errors_LHC: 1
