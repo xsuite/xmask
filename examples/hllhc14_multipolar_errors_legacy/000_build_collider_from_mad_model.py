@@ -4,10 +4,17 @@ import xtrack as xt
 import xmask as xm
 import xmask.lhc as xmlhc
 
+# enable_imperfections = True
+# enable_corrections = True
+# enable_knob_synthesis = True
+# rename_coupling_knobs = True
+# fname_out = 'collider_errors_on_corrections_on.json'
+
 enable_imperfections = True
-enable_corrections = True
-enable_knob_synthesis = True
-fname_out = 'collider_errors_on_corrections_on.json'
+enable_corrections = False
+enable_knob_synthesis = False
+rename_coupling_knobs = False
+fname_out = 'collider_errors_on_corrections_off.json'
 
 # Import user-defined optics-specific tools
 import optics_specific_tools_hlhc14 as ost
@@ -40,7 +47,7 @@ collider = xmlhc.build_xsuite_collider(
     enable_imperfections=enable_imperfections,
     enable_corrections=enable_corrections,
     enable_knob_synthesis=enable_knob_synthesis,
-    rename_coupling_knobs=True,
+    rename_coupling_knobs=rename_coupling_knobs,
     pars_for_imperfections=config_mad_model['pars_for_imperfections'],
     ver_lhc_run=config_mad_model['ver_lhc_run'],
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])
