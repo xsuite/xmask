@@ -23,6 +23,7 @@ from .knob_manipulations import add_correction_term_to_dipole_correctors
 def build_xsuite_collider(
     sequence_b1, sequence_b2, sequence_b4, beam_config,
     enable_imperfections,
+    enable_corrections=True,
     install_apertures=False,
     enable_knob_synthesis=False,
     rename_coupling_knobs=False,
@@ -116,6 +117,7 @@ def build_xsuite_collider(
             enable_imperfections=enable_imperfections,
             enable_knob_synthesis=enable_knob_synthesis,
             pars_for_imperfections=pars_for_imperfections,
+            enable_corrections=enable_corrections,
             ver_lhc_run=ver_lhc_run,
             ver_hllhc_optics=ver_hllhc_optics)
 
