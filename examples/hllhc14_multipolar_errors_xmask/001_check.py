@@ -24,6 +24,7 @@ for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
     assert len(tt_ref_arc) > 100
 
     for nn in tt_test_arc.name:
+        print(f'Checking {nn}               ', end='\r', flush=True)
         if hasattr(line_ref[nn], 'knl'):
             for ii in range(len(line_ref[nn].knl)):
                 knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()
