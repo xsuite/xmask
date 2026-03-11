@@ -45,7 +45,7 @@ collider = xmlhc.build_xsuite_collider(
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])
 
 # Save to file
-collider.to_json('collider_00_from_mad.json')
+collider.to_json(fname_out)
 
 
 
