@@ -6,6 +6,7 @@ import xmask.lhc as xmlhc
 
 enable_imperfections = True
 enable_corrections = True
+enable_knob_synthesis = True
 fname_out = 'collider_errors_on_corrections_on.json'
 
 # Import user-defined optics-specific tools
@@ -36,10 +37,10 @@ collider = xmlhc.build_xsuite_collider(
     sequence_b2=mad_b1b2.sequence.lhcb2,
     sequence_b4=mad_b4.sequence.lhcb2,
     beam_config=config_mad_model['beam_config'],
-    enable_imperfections=config_mad_model['enable_imperfections'],
-    enable_corrections=True,
-    enable_knob_synthesis=config_mad_model['enable_knob_synthesis'],
-    rename_coupling_knobs=config_mad_model['rename_coupling_knobs'],
+    enable_imperfections=enable_imperfections,
+    enable_corrections=enable_corrections,
+    enable_knob_synthesis=enable_knob_synthesis,
+    rename_coupling_knobs=True,
     pars_for_imperfections=config_mad_model['pars_for_imperfections'],
     ver_lhc_run=config_mad_model['ver_lhc_run'],
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])
