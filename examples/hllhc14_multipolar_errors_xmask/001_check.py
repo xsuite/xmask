@@ -20,7 +20,7 @@ max_order = 18
 
 
 for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
-    if line_test.name == 'lhcb1':
+    if line_to_check == 'lhcb1':
         start = f's.ds.r{arc[0]}.b1'
         end = f'e.ds.l{arc[1]}.b1'
     else:
