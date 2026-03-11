@@ -7,7 +7,7 @@ env = xt.load('../hllhc14_multipolar_errors_legacy/collider_errors_off_correctio
 fname_rotations = './magnet_orientation.tab'
 fname_err_table = './collision_errors-emfqcs-6.tfs'
 
-min_order = 2
+min_order = 0
 max_order = 15
 
 multipole_errors, tt_err_arc = load_wise_table_arc_magnets(

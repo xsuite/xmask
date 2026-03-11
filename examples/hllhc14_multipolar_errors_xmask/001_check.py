@@ -5,6 +5,12 @@ env_test = xt.load('lhc_arc_errors.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
                    'collider_errors_on_corrections_off.json')
 
+# To be in the same conditions as the reference
+env_test['on_error_arc_k0'] = 0
+env_test['on_error_arc_k0s'] = 0
+env_test['on_error_arc_k1'] = 0
+env_test['on_error_arc_k1s'] = 0
+
 for line_to_check in ['lhcb1', 'lhcb2']:
     line_test = env_test[line_to_check]
     line_ref = env_ref[line_to_check]
