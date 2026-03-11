@@ -36,7 +36,7 @@ config_mad:
       par_on_errors_LHC: 1
       par_off_errors_Q4_inIP15: 0
       par_off_errors_Q5_inIP15: 0
-      par_on_errors_MBH: 1
+      par_on_errors_MBH: 0
       par_on_errors_Q4: 1
       par_on_errors_D2: 1
       par_on_errors_D1: 1
