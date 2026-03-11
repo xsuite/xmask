@@ -59,6 +59,10 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
             side_aper = nn[-5:]
             side_beam = SIDE_APER_TO_SIDE_BEAM[side_aper]
             nn_with_beam = nn[:-5] + side_beam
+
+        if nn.endswith('.b2'):
+            yyff *= -1  # invert yrot factor for B2 magnets
+
         name_with_beam.append(nn_with_beam)
         yrotfactor.append(yyff)
     name_with_beam = np.array(name_with_beam)

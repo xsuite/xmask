@@ -1,9 +1,9 @@
 import xtrack as xt
 import xobjects as xo
 
-line_to_check = 'lhcb1'
+line_to_check = 'lhcb2'
 
-env_test = xt.load('lhc_arc_errors_on_b1.json')
+env_test = xt.load('lhc_arc_errors.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
                    'collider_errors_on_corrections_off.json')
 
@@ -20,8 +20,12 @@ max_order = 18
 
 
 for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
-    start = f's.ds.r{arc[0]}.b1'
-    end = f'e.ds.l{arc[1]}.b1'
+    if line_test.name == 'lhcb1':
+        start = f's.ds.r{arc[0]}.b1'
+        end = f'e.ds.l{arc[1]}.b1'
+    else:
+        start = f'e.ds.l{arc[1]}.b2'
+        end = f's.ds.r{arc[0]}.b2'
     tt_test_arc = tt_test.rows[start:end]
     tt_ref_arc = tt_ref.rows[start:end]
 
