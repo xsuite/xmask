@@ -1,9 +1,14 @@
 import xtrack as xt
 import xobjects as xo
 
-line_test = xt.load('lhc_arc_errors_on_b1.json').lhcb1
-line_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
-                   'collider_errors_on_corrections_off.json').lhcb1
+line_to_check = 'lhcb1'
+
+env_test = xt.load('lhc_arc_errors_on_b1.json')
+env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
+                   'collider_errors_on_corrections_off.json')
+
+line_test = env_test[line_to_check]
+line_ref = env_ref[line_to_check]
 
 tt_test = line_test.get_table(attr=True)
 tt_ref = line_ref.get_table(attr=True)
