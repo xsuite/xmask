@@ -40,13 +40,12 @@ env_test.set(tt_on_corr.name, 0)
 nlchr_test_no_corr = line_test.get_non_linear_chromaticity(num_delta=20)
 
 
-
 plt.close('all')
 plt.figure(1)
-plt.plot(nlchr_test_no_corr.delta0, [ttt.c_minus for ttt in nlchr_test_no_corr.twiss], label='Test no correction')
-plt.plot(nlchr_test.delta0, [ttt.c_minus for ttt in nlchr_test.twiss], label='Test')
-plt.plot(nlchr_ref.delta0, [ttt.c_minus for ttt in nlchr_ref.twiss], label='Reference', linestyle='dashed')
-plt.xlabel('delta0')
+plt.plot(1e3 * nlchr_test_no_corr.delta0, [ttt.c_minus for ttt in nlchr_test_no_corr.twiss], label='Test no correction')
+plt.plot(1e3 * nlchr_test.delta0, [ttt.c_minus for ttt in nlchr_test.twiss], label='Test')
+plt.plot(1e3 * nlchr_ref.delta0, [ttt.c_minus for ttt in nlchr_ref.twiss], label='Reference', linestyle='dashed')
+plt.xlabel(r'$\delta_0$ [10$^{-3}$]')
 plt.ylabel('C-')
 plt.legend()
 plt.suptitle(line_name)
