@@ -27,18 +27,20 @@ for beam_name in ['b1', 'b2']:
 
     tw = tw_b12[beam_name]
 
+    # Define scale factors to isolate the sources to correct
     tt = line.get_table()
     scale_multipole = np.zeros_like(tt.s)
     scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
     scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
     scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
 
+    # Function that we want to minimize
     def chorm_coupling_integrand(tw, tt):
         return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
 
     arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
 
-    # Global correction setup (we run it after logal)
+    # Global correction setup (we run it after local)
     start = tw.name[0]
     end = tw.name[-1]
     correction_knobs = [f'kss.a{arc_name}{beam_name}' for arc_name in arcs]
@@ -49,6 +51,7 @@ for beam_name in ['b1', 'b2']:
         'chrom_coupling_imag': lambda tw, tt: chorm_coupling_integrand(tw, tt).imag
     }
 
+    # Create calculator for global correction (not run)
     rdt_contrib_glob = IntegralCorrection(
                             line=line,
                             tw=tw,
@@ -61,6 +64,7 @@ for beam_name in ['b1', 'b2']:
                             generated_knob_name=generated_knob_name,
                             scale_multipole=scale_multipole)
 
+    # Local correction arc by arc
     opt_dct = {}
     integ_dct = {}
     for arc_name in arcs:
@@ -103,7 +107,6 @@ for beam_name in ['b1', 'b2']:
         integ_dct[arc_name] = arc_integ
 
     # Global correction
-
     opt = rdt_contrib_glob.correct()
 
     print("Before setting the knob:")
@@ -113,33 +116,6 @@ for beam_name in ['b1', 'b2']:
     print("After setting the knob:")
     knobs_final = rdt_contrib_glob.get_corrections()
     rdt_contrib_glob.print_corrections()
-
-    local_dct_opt = {}
-    for arc_name in arcs:
-        oo = integ_dct[arc_name].run()
-        local_dct_opt[arc_name] = oo['chrom_coupling_real'] + 1j * oo['chrom_coupling_imag']
-
-    tw_opt = line.twiss4d(coupling_edw_teng=True, delta0=1e-3)
-    nlchr_opt = line.get_non_linear_chromaticity(num_delta=20)
-
-    # Compare in a bar prot the abs of the local integrals before and after the global correction
-
-    plt.figure(1+int(beam_name[1:])*10)
-    arc_names = list(opt_dct.keys())
-    local_opt_vals = [np.abs(local_dct_opt[arc_name]) for arc_name in arc_names]
-    x = np.arange(len(arc_names))
-    plt.bar(x, local_opt_vals, width=0.2, label='After global correction')
-    plt.legend()
-
-    plt.xticks(x, arc_names)
-    plt.xlabel('Arc name')
-    plt.ylabel('Abs of chromatic coupling integral')
-
-    plt.figure(2+int(beam_name[1:])*10)
-    plt.plot(nlchr_opt.delta0, [ttt.c_minus for ttt in nlchr_opt.twiss], label='After global correction')
-    plt.xlabel('delta0')
-    plt.ylabel('C-')
-    plt.legend()
 
 env.to_json('lhc_arc_errors_with_correction.json')
 
