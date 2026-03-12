@@ -67,7 +67,6 @@ for beam_name in beams:
                                     end=end,
                                     correction_knobs=correction_knobs,
                                     multipole=multipole,
-                                    ip=None,
                                     target_quantities=target_quantities,
                                     generated_knob_name=f'on_corr_{knob_prefix}_arc{arc_name}_{beam_name}',
                                     scale_multipole=scale_multipole)

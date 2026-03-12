@@ -7,7 +7,7 @@ SKEW_STRENGTHS_FROM_ATTR=['k0sl', 'k1sl', 'k2sl', 'k3sl', 'k4sl', 'k5sl']
 
 class IntegralCorrection:
     def __init__(self, line, tw, start, end, correction_knobs,
-                 multipole, ip, target_quantities, generated_knob_name,
+                 multipole, target_quantities, generated_knob_name,
                  scale_multipole=None, feed_down=True, orbit=None):
         self.env = line.env
         self.tw = tw
@@ -16,7 +16,6 @@ class IntegralCorrection:
         self.end = end
         self.correction_knobs = correction_knobs
         self.multipole = multipole
-        self.ip = ip
         self.target_quantities = target_quantities
         self.rdt_terms = {}
         self.generated_knob_name = generated_knob_name
@@ -52,11 +51,6 @@ class IntegralCorrection:
             tt[self.multipole] *= self.scale_multipole
 
         tt_range = tt.rows[self.start:self.end]
-        mysign = np.zeros(len(tt_range))
-
-        if self.ip is not None:
-            mysign[tt_range.rows.mask[self.ip:]] = -1
-            tt_range['mysign'] = mysign
 
         # Identify elements controlled by correction knobs
         elements_in_range = set(list(tt_range.env_name) + list(tt_range.parent_name))
@@ -86,21 +80,6 @@ class IntegralCorrection:
                     orbit=orbit_integral
                 )
                 integrand = rdts[f"{ttqq}_integrand"]
-            elif isinstance(ttqq, tuple):
-                assert len(ttqq) == 3
-                assert self.ip in set(tt_range.name)
-                ii = ttqq[0]
-                jj = ttqq[1]
-                mode = ttqq[2]
-                if mode == 'diff':
-                    thissign = tt_integral.mysign
-                elif mode == 'sum':
-                    thissign = 1
-                else:
-                    raise ValueError(f"Unknown mode {mode} in rdt_i {ttqq}")
-                r_ii_jj = (tw_integral.betx ** (ii / 2) * tw_integral.bety ** (jj / 2)
-                       * tt_integral[self.multipole]) * thissign
-                integrand = r_ii_jj
             else:
                 # I assume it's a callable
                 integrand = ttqq(tw_integral, tt_integral)

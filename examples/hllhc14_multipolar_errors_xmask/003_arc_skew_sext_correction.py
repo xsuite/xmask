@@ -57,7 +57,6 @@ for beam_name in ['b1', 'b2']:
                             end=end,
                             correction_knobs=correction_knobs,
                             multipole=multipole,
-                            ip=None,
                             target_quantities=target_quantities,
                             generated_knob_name=generated_knob_name,
                             scale_multipole=scale_multipole)
@@ -88,7 +87,6 @@ for beam_name in ['b1', 'b2']:
                                 end=end,
                                 correction_knobs=correction_knobs,
                                 multipole=multipole,
-                                ip=None,
                                 target_quantities=target_quantities,
                                 generated_knob_name=generated_knob_name,
                                 scale_multipole=scale_multipole)
@@ -143,6 +141,6 @@ for beam_name in ['b1', 'b2']:
     plt.ylabel('C-')
     plt.legend()
 
-env.to_json('lhc_arc_errors_with_corrected.json')
+env.to_json('lhc_arc_errors_with_correction.json')
 
 plt.show()
