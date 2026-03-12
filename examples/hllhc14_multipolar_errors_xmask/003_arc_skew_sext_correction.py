@@ -143,4 +143,6 @@ for beam_name in ['b1', 'b2']:
     plt.ylabel('C-')
     plt.legend()
 
+env.to_json('lhc_arc_errors_with_corrected.json')
+
 plt.show()
