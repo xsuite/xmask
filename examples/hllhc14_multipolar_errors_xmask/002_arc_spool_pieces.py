@@ -72,7 +72,6 @@ for beam_name in beams:
                                     generated_knob_name=f'on_corr_{knob_prefix}_arc{arc_name}_{beam_name}',
                                     scale_multipole=scale_multipole)
 
-            rdt_contrib.clear_corrections()
             opt = rdt_contrib.correct()
 
             # Clip to max
