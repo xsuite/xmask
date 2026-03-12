@@ -1,5 +1,6 @@
 import xtrack as xt
 import matplotlib.pyplot as plt
+import numpy as np
 
 env_test = xt.load('lhc_arc_errors_with_correction.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
@@ -25,8 +26,23 @@ for ipn in [1, 2, 5, 8]:
         if hasattr(line_ref[nn], 'ksl'):
             line_ref[nn].ksl[1:] = 0
 
-tw_test = line_test.twiss4d()
-tw_ref = line_ref.twiss4d()
+tw_test = line_test.twiss4d(strengths=True)
+tw_ref = line_ref.twiss4d(strengths=True)
+
+for ttww in [tw_test, tw_ref]:
+    ttww['chrom_coupl_source'] = (ttww.k2sl * ttww.dx * np.sqrt(ttww.betx * ttww.bety)
+                                  * np.exp(1j*2*np.pi*(ttww.mux - ttww.muy)))
+
+chrom_coupling_integ_test = {}
+chrom_coupling_integ_ref = {}
+for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
+    start = f's.ds.r{arc[0]}.b1'
+    end = f'e.ds.l{arc[1]}.b1'
+    tt_test_arc = tw_test.rows[start:end]
+    tt_ref_arc = tw_ref.rows[start:end]
+
+    chrom_coupling_integ_test[arc] = np.sum(tt_test_arc.chrom_coupl_source)
+    chrom_coupling_integ_ref[arc] = np.sum(tt_ref_arc.chrom_coupl_source)
 
 twom_test = line_test.twiss4d(coupling_edw_teng=True, delta0=0.5e-3)
 twom_ref = line_ref.twiss4d(coupling_edw_teng=True, delta0=0.5e-3)
@@ -49,4 +65,17 @@ plt.xlabel(r'$\delta_0$ [10$^{-3}$]')
 plt.ylabel('C-')
 plt.legend()
 plt.suptitle(line_name)
+
+# Bar plot of chromatic coupling integral arc by arc
+plt.figure(2)
+arc_names = list(chrom_coupling_integ_test.keys())
+test_vals = [np.abs(chrom_coupling_integ_test[arc_name]) for arc_name in arc_names]
+ref_vals = [np.abs(chrom_coupling_integ_ref[arc_name]) for arc_name in arc_names]
+x = np.arange(len(arc_names))
+plt.bar(x - 0.2, test_vals, width=0.4, label='Test')
+plt.bar(x + 0.2, ref_vals, width=0.4, label='Reference')
+plt.xticks(x, arc_names)
+plt.xlabel('Arc name')
+plt.ylabel('Abs of chromatic coupling integral')
+plt.legend()
 plt.show()
