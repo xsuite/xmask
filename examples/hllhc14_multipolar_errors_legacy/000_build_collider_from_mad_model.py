@@ -4,6 +4,8 @@ import xtrack as xt
 import xmask as xm
 import xmask.lhc as xmlhc
 
+custom_error_table = '../../xmask/lhc/lhcerrors/LHC/fidel/collision_errors-emfqcs-6.tfs'
+
 # enable_imperfections = True
 # enable_corrections = True
 # enable_knob_synthesis = True
@@ -57,7 +59,7 @@ collider = xmlhc.build_xsuite_collider(
     pars_for_imperfections=config_mad_model['pars_for_imperfections'],
     ver_lhc_run=config_mad_model['ver_lhc_run'],
     ver_hllhc_optics=config_mad_model['ver_hllhc_optics'],
-    custom_error_table=None)
+    custom_error_table=custom_error_table)
 
 # Save to file
 collider.to_json(fname_out)
