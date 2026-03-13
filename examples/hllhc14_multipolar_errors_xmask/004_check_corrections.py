@@ -100,7 +100,6 @@ assert np.max(np.abs(arc_chrom_coupl_test)) < 1.05 * np.max(np.abs(arc_chrom_cou
 xo.assert_allclose(np.abs(np.mean(arc_chrom_coupl_test)), np.abs(np.mean(arc_chrom_coupl_ref)), rtol=0.04)
 assert np.std(np.abs(arc_chrom_coupl_test)) < np.std(np.abs(arc_chrom_coupl_ref))
 
-
 # Measure chromatic coupling without correction
 tt_on_corr = env_test.vars.get_table().rows['on_corr_k2sl.*']
 assert len(tt_on_corr) == 9

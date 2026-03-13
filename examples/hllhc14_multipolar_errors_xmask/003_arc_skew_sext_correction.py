@@ -3,6 +3,19 @@ import numpy as np
 import xtrack as xt
 from integral_correction import IntegralCorrection
 
+arc_names = ['12', '23', '34', '45', '56', '67', '78', '81']
+
+generated_knob_prefix = 'on_corr_k2sl'
+multipole = 'k2sl'
+def chrom_coupling_integrand(tw, tt):
+    return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
+target_integrand = chrom_coupling_integrand
+correction_knobs = {
+    'b1': {arc: [f'kss.a{arc}b1'] for arc in arc_names},
+    'b2': {arc: [f'kss.a{arc}b2'] for arc in arc_names},
+}
+
+
 env = xt.load('lhc_arc_errors_with_spool_piece_corrections.json')
 
 # Status of error and correction knobs
@@ -18,9 +31,6 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 for nn in tt_err_knobs.name:
     env[nn] = tt_err_knobs['value', nn]
 
-import matplotlib.pyplot as plt
-plt.close('all')
-
 for beam_name in ['b1', 'b2']:
 
     line = env[f'lhc{beam_name}']
@@ -35,20 +45,18 @@ for beam_name in ['b1', 'b2']:
     scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
 
     # Function that we want to minimize
-    def chorm_coupling_integrand(tw, tt):
-        return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
 
-    arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
 
     # Global correction setup (we run it after local)
     start = tw.name[0]
     end = tw.name[-1]
-    correction_knobs = [f'kss.a{arc_name}{beam_name}' for arc_name in arcs]
-    generated_knob_name = f'on_corr_k2sl_global'
-    multipole = 'k2sl'
+    correction_knobs_global = []
+    for arc in arc_names:
+        correction_knobs_global += correction_knobs[beam_name][arc]
+    generated_knob_name = f'{generated_knob_prefix}_global'
     target_quantities={
-        'chrom_coupling_real': lambda tw, tt: chorm_coupling_integrand(tw, tt).real,
-        'chrom_coupling_imag': lambda tw, tt: chorm_coupling_integrand(tw, tt).imag
+        'target_real': lambda tw, tt: np.real(target_integrand(tw, tt)),
+        'target_imag': lambda tw, tt: np.imag(target_integrand(tw, tt))
     }
 
     # Create calculator for global correction (not run)
@@ -58,7 +66,7 @@ for beam_name in ['b1', 'b2']:
                             feed_down=True,
                             start=start,
                             end=end,
-                            correction_knobs=correction_knobs,
+                            correction_knobs=correction_knobs_global,
                             multipole=multipole,
                             target_quantities=target_quantities,
                             generated_knob_name=generated_knob_name,
@@ -67,19 +75,18 @@ for beam_name in ['b1', 'b2']:
     # Local correction arc by arc
     opt_dct = {}
     integ_dct = {}
-    for arc_name in arcs:
+    for arc_name in arc_names:
         if beam_name == 'b1':
             start = f's.ds.r{arc_name[0]}.b1'
             end = f'e.ds.l{arc_name[1]}.b1'
         else:
             start = f'e.ds.l{arc_name[1]}.b2'
             end = f's.ds.r{arc_name[0]}.b2'
-        correction_knobs = [f'kss.a{arc_name}{beam_name}']
-        generated_knob_name = f'on_corr_k2sl_a{arc_name}_local'
-        multipole = 'k2sl'
+        correction_knobs_local = correction_knobs[beam_name][arc_name]
+        generated_knob_name = f'{generated_knob_prefix}_a{arc_name}_local'
         target_quantities={
-            'chrom_coupling_real': lambda tw, tt: chorm_coupling_integrand(tw, tt).real,
-            'chrom_coupling_imag': lambda tw, tt: chorm_coupling_integrand(tw, tt).imag
+            'target_real': lambda tw, tt: np.real(target_integrand(tw, tt)),
+            'target_imag': lambda tw, tt: np.imag(target_integrand(tw, tt))
         }
 
         # Usage:
@@ -89,7 +96,7 @@ for beam_name in ['b1', 'b2']:
                                 feed_down=True,
                                 start=start,
                                 end=end,
-                                correction_knobs=correction_knobs,
+                                correction_knobs=correction_knobs_local,
                                 multipole=multipole,
                                 target_quantities=target_quantities,
                                 generated_knob_name=generated_knob_name,
@@ -118,5 +125,3 @@ for beam_name in ['b1', 'b2']:
     rdt_contrib_glob.print_corrections()
 
 env.to_json('lhc_arc_errors_with_correction.json')
-
-plt.show()
