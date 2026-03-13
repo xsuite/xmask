@@ -4,6 +4,20 @@ from scipy.special import factorial
 
 from lhc_geography import SIDE_APER_TO_SIDE_BEAM
 
+PREFIX_TO_MAIN_ORDER = [
+    ('mb', (0, 'normal')),
+    ('mqs', (1, 'skew')), ('mq', (1, 'normal')),
+    ('mss', (2, 'skew')), ('ms', (2, 'normal')),
+    ('mo', (3, 'normal')),
+    ('mcbh', (0, 'normal')), ('mcbv', (0, 'skew')),
+    ('mcbch', (0, 'normal')), ('mcbcv', (0, 'skew')),
+    ('mcssx', (2, 'skew')), ('mcsx', (2, 'normal')),
+    ('mcs', (2, 'normal')),
+    ('mco', (3, 'normal')),
+    ('mcd', (4, 'normal')),
+    ('mct', (5, 'normal')),
+]
+
 def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, max_order=15, ref_radius=0.017):
     # Load WISE error table
     tt_raw = xt.Table.from_tfs(fname_err_table)
@@ -74,14 +88,27 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
 
     # Attach reference order (0 if mb, 1 if mq, fail otherwise)
     ref_order = []
+    main_is_skew = []
     for nn in tt_err_two_aper['name']:
-        if nn.startswith('mb'):
-            ref_order.append(0)
-        elif nn.startswith('mq'):
-            ref_order.append(1)
+        for prefix, (order, normal_skew) in PREFIX_TO_MAIN_ORDER:
+            assert normal_skew in ['normal', 'skew']
+            if nn.startswith(prefix):
+                ref_order.append(order)
+                main_is_skew.append(normal_skew == 'skew')
+                break
         else:
             raise ValueError(f"Unexpected magnet name: {nn}")
+        # if nn.startswith('mb'):
+        #     ref_order.append(0)
+        # elif nn.startswith('mq'):
+        #     ref_order.append(1)
+        # else:
+        #     raise ValueError(f"Unexpected magnet name: {nn}")
+    assert len(ref_order) == len(tt_err_two_aper)
+    assert len(main_is_skew) == len(tt_err_two_aper)
+
     tt_err_two_aper['ref_order'] = np.array(ref_order)
+    tt_err_two_aper['main_is_skew'] = np.array(main_is_skew)
 
     # From WISE units to knl_rel and ksl_rel
     ref_radius = 0.017
@@ -115,7 +142,9 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
         knl_rel = tt_err_two_aper['knl_rel', nn]
         ksl_rel = tt_err_two_aper['ksl_rel', nn]
         ref_order = tt_err_two_aper['ref_order', nn]
-        multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel, 'ref_order': ref_order}
+        main_is_skew = tt_err_two_aper['main_is_skew', nn]
+        multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
+                                'ref_order': ref_order, 'main_is_skew': main_is_skew}
 
     # Suppress multipoles of order < 2
     for nn in multipole_errors:
@@ -152,6 +181,7 @@ def set_multipole_errors_in_line(line, multipole_errors,
                 kknn_rel = multipole_errors[nn_err]['knl_rel'][ii]
                 kkss_rel = multipole_errors[nn_err]['ksl_rel'][ii]
                 ref_order = int(multipole_errors[nn_err]['ref_order'])
+                main_is_skew = int(multipole_errors[nn_err]['main_is_skew'])
 
                 if error_knob_name:
                     if append_order_to_knob_name:
@@ -168,6 +198,7 @@ def set_multipole_errors_in_line(line, multipole_errors,
 
                 # Using knl_rel and ksl_rel
                 line[nn].main_order = ref_order
+                line[nn].main_is_skew = main_is_skew
                 line.ref[nn].knl_rel[ii] = kknn_rel * ref_knob_kn
                 line.ref[nn].ksl_rel[ii] = kkss_rel * ref_knob_ks
 
