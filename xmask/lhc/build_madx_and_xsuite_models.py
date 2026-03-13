@@ -31,7 +31,8 @@ def build_xsuite_collider(
     ver_lhc_run=None,
     ver_hllhc_optics=None,
     call_after_last_use=None,
-    custom_error_table=None
+    custom_error_table=None,
+    custom_efcomp_code=None
     ):
 
     """
@@ -122,7 +123,8 @@ def build_xsuite_collider(
             enable_corrections=enable_corrections,
             ver_lhc_run=ver_lhc_run,
             ver_hllhc_optics=ver_hllhc_optics,
-            custom_error_table=custom_error_table)
+            custom_error_table=custom_error_table,
+            custom_efcomp_code=custom_efcomp_code)
 
         # Prepare xsuite line
         line = xt.Line.from_madx_sequence(

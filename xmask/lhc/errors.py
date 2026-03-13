@@ -20,7 +20,8 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
                         enable_knob_synthesis, pars_for_imperfections,
                         enable_corrections=True,
                         ver_lhc_run=None, ver_hllhc_optics=None,
-                        custom_error_table=None):
+                        custom_error_table=None,
+                        custom_efcomp_code=None):
 
     os.system(f'rm errors')
     os.symlink(lhc_module_folder / 'lhcerrors', 'errors')
@@ -61,7 +62,11 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         mad_track.input(f'call, file="{scripts_folder}/submodule_04c_errortables.madx";')
         if custom_error_table is not None:
             mad_track.input(f'readtable, file="{custom_error_table}";')
+
         mad_track.input(f'call, file="{scripts_folder}/submodule_04d_efcomp.madx";')
+        if custom_efcomp_code is not None:
+            mad_track.input(custom_efcomp_code)
+
         if enable_corrections:
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_correction.madx";')
