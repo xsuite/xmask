@@ -56,7 +56,8 @@ collider = xmlhc.build_xsuite_collider(
     rename_coupling_knobs=rename_coupling_knobs,
     pars_for_imperfections=config_mad_model['pars_for_imperfections'],
     ver_lhc_run=config_mad_model['ver_lhc_run'],
-    ver_hllhc_optics=config_mad_model['ver_hllhc_optics'])
+    ver_hllhc_optics=config_mad_model['ver_hllhc_optics'],
+    custom_error_table=None)
 
 # Save to file
 collider.to_json(fname_out)

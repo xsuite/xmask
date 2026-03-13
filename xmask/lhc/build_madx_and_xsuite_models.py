@@ -30,7 +30,9 @@ def build_xsuite_collider(
     pars_for_imperfections={},
     ver_lhc_run=None,
     ver_hllhc_optics=None,
-    call_after_last_use=None,):
+    call_after_last_use=None,
+    custom_error_table=None
+    ):
 
     """
     Build xsuite collider from madx sequences and optics.
@@ -119,7 +121,8 @@ def build_xsuite_collider(
             pars_for_imperfections=pars_for_imperfections,
             enable_corrections=enable_corrections,
             ver_lhc_run=ver_lhc_run,
-            ver_hllhc_optics=ver_hllhc_optics)
+            ver_hllhc_optics=ver_hllhc_optics,
+            custom_error_table=custom_error_table)
 
         # Prepare xsuite line
         line = xt.Line.from_madx_sequence(

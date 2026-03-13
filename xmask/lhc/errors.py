@@ -19,7 +19,8 @@ def install_errors_placeholders_hllhc(mad):
 def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfections,
                         enable_knob_synthesis, pars_for_imperfections,
                         enable_corrections=True,
-                        ver_lhc_run=None, ver_hllhc_optics=None):
+                        ver_lhc_run=None, ver_hllhc_optics=None,
+                        custom_error_table=None):
 
     os.system(f'rm errors')
     os.symlink(lhc_module_folder / 'lhcerrors', 'errors')
@@ -56,7 +57,10 @@ def install_correct_errors_and_synthesisize_knobs(mad_track, enable_imperfection
         mad_track.input('exec, crossing_disable;')
 
         mad_track.input(f'call, file="{scripts_folder}/submodule_04b_alignsep.madx";')
+
         mad_track.input(f'call, file="{scripts_folder}/submodule_04c_errortables.madx";')
+        if custom_error_table is not None:
+            mad_track.input(f'readtable, file="{custom_error_table}";')
         mad_track.input(f'call, file="{scripts_folder}/submodule_04d_efcomp.madx";')
         if enable_corrections:
             mad_track.input(f'call, file="{scripts_folder}/submodule_04e_s1_synthesize_knobs.madx";')
