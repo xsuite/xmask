@@ -32,6 +32,14 @@ line_ref = env_ref[line_name]
 tt_ref = line_ref.get_table(attr=True)
 tt_test = line_test.get_table(attr=True)
 
+# patch hxl
+for nn in tt_ref.name:
+    if nn == '_end_point':
+        continue
+    if hasattr(line_ref[nn], 'hxl'):
+        line_ref[nn].hxl = line_ref[nn].knl[0]
+        line_ref[nn].shift_x = 0 # Shifts are not applied in the test line
+
 # kill IR non-linearities in reference machine (for comparison)
 for ipn in [1, 2, 5, 8]:
     if line_name == 'lhcb1':
@@ -48,6 +56,7 @@ for ipn in [1, 2, 5, 8]:
         if hasattr(line_ref[nn], 'ksl'):
             line_ref[nn].ksl[1:] = 0
 
+# Chromatic coupling integrand
 tw_test = line_test.twiss4d(strengths=True)
 tw_ref = line_ref.twiss4d(strengths=True)
 
@@ -55,6 +64,7 @@ for ttww in [tw_test, tw_ref]:
     ttww['chrom_coupl_source'] = (ttww.k2sl * ttww.dx * np.sqrt(ttww.betx * ttww.bety)
                                   * np.exp(1j*2*np.pi*(ttww.mux - ttww.muy)))
 
+# Chromatic coupling integral arc by arc
 chrom_coupling_integ_test = {}
 chrom_coupling_integ_ref = {}
 for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
@@ -76,6 +86,22 @@ twom_ref = line_ref.twiss4d(coupling_edw_teng=True, delta0=0.5e-3)
 nlchr_test = line_test.get_non_linear_chromaticity(num_delta=20)
 nlchr_ref = line_ref.get_non_linear_chromaticity(num_delta=20)
 
+cminus_delta_test = np.array([ttt.c_minus for ttt in nlchr_test.twiss])
+cminus_delta_ref = np.array([ttt.c_minus for ttt in nlchr_ref.twiss])
+
+# Check on global chromatic coupling
+xo.assert_allclose(cminus_delta_test, cminus_delta_ref, atol=4e-5)
+
+# Check on local chromatic coupling integrals
+arc_names = list(chrom_coupling_integ_test.keys())
+arc_chrom_coupl_test = [chrom_coupling_integ_test[arc_name] for arc_name in arc_names]
+arc_chrom_coupl_ref = [chrom_coupling_integ_ref[arc_name] for arc_name in arc_names]
+assert np.max(np.abs(arc_chrom_coupl_test)) < 1.05 * np.max(np.abs(arc_chrom_coupl_ref))
+xo.assert_allclose(np.abs(np.mean(arc_chrom_coupl_test)), np.abs(np.mean(arc_chrom_coupl_ref)), rtol=0.04)
+assert np.std(np.abs(arc_chrom_coupl_test)) < np.std(np.abs(arc_chrom_coupl_ref))
+
+
+# Measure chromatic coupling without correction
 tt_on_corr = env_test.vars.get_table().rows['on_corr_k2sl.*']
 assert len(tt_on_corr) == 9
 env_test.set(tt_on_corr.name, 0)
@@ -95,12 +121,10 @@ plt.suptitle(line_name)
 
 # Bar plot of chromatic coupling integral arc by arc
 plt.figure(2)
-arc_names = list(chrom_coupling_integ_test.keys())
-test_vals = [np.abs(chrom_coupling_integ_test[arc_name]) for arc_name in arc_names]
-ref_vals = [np.abs(chrom_coupling_integ_ref[arc_name]) for arc_name in arc_names]
+
 x = np.arange(len(arc_names))
-plt.bar(x - 0.2, test_vals, width=0.4, label='Test')
-plt.bar(x + 0.2, ref_vals, width=0.4, label='Reference')
+plt.bar(x - 0.2, np.abs(arc_chrom_coupl_test), width=0.4, label='Test')
+plt.bar(x + 0.2, np.abs(arc_chrom_coupl_ref), width=0.4, label='Reference')
 plt.xticks(x, arc_names)
 plt.xlabel('Arc name')
 plt.ylabel('Abs of chromatic coupling integral')
