@@ -6,30 +6,30 @@ env = xt.load('lhc_arc_errors_with_spool_piece_corrections.json')
 
 arc_names = ['12', '23', '34', '45', '56', '67', '78', '81']
 
-# generated_knob_prefix = 'on_corr_k2sl'
-# multipole = 'k2sl'
-# def chrom_coupling_integrand(tw, tt):
-#     return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
-# target_integrand = chrom_coupling_integrand
-# correction_knobs = {
-#     'b1': {arc: [f'kss.a{arc}b1'] for arc in arc_names},
-#     'b2': {arc: [f'kss.a{arc}b2'] for arc in arc_names},
-# }
-
-generated_knob_prefix = 'on_corr_k1sl'
-multipole = 'k1sl'
-target_integrand = 'f1001'
+generated_knob_prefix = 'on_corr_k2sl'
+multipole = 'k2sl'
+def chrom_coupling_integrand(tw, tt):
+    return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
+target_integrand = chrom_coupling_integrand
 correction_knobs = {
-    'b1': {'12': ['kqs.r1b1', 'kqs.l2b1'], '23': ['kqs.a23b1'],
-           '34': ['kqs.r3b1', 'kqs.l4b1'], '45': ['kqs.a45b1'],
-           '56': ['kqs.r5b1', 'kqs.l6b1'], '67': ['kqs.a67b1'],
-           '78': ['kqs.r7b1', 'kqs.l8b1'], '81': ['kqs.a81b1']},
-    'b2': {'12': ['kqs.a12b2'], '23': ['kqs.r2b2', 'kqs.l3b2'],
-           '34': ['kqs.a34b2'], '45': ['kqs.r4b2', 'kqs.l5b2'],
-           '56': ['kqs.a56b2'], '67': ['kqs.r6b2', 'kqs.l7b2'],
-           '78': ['kqs.a78b2'], '81': ['kqs.r8b2', 'kqs.l1b2']},
+    'b1': {arc: [f'kss.a{arc}b1'] for arc in arc_names},
+    'b2': {arc: [f'kss.a{arc}b2'] for arc in arc_names},
 }
-env['on_error_arc_k1s'] = 1.0
+
+# generated_knob_prefix = 'on_corr_k1sl'
+# multipole = 'k1sl'
+# target_integrand = 'f1001'
+# correction_knobs = {
+#     'b1': {'12': ['kqs.r1b1', 'kqs.l2b1'], '23': ['kqs.a23b1'],
+#            '34': ['kqs.r3b1', 'kqs.l4b1'], '45': ['kqs.a45b1'],
+#            '56': ['kqs.r5b1', 'kqs.l6b1'], '67': ['kqs.a67b1'],
+#            '78': ['kqs.r7b1', 'kqs.l8b1'], '81': ['kqs.a81b1']},
+#     'b2': {'12': ['kqs.a12b2'], '23': ['kqs.r2b2', 'kqs.l3b2'],
+#            '34': ['kqs.a34b2'], '45': ['kqs.r4b2', 'kqs.l5b2'],
+#            '56': ['kqs.a56b2'], '67': ['kqs.r6b2', 'kqs.l7b2'],
+#            '78': ['kqs.a78b2'], '81': ['kqs.r8b2', 'kqs.l1b2']},
+# }
+# env['on_error_arc_k1s'] = 1.0 # I enable the skew quad errors (which are off by default in the input file)
 
 # Status of error and correction knobs
 tt_err_knobs = env.vars.get_table().rows[r'on_error_arc.*|on_corr_.*']
