@@ -14,17 +14,17 @@ call, file="errors/LHC/Efcomp_MO.madx" ;
 # custom_error_table = '../../xmask/lhc/lhcerrors/LHC/wise/collision_errors-emfqcs-6.tfs'
 # custom_efcomp_code = None
 
-enable_imperfections = True
-enable_corrections = True
-enable_knob_synthesis = True
-rename_coupling_knobs = True
-fname_out = 'collider_errors_on_corrections_on.json'
-
 # enable_imperfections = True
-# enable_corrections = False
-# enable_knob_synthesis = False
-# rename_coupling_knobs = False
-# fname_out = 'collider_errors_on_corrections_off.json'
+# enable_corrections = True
+# enable_knob_synthesis = True
+# rename_coupling_knobs = True
+# fname_out = 'collider_errors_on_corrections_on.json'
+
+enable_imperfections = True
+enable_corrections = False
+enable_knob_synthesis = False
+rename_coupling_knobs = False
+fname_out = 'collider_errors_on_corrections_off.json'
 
 # enable_imperfections = False
 # enable_corrections = False
