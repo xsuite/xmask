@@ -1,5 +1,6 @@
 import xtrack as xt
 import xobjects as xo
+import numpy as np
 
 env_test = xt.load('lhc_arc_errors.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
@@ -39,6 +40,25 @@ for line_to_check in ['lhcb1', 'lhcb2']:
 
         for nn in tt_test_arc.name:
             print(f'Checking {nn}               ', end='\r', flush=True)
+
+            if nn in {'ms.29l2.b2', 'ms.33l2.b2', 'ms.33r1.b2', 'ms.29r1.b2',
+                      'ms.28l3.b2', 'ms.32l3.b2', 'ms.34l3.b2', 'ms.30r2.b2',
+                      'ms.29l4.b2', 'ms.33l4.b2', 'ms.33r3.b2', 'ms.29r3.b2',
+                      'ms.28l5.b2', 'ms.32l5.b2', 'ms.34l5.b2', 'ms.30r4.b2',
+                      'ms.29l6.b2', 'ms.33l6.b2', 'ms.33r5.b2'}:
+                # issue in the legacy macros, errors non applied to this magnet
+                assert np.all(line_ref[nn].get_total_knl_ksl()[0][3:] == 0)
+                assert np.all(line_ref[nn].get_total_knl_ksl()[1] == 0)
+                continue
+            if nn in {'mco.b30r3.b2'}:
+                "magnet seems to be off"
+                assert np.all(line_ref[nn].knl == 0)
+                assert np.all(line_ref[nn].ksl == 0)
+                assert np.all(line_test[nn].knl == 0)
+                assert np.all(line_test[nn].ksl == 0)
+                continue
+
+
             if hasattr(line_ref[nn], 'knl'):
                 for ii in range(len(line_ref[nn].knl)):
                     knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()

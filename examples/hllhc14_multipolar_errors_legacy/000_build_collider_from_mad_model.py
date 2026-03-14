@@ -4,15 +4,15 @@ import xtrack as xt
 import xmask as xm
 import xmask.lhc as xmlhc
 
-# custom_error_table = '../../xmask/lhc/lhcerrors/LHC/fidel/collision_errors-emfqcs-6.tfs'
-# custom_efcomp_code = '''
-# call, file="errors/LHC/Efcomp_MS.madx" ;
-# call, file="errors/LHC/Efcomp_MSS.madx" ;
-# call, file="errors/LHC/Efcomp_MQ.madx" ;
-# '''
+custom_error_table = '../../xmask/lhc/lhcerrors/LHC/fidel/collision_errors-emfqcs-6.tfs'
+custom_efcomp_code = '''
+call, file="errors/LHC/Efcomp_MS.madx" ;
+call, file="errors/LHC/Efcomp_MSS.madx" ;
+call, file="errors/LHC/Efcomp_MO.madx" ;
+'''
 
-custom_error_table = None
-custom_efcomp_code = None
+# custom_error_table = '../../xmask/lhc/lhcerrors/LHC/wise/collision_errors-emfqcs-6.tfs'
+# custom_efcomp_code = None
 
 # enable_imperfections = True
 # enable_corrections = True
