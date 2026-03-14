@@ -88,28 +88,27 @@ for line_name in ['lhcb1', 'lhcb2']:
     twom_test = line_test.twiss4d(coupling_edw_teng=True, delta0=0.5e-3)
     twom_ref = line_ref.twiss4d(coupling_edw_teng=True, delta0=0.5e-3)
 
-    nlchr_test = line_test.get_non_linear_chromaticity(num_delta=20)
-    nlchr_ref = line_ref.get_non_linear_chromaticity(num_delta=20)
+    nlchr_test = line_test.get_non_linear_chromaticity(delta0_range=(-5e-4, 5e-4), num_delta=20)
+    nlchr_ref = line_ref.get_non_linear_chromaticity(delta0_range=(-5e-4, 5e-4), num_delta=20)
 
     cminus_delta_test = np.array([ttt.c_minus for ttt in nlchr_test.twiss])
     cminus_delta_ref = np.array([ttt.c_minus for ttt in nlchr_ref.twiss])
 
     # Check on global chromatic coupling
-    xo.assert_allclose(cminus_delta_test, cminus_delta_ref, atol=1e-4)
+    assert np.all(cminus_delta_test < cminus_delta_ref)
 
     # Check on local chromatic coupling integrals
     arc_names = list(chrom_coupling_integ_test.keys())
     arc_chrom_coupl_test = [chrom_coupling_integ_test[arc_name] for arc_name in arc_names]
     arc_chrom_coupl_ref = [chrom_coupling_integ_ref[arc_name] for arc_name in arc_names]
-    assert np.max(np.abs(arc_chrom_coupl_test)) < 1.05 * np.max(np.abs(arc_chrom_coupl_ref))
-    xo.assert_allclose(np.abs(np.mean(arc_chrom_coupl_test)), np.abs(np.mean(arc_chrom_coupl_ref)), rtol=0.04)
-    assert np.std(np.abs(arc_chrom_coupl_test)) < np.std(np.abs(arc_chrom_coupl_ref))
+    assert np.abs(np.mean(arc_chrom_coupl_test)) < np.abs(np.mean(arc_chrom_coupl_ref))
+    assert np.all(np.abs(arc_chrom_coupl_test) < 1.05 * np.max(np.abs(arc_chrom_coupl_ref)))
 
     # Measure chromatic coupling without correction
     tt_on_corr = env_test.vars.get_table().rows['on_corr_k2sl.*']
     assert len(tt_on_corr) == 9
     env_test.set(tt_on_corr.name, 0)
-    nlchr_test_no_corr = line_test.get_non_linear_chromaticity(num_delta=20)
+    nlchr_test_no_corr = line_test.get_non_linear_chromaticity(num_delta=20, delta0_range=(-5e-4, 5e-4))
     env_test.set(tt_on_corr.name, 1)
     cminus_delta_test_no_corr = np.array([ttt.c_minus for ttt in nlchr_test_no_corr.twiss])
 

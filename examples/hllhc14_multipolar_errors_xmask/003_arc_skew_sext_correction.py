@@ -53,10 +53,11 @@ for beam_name in ['b1', 'b2']:
     # Define scale factors to isolate the sources to correct
     tt = line.get_table()
     scale_multipole = np.zeros_like(tt.s)
-    scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
-    scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
-    scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
-    scale_multipole[tt.rows.mask[r'mqs.*']] = 1.0 # all magnets called mqsXXX used as correctors
+    scale_multipole[:] = 1.0 # all sources and correctors included
+    # scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
+    # scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
+    # scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
+    # scale_multipole[tt.rows.mask[r'mqs.*']] = 1.0 # all magnets called mqsXXX used as correctors
 
     # Function that we want to minimize
     if isinstance(target_integrand, str):
