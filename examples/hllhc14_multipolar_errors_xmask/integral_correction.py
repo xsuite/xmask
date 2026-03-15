@@ -17,13 +17,13 @@ class IntegralCorrection:
         self.correction_knobs = correction_knobs
         self.multipole = multipole
         self.target_quantities = target_quantities
-        self.rdt_terms = {}
         self.generated_knob_name = generated_knob_name
         self.scale_multipole = scale_multipole
         self.feed_down = feed_down
         self.orbit = orbit
 
         self.knob_opt = None
+        self.rdt_terms = {}
 
     def clear_corrections(self):
         for kk in self.correction_knobs:
