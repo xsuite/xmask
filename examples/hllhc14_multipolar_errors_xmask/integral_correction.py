@@ -6,7 +6,7 @@ NORMAL_STRENGTHS_FROM_ATTR=['k0l', 'k1l', 'k2l', 'k3l', 'k4l', 'k5l']
 SKEW_STRENGTHS_FROM_ATTR=['k0sl', 'k1sl', 'k2sl', 'k3sl', 'k4sl', 'k5sl']
 
 class IntegralCorrection:
-    def __init__(self, line, tw, start, end, correction_knobs,
+    def __init__(self, line, tw, start, end, vary,
                  target_quantities, generated_knob_name,
                  scale_multipoles=None, feed_down=True, orbit=None):
         self.env = line.env
@@ -14,7 +14,7 @@ class IntegralCorrection:
         self.line = line
         self.start = start
         self.end = end
-        self.correction_knobs = correction_knobs
+        self.vary = vary
         self.target_quantities = target_quantities
         self.generated_knob_name = generated_knob_name
         self.scale_multipoles = scale_multipoles
@@ -99,7 +99,7 @@ class IntegralCorrection:
         knob_opt = self.env.match_knob(
             knob_name=self.generated_knob_name,
             run=False,
-            vary=xt.VaryList(self.correction_knobs, step=1e-5),
+            vary=self.vary,
             targets=[
                 action_rdt_contrib.target(nttqq, 0.0)
                     for nttqq in self.target_quantities.keys()

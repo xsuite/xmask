@@ -150,7 +150,7 @@ for ip_name, ip_corrections in ir_corrections.items():
                                 tw=tw_b1,
                                 start=range_b1[0],
                                 end=range_b1[1],
-                                correction_knobs=correction_knobs,
+                                vary=xt.VaryList(correction_knobs, step=1e-5),
                                 feed_down=feed_down,
                                 target_quantities=target_quantities_b1,
                                 generated_knob_name=generated_knob_name)
@@ -160,7 +160,7 @@ for ip_name, ip_corrections in ir_corrections.items():
                                 tw=tw_b2,
                                 start=range_b2[0],
                                 end=range_b2[1],
-                                correction_knobs=[], # only targets here
+                                vary=[], # only targets here
                                 feed_down=feed_down,
                                 target_quantities=target_quantities_b2,
                                 generated_knob_name=generated_knob_name)

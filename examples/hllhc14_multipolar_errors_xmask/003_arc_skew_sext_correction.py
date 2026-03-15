@@ -74,7 +74,7 @@ for beam_name in ['b1', 'b2']:
                             feed_down=True,
                             start=start,
                             end=end,
-                            correction_knobs=correction_knobs_global,
+                            vary=xt.VaryList(correction_knobs_global, step=1e-5),
                             target_quantities=target_quantities,
                             generated_knob_name=generated_knob_name)
 
@@ -98,7 +98,7 @@ for beam_name in ['b1', 'b2']:
                                 feed_down=True,
                                 start=start,
                                 end=end,
-                                correction_knobs=correction_knobs_local,
+                                vary=xt.VaryList(correction_knobs_local, step=1e-5),
                                 target_quantities=target_quantities,
                                 generated_knob_name=generated_knob_name)
 

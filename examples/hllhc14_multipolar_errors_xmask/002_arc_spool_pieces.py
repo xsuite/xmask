@@ -65,7 +65,7 @@ for beam_name in beams:
                                     tw=tw,
                                     start=start,
                                     end=end,
-                                    correction_knobs=correction_knobs,
+                                    vary=xt.VaryList(correction_knobs, step=1e-5),
                                     target_quantities=target_quantities,
                                     generated_knob_name=f'on_corr_{knob_prefix}_arc{arc_name}_{beam_name}',
                                     scale_multipoles=scale_multipole)
