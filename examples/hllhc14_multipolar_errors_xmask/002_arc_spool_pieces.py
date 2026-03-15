@@ -61,7 +61,7 @@ for beam_name in beams:
 
             vary = []
             for kk in correction_knobs:
-                vary.append(xt.Vary(kk, step=1e-5)) #, limits=corrector_limits[kk]))
+                vary.append(xt.Vary(kk, step=1e-5, limits=corrector_limits[kk]))
 
             # Usage:
             rdt_contrib = IntegralCorrection(
@@ -75,13 +75,6 @@ for beam_name in beams:
                                     scale_multipoles=scale_multipole)
 
             opt = rdt_contrib.correct()
-
-            # Clip to max
-            for kk, vv in opt.get_knob_values().items():
-                kk_limits = kk.split('_from_')[0]
-                ccll = corrector_limits[kk_limits]
-                vv_clip = np.clip(vv, ccll[0], ccll[1])
-                env.ref[kk] *= vv_clip / vv
 
             print("Before setting the knob:")
             line.vars.get_table().rows[correction_knobs].show()
