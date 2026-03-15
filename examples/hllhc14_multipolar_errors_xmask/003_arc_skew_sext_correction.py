@@ -7,7 +7,6 @@ env = xt.load('lhc_arc_errors_with_spool_piece_corrections.json')
 arc_names = ['12', '23', '34', '45', '56', '67', '78', '81']
 
 generated_knob_prefix = 'on_corr_k2sl'
-multipole = 'k2sl'
 def chrom_coupling_integrand(tw, tt):
     return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
 target_integrand = chrom_coupling_integrand
@@ -17,7 +16,6 @@ correction_knobs = {
 }
 
 # generated_knob_prefix = 'on_corr_k1sl'
-# multipole = 'k1sl'
 # target_integrand = 'f1001'
 # correction_knobs = {
 #     'b1': {'12': ['kqs.r1b1', 'kqs.l2b1'], '23': ['kqs.a23b1'],
@@ -86,10 +84,9 @@ for beam_name in ['b1', 'b2']:
                             start=start,
                             end=end,
                             correction_knobs=correction_knobs_global,
-                            multipole=multipole,
                             target_quantities=target_quantities,
                             generated_knob_name=generated_knob_name,
-                            scale_multipole=scale_multipole)
+                            scale_multipoles=scale_multipole)
 
     # Local correction arc by arc
     opt_dct = {}
@@ -112,10 +109,9 @@ for beam_name in ['b1', 'b2']:
                                 start=start,
                                 end=end,
                                 correction_knobs=correction_knobs_local,
-                                multipole=multipole,
                                 target_quantities=target_quantities,
                                 generated_knob_name=generated_knob_name,
-                                scale_multipole=scale_multipole)
+                                scale_multipoles=scale_multipole)
 
         opt = arc_integ.correct()
         print("Before setting the knob:")

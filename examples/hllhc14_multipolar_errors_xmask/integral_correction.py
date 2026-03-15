@@ -7,18 +7,17 @@ SKEW_STRENGTHS_FROM_ATTR=['k0sl', 'k1sl', 'k2sl', 'k3sl', 'k4sl', 'k5sl']
 
 class IntegralCorrection:
     def __init__(self, line, tw, start, end, correction_knobs,
-                 multipole, target_quantities, generated_knob_name,
-                 scale_multipole=None, feed_down=True, orbit=None):
+                 target_quantities, generated_knob_name,
+                 scale_multipoles=None, feed_down=True, orbit=None):
         self.env = line.env
         self.tw = tw
         self.line = line
         self.start = start
         self.end = end
         self.correction_knobs = correction_knobs
-        self.multipole = multipole
         self.target_quantities = target_quantities
         self.generated_knob_name = generated_knob_name
-        self.scale_multipole = scale_multipole
+        self.scale_multipoles = scale_multipoles
         self.feed_down = feed_down
         self.orbit = orbit
 
@@ -47,14 +46,15 @@ class IntegralCorrection:
         for kk in NORMAL_STRENGTHS_FROM_ATTR + SKEW_STRENGTHS_FROM_ATTR:
             tt[kk] = np.concatenate([self.line.attr[kk], [0]])
 
-        if self.scale_multipole is not None:
-            assert len(self.scale_multipole) == len(tt)
-            tt[self.multipole] *= self.scale_multipole
+        if self.scale_multipoles is not None:
+            assert len(self.scale_multipoles) == len(tt)
+            for kk in NORMAL_STRENGTHS_FROM_ATTR + SKEW_STRENGTHS_FROM_ATTR:
+                tt[kk] *= self.scale_multipoles
 
         tt_range = tt.rows[self.start:self.end]
 
         ### The following could allow to use twiss and orbit tables from a line
-        ### that does not have all the elements but contains the relevnat sources
+        ### that does not have all the elements but contains the relevant sources
         ### and correctors. It is only partially tested and becomes problematic
         ### in the presence of repeated elements.
         #
