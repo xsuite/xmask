@@ -48,15 +48,6 @@ for beam_name in ['b1', 'b2']:
 
     tw = tw_b12[beam_name]
 
-    # Define scale factors to isolate the sources to correct
-    tt = line.get_table()
-    scale_multipole = np.zeros_like(tt.s)
-    scale_multipole[:] = 1.0 # all sources and correctors included
-    # scale_multipole[tt.rows.mask[r'mb.*']] = 1.0 # only bends as sources
-    # scale_multipole[tt.rows.mask[r'mc.*']] = 1.0 # all magnets called mcXXX used as correctors
-    # scale_multipole[tt.rows.mask[r'mss.*']] = 1.0 # all magnets called mssXXX used as correctors
-    # scale_multipole[tt.rows.mask[r'mqs.*']] = 1.0 # all magnets called mqsXXX used as correctors
-
     # Function that we want to minimize
     if isinstance(target_integrand, str):
         target_quantities = {'target': target_integrand}
@@ -85,8 +76,7 @@ for beam_name in ['b1', 'b2']:
                             end=end,
                             correction_knobs=correction_knobs_global,
                             target_quantities=target_quantities,
-                            generated_knob_name=generated_knob_name,
-                            scale_multipoles=scale_multipole)
+                            generated_knob_name=generated_knob_name)
 
     # Local correction arc by arc
     opt_dct = {}
@@ -110,8 +100,7 @@ for beam_name in ['b1', 'b2']:
                                 end=end,
                                 correction_knobs=correction_knobs_local,
                                 target_quantities=target_quantities,
-                                generated_knob_name=generated_knob_name,
-                                scale_multipoles=scale_multipole)
+                                generated_knob_name=generated_knob_name)
 
         opt = arc_integ.correct()
         print("Before setting the knob:")
