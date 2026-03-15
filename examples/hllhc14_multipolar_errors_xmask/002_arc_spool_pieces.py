@@ -80,10 +80,10 @@ for beam_name in beams:
                 env.ref[kk] *= vv_clip / vv
 
             print("Before setting the knob:")
-            rdt_contrib.print_corrections()
+            line.vars.get_table().rows[correction_knobs].show()
 
             env[opt.knob_name] = 1.0
             print("After setting the knob:")
-            rdt_contrib.print_corrections()
+            line.vars.get_table().rows[correction_knobs].show()
 
 env.to_json('lhc_arc_errors_with_spool_piece_corrections.json')

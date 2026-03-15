@@ -24,17 +24,6 @@ class IntegralCorrection:
         self.knob_opt = None
         self.rdt_terms = {}
 
-    def clear_corrections(self):
-        for kk in self.correction_knobs:
-            self.env[kk] = 0.0
-
-    def print_corrections(self):
-        for kk in self.correction_knobs:
-            print(f"{kk} = {self.env[kk]}")
-
-    def get_corrections(self):
-        return {kk: self.env[kk] for kk in self.correction_knobs}
-
     def run(self):
         if self.line.tracker is None:
             self.line.build_tracker()

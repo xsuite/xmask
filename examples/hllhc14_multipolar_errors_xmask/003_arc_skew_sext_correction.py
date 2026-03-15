@@ -104,11 +104,11 @@ for beam_name in ['b1', 'b2']:
 
         opt = arc_integ.correct()
         print("Before setting the knob:")
-        arc_integ.print_corrections()
+        line.vars.get_table().rows[correction_knobs_local].show()
 
         env[opt.knob_name] = 1.0
         print("After setting the knob:")
-        arc_integ.print_corrections()
+        line.vars.get_table().rows[correction_knobs_local].show()
 
         opt_dct[arc_name] = opt
         integ_dct[arc_name] = arc_integ
@@ -117,11 +117,10 @@ for beam_name in ['b1', 'b2']:
     opt = rdt_contrib_glob.correct()
 
     print("Before setting the knob:")
-    rdt_contrib_glob.print_corrections()
+    line.vars.get_table().rows[correction_knobs_global].show()
 
     env[opt.knob_name] = 1.0
     print("After setting the knob:")
-    knobs_final = rdt_contrib_glob.get_corrections()
-    rdt_contrib_glob.print_corrections()
+    line.vars.get_table().rows[correction_knobs_global].show()
 
 env.to_json('lhc_arc_errors_with_correction.json')
