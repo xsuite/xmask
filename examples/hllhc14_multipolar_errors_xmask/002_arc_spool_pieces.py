@@ -59,13 +59,17 @@ for beam_name in beams:
             correction_knobs = [f'{knob_prefix}.a{arc_name}{beam_name}']
             target_quantities={'multipole_to_suppress': lambda tw, tt: tt[multipole].sum()}
 
+            vary = []
+            for kk in correction_knobs:
+                vary.append(xt.Vary(kk, step=1e-5)) #, limits=corrector_limits[kk]))
+
             # Usage:
             rdt_contrib = IntegralCorrection(
                                     line=line,
                                     tw=tw,
                                     start=start,
                                     end=end,
-                                    vary=xt.VaryList(correction_knobs, step=1e-5),
+                                    vary=vary,
                                     target_quantities=target_quantities,
                                     generated_knob_name=f'on_corr_{knob_prefix}_arc{arc_name}_{beam_name}',
                                     scale_multipoles=scale_multipole)
