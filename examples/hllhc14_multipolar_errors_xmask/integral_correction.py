@@ -39,7 +39,8 @@ class IntegralCorrection:
     def run(self):
         if self.line.tracker is None:
             self.line.build_tracker()
-        # I do this instead of get_table to be faster
+
+        # I do this instead of line.get_table to be faster
         tt0 = self.line.tracker._tracker_data_base._line_table
         tt = xt.Table(data={'name': tt0['name'], 'env_name': tt0['env_name'],
                             'parent_name': tt0['parent_name'], 's': tt0['s']})
@@ -52,22 +53,35 @@ class IntegralCorrection:
 
         tt_range = tt.rows[self.start:self.end]
 
-        # Identify elements controlled by correction knobs
-        elements_in_range = set(list(tt_range.env_name) + list(tt_range.parent_name))
-        correction_elements = []
-        for kk in self.correction_knobs:
-            for tt in self.line.ref[kk]._find_dependant_targets():
-                if isinstance(tt, xd.refs.ItemRef) and tt._key in elements_in_range:
-                    correction_elements.append(tt._key)
+        ### The following could allow to use twiss and orbit tables from a line
+        ### that does not have all the elements but contains the relevnat sources
+        ### and correctors. It is only partially tested and becomes problematic
+        ### in the presence of repeated elements.
+        #
+        # # Identify elements controlled by correction knobs
+        # elements_in_range = set(list(tt_range.env_name) + list(tt_range.parent_name))
+        # correction_elements = []
+        # for kk in self.correction_knobs:
+        #     for tt in self.line.ref[kk]._find_dependant_targets():
+        #         if isinstance(tt, xd.refs.ItemRef) and tt._key in elements_in_range:
+        #             correction_elements.append(tt._key)
+        #
+        # mask_corr = tt_range.rows.mask[list(correction_elements)]
+        # tt_integral = tt_range.rows[(tt_range[self.multipole] != 0) | (mask_corr)]
+        #
+        # tw_integral = self.tw.rows[tt_integral.env_name]
+        # orbit_integral = None
+        # if self.orbit is not None:
+        #     assert len(self.orbit) == len(self.tw)
+        #     orbit_integral = self.orbit.rows[tt_integral.env_name]
 
-        mask_corr = tt_range.rows.mask[list(correction_elements)]
-        tt_integral = tt_range.rows[(tt_range[self.multipole] != 0) | (mask_corr)]
-
-        tw_integral = self.tw.rows[tt_integral.env_name]
-        orbit_integral = None
+        tt_integral = tt_range
+        tw_integral = self.tw.rows[tt_integral.name]
         if self.orbit is not None:
             assert len(self.orbit) == len(self.tw)
-            orbit_integral = self.orbit.rows[tt_integral.env_name]
+            orbit_integral = self.orbit.rows[tt_integral.name]
+        else:
+            orbit_integral = None
 
         for nntq, ttqq in self.target_quantities.items():
 
