@@ -57,7 +57,7 @@ for beam_name in beams:
 
         for multipole, knob_prefix in arc_multipoles_to_suppress.items():
             correction_knobs = [f'{knob_prefix}.a{arc_name}{beam_name}']
-            target_quantities={'multipole_to_suppress': lambda tw, tt: tt[multipole].sum()}
+            target_quantities={'multipole_to_suppress': lambda tw, tt: tt[multipole]}
 
             vary = []
             for kk in correction_knobs:

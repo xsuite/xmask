@@ -87,7 +87,7 @@ class IntegralCorrection:
                 # I assume it's a callable
                 integrand = ttqq(tw_integral, tt_integral)
 
-            self.rdt_terms[nntq] = np.abs(integrand.sum())
+            self.rdt_terms[nntq] = np.abs(np.sum(integrand))
             self.rdt_terms[nntq+'_integrand'] = integrand
         self.rdt_terms['s'] = tt_integral.s
 
