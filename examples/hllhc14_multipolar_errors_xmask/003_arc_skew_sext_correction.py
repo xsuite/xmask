@@ -1,6 +1,6 @@
 import numpy as np
 import xtrack as xt
-from integral_correction import IntegralOptimization
+from integral_optimization import IntegralOptimization
 
 env = xt.load('lhc_arc_errors_with_spool_piece_corrections.json')
 
