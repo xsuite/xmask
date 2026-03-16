@@ -5,7 +5,7 @@ import xdeps as xd
 NORMAL_STRENGTHS_FROM_ATTR=['k0l', 'k1l', 'k2l', 'k3l', 'k4l', 'k5l']
 SKEW_STRENGTHS_FROM_ATTR=['k0sl', 'k1sl', 'k2sl', 'k3sl', 'k4sl', 'k5sl']
 
-class IntegralCorrection:
+class IntegralOptimization:
     def __init__(self, line, tw, start, end, vary,
                  target_quantities, generated_knob_name,
                  scale_multipoles=None, feed_down=True, orbit=None):
