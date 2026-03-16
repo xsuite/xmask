@@ -146,7 +146,7 @@ for ip_name, ip_corrections in ir_corrections.items():
         # Usage:
         rdt_contrib_b1 = xt.IntegralOptimization(
                                 line=env['lhcb1'],
-                                tw=tw_b1,
+                                twiss=tw_b1,
                                 start=range_b1[0],
                                 end=range_b1[1],
                                 vary=xt.VaryList(correction_knobs, step=1e-5),
@@ -156,7 +156,7 @@ for ip_name, ip_corrections in ir_corrections.items():
 
         rdt_contrib_b2 = xt.IntegralOptimization(
                                 line=env['lhcb2'],
-                                tw=tw_b2,
+                                twiss=tw_b2,
                                 start=range_b2[0],
                                 end=range_b2[1],
                                 vary=[], # only targets here

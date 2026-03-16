@@ -69,7 +69,7 @@ for beam_name in ['b1', 'b2']:
     # Create calculator for global correction (not run)
     rdt_contrib_glob = xt.IntegralOptimization(
                             line=line,
-                            tw=tw,
+                            twiss=tw,
                             feed_down=True,
                             start=start,
                             end=end,

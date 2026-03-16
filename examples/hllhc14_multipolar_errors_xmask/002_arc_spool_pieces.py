@@ -65,7 +65,7 @@ for beam_name in beams:
             # Usage:
             rdt_contrib = xt.IntegralOptimization(
                                     line=line,
-                                    tw=tw,
+                                    twiss=tw,
                                     start=start,
                                     end=end,
                                     vary=vary,
