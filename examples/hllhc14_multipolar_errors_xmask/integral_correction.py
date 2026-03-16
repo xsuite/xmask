@@ -9,6 +9,46 @@ class IntegralCorrection:
     def __init__(self, line, tw, start, end, vary,
                  target_quantities, generated_knob_name,
                  scale_multipoles=None, feed_down=True, orbit=None):
+
+        '''
+        Correction based on RDT or other integrals dependent on twiss parameters,
+        orbit, and strengths along a line. The correction generates a knob that
+        when activated applies the correction.
+
+        Parameters
+        ----------
+        line: xt.Line
+            Line on which the correction is applied. It should contain the relevant
+            sources and correctors for the integral correction.
+        tw: xt.Table
+            Twiss table to be used to compute the integrand.
+        start: str
+            Name of the element at which the integral starts.
+        end: str
+            Name of the element at which the integral ends.
+        vary: list xt.Vary
+            List of knobs to be varied for the correction, together with their
+            step and, optionally, limits.
+        target_quantities: dict
+            Dictionary with keys being the names of the target quantities to be
+            corrected and values being either strings with the RDT to be corrected
+            or callables that take twiss and line table rows and return a complex
+            integrand to be minimized in absolute value.
+        generated_knob_name: str
+            Name of the knob that will be generated for the correction.
+        scale_multipoles: array-like
+            Array with the same length as the line table to be used to scale the
+            multipoles when computing the integrand. This can be used to, for
+            example, only consider certain elements as sources in the integral.
+        feed_down: bool
+            Whether to consider feed-down in the RDT computation (only relevant if
+            target_quantities contains RDTs). Default is True.
+        orbit: xt.Table
+            Table containing orbit information to be used in the integrand computation
+            if feed_down is True. It should have the same length and indexing as the
+            twiss table.
+        '''
+
         self.env = line.env
         self.tw = tw
         self.line = line
