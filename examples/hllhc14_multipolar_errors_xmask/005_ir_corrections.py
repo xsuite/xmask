@@ -1,5 +1,4 @@
 import xtrack as xt
-from integral_optimization import IntegralOptimization
 
 env = xt.load('../hllhc14_multipolar_errors_legacy/collider_errors_on_corrections_on.json')
 
@@ -145,7 +144,7 @@ for ip_name, ip_corrections in ir_corrections.items():
         generated_knob_name = correction_name
 
         # Usage:
-        rdt_contrib_b1 = IntegralOptimization(
+        rdt_contrib_b1 = xt.IntegralOptimization(
                                 line=env['lhcb1'],
                                 tw=tw_b1,
                                 start=range_b1[0],
@@ -155,7 +154,7 @@ for ip_name, ip_corrections in ir_corrections.items():
                                 target_quantities=target_quantities_b1,
                                 generated_knob_name=generated_knob_name)
 
-        rdt_contrib_b2 = IntegralOptimization(
+        rdt_contrib_b2 = xt.IntegralOptimization(
                                 line=env['lhcb2'],
                                 tw=tw_b2,
                                 start=range_b2[0],

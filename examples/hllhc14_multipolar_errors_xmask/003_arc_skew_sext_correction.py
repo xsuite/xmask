@@ -1,6 +1,5 @@
 import numpy as np
 import xtrack as xt
-from integral_optimization import IntegralOptimization
 
 env = xt.load('lhc_arc_errors_with_spool_piece_corrections.json')
 
@@ -68,7 +67,7 @@ for beam_name in ['b1', 'b2']:
     generated_knob_name = f'{generated_knob_prefix}_global'
 
     # Create calculator for global correction (not run)
-    rdt_contrib_glob = IntegralOptimization(
+    rdt_contrib_glob = xt.IntegralOptimization(
                             line=line,
                             tw=tw,
                             feed_down=True,
@@ -92,7 +91,7 @@ for beam_name in ['b1', 'b2']:
         generated_knob_name = f'{generated_knob_prefix}_a{arc_name}_local'
 
         # Usage:
-        arc_integ = IntegralOptimization(
+        arc_integ = xt.IntegralOptimization(
                                 line=line,
                                 tw=tw,
                                 feed_down=True,

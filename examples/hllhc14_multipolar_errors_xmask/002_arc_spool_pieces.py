@@ -1,6 +1,5 @@
 import numpy as np
 import xtrack as xt
-from integral_optimization import IntegralOptimization
 
 from corrector_limits import corrector_limits
 
@@ -64,7 +63,7 @@ for beam_name in beams:
                 vary.append(xt.Vary(kk, step=1e-5, limits=corrector_limits[kk]))
 
             # Usage:
-            rdt_contrib = IntegralOptimization(
+            rdt_contrib = xt.IntegralOptimization(
                                     line=line,
                                     tw=tw,
                                     start=start,
