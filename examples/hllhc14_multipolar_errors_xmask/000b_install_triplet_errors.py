@@ -21,7 +21,7 @@ import numpy as np
 
 # To be checked:
 
-magnet_loc_association = {
+magnet_asset_association = {
     'mqxfa.b3l1': 'mqxfa12b',
     'mqxfa.a3l1': 'mqxfa17b',
     'mqxfb.b2l1': 'mqxfb10',
@@ -34,18 +34,18 @@ magnet_loc_association = {
     'mqxfb.b2r1': 'mqxfb06',
     'mqxfa.a3r1': 'mqxfa14b',
     'mqxfa.b3r1': 'mqxfa08b',
-    'mqxfa.b3l5': 'mqxfa19',
-    'mqxfa.a3l5': 'mqxfa20',
-    'mqxfb.b2l5': 'mqxfb07',
-    'mqxfb.a2l5': 'mqxfb08',
-    'mqxfa.b1l5': 'mqxfa21',
-    'mqxfa.a1l5': 'mqxfa22',
-    'mqxfa.a1r5': 'mqxfa23',
-    'mqxfa.b1r5': 'mqxfa24',
-    'mqxfb.a2r5': 'mqxfb09',
-    'mqxfb.b2r5': 'mqxfb12',
-    'mqxfa.a3r5': 'mqxfa25',
-    'mqxfa.b3r5': 'mqxfa26',
+    'mqxfa.b3l5': 'mqxfa22',
+    'mqxfa.a3l5': 'mqxfa21',
+    'mqxfb.b2l5': 'mqxfb04',
+    'mqxfb.a2l5': 'mqxfb05',
+    'mqxfa.b1l5': 'mqxfa11',
+    'mqxfa.a1l5': 'mqxfa10',
+    'mqxfa.a1r5': 'mqxfa19',
+    'mqxfa.b1r5': 'mqxfa20',
+    'mqxfb.a2r5': 'mqxfb07',
+    'mqxfb.b2r5': 'mqxfb08',
+    'mqxfa.a3r5': 'mqxfa23',
+    'mqxfa.b3r5': 'mqxfa24',
 }
 
 rotated = {
@@ -172,33 +172,49 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, main_order, ref_r
 
     return np.array(knl_rel), np.array(ksl_rel)
 
-multipole_errors = {}
-for nn in magnet_loc_association:
-    asset_name = magnet_loc_association[nn]
+# ---------------------------
+
+multipole_errors_b1 = {}
+multipole_errors_b2 = {}
+for nn in magnet_asset_association:
+    asset_name = magnet_asset_association[nn]
     is_rotated = rotated[nn]
 
     data = xt.json.load(data_files[asset_name])
 
     magnet_meas_data = {}
     for mult in data['multipoles']:
-        aa = mult['an']
-        bb = mult['bn']
-        nn = mult['n']
-        magnet_meas_data[f'a{nn}'] = aa
-        magnet_meas_data[f'b{nn}'] = bb
+        aaa = mult['an']
+        bbb = mult['bn']
+        nnn = mult['n']
+        magnet_meas_data[f'a{nnn}'] = aaa
+        magnet_meas_data[f'b{nnn}'] = bbb
 
     ref_radius = data['reference_radius_mm'] * 1e-3
     main_order = 1 # The are all quadrupoles
 
-    knl_rel, ksl_rel = convert_multipolar_expansion(
+    knl_rel_b1, ksl_rel_b1 = convert_multipolar_expansion(
         magnet_meas_data=magnet_meas_data,
         is_rotated=is_rotated,
         main_order=main_order,
         ref_radius=ref_radius
     )
-    multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel}
+
+    knl_rel_b2, ksl_rel_b2 = convert_multipolar_expansion(
+        magnet_meas_data=magnet_meas_data,
+        is_rotated=not is_rotated,
+        main_order=main_order,
+        ref_radius=ref_radius
+    )
+
+    multipole_errors_b1[nn + '/lhcb1'] = {'knl_rel': knl_rel_b1, 'ksl_rel': ksl_rel_b1}
+    multipole_errors_b2[nn + '/lhcb2'] = {'knl_rel': knl_rel_b2, 'ksl_rel': ksl_rel_b2}
 
     assert nn.startswith('mqx') # is a a normal quadrupole
-    multipole_errors[nn]['main_order'] = 1
-    multipole_errors[nn]['main_is_skew'] = False
+    multipole_errors_b1[nn+'/lhcb1']['main_order'] = 1
+    multipole_errors_b1[nn+'/lhcb1']['main_is_skew'] = False
+    multipole_errors_b2[nn+'/lhcb2']['main_order'] = 1
+    multipole_errors_b2[nn+'/lhcb2']['main_is_skew'] = False
+
+
 
