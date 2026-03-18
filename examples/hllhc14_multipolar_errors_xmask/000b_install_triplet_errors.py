@@ -108,7 +108,7 @@ data_files = {
 }
 
 
-def convert_multipolar_expansion(magnet_meas_data, is_rotated, ref_order, ref_radius):
+def convert_multipolar_expansion(magnet_meas_data, is_rotated, main_order, ref_radius):
 
     '''
     Convert multipolar expansion from magnet measurement convention to xsuite knl_rel and ksl_rel.
@@ -121,7 +121,7 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, ref_order, ref_ra
         a1 is the dipole field, b1 is the quadrupole field, a2 is the sextupole field, etc.
     is_rotated: bool
         Whether the magnet is rotated with respect to the reference frame of the measurement. This affects the sign of the multipoles.
-    ref_order: int
+    main_order: int
         Reference order of the multipolar expansion (e.g. 1 for quadrupoles, 2 for sextupoles, etc.)
     ref_radius: float
         Reference radius in meters at which the multipolar expansion is defined.
@@ -153,12 +153,12 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, ref_order, ref_ra
         yrotfactor = -1 if is_rotated else 1
 
         # From magnet measurement convention to MADX convention
-        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (ref_order + ii    )
-        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (ref_order + ii + 1)
+        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (main_order + ii    )
+        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (main_order + ii + 1)
 
         # From MADX convention to knl
-        kknn_rel = dknlr_mad * ref_radius**(ref_order - (ii)) * factorial(ii) / factorial(ref_order)
-        kkss_rel = dkslr_mad * ref_radius**(ref_order - (ii)) * factorial(ii) / factorial(ref_order)
+        kknn_rel = dknlr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+        kkss_rel = dkslr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
 
         # Extend the list if needed
         while len(knl_rel) <= ii:
@@ -172,26 +172,33 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, ref_order, ref_ra
 
     return np.array(knl_rel), np.array(ksl_rel)
 
-nn = 'mqxfa.a3l1'
-asset_name = magnet_loc_association[nn]
-is_rotated = rotated[nn]
+multipole_errors = {}
+for nn in magnet_loc_association:
+    asset_name = magnet_loc_association[nn]
+    is_rotated = rotated[nn]
 
-data = xt.json.load(data_files[asset_name])
+    data = xt.json.load(data_files[asset_name])
 
-magnet_meas_data = {}
-for mult in data['multipoles']:
-    aa = mult['an']
-    bb = mult['bn']
-    nn = mult['n']
-    magnet_meas_data[f'a{nn}'] = aa
-    magnet_meas_data[f'b{nn}'] = bb
+    magnet_meas_data = {}
+    for mult in data['multipoles']:
+        aa = mult['an']
+        bb = mult['bn']
+        nn = mult['n']
+        magnet_meas_data[f'a{nn}'] = aa
+        magnet_meas_data[f'b{nn}'] = bb
 
-ref_radius = data['reference_radius_mm'] * 1e-3
-ref_order = 1 # The are all quadrupoles
+    ref_radius = data['reference_radius_mm'] * 1e-3
+    main_order = 1 # The are all quadrupoles
 
-knl_rel, ksl_rel = convert_multipolar_expansion(
-    magnet_meas_data=magnet_meas_data,
-    is_rotated=is_rotated,
-    ref_order=ref_order,
-    ref_radius=ref_radius
-)
+    knl_rel, ksl_rel = convert_multipolar_expansion(
+        magnet_meas_data=magnet_meas_data,
+        is_rotated=is_rotated,
+        main_order=main_order,
+        ref_radius=ref_radius
+    )
+    multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel}
+
+    assert nn.startswith('mqx') # is a a normal quadrupole
+    multipole_errors[nn]['main_order'] = 1
+    multipole_errors[nn]['main_is_skew'] = False
+

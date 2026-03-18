@@ -87,27 +87,27 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
     tt_err_two_aper['yrotfactor'] = np.array(yrotfactor)
 
     # Attach reference order (0 if mb, 1 if mq, fail otherwise)
-    ref_order = []
+    main_order = []
     main_is_skew = []
     for nn in tt_err_two_aper['name']:
         for prefix, (order, normal_skew) in PREFIX_TO_MAIN_ORDER:
             assert normal_skew in ['normal', 'skew']
             if nn.startswith(prefix):
-                ref_order.append(order)
+                main_order.append(order)
                 main_is_skew.append(normal_skew == 'skew')
                 break
         else:
             raise ValueError(f"Unexpected magnet name: {nn}")
         # if nn.startswith('mb'):
-        #     ref_order.append(0)
+        #     main_order.append(0)
         # elif nn.startswith('mq'):
-        #     ref_order.append(1)
+        #     main_order.append(1)
         # else:
         #     raise ValueError(f"Unexpected magnet name: {nn}")
-    assert len(ref_order) == len(tt_err_two_aper)
+    assert len(main_order) == len(tt_err_two_aper)
     assert len(main_is_skew) == len(tt_err_two_aper)
 
-    tt_err_two_aper['ref_order'] = np.array(ref_order)
+    tt_err_two_aper['main_order'] = np.array(main_order)
     tt_err_two_aper['main_is_skew'] = np.array(main_is_skew)
 
     # From WISE units to knl_rel and ksl_rel
@@ -116,7 +116,7 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
     knl_rel = np.zeros((len(tt_err_two_aper), max_order))
     ksl_rel = np.zeros((len(tt_err_two_aper), max_order))
 
-    ref_order = tt_err_two_aper['ref_order']
+    main_order = tt_err_two_aper['main_order']
     yrotfactor = tt_err_two_aper['yrotfactor']
     for ii in range(0, max_order):
 
@@ -124,12 +124,12 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
         bb = tt_err_two_aper[f'b{ii+1}']
 
         # From magnet measurement convention to MADX convention
-        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (ref_order + ii    )
-        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (ref_order + ii + 1)
+        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (main_order + ii    )
+        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (main_order + ii + 1)
 
         # From MADX convention to knl
-        kknn_rel = dknlr_mad * ref_radius**(ref_order - (ii)) * factorial(ii) / factorial(ref_order)
-        kkss_rel = dkslr_mad * ref_radius**(ref_order - (ii)) * factorial(ii) / factorial(ref_order)
+        kknn_rel = dknlr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+        kkss_rel = dkslr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
 
         knl_rel[:, ii] = kknn_rel
         ksl_rel[:, ii] = kkss_rel
@@ -141,10 +141,10 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
     for nn in tt_err_two_aper.name:
         knl_rel = tt_err_two_aper['knl_rel', nn]
         ksl_rel = tt_err_two_aper['ksl_rel', nn]
-        ref_order = tt_err_two_aper['ref_order', nn]
+        main_order = tt_err_two_aper['main_order', nn]
         main_is_skew = tt_err_two_aper['main_is_skew', nn]
         multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
-                                'ref_order': ref_order, 'main_is_skew': main_is_skew}
+                                'main_order': main_order, 'main_is_skew': main_is_skew}
 
     # Suppress multipoles of order < 2
     for nn in multipole_errors:
@@ -180,7 +180,7 @@ def set_multipole_errors_in_line(line, multipole_errors,
             for ii in range(min_order, max_order):
                 kknn_rel = multipole_errors[nn_err]['knl_rel'][ii]
                 kkss_rel = multipole_errors[nn_err]['ksl_rel'][ii]
-                ref_order = int(multipole_errors[nn_err]['ref_order'])
+                main_order = int(multipole_errors[nn_err]['main_order'])
                 main_is_skew = int(multipole_errors[nn_err]['main_is_skew'])
 
                 if error_knob_name:
@@ -197,7 +197,7 @@ def set_multipole_errors_in_line(line, multipole_errors,
                     ref_knob_ks = 1
 
                 # Using knl_rel and ksl_rel
-                line[nn].main_order = ref_order
+                line[nn].main_order = main_order
                 line[nn].main_is_skew = main_is_skew
                 line.ref[nn].knl_rel[ii] = kknn_rel * ref_knob_kn
                 line.ref[nn].ksl_rel[ii] = kkss_rel * ref_knob_ks
