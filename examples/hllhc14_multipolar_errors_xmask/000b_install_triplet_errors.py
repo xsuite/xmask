@@ -165,13 +165,33 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, ref_order, ref_ra
             knl_rel.append(0)
             ksl_rel.append(0)
 
-        knl_rel[ii] = kknn_rel
-        ksl_rel[ii] = kkss_rel
+        if kk[0] == 'b':
+            knl_rel[ii] = kknn_rel
+        else:
+            ksl_rel[ii] = kkss_rel
 
     return np.array(knl_rel), np.array(ksl_rel)
 
 nn = 'mqxfa.a3l1'
 asset_name = magnet_loc_association[nn]
+is_rotated = rotated[nn]
 
 data = xt.json.load(data_files[asset_name])
 
+magnet_meas_data = {}
+for mult in data['multipoles']:
+    aa = mult['an']
+    bb = mult['bn']
+    nn = mult['n']
+    magnet_meas_data[f'a{nn}'] = aa
+    magnet_meas_data[f'b{nn}'] = bb
+
+ref_radius = data['reference_radius_mm'] * 1e-3
+ref_order = 1 # The are all quadrupoles
+
+knl_rel, ksl_rel = convert_multipolar_expansion(
+    magnet_meas_data=magnet_meas_data,
+    is_rotated=is_rotated,
+    ref_order=ref_order,
+    ref_radius=ref_radius
+)
