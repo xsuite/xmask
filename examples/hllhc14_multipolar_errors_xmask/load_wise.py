@@ -175,6 +175,8 @@ def set_multipole_errors_in_line(line, multipole_errors,
 
         print(f'Applying errors to {nn}               ', end='\r', flush=True)
         nn_err = nn.split('..')[0]  # remove ..1, ..2, etc.
+        if '/' in nn:
+            nn_err = nn_err + '/' + nn.split('/')[1]  # keep /lhcb1 or /lhcb2 if present
         if nn_err in multipole_errors:
             line.extend_knl_rel_ksl_rel(order=max_order, element_names=[nn])
             for ii in range(min_order, max_order):

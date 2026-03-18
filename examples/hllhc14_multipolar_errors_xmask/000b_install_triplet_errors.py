@@ -1,6 +1,8 @@
 import xtrack as xt
 from math import factorial
 
+from load_wise import set_multipole_errors_in_line
+
 import numpy as np
 
 # | Position | Q1-A      | Q1-B      | Q3-A      | Q3-B      |
@@ -217,4 +219,19 @@ for nn in magnet_asset_association:
     multipole_errors_b2[nn+'/lhcb2']['main_is_skew'] = False
 
 
+env = xt.load('lhc_arc_errors.json')
+set_multipole_errors_in_line(
+    line=env['lhcb1'],
+    multipole_errors=multipole_errors_b1,
+    min_order=0, max_order=10,
+    error_knob_name='on_error_triplets15',
+    append_order_to_knob_name=True)
 
+set_multipole_errors_in_line(
+    line=env['lhcb2'],
+    multipole_errors=multipole_errors_b2,
+    min_order=0, max_order=10,
+    error_knob_name='on_error_triplets15',
+    append_order_to_knob_name=True)
+
+env.to_json('lhc_arc_errors_arc_and_triplets15.json')
