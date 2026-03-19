@@ -31,49 +31,35 @@ for nn in tt_b1_mqxf.name:
     ele_b2 = env_test['lhcb2'][nn.replace('/lhcb1', '/lhcb2')]
     assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, rtol=1e-12, atol=1e-12)
 
-# Check b1/b2 consistency in env_ref
-tt_b1_mqxf_ref = env_ref['lhcb1'].get_table(attr=True).rows['mqxf.*']
-for nn in tt_b1_mqxf_ref.name:
-    if '..fl' in nn or '..fr' in nn:
-        continue # skip edge lenses
-    if isinstance(env_ref[nn], xt.Marker):
-        continue # skip markers
-    ele_b1 = env_ref['lhcb1'][nn]
-    ele_b2 = env_ref['lhcb2'][nn.replace('/lhcb1', '/lhcb2')]
-    assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, rtol=1e-12, atol=1e-12)
 
-prrr
+for line_to_check in ['lhcb1']: #, 'lhcb2']: # for b2 there is a bug in the reference
 
+    line_test = env_test[line_to_check]
+    line_ref = env_ref[line_to_check]
 
-line_test.cycle('ip7')
-line_ref.cycle('ip7')
+    line_test.cycle('ip7')
+    line_ref.cycle('ip7')
 
+    # Check b1/b2 consistency
+    line_test = env_test['lhcb2']
 
-# Check b1/b2 consistency
+    tt_test = line_test.get_table(attr=True)
+    tt_ref = line_ref.get_table(attr=True)
 
+    max_order = 18
+
+    tt_ref_mqxf = tt_ref.rows['mqxf.*']
 
 
-prrrr
+    for nn in tt_ref_mqxf.name:
+        if '..fl' in nn or '..fr' in nn:
+            continue # skip edge lenses
+        print(f'Checking {nn}               ', end='\r', flush=True)
 
-line_test = env_test['lhcb2']
-
-tt_test = line_test.get_table(attr=True)
-tt_ref = line_ref.get_table(attr=True)
-
-max_order = 18
-
-tt_ref_mqxf = tt_ref.rows['mqxf.*']
-
-
-for nn in tt_ref_mqxf.name:
-    if '..fl' in nn or '..fr' in nn:
-        continue # skip edge lenses
-    print(f'Checking {nn}               ', end='\r', flush=True)
-
-    if hasattr(line_ref[nn], 'knl'):
-        knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()
-        for ii in range(len(line_ref[nn].knl)):
-            xo.assert_allclose(knl_tot_nn[ii], line_ref[nn].knl[ii],
-                            rtol=0.01, atol=1e-10)
-            xo.assert_allclose(ksl_tot_nn[ii], line_ref[nn].ksl[ii],
+        if hasattr(line_ref[nn], 'knl'):
+            knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()
+            for ii in range(len(line_ref[nn].knl)):
+                xo.assert_allclose(knl_tot_nn[ii], line_ref[nn].knl[ii],
                                 rtol=0.01, atol=1e-10)
+                xo.assert_allclose(ksl_tot_nn[ii], line_ref[nn].ksl[ii],
+                                    rtol=0.01, atol=1e-10)
