@@ -44,6 +44,7 @@ for nn in magnet_asset_association:
 
         assert nn.startswith('mbrd.') # is a a normal dipole
         main_order = 0
+        main_is_skew = False
 
         knl_rel, ksl_rel = xmlhc.convert_multipolar_expansion(
             magnet_meas_data=magnet_meas_data,
@@ -52,6 +53,7 @@ for nn in magnet_asset_association:
             ref_radius=ref_radius
         )
 
-        multipole_errors[nn_with_beam] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel}
+        multipole_errors[nn_with_beam] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
+            'main_order': main_order, 'main_is_skew': main_is_skew}
 
-xt.json.dump(multipole_errors, 'multipole_errors_inner_triplet_d2_ir15.json')
+xt.json.dump(multipole_errors, 'multipole_errors_d2_ir15.json')

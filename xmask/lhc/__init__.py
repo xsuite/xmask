@@ -8,6 +8,6 @@ from .build_madx_and_xsuite_models import build_xsuite_collider
 from .leveling import luminosity_leveling
 
 from .lhc_geography import BEAM_MAPPING_PER_SIDE, SIDE_APER_TO_SIDE_BEAM, SIDE_BEAM_TO_SIDE_APER
-from .load_wise import (load_wise_table_arc_magnets, set_multipole_errors_in_line,
+from .load_wise import (load_wise_table_arc_magnets,
                        convert_multipolar_expansion, order_and_is_skew_from_name,
                        assert_are_same_multipoles_b1_b2)
