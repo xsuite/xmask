@@ -12,3 +12,4 @@ from .load_wise import (load_wise_table_arc_magnets,
                        convert_multipolar_expansion, order_and_is_skew_from_name,
                        assert_are_same_multipoles_b1_b2)
 from .spool_pieces import set_arc_spool_piece_correctors
+from .correction_k1s_k2s import correct_k1s, correct_k2s

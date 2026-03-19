@@ -41,5 +41,13 @@ env['on_error_arc_k0'] = 0
 env['on_error_arc_k0s'] = 0
 env['on_error_arc_k1'] = 0
 env['on_error_arc_k1s'] = 0
+env['on_error_triplets_ir15_k0'] = 0
+env['on_error_triplets_ir15_k0s'] = 0
+env['on_error_triplets_ir15_k1'] = 0
+env['on_error_triplets_ir15_k1s'] = 0
+env['on_error_d2_ir15_k0'] = 0
+env['on_error_d2_ir15_k0s'] = 0
+env['on_error_d2_ir15_k1'] = 0
+env['on_error_d2_ir15_k1s'] = 0
 
 env.to_json('lhc_multipolar_errors.json')

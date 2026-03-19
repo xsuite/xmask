@@ -18,5 +18,11 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 for nn in tt_err_knobs.name:
     env[nn] = tt_err_knobs['value', nn]
 
-# Spool piece correctors
+# Spool piece correctors (MCS, MC0, MCD)
 xmlhc.set_arc_spool_piece_correctors(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
+# k1s local + global correction (uses MQS)
+xmlhc.correct_k1s(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
+# k2s local + global correction (uses MSS)
+xmlhc.correct_k2s(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
