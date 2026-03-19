@@ -3,7 +3,7 @@ import xobjects as xo
 import numpy as np
 from scipy.special import factorial
 
-from lhc_geography import SIDE_APER_TO_SIDE_BEAM
+from .lhc_geography import SIDE_APER_TO_SIDE_BEAM
 
 PREFIX_TO_MAIN_ORDER = [
     ('mb', (0, 'normal')),

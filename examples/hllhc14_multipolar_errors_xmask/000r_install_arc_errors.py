@@ -1,5 +1,4 @@
 import xtrack as xt
-from load_wise import load_wise_table_arc_magnets, set_multipole_errors_in_line
 
 env = xt.load('../hllhc14_multipolar_errors_legacy/collider_errors_off_corrections_off.json')
 
