@@ -1,6 +1,6 @@
 import xtrack as xt
+from lhc_geography import BEAM_MAPPING_PER_SIDE
 
-env = xt.load('lhc_arc_errors_arc_and_triplets15.json')
 
 rotated = {
     'mbrd.4l1': True,
@@ -46,3 +46,12 @@ multipole_errors_b2 = {}
 nn = 'mbrd.4l1'
 for beam in ['b1', 'b2']:
     nn_with_beam = nn + '.' + beam
+
+    location = nn[-2:]
+    aper = BEAM_MAPPING_PER_SIDE[location][beam]
+
+
+
+
+
+# env = xt.load('lhc_arc_errors_arc_and_triplets15.json')

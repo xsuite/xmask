@@ -1,7 +1,7 @@
 import xtrack as xt
-from math import factorial
 
-from load_wise import set_multipole_errors_in_lin, convert_multipolar_expansion
+from load_hl_multipole_json import load_hllhc_multipole_json
+from load_wise import set_multipole_errors_in_line, convert_multipolar_expansion
 
 import numpy as np
 
@@ -118,17 +118,9 @@ for nn in magnet_asset_association:
     asset_name = magnet_asset_association[nn]
     is_rotated = rotated[nn]
 
-    data = xt.json.load(data_files[asset_name])
+    magnet_meas_data = load_hllhc_multipole_json(data_files[asset_name])
+    ref_radius = magnet_meas_data.pop('ref_radius')
 
-    magnet_meas_data = {}
-    for mult in data['multipoles']:
-        aaa = mult['an']
-        bbb = mult['bn']
-        nnn = mult['n']
-        magnet_meas_data[f'a{nnn}'] = aaa
-        magnet_meas_data[f'b{nnn}'] = bbb
-
-    ref_radius = data['reference_radius_mm'] * 1e-3
     main_order = 1 # The are all quadrupoles
 
     knl_rel_b1, ksl_rel_b1 = convert_multipolar_expansion(

@@ -25,3 +25,8 @@ SIDE_APER_TO_SIDE_BEAM = {}
 for side in BEAM_MAPPING_PER_SIDE:
     for aper in ['v1', 'v2']:
         SIDE_APER_TO_SIDE_BEAM[f"{side}.{aper}"] = f"{side}.{BEAM_MAPPING_PER_SIDE[side][aper]}"
+
+SIDE_BEAM_TO_SIDE_APER = {}
+for side in BEAM_MAPPING_PER_SIDE:
+    for beam in ['b1', 'b2']:
+        SIDE_BEAM_TO_SIDE_APER[f"{side}.{beam}"] = f"{side}.{BEAM_MAPPING_PER_SIDE[side][beam]}"
