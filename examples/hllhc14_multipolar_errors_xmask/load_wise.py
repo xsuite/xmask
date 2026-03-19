@@ -91,20 +91,9 @@ def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, m
     main_order = []
     main_is_skew = []
     for nn in tt_err_two_aper['name']:
-        for prefix, (order, normal_skew) in PREFIX_TO_MAIN_ORDER:
-            assert normal_skew in ['normal', 'skew']
-            if nn.startswith(prefix):
-                main_order.append(order)
-                main_is_skew.append(normal_skew == 'skew')
-                break
-        else:
-            raise ValueError(f"Unexpected magnet name: {nn}")
-        # if nn.startswith('mb'):
-        #     main_order.append(0)
-        # elif nn.startswith('mq'):
-        #     main_order.append(1)
-        # else:
-        #     raise ValueError(f"Unexpected magnet name: {nn}")
+        order, is_skew = order_and_is_skew_from_name(nn)
+        main_order.append(order)
+        main_is_skew.append(is_skew)
     assert len(main_order) == len(tt_err_two_aper)
     assert len(main_is_skew) == len(tt_err_two_aper)
 
@@ -280,3 +269,15 @@ def convert_multipolar_expansion(magnet_meas_data, is_rotated, main_order, ref_r
             ksl_rel[ii] = kkss_rel
 
     return np.array(knl_rel), np.array(ksl_rel)
+
+def order_and_is_skew_from_name(nn):
+    for prefix, (order, normal_skew) in PREFIX_TO_MAIN_ORDER:
+        assert normal_skew in ['normal', 'skew']
+        if nn.startswith(prefix):
+            main_order = order
+            main_is_skew = normal_skew == 'skew'
+            break
+    else:
+        raise ValueError(f"Unexpected magnet name: {nn}")
+
+    return main_order, main_is_skew

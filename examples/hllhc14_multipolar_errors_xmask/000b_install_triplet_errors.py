@@ -48,6 +48,10 @@ magnet_asset_association = {
     'mqxfb.b2r5': 'mqxfb08',
     'mqxfa.a3r5': 'mqxfa23',
     'mqxfa.b3r5': 'mqxfa24',
+    'mbxf.4l1': 'mbxf2',
+    'mbxf.4r1': 'mbxf1',
+    'mbxf.4l5': 'mbxf5',
+    'mbxf.4r5': 'mbxf3',
 }
 
 rotated = {
@@ -75,6 +79,10 @@ rotated = {
     'mqxfb.b2r5': False,
     'mqxfa.a3r5': False,
     'mqxfa.b3r5': True,
+    'mbxf.4l1': False,
+    'mbxf.4r1': True,
+    'mbxf.4l5': False,
+    'mbxf.4r5': True
 }
 
 data_files = {
@@ -107,6 +115,10 @@ data_files = {
 'mqxfb09':  'FQ_MQXFB/FQ_MQXFB09_cold_nominal.json',
 'mqxfb10':  'FQ_MQXFB/FQ_MQXFB10_cold_nominal.json',
 'mqxfb11':  'FQ_MQXFB/FQ_MQXFB11_cold_nominal.json',
+'mbxf1': 'FQ_MBXF/FQ_MBXF1_cold_nominal.json',
+'mbxf2': 'FQ_MBXF/FQ_MBXF2_cold_nominal.json',
+'mbxf3': 'FQ_MBXF/FQ_MBXF3_cold_nominal.json',
+'mbxf5': 'FQ_MBXF/FQ_MBXF5_cold_nominal.json',
 }
 
 
