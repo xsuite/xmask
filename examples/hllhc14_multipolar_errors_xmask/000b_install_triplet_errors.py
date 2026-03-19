@@ -1,7 +1,8 @@
 import xtrack as xt
 
 from load_hl_multipole_json import load_hllhc_multipole_json
-from load_wise import set_multipole_errors_in_line, convert_multipolar_expansion
+from load_wise import (set_multipole_errors_in_line, convert_multipolar_expansion,
+                       order_and_is_skew_from_name)
 
 import numpy as np
 
@@ -152,11 +153,12 @@ for nn in magnet_asset_association:
     multipole_errors_b1[nn + '/lhcb1'] = {'knl_rel': knl_rel_b1, 'ksl_rel': ksl_rel_b1}
     multipole_errors_b2[nn + '/lhcb2'] = {'knl_rel': knl_rel_b2, 'ksl_rel': ksl_rel_b2}
 
-    assert nn.startswith('mqx') # is a a normal quadrupole
-    multipole_errors_b1[nn+'/lhcb1']['main_order'] = 1
-    multipole_errors_b1[nn+'/lhcb1']['main_is_skew'] = False
-    multipole_errors_b2[nn+'/lhcb2']['main_order'] = 1
-    multipole_errors_b2[nn+'/lhcb2']['main_is_skew'] = False
+    order, is_skew = order_and_is_skew_from_name(nn)
+
+    multipole_errors_b1[nn+'/lhcb1']['main_order'] = order
+    multipole_errors_b1[nn+'/lhcb1']['main_is_skew'] = is_skew
+    multipole_errors_b2[nn+'/lhcb2']['main_order'] = order
+    multipole_errors_b2[nn+'/lhcb2']['main_is_skew'] = is_skew
 
 
 env = xt.load('lhc_arc_errors.json')
