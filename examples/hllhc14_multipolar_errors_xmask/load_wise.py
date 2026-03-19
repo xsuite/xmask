@@ -215,3 +215,68 @@ def assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, atol=0, rtol=0):
 
     xo.assert_allclose(knl_b1, knl_b2_check, rtol=rtol, atol=atol)
     xo.assert_allclose(ksl_b1, ksl_b2_check, rtol=rtol, atol=atol)
+
+
+def convert_multipolar_expansion(magnet_meas_data, is_rotated, main_order, ref_radius):
+
+    '''
+    Convert multipolar expansion from magnet measurement convention to xsuite knl_rel and ksl_rel.
+
+    Parameters
+    ----------
+    magnet_meas_data: dict
+        Dictionary containing the multipolar expansion in the magnet measurement convention
+        with keys like 'a1', 'b1', 'a2', 'b2', etc. Note that in this convention
+        a1 is the dipole field, b1 is the quadrupole field, a2 is the sextupole field, etc.
+    is_rotated: bool
+        Whether the magnet is rotated with respect to the reference frame of the measurement. This affects the sign of the multipoles.
+    main_order: int
+        Reference order of the multipolar expansion (e.g. 1 for quadrupoles, 2 for sextupoles, etc.)
+    ref_radius: float
+        Reference radius in meters at which the multipolar expansion is defined.
+
+    Returns
+    -------
+    knl_rel: np.ndarray
+        Array of relative normal multipole coefficients in xsuite convention, indexed by order.
+        Note that in this convention k0 is the dipole field, k1 is the quadrupole field, etc.
+    ksl_rel: np.ndarray
+        Array of relative skew multipole coefficients in xsuite convention, indexed by order.
+        Note that in this convention k0s is the skew dipole field, k1s is the skew quadrupole field, etc.
+    '''
+
+    knl_rel = []
+    ksl_rel = []
+    for kk in magnet_meas_data:
+        assert kk[0] in {'a', 'b'}, f"Unexpected key {kk} in magnet_meas_data, expected keys like 'a1', 'b1', etc."
+
+        ii = int(kk[1:]) - 1 # Xsuite order (0 is dipole)
+
+        if kk[0] == 'a':
+            aa = magnet_meas_data[kk]
+            bb = 0
+        else:
+            aa = 0
+            bb = magnet_meas_data[kk]
+
+        yrotfactor = -1 if is_rotated else 1
+
+        # From magnet measurement convention to MADX convention
+        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (main_order + ii    )
+        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (main_order + ii + 1)
+
+        # From MADX convention to knl
+        kknn_rel = dknlr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+        kkss_rel = dkslr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+
+        # Extend the list if needed
+        while len(knl_rel) <= ii:
+            knl_rel.append(0)
+            ksl_rel.append(0)
+
+        if kk[0] == 'b':
+            knl_rel[ii] = kknn_rel
+        else:
+            ksl_rel[ii] = kkss_rel
+
+    return np.array(knl_rel), np.array(ksl_rel)
