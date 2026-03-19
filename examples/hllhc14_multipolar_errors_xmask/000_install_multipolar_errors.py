@@ -37,9 +37,9 @@ for knob_name, multipole_errors in multipole_errors_to_apply.items():
                                 append_order_to_knob_name=True)
 
 # Switch off errors of order 0 and 1
-env_test['on_error_arc_k0'] = 0
-env_test['on_error_arc_k0s'] = 0
-env_test['on_error_arc_k1'] = 0
-env_test['on_error_arc_k1s'] = 0
+env['on_error_arc_k0'] = 0
+env['on_error_arc_k0s'] = 0
+env['on_error_arc_k1'] = 0
+env['on_error_arc_k1s'] = 0
 
 env.to_json('lhc_multipolar_errors.json')
