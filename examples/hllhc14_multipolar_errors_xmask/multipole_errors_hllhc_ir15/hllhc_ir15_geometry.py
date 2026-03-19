@@ -26,5 +26,20 @@ is_rotated = {
     'mbxf.4l1': False,
     'mbxf.4r1': True,
     'mbxf.4l5': False,
-    'mbxf.4r5': True
+    'mbxf.4r5': True,
+
+    'mbrd.4l1': True,
+    'mbrd.4r1': False,
+    'mbrd.4l5': True,
+    'mbrd.4r5': False,
+
+    # never used, to be checked
+    # 'mcbrdh.4l1': False,
+    # 'mcbrdv.4l1': True,
+    # 'mcbrdv.4r1': False,
+    # 'mcbrdh.4r1': True,
+    # 'mcbrdh.4l5': False,
+    # 'mcbrdv.4l5': True,
+    # 'mcbrdv.4r5': False,
+    # 'mcbrdh.4r5': True
 }
