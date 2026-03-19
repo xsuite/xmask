@@ -43,10 +43,7 @@ for line_to_check in ['lhcb1']: #, 'lhcb2']: # for b2 there is a bug in the refe
     tt_test = line_test.get_table(attr=True)
     tt_ref = line_ref.get_table(attr=True)
 
-    max_order = 18
-
     tt_ref_mqxf = tt_ref.rows['mqxf.*']
-
 
     for nn in tt_ref_mqxf.name:
         if '..fl' in nn or '..fr' in nn:
@@ -56,6 +53,8 @@ for line_to_check in ['lhcb1']: #, 'lhcb2']: # for b2 there is a bug in the refe
         if hasattr(line_ref[nn], 'knl'):
             knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()
             for ii in range(len(line_ref[nn].knl)):
+                if ii >= 10:
+                    break # reference has only up to decapolar, check only up to octupolar
                 xo.assert_allclose(knl_tot_nn[ii], line_ref[nn].knl[ii],
                                 rtol=0.01, atol=1e-10)
                 xo.assert_allclose(ksl_tot_nn[ii], line_ref[nn].ksl[ii],
