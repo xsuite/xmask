@@ -2,7 +2,7 @@ import xtrack as xt
 import xobjects as xo
 import numpy as np
 
-env_test = xt.load('lhc_arc_errors.json')
+env_test = xt.load('lhc_multipolar_errors.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
                    'collider_errors_on_corrections_off.json')
 

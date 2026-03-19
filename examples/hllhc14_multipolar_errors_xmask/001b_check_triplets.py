@@ -1,12 +1,9 @@
 import xtrack as xt
 import xobjects as xo
 import numpy as np
-from load_wise import assert_are_same_multipoles_b1_b2
+import xmask.lhc as xmlhc
 
-# env_test = xt.load('lhc_arc_errors_arc_and_triplets15.json')
-# line_test = env_test['lhcb1']
-
-env_test = xt.load('lhc_arc_errors_arc_and_triplets15.json')
+env_test = xt.load('lhc_multipolar_errors.json')
 
 line_b1_ref = xt.load(
     '../../../20260318_andrea_fornara_errors/'
@@ -29,7 +26,7 @@ for nn in tt_b1_mqxf.name:
         continue # skip markers
     ele_b1 = env_test['lhcb1'][nn]
     ele_b2 = env_test['lhcb2'][nn.replace('/lhcb1', '/lhcb2')]
-    assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, rtol=1e-12, atol=1e-12)
+    xmlhc.assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, rtol=1e-12, atol=1e-12)
 
 
 for line_to_check in ['lhcb1']: #, 'lhcb2']: # for b2 there is a bug in the reference

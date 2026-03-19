@@ -25,7 +25,6 @@ env = xt.load(
 
 
 # Apply error in lines
-
 min_order = 0
 max_order = 15
 
@@ -36,5 +35,11 @@ for knob_name, multipole_errors in multipole_errors_to_apply.items():
                                 min_order=min_order, max_order=max_order,
                                 error_knob_name=knob_name,
                                 append_order_to_knob_name=True)
+
+# Switch off errors of order 0 and 1
+env_test['on_error_arc_k0'] = 0
+env_test['on_error_arc_k0s'] = 0
+env_test['on_error_arc_k1'] = 0
+env_test['on_error_arc_k1s'] = 0
 
 env.to_json('lhc_multipolar_errors.json')
