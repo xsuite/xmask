@@ -48,3 +48,12 @@ xmlhc.correct_k1s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
 
 # k2s local + global correction (uses MSS)
 xmlhc.correct_k2s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
+# Back to orbit with bumps
+for nn in tt_to_zero.name:
+    expr_obj = tt_to_zero['expr_obj', nn]
+    val = tt_to_zero['value', nn]
+    if expr_obj is not None:
+        lhc[nn] = expr_obj
+    else:
+        lhc[nn] = val

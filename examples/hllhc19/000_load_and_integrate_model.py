@@ -13,6 +13,10 @@ lhc = xt.load(config['lattice_file'])
 lhc.b1.twiss_default.clear()
 lhc.b2.twiss_default.clear()
 
+# Change integrator for bends
+lhc.b1.configure_bend_model(core='mat-kick-mat')
+lhc.b2.configure_bend_model(core='mat-kick-mat')
+
 # Load optics
 lhc.vars.load(config['optics_file'])
 
