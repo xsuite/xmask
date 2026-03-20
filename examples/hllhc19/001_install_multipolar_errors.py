@@ -5,7 +5,7 @@ import xmask as xm
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 
-env = xt.load('collider_00_prepared.json')
+lhc = xt.load('collider_00_prepared.json')
 
 apply_multipolar_errors_config = config['apply_multipolar_errors']
 
@@ -21,11 +21,11 @@ if apply_multipolar_errors_config:
         # Read the file
         multipole_errors = xt.json.load(json_file)
         for line_name in ['b1', 'b2']:
-            line = env[line_name]
+            line = lhc[line_name]
             # Apply the errors in the line
             xm.set_multipole_errors_in_line(line, multipole_errors,
                                     min_order=min_order, max_order=max_order,
                                     error_knob_name=knob_name,
                                     append_order_to_knob_name=True)
 
-env.to_json('collider_01_multipolar_errors.json')
+lhc.to_json('collider_01_multipolar_errors.json')
