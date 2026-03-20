@@ -1,15 +1,13 @@
 import xtrack as xt
 import xmask as xm
 
-
 # Load multipolar errors from json files
 multipole_errors_arc = xt.json.load(
-    'multipole_errors_pre_hllhc/multipole_errors_arc.json')
+    '../hllhc_prepare_multipolar_errors/multipole_errors_pre_hllhc/multipole_errors_arc.json')
 multipole_errors_triplet_ir15 = xt.json.load(
-    'multipole_errors_hllhc_ir15/multipole_errors_inner_triplet_d1_ir15.json')
+    '../hllhc_prepare_multipolar_errors/multipole_errors_hllhc_ir15/multipole_errors_inner_triplet_d1_ir15.json')
 multipole_errors_d2_ir15 = xt.json.load(
-    'multipole_errors_hllhc_ir15/multipole_errors_d2_ir15.json')
-
+    '../hllhc_prepare_multipolar_errors/multipole_errors_hllhc_ir15/multipole_errors_d2_ir15.json')
 
 # Association knob_name -> multipole errors
 multipole_errors_to_apply = {
@@ -18,13 +16,11 @@ multipole_errors_to_apply = {
     'on_error_d2_ir15': multipole_errors_d2_ir15,
 }
 
-
 # Get a collider model
 env = xt.load(
     '../hllhc14_multipolar_errors_legacy/collider_errors_off_corrections_off.json')
 
-
-# Apply error in lines
+# Apply errors in lines
 min_order = 0
 max_order = 15
 

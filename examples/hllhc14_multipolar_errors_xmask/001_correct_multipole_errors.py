@@ -4,7 +4,7 @@ import xmask.lhc as xmlhc
 env = xt.load('lhc_multipolar_errors.json')
 
 # Status of error knobs
-tt_err_knobs = env.vars.get_table().rows[r'on_error_arc.*']
+tt_err_knobs = env.vars.get_table().rows[r'on_error_.*']
 print("Error knobs in the environment:")
 tt_err_knobs.show()
 
