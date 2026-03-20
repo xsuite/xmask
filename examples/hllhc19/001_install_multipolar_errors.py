@@ -10,14 +10,19 @@ env = xt.load('collider_00_prepared.json')
 apply_multipolar_errors_config = config['apply_multipolar_errors']
 
 if apply_multipolar_errors_config:
+    # Read the configuration from the yaml
     config = apply_multipolar_errors_config.pop('_config_')
     min_order = config['min_order']
     max_order = config['max_order']
+
+    # Apply the errors
     for knob_name, json_file in apply_multipolar_errors_config.items():
         print(f'Applying multipolar errors from file to create knob {knob_name}')
+        # Read the file
         multipole_errors = xt.json.load(json_file)
         for line_name in ['b1', 'b2']:
             line = env[line_name]
+            # Apply the errors in the line
             xm.set_multipole_errors_in_line(line, multipole_errors,
                                     min_order=min_order, max_order=max_order,
                                     error_knob_name=knob_name,
