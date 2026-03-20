@@ -6,6 +6,7 @@ from .knob_manipulations import define_octupole_current_knobs
 from .knob_manipulations import add_correction_term_to_dipole_correctors
 from .build_madx_and_xsuite_models import build_xsuite_collider
 from .leveling import luminosity_leveling
+from .orbit_reference_model import build_closed_orbit_reference
 
 from .lhc_geography import BEAM_MAPPING_PER_SIDE, SIDE_APER_TO_SIDE_BEAM, SIDE_BEAM_TO_SIDE_APER
 from .load_wise import (load_wise_table_arc_magnets,
