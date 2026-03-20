@@ -1,7 +1,8 @@
 import xtrack as xt
 
 DEFAULT_IR15_CORRECTIONS = {
-    'ip1': {'range_b1': ['dfxj.4l1', 'dfxj.4r1'],'range_b2': ['dfxj.4r1', 'dfxj.4l1'],
+    'ip1': {'range_b1': ['bptdv.a4l1.b1', 'bptdh.a4r1.b1'],
+            'range_b2': ['bptdh.a4r1.b2', 'bptdh.a4l1.b2'],
             'corrections': {
                 'on_corr_k2_ip1': {
                     'correction_knobs': ['kcsx3.l1', 'kcsx3.r1'],
@@ -50,7 +51,8 @@ DEFAULT_IR15_CORRECTIONS = {
                     'feed_down': False}
         }
     },
-    'ip5': {'range_b1': ['dfxj.4l5', 'dfxj.4r5'],'range_b2': ['dfxj.4r5', 'dfxj.4l5'],
+    'ip5': {'range_b1': ['bptdv.a4l5.b1', 'bptdh.a4r5.b1'],
+            'range_b2': ['bptdh.a4r5.b2', 'bptdh.a4l5.b2'],
             'corrections': {
                 'on_corr_k2_ip5': {
                     'correction_knobs': ['kcsx3.l5', 'kcsx3.r5'],
@@ -131,8 +133,9 @@ def correct_ir_errors(env, twiss_b1, twiss_b2, corrections):
             generated_knob_name = corr_name
 
             # Usage:
+            line_name_b1 = 'b1' if 'b1' in env.lines else 'lhcb1'
             rdt_contrib_b1 = xt.IntegralOptimization(
-                                    line=env['lhcb1'],
+                                    line=env[line_name_b1],
                                     twiss=tw_b1,
                                     start=range_b1[0],
                                     end=range_b1[1],
@@ -141,8 +144,9 @@ def correct_ir_errors(env, twiss_b1, twiss_b2, corrections):
                                     target_quantities=target_quantities_b1,
                                     generated_knob_name=generated_knob_name)
 
+            line_name_b2 = 'b2' if 'b2' in env.lines else 'lhcb2'
             rdt_contrib_b2 = xt.IntegralOptimization(
-                                    line=env['lhcb2'],
+                                    line=env[line_name_b2],
                                     twiss=tw_b2,
                                     start=range_b2[0],
                                     end=range_b2[1],
