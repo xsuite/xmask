@@ -58,13 +58,21 @@ DEFAULT_SPOOL_PIECE_CORRECTOR_LIMITS = {
 }
 
 def set_arc_spool_piece_correctors(env, twiss_b1, twiss_b2,
-                corrector_limits=DEFAULT_SPOOL_PIECE_CORRECTOR_LIMITS):
+                corrector_limits=DEFAULT_SPOOL_PIECE_CORRECTOR_LIMITS,
+                use_mcs=True, use_mco=True, use_mcd=True):
 
     arc_multipoles_to_suppress = {
         'k2l': 'kcs',
         'k3l': 'kco',
         'k4l': 'kcd',
     }
+
+    if not use_mcs:
+        del arc_multipoles_to_suppress['k2l']
+    if not use_mco:
+        del arc_multipoles_to_suppress['k3l']
+    if not use_mcd:
+        del arc_multipoles_to_suppress['k4l']
 
     arcs = ['12', '23', '34', '45', '56', '67', '78', '81']
     beams = ['b1', 'b2']
@@ -73,7 +81,8 @@ def set_arc_spool_piece_correctors(env, twiss_b1, twiss_b2,
 
     for beam_name in beams:
 
-        line = env[f'lhc{beam_name}']
+        line_name = beam_name if beam_name in env.lines else f'lhc{beam_name}'
+        line = env[line_name]
         tw = tw_b12[beam_name]
 
         tt = line.get_table(attr=True)

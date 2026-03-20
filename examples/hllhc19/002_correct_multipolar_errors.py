@@ -39,7 +39,9 @@ xmlhc.correct_ir_errors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2,
                         corrections=xmlhc.DEFAULT_IR15_CORRECTIONS)
 
 # Spool piece correctors (MCS, MC0, MCD)
-xmlhc.set_arc_spool_piece_correctors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
+xmlhc.set_arc_spool_piece_correctors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2,
+                                        use_mcs=True, use_mcd=True,
+                                        use_mco=False) # dead circuits
 
 # k1s local + global correction (uses MQS)
 xmlhc.correct_k1s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
