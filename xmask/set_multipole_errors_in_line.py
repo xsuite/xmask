@@ -19,9 +19,12 @@ def set_multipole_errors_in_line(line, multipole_errors,
         if not hasattr(line[nn], 'knl'):
             continue  # skip non-multipoles
 
-        nn_err = nn.split('..')[0]  # remove ..1, ..2, etc.
-        if '/' in nn:
-            nn_err = nn_err + '/' + nn.split('/')[1]  # keep /lhcb1 or /lhcb2 if present
+        if '..' in nn: # it's a slice
+            nn_err = nn.split('..')[0]  # remove ..1, ..2, etc.
+            if '/' in nn:
+                nn_err = nn_err + '/' + nn.split('/')[1]  # keep /lhcb1, /lhcb2, /b1, /b2 if present
+        else:
+            nn_err = nn
         if nn_err in multipole_errors:
             print(f'Applying errors to {nn}               ', end='\r', flush=True)
             line.extend_knl_rel_ksl_rel(order=max_order, element_names=[nn])

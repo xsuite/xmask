@@ -23,6 +23,7 @@ if apply_multipolar_errors_config:
         for line_name in ['b1', 'b2']:
             line = lhc[line_name]
             # Apply the errors in the line
+            breakpoint()
             xm.set_multipole_errors_in_line(line, multipole_errors,
                                     min_order=min_order, max_order=max_order,
                                     error_knob_name=knob_name,
