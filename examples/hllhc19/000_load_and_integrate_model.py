@@ -49,8 +49,6 @@ for kk in list(lhc.vars.keys()):
 lhc.b1.cycle('ip3')
 lhc.b2.cycle('ip3')
 
-prrrr
-
 # Prepare reference model for orbit correction
 lhc_co_ref = xlhc.build_closed_orbit_reference(lhc)
 lhc_co_ref.to_json('lhc_co_ref.json')
