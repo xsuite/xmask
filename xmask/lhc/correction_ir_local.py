@@ -158,6 +158,5 @@ def correct_ir_errors(env, twiss_b1, twiss_b2, corrections):
             combined_opt.step()
             knob_opt_b1.generate_knob()
 
-    # switch on all generated knobs
-    for kk in all_generated_knobs:
-        env[kk] = 1.0
+            env[generated_knob_name] = 1.0
+            env.vars.get_table().rows[correction_knobs].show()
