@@ -58,7 +58,12 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
         end = tw.name[-1]
         correction_knobs_global = []
         for arc in arc_names:
-            correction_knobs_global += correction_knobs[beam_name][arc]
+            for kknn in correction_knobs[beam_name][arc]:
+                if kknn not in line.vars:
+                    # Some circuits are condemned
+                    print(f"Warning: {kknn} not found in line {line_name}, skipping it for the global correction")
+                else:
+                    correction_knobs_global.append(kknn)
         generated_knob_name = f'{generated_knob_prefix}_global'
 
         # Create calculator for global correction (not run)
@@ -82,7 +87,19 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
             else:
                 start = f'e.ds.l{arc_name[1]}.b2'
                 end = f's.ds.r{arc_name[0]}.b2'
-            correction_knobs_local = correction_knobs[beam_name][arc_name]
+            # correction_knobs_local = correction_knobs[beam_name][arc_name]
+            correction_knobs_local = []
+            for kknn in correction_knobs[beam_name][arc_name]:
+                if kknn not in line.vars:
+                    print(f"Warning: {kknn} not found in line {line_name}, "
+                          f"skipping it for the local correction of arc {arc_name}")
+                else:
+                    correction_knobs_local.append(kknn)
+
+            if len(correction_knobs_local) == 0:
+                print(f"None of correction knobs {correction_knobs[beam_name][arc_name]} found"
+                      f"for beam {beam_name} arc {arc_name}, skipping local correction for this arc.")
+                continue
             generated_knob_name = f'{generated_knob_prefix}_a{arc_name}_local'
 
             # Usage:
