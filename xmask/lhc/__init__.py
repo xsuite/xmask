@@ -13,3 +13,4 @@ from .load_wise import (load_wise_table_arc_magnets,
                        assert_are_same_multipoles_b1_b2)
 from .spool_pieces import set_arc_spool_piece_correctors
 from .correction_k1s_k2s import correct_k1s, correct_k2s
+from .correction_ir_local import correct_ir_errors, DEFAULT_IR15_CORRECTIONS

@@ -18,6 +18,10 @@ tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 for nn in tt_err_knobs.name:
     env[nn] = tt_err_knobs['value', nn]
 
+# Local correction of IR15 multipole errors
+xmlhc.correct_ir_errors(env, twiss_b1=tw_b1, twiss_b2=tw_b2,
+                        corrections=xmlhc.DEFAULT_IR15_CORRECTIONS)
+
 # Spool piece correctors (MCS, MC0, MCD)
 xmlhc.set_arc_spool_piece_correctors(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
 
