@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import xobjects as xo
 
-env_test = xt.load('lhc_arc_errors_with_correction.json')
+env_test = xt.load('lhc_multipolar_errors_corrected.json')
 env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
                    'collider_errors_on_corrections_on.json')
 
