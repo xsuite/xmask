@@ -110,5 +110,9 @@ for nn in magnet_asset_association:
     multipole_errors[nn+'/lhcb2']['main_order'] = order
     multipole_errors[nn+'/lhcb2']['main_is_skew'] = is_skew
 
+    # Alternative naming convention
+    multipole_errors[nn + '/b1'] = multipole_errors[nn + '/lhcb1']
+    multipole_errors[nn + '/b2'] = multipole_errors[nn + '/lhcb2']
+
 xt.json.dump(multipole_errors, 'multipole_errors_inner_triplet_d1_ir15.json')
 
