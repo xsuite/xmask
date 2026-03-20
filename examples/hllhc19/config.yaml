@@ -27,3 +27,11 @@ new_knobs: {
   kod.a56b2: kod.b2,  kod.a67b2: kod.b2,  kod.a78b2: kod.b2,  kod.a81b2: kod.b2
 
 }
+
+apply_multipolar_errors: {
+  'on_error_arc': '../hllhc_prepare_multipolar_errors/multipole_errors_pre_hllhc/multipole_errors_arc.json',
+  'on_error_triplets_ir15': '../hllhc_prepare_multipolar_errors/multipole_errors_hllhc_ir15/multipole_errors_inner_triplet_d1_ir15.json',
+  'on_error_d2_ir15': '../hllhc_prepare_multipolar_errors/multipole_errors_hllhc_ir15/multipole_errors_d2_ir15.json',
+  '_config_': {min_order: 0, max_order: 15}
+}
+
