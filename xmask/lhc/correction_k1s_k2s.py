@@ -11,7 +11,7 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
     arc_names = ['12', '23', '34', '45', '56', '67', '78', '81']
 
     if correct == 'k2s':
-        generated_knob_prefix = 'on_corr_k2sl'
+        generated_knob_prefix = 'on_corr_k2s'
         def chrom_coupling_integrand(tw, tt):
             return tt['k2sl'] * tw.dx * np.sqrt(tw.betx * tw.bety) * np.exp(1j*2*np.pi*(tw.mux - tw.muy))
         target_integrand = chrom_coupling_integrand
@@ -20,7 +20,7 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
             'b2': {arc: [f'kss.a{arc}b2'] for arc in arc_names},
         }
     elif correct == 'k1s':
-        generated_knob_prefix = 'on_corr_k1sl'
+        generated_knob_prefix = 'on_corr_k1s'
         target_integrand = 'f1001'
         correction_knobs = {
             'b1': {'12': ['kqs.r1b1', 'kqs.l2b1'], '23': ['kqs.a23b1'],

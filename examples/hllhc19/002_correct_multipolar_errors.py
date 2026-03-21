@@ -57,3 +57,5 @@ for nn in tt_to_zero.name:
         lhc[nn] = expr_obj
     else:
         lhc[nn] = val
+
+lhc.to_json('collider_02_multipolar_errors_corrected.json')
