@@ -35,5 +35,5 @@ def slice_lattice(line):
         xt.Strategy(name=r'mqtlh\..*', slicing=xt.Teapot(2)),
         xt.Strategy(name=r'mqtli\..*', slicing=xt.Teapot(2)),
         xt.Strategy(name=r'mqt\..*',   slicing=xt.Teapot(2)),
-        xt.Strategy(name=r'mqs\..*',   slicing=xt.Teapot(1)),
+        xt.Strategy(name=r'mqs.*',   slicing=xt.Teapot(2)),
     ])
