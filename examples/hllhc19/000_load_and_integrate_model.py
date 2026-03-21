@@ -58,9 +58,20 @@ for kk in list(lhc.vars.keys()):
 lhc.b1.cycle('ip3')
 lhc.b2.cycle('ip3')
 
-# Apply knobs settings from yaml
-for knob_name, knob_value in config['knob_settings'].items():
-    lhc[knob_name] = knob_value
+# Install beam-beam lenses (inactive and not configured)
+config_bb = config['beam_beam']
+if config_bb['install_beam_beam']:
+    lhc.install_beambeam_interactions(
+        clockwise_line='b1',
+        anticlockwise_line='b2',
+        ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
+        delay_at_ips_slots=[0, 891, 0, 2670],
+        num_long_range_encounters_per_side=
+            config_bb['num_long_range_encounters_per_side'],
+        num_slices_head_on=config_bb['num_slices_head_on'],
+        harmonic_number=35640,
+        bunch_spacing_buckets=config_bb['bunch_spacing_buckets'],
+        sigmaz=config_bb['sigma_z'])
 
 # Prepare reference model for orbit correction
 lhc_co_ref = xlhc.build_closed_orbit_reference(lhc)

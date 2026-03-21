@@ -104,6 +104,20 @@ knobs_to_zero_for_flat_orbit:
   - on_crab1
   - on_crab5
 
+beam_beam:
+  install_beam_beam: true
+  bunch_spacing_buckets: 10
+  num_slices_head_on: 11
+  num_long_range_encounters_per_side:
+    ip1: 25
+    ip2: 20
+    ip5: 25
+    ip8: 20
+  sigma_z: 0.076
+  num_particles_per_bunch: 2.2e11
+  nemitt_x: 2.5e-6
+  nemitt_y: 2.5e-6
+
 tuning_settings:
   qx:
     b1: 62.31
@@ -233,3 +247,4 @@ ir_corrections:
         target_quantities_b1: {f1050_b1: f1050}
         target_quantities_b2: {f1050_b2: f1050}
         feed_down: false
+
