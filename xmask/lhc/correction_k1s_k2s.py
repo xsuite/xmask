@@ -97,7 +97,7 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
                     correction_knobs_local.append(kknn)
 
             if len(correction_knobs_local) == 0:
-                print(f"None of correction knobs {correction_knobs[beam_name][arc_name]} found"
+                print(f"None of correction knobs {correction_knobs[beam_name][arc_name]} found "
                       f"for beam {beam_name} arc {arc_name}, skipping local correction for this arc.")
                 continue
             generated_knob_name = f'{generated_knob_prefix}_a{arc_name}_local'

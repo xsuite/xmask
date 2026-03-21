@@ -14,12 +14,20 @@ def set_multipole_errors_in_line(line, multipole_errors,
         else:
             env[error_knob_name] = 1
 
-    # Apply errors in the line
+    element_names_for_errors = set()
     for nn in line.element_names:
+        ee = line.get(nn)
+        if 'Slice' in ee.__class__.__name__ and hasattr(ee, 'parent_name'):
+            element_names_for_errors.add(ee.parent_name)
+        else:
+            element_names_for_errors.add(nn)
+
+    # Apply errors in the line
+    for nn in element_names_for_errors:
         if not hasattr(line[nn], 'knl'):
             continue  # skip non-multipoles
 
-        if '..' in nn: # it's a slice
+        if '..' in nn: # it's a slice from MAD-X makethin
             nn_err = nn.split('..')[0]  # remove ..1, ..2, etc.
             if '/' in nn:
                 nn_err = nn_err + '/' + nn.split('/')[1]  # keep /lhcb1, /lhcb2, /b1, /b2 if present

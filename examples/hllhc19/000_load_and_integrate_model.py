@@ -1,6 +1,7 @@
 import xtrack as xt
 import xmask as xm
 import xmask.lhc as xlhc
+from _temp_slice_lattice import slice_lattice
 
 # Read config file
 with open('config.yaml','r') as fid:
@@ -19,6 +20,10 @@ lhc.b2.configure_bend_model(core='mat-kick-mat')
 
 # Load optics
 lhc.vars.load(config['optics_file'])
+
+# Slice lattice
+slice_lattice(lhc.b1)
+slice_lattice(lhc.b2)
 
 # Create reference particles (TODO: generalize for ions)
 lhc.new_particle(f'particle_ref_b1',
