@@ -2,7 +2,7 @@ import xtrack as xt
 import xmask as xm
 import numpy as np
 
-lhc = xt.load("collider_02_multipolar_errors_corrected.json")
+lhc = xt.load("collider_01_multipolar_errors_corrected.json")
 
 # Read config file
 with open('config.yaml','r') as fid:

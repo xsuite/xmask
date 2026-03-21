@@ -118,7 +118,7 @@ beam_beam:
   nemitt_x: 2.5e-6
   nemitt_y: 2.5e-6
 
-tuning_settings:
+tuning:
   qx:
     b1: 62.31
     b2: 62.31
@@ -147,6 +147,10 @@ tuning_settings:
       dq_knob_2: dqpy.b2_op
       c_minus_knob_1: cmrs.b2_op
       c_minus_knob_2: cmis.b2_op
+
+  closed_orbit_correction:
+    b1: corr_co_lhcb1.json
+    b2: corr_co_lhcb2.json
 
 ir_corrections:
   ip1:

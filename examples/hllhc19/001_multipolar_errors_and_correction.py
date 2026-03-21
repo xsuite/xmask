@@ -6,8 +6,38 @@ import xmask.lhc as xmlhc
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 
-# Load the line from previous step
-lhc = xt.load('collider_01_multipolar_errors.json')
+lhc = xt.load('collider_00_prepared.json')
+
+#############################
+# Install multipolar errors #
+#############################
+
+apply_multipolar_errors_config = config['apply_multipolar_errors']
+
+if apply_multipolar_errors_config:
+    # Read the configuration from the yaml
+    err_conf = apply_multipolar_errors_config.pop('_config_')
+    min_order = err_conf['min_order']
+    max_order = err_conf['max_order']
+
+    # Apply the errors
+    for knob_name, json_file in apply_multipolar_errors_config.items():
+        print(f'Applying multipolar errors from file to create knob {knob_name}')
+        # Read the file
+        multipole_errors = xt.json.load(json_file)
+        for line_name in ['b1', 'b2']:
+            line = lhc[line_name]
+            # Apply the errors in the line
+            xm.set_multipole_errors_in_line(line, multipole_errors,
+                                    min_order=min_order, max_order=max_order,
+                                    error_knob_name=knob_name,
+                                    append_order_to_knob_name=True)
+
+
+#####################################
+# Corrections for multipolar errors #
+#####################################
+
 
 # Force the knobs settings (on_error_... might be forced to 1 by the error,
 # installation and we want the user setting, it present to be applied on top of that)
@@ -58,4 +88,4 @@ for nn in tt_to_zero.name:
     else:
         lhc[nn] = val
 
-lhc.to_json('collider_02_multipolar_errors_corrected.json')
+lhc.to_json('collider_01_multipolar_errors_corrected.json')
