@@ -105,7 +105,7 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert np.all(np.abs(arc_chrom_coupl_test) < 1.05 * np.max(np.abs(arc_chrom_coupl_ref)))
 
     # Measure chromatic coupling without correction
-    tt_on_corr = env_test.vars.get_table().rows['on_corr_k2sl.*']
+    tt_on_corr = env_test.vars.get_table().rows['on_corr_k2s.*_local|on_corr_k2s.*_global']
     assert len(tt_on_corr) == 9
     env_test.set(tt_on_corr.name, 0)
     nlchr_test_no_corr = line_test.get_non_linear_chromaticity(num_delta=20, delta0_range=(-5e-4, 5e-4))
