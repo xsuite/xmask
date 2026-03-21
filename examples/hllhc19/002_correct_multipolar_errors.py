@@ -36,7 +36,7 @@ for nn in tt_err_knobs.name:
 
 # Local correction of IR15 multipole errors
 xmlhc.correct_ir_errors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2,
-                        corrections=xmlhc.DEFAULT_IR15_CORRECTIONS)
+                        corrections=config['ir_corrections'])
 
 # Spool piece correctors (MCS, MC0, MCD)
 xmlhc.set_arc_spool_piece_correctors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2,

@@ -115,8 +115,6 @@ def correct_ir_errors(env, twiss_b1, twiss_b2, corrections):
             all_correction_knobs += corr['correction_knobs']
             all_generated_knobs.append(corr_name)
 
-    original_values = {kk: env[kk] for kk in all_correction_knobs}
-
     # Clean original values
     for kk in all_correction_knobs:
         env[kk] = 0.0
