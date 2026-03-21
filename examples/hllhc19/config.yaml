@@ -148,6 +148,11 @@ tuning:
       c_minus_knob_1: cmrs.b2_op
       c_minus_knob_2: cmis.b2_op
 
+  steps:
+    q_knob: 1e-4
+    dq_knob: 1e-3
+    c_minus_knob: 1e-5
+
   closed_orbit_correction:
     b1: corr_co_lhcb1.json
     b2: corr_co_lhcb2.json

@@ -36,6 +36,9 @@ for line_name in ['b1', 'b2']:
         enable_chromaticity_correction=True,
         knob_names=knob_names,
         targets=targets,
+        step_q_knob=conf_tuning['steps']['q_knob'],
+        step_dq_knob=conf_tuning['steps']['dq_knob'],
+        step_c_minus_knob=conf_tuning['steps']['c_minus_knob'],
         line_co_ref=env_ref[line_name],
         co_corr_config=conf_tuning['closed_orbit_correction'][line_name])
 
