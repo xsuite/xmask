@@ -13,6 +13,9 @@ with open('config.yaml','r') as fid:
 for kk, vv in config['knob_settings'].items():
     lhc[kk] = vv
 
+# Refernce model for orbit correction
+env_ref = xt.load('lhc_co_ref.json')
+
 # Tunings
 conf_tuning = config['tuning']
 for line_name in ['b1', 'b2']:
@@ -33,7 +36,7 @@ for line_name in ['b1', 'b2']:
         enable_chromaticity_correction=True,
         knob_names=knob_names,
         targets=targets,
-        line_co_ref=lhc[line_name+'_co_ref'],
+        line_co_ref=env_ref[line_name],
         co_corr_config=conf_tuning['closed_orbit_correction'][line_name])
 
 lhc.to_json('collider_02_tuned_bb_off.json')
