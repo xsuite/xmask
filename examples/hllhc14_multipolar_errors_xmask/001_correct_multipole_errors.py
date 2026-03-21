@@ -1,7 +1,12 @@
 import xtrack as xt
+import xmask as xm
 import xmask.lhc as xmlhc
 
 env = xt.load('lhc_multipolar_errors.json')
+
+# Read beam-beam config from config file
+with open('config.yaml','r') as fid:
+    config = xm.yaml.load(fid)
 
 # Status of error knobs
 tt_err_knobs = env.vars.get_table().rows[r'on_error_.*']
@@ -20,7 +25,7 @@ for nn in tt_err_knobs.name:
 
 # Local correction of IR15 multipole errors
 xmlhc.correct_ir_errors(env, twiss_b1=tw_b1, twiss_b2=tw_b2,
-                        corrections=xmlhc.DEFAULT_IR15_CORRECTIONS)
+                        corrections=config['ir_corrections'])
 
 # Spool piece correctors (MCS, MC0, MCD)
 xmlhc.set_arc_spool_piece_correctors(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
