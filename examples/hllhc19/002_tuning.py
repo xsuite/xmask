@@ -19,6 +19,8 @@ env_ref = xt.load('lhc_co_ref.json')
 # Tunings
 conf_tuning = config['tuning']
 for line_name in ['b1', 'b2']:
+    print()
+    print('Working on line ', line_name)
 
     knob_names = conf_tuning['knob_names'][line_name]
 
@@ -39,6 +41,9 @@ for line_name in ['b1', 'b2']:
         step_q_knob=conf_tuning['steps']['q_knob'],
         step_dq_knob=conf_tuning['steps']['dq_knob'],
         step_c_minus_knob=conf_tuning['steps']['c_minus_knob'],
+        tol_tune=conf_tuning['tolerances']['tune'],
+        tol_chromaticity=conf_tuning['tolerances']['chromaticity'],
+        tol_c_minus=conf_tuning['tolerances']['c_minus'],
         line_co_ref=env_ref[line_name],
         co_corr_config=conf_tuning['closed_orbit_correction'][line_name])
 

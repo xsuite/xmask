@@ -153,6 +153,11 @@ tuning:
     dq_knob: 1e-3
     c_minus_knob: 1e-5
 
+  tolerances:
+    tune: 1e-4
+    chromaticity: 0.05
+    c_minus: 2e-4
+
   closed_orbit_correction:
     b1: corr_co_lhcb1.json
     b2: corr_co_lhcb2.json

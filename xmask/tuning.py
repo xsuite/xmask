@@ -12,6 +12,7 @@ def machine_tuning(line,
         knob_names=None,
         targets=None,
         step_q_knob=None, step_dq_knob=None, step_c_minus_knob=None,
+        tol_tune=None, tol_chromaticity=None, tol_c_minus=None,
         line_co_ref=None, co_corr_config=None,
         verbose=False):
 
@@ -22,8 +23,16 @@ def machine_tuning(line,
     if step_c_minus_knob is None:
         step_c_minus_knob = 1e-5
 
+    if tol_tune is None:
+        tol_tune = 1e-4
+    if tol_chromaticity is None:
+        tol_chromaticity = 0.05
+    if tol_c_minus is None:
+        tol_c_minus = 2e-4
+
     # Correct closed orbit
     if enable_closed_orbit_correction:
+        print()
         print(f'Correcting closed orbit')
         assert line_co_ref is not None
         assert co_corr_config is not None
@@ -43,14 +52,16 @@ def machine_tuning(line,
         assert 'c_minus_knob_1' in knob_names
         assert 'c_minus_knob_2' in knob_names
         # Match coupling
+        print()
         print(f'Matching linear coupling')
         line.match(verbose=verbose,
+            compute_chromatic_properties=False,
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
                         limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob),
                 xt.Vary(name=knob_names['c_minus_knob_2'],
                         limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob)],
-            targets=[xt.Target('c_minus', 0, tol=1e-4)])
+            targets=[xt.Target('c_minus', 0, tol=tol_c_minus)])
 
     # Match tune and chromaticity
     if enable_tune_correction or enable_chromaticity_correction:
@@ -68,8 +79,8 @@ def machine_tuning(line,
 
             vary.append(xt.Vary(knob_names['q_knob_1'], step=step_q_knob))
             vary.append(xt.Vary(knob_names['q_knob_2'], step=step_q_knob))
-            match_targets.append(xt.Target('qx', targets['qx'], tol=1e-4))
-            match_targets.append(xt.Target('qy', targets['qy'], tol=1e-4))
+            match_targets.append(xt.Target('qx', targets['qx'], tol=tol_tune))
+            match_targets.append(xt.Target('qy', targets['qy'], tol=tol_tune))
 
         if enable_chromaticity_correction:
             assert knob_names is not None
@@ -81,9 +92,10 @@ def machine_tuning(line,
 
             vary.append(xt.Vary(knob_names['dq_knob_1'], step=step_dq_knob))
             vary.append(xt.Vary(knob_names['dq_knob_2'], step=step_dq_knob))
-            match_targets.append(xt.Target('dqx', targets['dqx'], tol=0.05))
-            match_targets.append(xt.Target('dqy', targets['dqy'], tol=0.05))
+            match_targets.append(xt.Target('dqx', targets['dqx'], tol=tol_chromaticity))
+            match_targets.append(xt.Target('dqy', targets['dqy'], tol=tol_chromaticity))
 
+        print()
         print(f'Matching tune and chromaticity')
         line.match(verbose=verbose, vary=vary, targets=match_targets)
 
