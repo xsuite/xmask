@@ -8,13 +8,11 @@ with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 config_bb = config['beam_beam']
 
-# Load collider and build trackers
-collider = xt.Environment.from_json('collider_03_tuned_and_leveled_bb_off.json')
-collider.build_trackers()
+lhc = xt.Environment.from_json('collider_03_tuned_and_leveled_bb_off.json')
 
 # Configure beam-beam lenses
 print('Configuring beam-beam lenses...')
-collider.configure_beambeam_interactions(
+lhc.configure_beambeam_interactions(
     num_particles=config_bb['num_particles_per_bunch'],
     nemitt_x=config_bb['nemitt_x'],
     nemitt_y=config_bb['nemitt_y'])
@@ -26,9 +24,9 @@ if 'mask_with_filling_pattern' in config_bb:
     with open(fname, 'r') as fid:
         filling = json.load(fid)
 
-    collider.apply_filling_pattern(
+    lhc.apply_filling_pattern(
         filling_pattern_cw=filling['beam1'],
         filling_pattern_acw=filling['beam2'],
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
 
-collider.to_json('collider_04_tuned_and_leveled_bb_on.json')
+lhc.to_json('collider_04_tuned_and_leveled_bb_on.json')
