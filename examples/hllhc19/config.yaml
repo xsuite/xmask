@@ -87,6 +87,72 @@ knob_settings:
   on_error_d2_ir15_k1: 0
   on_error_d2_ir15_k1s: 0
 
+
+lumi_leveling:
+  ip2:
+    separation_in_sigmas: 5
+    plane: 'x'
+    impose_separation_orthogonal_to_crossing: false
+    knobs:
+      - on_sep2h
+    bump_range:
+      b1:
+        - e.ds.l2.b1
+        - s.ds.r2.b1
+      b2:
+        - s.ds.r2.b2
+        - e.ds.l2.b2
+    preserve_angles_at_ip: true
+    preserve_bump_closure: true
+    corrector_knob_names:
+      # to preserve angles at ip
+      - corr_co_acbyvs4.l2b1
+      - corr_co_acbyhs4.l2b1
+      - corr_co_acbyvs4.r2b2
+      - corr_co_acbyhs4.r2b2
+      # to close the bumps
+      - corr_co_acbyvs4.l2b2
+      - corr_co_acbyhs4.l2b2
+      - corr_co_acbyvs4.r2b1
+      - corr_co_acbyhs4.r2b1
+      - corr_co_acbyhs5.l2b2
+      - corr_co_acbyvs5.l2b2
+      - corr_co_acbchs5.r2b1
+      - corr_co_acbcvs5.r2b1
+
+  ip8:
+    luminosity: 2.0e+33
+    num_colliding_bunches: 2572
+    impose_separation_orthogonal_to_crossing: true
+    knobs:
+      - on_sep8h
+      - on_sep8v
+    bump_range:
+      b1:
+        - e.ds.l8.b1
+        - s.ds.r8.b1
+      b2:
+        - s.ds.r8.b2
+        - e.ds.l8.b2
+    preserve_angles_at_ip: true
+    preserve_bump_closure: true
+    corrector_knob_names:
+      # to preserve angles at ip
+      - corr_co_acbyvs4.l8b1
+      - corr_co_acbyhs4.l8b1
+      - corr_co_acbyvs4.r8b2
+      - corr_co_acbyhs4.r8b2
+      # to close the bumps
+      - corr_co_acbyvs4.l8b2
+      - corr_co_acbyhs4.l8b2
+      - corr_co_acbyvs4.r8b1
+      - corr_co_acbyhs4.r8b1
+      - corr_co_acbcvs5.l8b2
+      - corr_co_acbchs5.l8b2
+      - corr_co_acbyvs5.r8b1
+      - corr_co_acbyhs5.r8b1
+
+
 knobs_to_zero_for_flat_orbit:
   - on_x1hs
   - on_sep1v
@@ -261,4 +327,3 @@ ir_corrections:
         target_quantities_b1: {f1050_b1: f1050}
         target_quantities_b2: {f1050_b2: f1050}
         feed_down: false
-
