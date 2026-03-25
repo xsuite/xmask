@@ -1,9 +1,9 @@
 # Lattice and optics files
-# lattice_file: lhc.json
-# optics_file: opt_150.madx
+lattice_file: lhc.json
+optics_file: opt_150.madx
 
-lattice_file: lhc_thin.json
-optics_file: opt_150_thin.madx
+# lattice_file: lhc_thin.json
+# optics_file: opt_150_thin.madx
 
 # Beam parameters
 beam_config:
