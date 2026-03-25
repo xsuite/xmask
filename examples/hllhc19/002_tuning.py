@@ -1,12 +1,12 @@
 import xtrack as xt
 import xmask as xm
 
-# Load collider anf build trackers
-lhc = xt.load('collider_01_multipolar_errors_corrected.json')
-
 # Read knobs and tuning settings from config file
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
+
+# Load collider anf build trackers
+lhc = xt.load(f'lhc_{config["label"]}_01_multipolar_errors_corrected.json')
 
 # Set all knobs (crossing angles, dispersion correction, rf, crab cavities,
 # experimental magnets, etc.)
@@ -14,7 +14,7 @@ for kk, vv in config['knob_settings'].items():
     lhc[kk] = vv
 
 # Refernce model for orbit correction
-env_ref = xt.load('lhc_co_ref.json')
+env_ref = xt.load(f'lhc_co_ref_{config["label"]}.json')
 
 # Tunings
 conf_tuning = config['tuning']
@@ -47,4 +47,4 @@ for line_name in ['b1', 'b2']:
         line_co_ref=env_ref[line_name],
         co_corr_config=conf_tuning['closed_orbit_correction'][line_name])
 
-lhc.to_json('collider_02_tuned_bb_off.json')
+lhc.to_json(f'lhc_{config["label"]}_02_tuned_bb_off.json')

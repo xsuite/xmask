@@ -8,7 +8,7 @@ with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 config_bb = config['beam_beam']
 
-lhc = xt.Environment.from_json('collider_03_tuned_and_leveled_bb_off.json')
+lhc = xt.Environment.from_json(f'lhc_{config["label"]}_03_tuned_and_leveled_bb_off.json')
 
 # Configure beam-beam lenses
 print('Configuring beam-beam lenses...')
@@ -29,4 +29,4 @@ if 'mask_with_filling_pattern' in config_bb:
         filling_pattern_acw=filling['beam2'],
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
 
-lhc.to_json('collider_04_tuned_and_leveled_bb_on.json')
+lhc.to_json(f'lhc_{config["label"]}_04_tuned_and_leveled_bb_on.json')

@@ -4,11 +4,11 @@ import xtrack as xt
 import xmask as xm
 import xmask.lhc as xlhc
 
-lhc = xt.Environment.from_json('collider_02_tuned_bb_off.json')
-
 # Read knobs and tuning settings from config file
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
+
+lhc = xt.Environment.from_json(f'lhc_{config["label"]}_02_tuned_bb_off.json')
 
 config_lumi_leveling = config['lumi_leveling']
 config_beambeam = config['beam_beam']
@@ -32,4 +32,4 @@ for line_name in ['b1', 'b2']:
         enable_tune_correction=True, enable_chromaticity_correction=True,
         knob_names=knob_names, targets=targets)
 
-lhc.to_json('collider_03_tuned_and_leveled_bb_off.json')
+lhc.to_json(f'lhc_{config["label"]}_03_tuned_and_leveled_bb_off.json')

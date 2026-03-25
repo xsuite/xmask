@@ -1,5 +1,5 @@
 correction_setup = {}
-correction_setup['lhcb1'] = {
+correction_setup['b1'] = {
     'IR1 left': dict(
         ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
         start='e.ds.r8.b1',
@@ -114,7 +114,7 @@ correction_setup['lhcb1'] = {
     ),
 }
 
-correction_setup['lhcb2'] = {
+correction_setup['b2'] = {
     'IR1 left': dict(
         ref_with_knobs={'on_corr_co': 0, 'on_disp': 0},
         start='e.ds.l1.b2',
@@ -231,6 +231,6 @@ correction_setup['lhcb2'] = {
 
 
 import json
-for nn in ['lhcb1', 'lhcb2']:
+for nn in ['b1', 'b2']:
     with open(f'corr_co_{nn}.json', 'w') as fid:
         json.dump(correction_setup[nn], fid, indent=4)

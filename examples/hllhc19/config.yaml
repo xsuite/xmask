@@ -1,3 +1,4 @@
+label: thick_test
 # Lattice and optics files
 lattice_file: lhc.json
 optics_file: opt_150.madx
@@ -228,8 +229,8 @@ tuning:
     c_minus: 2e-4
 
   closed_orbit_correction:
-    b1: corr_co_lhcb1.json
-    b2: corr_co_lhcb2.json
+    b1: corr_co_b1.json
+    b2: corr_co_b2.json
 
 ir_corrections:
   ip1:

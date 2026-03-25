@@ -1,7 +1,10 @@
 import xtrack as xt
+import xmask as xm
 
+with open('config.yaml','r') as fid:
+    config = xm.yaml.load(fid)
 
-lhc = xt.Environment.from_json('./collider_04_tuned_and_leveled_bb_on.json')
+lhc = xt.Environment.from_json(f'lhc_{config["label"]}_04_tuned_and_leveled_bb_on.json')
 lhc.build_trackers()
 
 fp_polar_no_rescale = lhc['b1'].get_footprint(nemitt_x=2.5e-6, nemitt_y=2.5e-6)

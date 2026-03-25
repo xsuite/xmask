@@ -6,7 +6,7 @@ import xmask.lhc as xmlhc
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 
-lhc = xt.load('collider_00_prepared.json')
+lhc = xt.load(f'lhc_{config["label"]}_00_prepared.json')
 
 #############################
 # Install multipolar errors #
@@ -88,4 +88,4 @@ for nn in tt_to_zero.name:
     else:
         lhc[nn] = val
 
-lhc.to_json('collider_01_multipolar_errors_corrected.json')
+lhc.to_json(f'lhc_{config["label"]}_01_multipolar_errors_corrected.json')

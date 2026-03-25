@@ -67,9 +67,9 @@ if config_bb['install_beam_beam']:
 
 # Prepare reference model for orbit correction
 lhc_co_ref = xlhc.build_closed_orbit_reference(lhc)
-lhc_co_ref.to_json('lhc_co_ref.json')
+lhc_co_ref.to_json(f'lhc_co_ref_{config["label"]}.json')
 
-lhc.to_json('collider_00_prepared.json')
+lhc.to_json(f'lhc_{config["label"]}_00_prepared.json')
 
 # Check that both lines twiss without errors
 twb1 = lhc.b1.twiss4d()
