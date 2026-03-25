@@ -81,6 +81,9 @@ def set_arc_spool_piece_correctors(env, twiss_b1, twiss_b2,
 
     for beam_name in beams:
 
+        if tw_b12[beam_name] is None:
+            continue
+
         line_name = beam_name if beam_name in env.lines else f'lhc{beam_name}'
         line = env[line_name]
         tw = tw_b12[beam_name]
@@ -120,6 +123,7 @@ def set_arc_spool_piece_correctors(env, twiss_b1, twiss_b2,
 
                 opt = rdt_contrib.correct()
 
+                env[opt.knob_name] = 0.
                 print("Before setting the knob:")
                 line.vars.get_table().rows[correction_knobs].show()
 
