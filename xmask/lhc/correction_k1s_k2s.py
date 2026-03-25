@@ -37,6 +37,9 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
 
     for beam_name in ['b1', 'b2']:
 
+        if tw_b12[beam_name] is None:
+            continue
+
         line_name = beam_name if beam_name in env.lines else f'lhc{beam_name}'
         line = env[line_name]
 
