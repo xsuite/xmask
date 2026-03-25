@@ -27,14 +27,37 @@ for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
     assert np.all(lhc[nn].ksl_rel[:2] == 0)
 
 # Check that the the triplet correctors in 1/5 are all powered
+tt_vars_orig = lhc.vars.get_table()
+assert np.all(np.abs(tt_vars_orig.rows['kcsx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kcox.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kcdx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kctx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kcssx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kcosx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars_orig.rows['kctsx.*[l,r][1,5]'].value) > 1e-4)
+
+# Check error knob behavior
+lhc.set(tt_vars_orig.rows['on_error.*'], 0)
+assert np.all(lhc['mb.a12r4.b2'].knl_rel == 0)
+assert np.all(lhc['mb.a12r4.b2'].ksl_rel == 0)
+assert np.all(lhc['mq.12r4.b2'].knl_rel == 0)
+assert np.all(lhc['mq.12r4.b2'].ksl_rel == 0)
+for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
+    assert np.all(lhc[nn].knl_rel == 0)
+    assert np.all(lhc[nn].ksl_rel == 0)
+
+# Check correction knob behavior
+lhc.set(tt_vars_orig.rows['on_corr.*'], 0)
+
 tt_vars = lhc.vars.get_table()
-assert np.all(np.abs(tt_vars.rows['kcsx.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kcox.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kcdx.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kctx.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kcssx.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kcosx.*[l,r][1,5]'].value) > 1e-4)
-assert np.all(np.abs(tt_vars.rows['kctsx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(tt_vars.rows['kcsx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kcox.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kcdx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kctx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kcssx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kcosx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kctsx.*[l,r][1,5]'].value == 0)
+
 
 # Read config file
 with open('config.yaml','r') as fid:
