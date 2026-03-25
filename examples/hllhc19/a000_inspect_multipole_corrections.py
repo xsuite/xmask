@@ -26,6 +26,7 @@ tt_to_zero = lhc.vars.get_table(expr_obj=True).rows[vars_to_zero]
 lhc.set(tt_to_zero, 0)
 
 lhc['beambeam_scale'] = 0 # Beam beam off
+# Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
 lhc['cmis.b1_op'] = 0
 lhc['cmis.b2_op'] = 0
