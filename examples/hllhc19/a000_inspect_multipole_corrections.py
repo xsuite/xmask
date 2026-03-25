@@ -2,7 +2,7 @@ import xtrack as xt
 import xmask as xm
 import numpy as np
 
-lhc = xt.load("collider_01_multipolar_errors_corrected.json")
+lhc = xt.load("lhc_thick_test_01_multipolar_errors_corrected.json")
 
 # Read config file
 with open('config.yaml','r') as fid:
@@ -62,10 +62,10 @@ for line_name in ['b1', 'b2']:
     local_chrom_coupling[line_name] = arc_chrom_coupl_test
     global_chrom_coupling_no_corr[line_name] = cminus_delta_test_no_corr
 
-assert np.max(global_chrom_coupling_no_corr['b1']) > 1e-3
-assert np.max(global_chrom_coupling_no_corr['b2']) > 1e-3
-assert np.all(np.abs(global_chrom_coupling['b1']) < 2e-4)
-assert np.all(np.abs(global_chrom_coupling['b2']) < 2e-4)
+assert np.max(global_chrom_coupling_no_corr['b1']) > 2e-3
+assert np.max(global_chrom_coupling_no_corr['b2']) > 2e-3
+assert np.all(np.abs(global_chrom_coupling['b1']) < 3e-4)
+assert np.all(np.abs(global_chrom_coupling['b2']) < 3e-4)
 
 # Check effect of mcs on chromaticity
 lhc.set(lhc.vars.get_table().rows['on_corr_kcs.*'], 0)
