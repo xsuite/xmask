@@ -73,18 +73,34 @@ lhc.vars.update(tt_vars_orig.rows['on_corr_.*|on_error_.*'].to_dict())
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 
-# Flat orbit
-vars_to_zero = config['knobs_to_zero_for_flat_orbit']
-tt_to_zero = lhc.vars.get_table(expr_obj=True).rows[vars_to_zero]
-lhc.set(tt_to_zero, 0)
-
 lhc['beambeam_scale'] = 0 # Beam beam off
+
+tw1 = lhc.b1.twiss()
+tw2 = lhc.b2.twiss()
+
+xo.assert_allclose(tw1.qx, 62.31, atol=1e-5)
+xo.assert_allclose(tw1.qy, 60.32, atol=1e-5)
+xo.assert_allclose(tw2.qx, 62.31, atol=1e-5)
+xo.assert_allclose(tw2.qy, 60.32, atol=1e-5)
+xo.assert_allclose(tw1.dqx, 5, atol=0.05)
+xo.assert_allclose(tw1.dqy, 6, atol=0.05)
+xo.assert_allclose(tw2.dqx, 5, atol=0.05)
+xo.assert_allclose(tw2.dqy, 6, atol=0.05)
+xo.assert_allclose(tw1.c_minus, 0, atol=2e-4)
+xo.assert_allclose(tw2.c_minus, 0, atol=2e-4)
+
+
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
 lhc['cmis.b1_op'] = 0
 lhc['cmis.b2_op'] = 0
 lhc['cmrs.b1_op'] = 0
 lhc['cmrs.b2_op'] = 0
+
+# Flat orbit
+vars_to_zero = config['knobs_to_zero_for_flat_orbit']
+tt_to_zero = lhc.vars.get_table(expr_obj=True).rows[vars_to_zero]
+lhc.set(tt_to_zero, 0)
 
 env_test = lhc
 
