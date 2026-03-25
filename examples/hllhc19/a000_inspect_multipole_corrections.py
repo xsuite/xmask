@@ -26,6 +26,16 @@ for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
     assert np.max(np.abs(lhc[nn].ksl_rel)) > 10.
     assert np.all(lhc[nn].ksl_rel[:2] == 0)
 
+# Check that the the triplet correctors in 1/5 are all powered
+tt_vars = lhc.vars.get_table()
+assert np.all(np.abs(tt_vars.rows['kcsx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kcox.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kcdx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kctx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kcssx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kcosx.*[l,r][1,5]'].value) > 1e-4)
+assert np.all(np.abs(tt_vars.rows['kctsx.*[l,r][1,5]'].value) > 1e-4)
+
 # Read config file
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
