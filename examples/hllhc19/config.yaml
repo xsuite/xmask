@@ -166,6 +166,7 @@ knobs_to_zero_for_flat_orbit:
   - on_sep5h
   - on_x8v
   - on_sep8h
+  - on_sep8v
   - on_disp
   - on_dx1hs
   - on_dsep1v

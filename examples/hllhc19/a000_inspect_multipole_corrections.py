@@ -2,7 +2,19 @@ import xtrack as xt
 import xmask as xm
 import numpy as np
 
-lhc = xt.load("lhc_thick_test_01_multipolar_errors_corrected.json")
+lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
+
+# Check that errors on a few magnet types are present,
+# and that the first two orders are zero (consistently with setup)
+assert np.max(np.abs(lhc['mb.a12r4.b2'].knl_rel)) > 10.
+assert np.all(lhc['mb.a12r4.b2'].knl_rel[:2] == 0)
+assert np.max(np.abs(lhc['mb.a12r4.b2'].ksl_rel)) > 10.
+assert np.all(lhc['mb.a12r4.b2'].ksl_rel[:2] == 0)
+
+assert np.max(np.abs(lhc['mq.12r4.b2'].knl_rel)) > 10.
+assert np.all(lhc['mq.12r4.b2'].knl_rel[:2] == 0)
+assert np.max(np.abs(lhc['mq.12r4.b2'].ksl_rel)) > 10.
+assert np.all(lhc['mq.12r4.b2'].ksl_rel[:2] == 0)
 
 # Read config file
 with open('config.yaml','r') as fid:
@@ -12,6 +24,13 @@ with open('config.yaml','r') as fid:
 vars_to_zero = config['knobs_to_zero_for_flat_orbit']
 tt_to_zero = lhc.vars.get_table(expr_obj=True).rows[vars_to_zero]
 lhc.set(tt_to_zero, 0)
+
+lhc['beambeam_scale'] = 0 # Beam beam off
+lhc['on_corr_co'] = 0
+lhc['cmis.b1_op'] = 0
+lhc['cmis.b2_op'] = 0
+lhc['cmrs.b1_op'] = 0
+lhc['cmrs.b2_op'] = 0
 
 env_test = lhc
 
