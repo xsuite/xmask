@@ -1,5 +1,6 @@
 import xtrack as xt
 import xmask as xm
+import xobjects as xo
 import numpy as np
 
 lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
@@ -158,11 +159,20 @@ lhc.set(tt_vars.rows['cmis.*|cmrs.*'], 0)
 lhc.set(tt_vars.rows['dqx.*|dqy.*'], 0)
 lhc.set(tt_vars.rows['dqp.*'], 0)
 
+tw1 = lhc.b1.twiss(strengths=True)
+tw2 = lhc.b2.twiss(strengths=True)
 
-tw1 = lhc.b1.twiss4d(strengths=True)
-tw2 = lhc.b2.twiss4d(strengths=True)
-
-ASSERT ORBIT, Q, Q', C_MINUS, No k1s no k2s, etc...
+for tw in [tw1, tw2]:
+    xo.assert_allclose(tw.x, 0, atol=1e-10)
+    xo.assert_allclose(tw.px, 0, atol=1e-10)
+    xo.assert_allclose(tw.y, 0, atol=1e-10)
+    xo.assert_allclose(tw.py, 0, atol=1e-10)
+    xo.assert_allclose(tw.qx, 62.31, atol=1e-6)
+    xo.assert_allclose(tw.qy, 60.32, atol=1e-6)
+    xo.assert_allclose(tw.dqx, 0, atol=1e-3)
+    xo.assert_allclose(tw.dqy, 0, atol=1e-3)
+    xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
+    xo.assert_allclose(tw.qs, 0.0021243, atol=1e-5)
 
 import matplotlib.pyplot as plt
 plt.close('all')
