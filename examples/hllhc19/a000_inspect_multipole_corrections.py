@@ -152,6 +152,17 @@ assert np.abs(tw_b1_mcs_off.dqy) > 100
 assert np.abs(tw_b1_mcs_on.dqx) < 20
 assert np.abs(tw_b1_mcs_on.dqy) < 20
 
+# Back to clean machine
+lhc.set(tt_vars.rows['on_.*'], 0)
+lhc.set(tt_vars.rows['cmis.*|cmrs.*'], 0)
+lhc.set(tt_vars.rows['dqx.*|dqy.*'], 0)
+lhc.set(tt_vars.rows['dqp.*'], 0)
+
+
+tw1 = lhc.b1.twiss4d(strengths=True)
+tw2 = lhc.b2.twiss4d(strengths=True)
+
+ASSERT ORBIT, Q, Q', C_MINUS, No k1s no k2s, etc...
 
 import matplotlib.pyplot as plt
 plt.close('all')
