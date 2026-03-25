@@ -16,6 +16,16 @@ assert np.all(lhc['mq.12r4.b2'].knl_rel[:2] == 0)
 assert np.max(np.abs(lhc['mq.12r4.b2'].ksl_rel)) > 10.
 assert np.all(lhc['mq.12r4.b2'].ksl_rel[:2] == 0)
 
+tt_triplet_quads_15 = lhc.elements.get_table().rows['mqxf.*'].rows.match(element_type='Quadrupole')
+assert len(tt_triplet_quads_15) == 2 * 2 * 2 * 6 # 2 beams, 2 sides, 2 ips, 6 quads per triplet
+tt_d2_15 = lhc.elements.get_table().rows['mbrd.*']
+assert len(tt_d2_15) == 2 * 2 * 2 # 2 beams, 2 sides, 2 ips
+for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
+    assert np.max(np.abs(lhc[nn].knl_rel)) > 10.
+    assert np.all(lhc[nn].knl_rel[:2] == 0)
+    assert np.max(np.abs(lhc[nn].ksl_rel)) > 10.
+    assert np.all(lhc[nn].ksl_rel[:2] == 0)
+
 # Read config file
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
