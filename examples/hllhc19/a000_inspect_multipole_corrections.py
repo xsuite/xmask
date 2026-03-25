@@ -173,6 +173,16 @@ for tw in [tw1, tw2]:
     xo.assert_allclose(tw.dqy, 0, atol=1e-3)
     xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
     xo.assert_allclose(tw.qs, 0.0021243, atol=1e-5)
+    xo.assert_allclose(tw.rows[['ip1', 'ip2', 'ip5', 'ip8']].betx,
+                       [0.15, 10, 0.15, 1.5], rtol=1e-4)
+    xo.assert_allclose(tw.k1sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k2sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k3sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k4l, 0, atol=1e-12)
+    xo.assert_allclose(tw.k4sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k5l, 0, atol=1e-12)
+    xo.assert_allclose(tw.k5sl, 0, atol=1e-12)
+
 
 import matplotlib.pyplot as plt
 plt.close('all')
