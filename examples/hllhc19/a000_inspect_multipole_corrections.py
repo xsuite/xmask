@@ -36,6 +36,11 @@ assert np.all(np.abs(tt_vars_orig.rows['kcssx.*[l,r][1,5]'].value) > 1e-4)
 assert np.all(np.abs(tt_vars_orig.rows['kcosx.*[l,r][1,5]'].value) > 1e-4)
 assert np.all(np.abs(tt_vars_orig.rows['kctsx.*[l,r][1,5]'].value) > 1e-4)
 
+# Check that the spool piece correctors are powered
+assert np.all(np.abs(tt_vars_orig.rows['kcs.a.*'].value) > 1e-4)
+assert np.all(tt_vars_orig.rows['kco.a.*'].value == 0)
+assert np.all(np.abs(tt_vars_orig.rows['kcd.a.*'].value) > 1e-4)
+
 # Check error knob behavior
 lhc.set(tt_vars_orig.rows['on_error.*'], 0)
 assert np.all(lhc['mb.a12r4.b2'].knl_rel == 0)
@@ -48,7 +53,6 @@ for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
 
 # Check correction knob behavior
 lhc.set(tt_vars_orig.rows['on_corr.*'], 0)
-
 tt_vars = lhc.vars.get_table()
 assert np.all(tt_vars.rows['kcsx.*[l,r][1,5]'].value == 0)
 assert np.all(tt_vars.rows['kcox.*[l,r][1,5]'].value == 0)
@@ -57,7 +61,12 @@ assert np.all(tt_vars.rows['kctx.*[l,r][1,5]'].value == 0)
 assert np.all(tt_vars.rows['kcssx.*[l,r][1,5]'].value == 0)
 assert np.all(tt_vars.rows['kcosx.*[l,r][1,5]'].value == 0)
 assert np.all(tt_vars.rows['kctsx.*[l,r][1,5]'].value == 0)
+assert np.all(tt_vars.rows['kcs.a.*'].value == 0)
+assert np.all(tt_vars.rows['kco.a.*'].value == 0)
+assert np.all(tt_vars.rows['kcd.a.*'].value == 0)
 
+# Restore knobs
+lhc.vars.update(tt_vars_orig.rows['on_corr_.*|on_error_.*'].to_dict())
 
 # Read config file
 with open('config.yaml','r') as fid:
