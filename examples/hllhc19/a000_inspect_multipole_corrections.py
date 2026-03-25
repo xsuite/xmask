@@ -76,7 +76,7 @@ with open('config.yaml','r') as fid:
 lhc['beambeam_scale'] = 0 # Beam beam off
 
 tw1 = lhc.b1.twiss()
-tw2 = lhc.b2.twiss()
+tw2 = lhc.b2.twiss(reverse=True)
 
 xo.assert_allclose(tw1.qx, 62.31, atol=1e-5)
 xo.assert_allclose(tw1.qy, 60.32, atol=1e-5)
@@ -88,6 +88,8 @@ xo.assert_allclose(tw2.dqx, 5, atol=0.05)
 xo.assert_allclose(tw2.dqy, 6, atol=0.05)
 xo.assert_allclose(tw1.c_minus, 0, atol=2e-4)
 xo.assert_allclose(tw2.c_minus, 0, atol=2e-4)
+# xo.assert_allclose(tw1.rows[['ip1', 'ip2', 'ip5', 'ip8']].px,
+#                            [250e-6,    0,  0, 1.5], rtol=1e-4)
 
 
 # Remove corrections that are not valid with flat orbit
