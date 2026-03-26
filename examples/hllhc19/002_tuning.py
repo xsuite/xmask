@@ -18,6 +18,7 @@ env_ref = xt.load(f'lhc_co_ref_{config["label"]}.json')
 
 # Tunings
 conf_tuning = config['tuning']
+optimizers = {}
 for line_name in ['b1', 'b2']:
     print()
     print('Working on line ', line_name)
@@ -31,7 +32,7 @@ for line_name in ['b1', 'b2']:
         'dqy': conf_tuning['dqy'][line_name],
     }
 
-    xm.machine_tuning(line=lhc[line_name],
+    optimizers[line_name] = xm.machine_tuning(line=lhc[line_name],
         enable_closed_orbit_correction=True,
         enable_linear_coupling_correction=True,
         enable_tune_correction=True,

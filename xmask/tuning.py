@@ -30,6 +30,8 @@ def machine_tuning(line,
     if tol_c_minus is None:
         tol_c_minus = 2e-4
 
+    opts = {}
+
     # Correct closed orbit
     if enable_closed_orbit_correction:
         print()
@@ -43,9 +45,11 @@ def machine_tuning(line,
         if line_co_ref.env is not line.env:
             xm.transfer_vars_to_env(source=line, dest=line_co_ref)
 
-        line._xmask_correct_closed_orbit(
+        opts_co = line._xmask_correct_closed_orbit(
                                 reference=line_co_ref,
                                 correction_config=co_corr_config)
+        if opts_co:
+            opts.update(opts_co)
 
     if enable_linear_coupling_correction:
         assert knob_names is not None
@@ -54,7 +58,7 @@ def machine_tuning(line,
         # Match coupling
         print()
         print(f'Matching linear coupling')
-        line.match(verbose=verbose,
+        opt_coupling = line.match(verbose=verbose,
             compute_chromatic_properties=False,
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
@@ -62,6 +66,7 @@ def machine_tuning(line,
                 xt.Vary(name=knob_names['c_minus_knob_2'],
                         limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob)],
             targets=[xt.Target('c_minus', 0, tol=tol_c_minus)])
+        opts['coupling'] = opt_coupling
 
     # Match tune and chromaticity
     if enable_tune_correction or enable_chromaticity_correction:
@@ -97,7 +102,9 @@ def machine_tuning(line,
 
         print()
         print(f'Matching tune and chromaticity')
-        line.match(verbose=verbose, vary=vary, targets=match_targets)
+        opt_tune_chormaticity = line.match(verbose=verbose, vary=vary, targets=match_targets)
+        opts['tune_chromaticity'] = opt_tune_chormaticity
+    return opts
 
 def transfer_vars_to_env(source, dest):
     old_default_to_zero = dest.vars.default_to_zero
@@ -105,7 +112,7 @@ def transfer_vars_to_env(source, dest):
     source_dct = source.vars.get_table(compact=False).to_dict()
     for nn, vv in source_dct.items():
         if isinstance(vv, str):
-            dest.ref[nn] = eval(vv, locals=dest.ref_manager.containers)
+            dest.ref[nn] = eval(vv, {}, dest.ref_manager.containers)
         else:
             dest.ref[nn] = vv
     dest.vars.default_to_zero = old_default_to_zero
