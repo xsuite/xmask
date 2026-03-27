@@ -50,7 +50,7 @@ knob_settings:
   on_sep5h: 0            # [mm]
   on_x8v: -200           # [urad]
   on_sep8h: -0.043       # [mm]
-  on_sep8v: 0.003        # [mm]
+  on_sep8v: -0.01        # [mm]
 
   on_disp: 1.
   on_dx1hs: on_x1hs*on_disp
