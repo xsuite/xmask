@@ -3,6 +3,8 @@ from scipy.constants import c as clight
 import xtrack as xt
 
 def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
+
+    opts = {}
     for ip_name in config_lumi_leveling.keys():
 
         print(f'\n --- Leveling in {ip_name} ---')
@@ -89,3 +91,5 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             solve=False,
         )
         opt.solve()
+        opts[ip_name] = opt
+    return opts

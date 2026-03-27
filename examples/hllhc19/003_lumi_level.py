@@ -13,7 +13,7 @@ lhc = xt.Environment.from_json(f'lhc_{config["label"]}_02_tuned_bb_off.json')
 config_lumi_leveling = config['lumi_leveling']
 config_beambeam = config['beam_beam']
 
-xlhc.luminosity_leveling(
+opts = xlhc.luminosity_leveling(
     lhc, config_lumi_leveling=config_lumi_leveling,
     config_beambeam=config_beambeam)
 
