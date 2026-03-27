@@ -52,7 +52,8 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         else:
             raise ValueError('Either `luminosity` or `separation_in_sigmas` must be specified')
 
-        tw0 = collider.twiss(lines=line_names)
+        tw0 = collider.twiss(lines=line_names,
+                             compute_chromatic_properties=False)
         if config_this_ip['impose_separation_orthogonal_to_crossing']:
             targets.append(
                 xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
