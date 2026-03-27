@@ -13,7 +13,7 @@ lhc = xt.load(f'lhc_{config["label"]}_01_multipolar_errors_corrected.json')
 for kk, vv in config['knob_settings'].items():
     lhc[kk] = vv
 
-# Refernce model for orbit correction
+# Reference model for orbit correction
 env_ref = xt.load(f'lhc_co_ref_{config["label"]}.json')
 
 # Tunings
