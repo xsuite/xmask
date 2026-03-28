@@ -202,6 +202,13 @@ ll_ip8 = xt.lumi.luminosity_from_twiss(
     crab=False)
 xo.assert_allclose(ll_ip8, 2e33, rtol=0.05)
 
+# Check separation plane orthogonal to crossing in ip8 (set by leveling)
+x_diff_ip8 = tw1['x', 'ip8'] - tw2['x', 'ip8']
+y_diff_ip8 = tw1['y', 'ip8'] - tw2['y', 'ip8']
+px_diff_ip8 = tw1['px', 'ip8'] - tw2['px', 'ip8']
+py_diff_ip8 = tw1['py', 'ip8'] - tw2['py', 'ip8']
+xo.assert_allclose(x_diff_ip8*px_diff_ip8 + y_diff_ip8*py_diff_ip8, 0, atol=1e-12)
+
 # Check separation in ip2
 sigma_b1 = tw1.get_beam_covariance(nemitt_x=2.5e-6, nemitt_y=2.5e-6)
 xo.assert_allclose((tw1['x', 'ip2'] - tw2['x', 'ip2'])/sigma_b1['sigma_x', 'ip2'],
