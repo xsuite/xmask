@@ -147,6 +147,17 @@ xo.assert_allclose(tw2_internal_cross_28.rows[
     ['bpms.2l2.b2', 'bpmsw.1l2.b2', 'bpmsw.1r2.b2', 'bpms.2r2.b2']].px,
     0, atol=3e-6)
 
+for ip in ['ip1', 'ip2', 'ip5', 'ip8']:
+    xo.assert_allclose(tw1['dx', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw1['dpx', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw1['dy', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw1['dpy', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw2['dx', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw2['dpx', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw2['dy', ip], 0, atol=5e-2)
+    xo.assert_allclose(tw2['dpy', ip], 0, atol=5e-2)
+
+
 prrrr
 
 
