@@ -189,6 +189,18 @@ xo.assert_allclose(tw2_no_crab['dx_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw1_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw2_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 
+ll_ip8 = xt.lumi.luminosity_from_twiss(
+    n_colliding_bunches=2572,
+    num_particles_per_bunch=2.2e11,
+    ip_name='ip8',
+    nemitt_x=2.5e-6,
+    nemitt_y=2.5e-6,
+    sigma_z=0.076,
+    twiss_b1=lhc.b1.twiss(reverse=False),
+    twiss_b2=lhc.b2.twiss(reverse=False),
+    crab=False)
+xo.assert_allclose(ll_ip8, 2e33, rtol=0.05)
+
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
 lhc['cmis.b1_op'] = 0
@@ -274,10 +286,10 @@ lhc.set(tt_vars.rows['cmis.*|cmrs.*'], 0)
 lhc.set(tt_vars.rows['dqx.*|dqy.*'], 0)
 lhc.set(tt_vars.rows['dqp.*'], 0)
 
-tw1 = lhc.b1.twiss(strengths=True)
-tw2 = lhc.b2.twiss(strengths=True)
+tw1_clean = lhc.b1.twiss(strengths=True)
+tw2_clean = lhc.b2.twiss(strengths=True)
 
-for tw in [tw1, tw2]:
+for tw in [tw1_clean, tw2_clean]:
     xo.assert_allclose(tw.x, 0, atol=1e-10)
     xo.assert_allclose(tw.px, 0, atol=1e-10)
     xo.assert_allclose(tw.y, 0, atol=1e-10)
