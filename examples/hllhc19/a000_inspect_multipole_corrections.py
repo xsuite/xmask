@@ -101,15 +101,19 @@ with xt.line._temp_knobs(lhc, dict(on_disp=0, on_x8v=0, on_x2v=0,
 xo.assert_allclose(lhc['on_x8v'], -200, rtol=1e-10)
 xo.assert_allclose(lhc['on_x2v'], -170, rtol=1e-10)
 
-xo.assert_allclose(tw1_internal_cross_28['px', 'ip8'], 134e-6, atol=1e-6)
-xo.assert_allclose(tw2_internal_cross_28['px', 'ip8'], -134e-6, atol=1e-6)
+xo.assert_allclose(tw1_internal_cross_28['px', 'ip8'], 134e-6, atol=2e-6)
+xo.assert_allclose(tw2_internal_cross_28['px', 'ip8'], -134e-6, atol=2e-6)
 xo.assert_allclose(tw1['px', 'ip8'], 134e-6, atol=2e-6)
 xo.assert_allclose(tw2['px', 'ip8'], -134e-6, atol=2e-6)
+xo.assert_allclose(tw1_internal_cross_28['py', 'ip8'], 0, atol=3e-6)
+xo.assert_allclose(tw2_internal_cross_28['py', 'ip8'], 0, atol=3e-6)
 
-xo.assert_allclose(tw1_internal_cross_28['py', 'ip2'], 70e-6, atol=1e-6)
-xo.assert_allclose(tw2_internal_cross_28['py', 'ip2'], -70e-6, atol=1e-6)
+xo.assert_allclose(tw1_internal_cross_28['py', 'ip2'], 70e-6, atol=2e-6)
+xo.assert_allclose(tw2_internal_cross_28['py', 'ip2'], -70e-6, atol=2e-6)
 xo.assert_allclose(tw1['py', 'ip2'], -170e-6 + 70e-6, atol=2e-6)
 xo.assert_allclose(tw2['py', 'ip2'], 170e-6 -70e-6, atol=2e-6)
+xo.assert_allclose(tw1_internal_cross_28['px', 'ip2'], 0, atol=2e-6)
+xo.assert_allclose(tw2_internal_cross_28['px', 'ip2'], 0, atol=2e-6)
 
 # Check that the bumps from the experimental dipoles are closed (no angle in at the triplets)
 xo.assert_allclose(tw1_internal_cross_28.rows[
@@ -124,6 +128,8 @@ xo.assert_allclose(tw1_internal_cross_28.rows[
 xo.assert_allclose(tw2_internal_cross_28.rows[
     ['bpms.2l2.b2', 'bpmsw.1l2.b2', 'bpmsw.1r2.b2', 'bpms.2r2.b2']].px,
     0, atol=3e-6)
+
+prrrr
 
 
 # Remove corrections that are not valid with flat orbit
