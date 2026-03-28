@@ -149,6 +149,17 @@ xo.assert_allclose(tw2_internal_cross_28.rows[
     ['bpms.2l2.b2', 'bpmsw.1l2.b2', 'bpmsw.1r2.b2', 'bpms.2r2.b2']].px,
     0, atol=3e-6)
 
+# Check orbit at other ips
+for ip in ['ip3', 'ip4', 'ip6', 'ip7']:
+    xo.assert_allclose(tw1['px', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw2['px', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw1['py', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw2['py', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw1['x', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw2['x', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw1['y', ip], 0, atol=5e-6)
+    xo.assert_allclose(tw2['y', ip], 0, atol=5e-6)
+
 # Check dispersions
 for ip in ['ip1', 'ip2', 'ip5', 'ip8']:
     xo.assert_allclose(tw1['dx', ip], 0, atol=5e-2)
