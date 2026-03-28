@@ -189,6 +189,7 @@ xo.assert_allclose(tw2_no_crab['dx_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw1_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw2_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 
+# Check luminoisity in ip8 (set by leveling)
 ll_ip8 = xt.lumi.luminosity_from_twiss(
     n_colliding_bunches=2572,
     num_particles_per_bunch=2.2e11,
@@ -200,6 +201,13 @@ ll_ip8 = xt.lumi.luminosity_from_twiss(
     twiss_b2=lhc.b2.twiss(reverse=False),
     crab=False)
 xo.assert_allclose(ll_ip8, 2e33, rtol=0.05)
+
+# Check separation in ip2
+sigma_b1 = tw1.get_beam_covariance(nemitt_x=2.5e-6, nemitt_y=2.5e-6)
+xo.assert_allclose((tw1['x', 'ip2'] - tw2['x', 'ip2'])/sigma_b1['sigma_x', 'ip2'],
+                   5, rtol=0.1)
+xo.assert_allclose(tw1['y', 'ip2'], 0, atol=1e-7)
+xo.assert_allclose(tw2['y', 'ip2'], 0, atol=1e-7)
 
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
