@@ -157,6 +157,12 @@ for ip in ['ip1', 'ip2', 'ip5', 'ip8']:
     xo.assert_allclose(tw2['dy', ip], 0, atol=5e-2)
     xo.assert_allclose(tw2['dpy', ip], 0, atol=5e-2)
 
+# Check that dispersion degrades if disp correction is turned off
+with xt.line._temp_knobs(lhc, dict(on_disp=0)):
+    tw1_no_disp = lhc.b1.twiss()
+    tw2_no_disp = lhc.b2.twiss(reverse=True)
+
+assert np.abs(tw1_no_disp['dx', 'ip1']) > np.abs(tw1['dx', 'ip1']) * 6
 
 prrrr
 
