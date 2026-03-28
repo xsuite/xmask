@@ -163,9 +163,19 @@ with xt.line._temp_knobs(lhc, dict(on_disp=0)):
     tw2_no_disp = lhc.b2.twiss(reverse=True)
 
 assert np.abs(tw1_no_disp['dx', 'ip1']) > np.abs(tw1['dx', 'ip1']) * 6
+assert np.abs(tw2_no_disp['dx', 'ip1']) > np.abs(tw2['dx', 'ip1']) * 6
+assert np.abs(tw1_no_disp['dx', 'ip5']) > np.abs(tw1['dx', 'ip5']) * 6
+assert np.abs(tw2_no_disp['dx', 'ip5']) > np.abs(tw2['dx', 'ip5']) * 6
 
-prrrr
-
+# Check crab dispersion
+xo.assert_allclose(tw1['dx_zeta', 'ip1'], -190e-6, atol=10e-6)
+xo.assert_allclose(tw2['dx_zeta', 'ip1'], 190e-6, atol=10e-6)
+xo.assert_allclose(tw1['dy_zeta', 'ip1'], 0, atol=5e-6)
+xo.assert_allclose(tw2['dy_zeta', 'ip1'], 0, atol=5e-6)
+xo.assert_allclose(tw1['dx_zeta', 'ip5'], 0, atol=5e-6)
+xo.assert_allclose(tw2['dx_zeta', 'ip5'], 0, atol=5e-6)
+xo.assert_allclose(tw1['dy_zeta', 'ip5'], -190e-6, atol=10e-6)
+xo.assert_allclose(tw2['dy_zeta', 'ip5'], 190e-6, atol=10e-6)
 
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
