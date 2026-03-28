@@ -177,6 +177,18 @@ xo.assert_allclose(tw2['dx_zeta', 'ip5'], 0, atol=5e-6)
 xo.assert_allclose(tw1['dy_zeta', 'ip5'], -190e-6, atol=10e-6)
 xo.assert_allclose(tw2['dy_zeta', 'ip5'], 190e-6, atol=10e-6)
 
+with xt.line._temp_knobs(lhc, dict(on_crab1=0, on_crab5=0)):
+    tw1_no_crab = lhc.b1.twiss()
+    tw2_no_crab = lhc.b2.twiss(reverse=True)
+xo.assert_allclose(tw1_no_crab['dx_zeta', 'ip1'], 0, atol=1e-7)
+xo.assert_allclose(tw2_no_crab['dx_zeta', 'ip1'], 0, atol=1e-7)
+xo.assert_allclose(tw1_no_crab['dy_zeta', 'ip1'], 0, atol=1e-7)
+xo.assert_allclose(tw2_no_crab['dy_zeta', 'ip1'], 0, atol=1e-7)
+xo.assert_allclose(tw1_no_crab['dx_zeta', 'ip5'], 0, atol=1e-7)
+xo.assert_allclose(tw2_no_crab['dx_zeta', 'ip5'], 0, atol=1e-7)
+xo.assert_allclose(tw1_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
+xo.assert_allclose(tw2_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
+
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
 lhc['cmis.b1_op'] = 0
