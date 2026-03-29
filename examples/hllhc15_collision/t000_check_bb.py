@@ -5,7 +5,10 @@ from itertools import product
 import numpy as np
 import pandas as pd
 
-collider = xt.Environment.from_json('./collider_04_tuned_and_leveled_bb_on.json')
+fname = '../hllhc14_collision/collider_04_tuned_and_leveled_bb_on.json'
+# fname = 'collider_04_tuned_and_leveled_bb_on.json'
+
+collider = xt.Environment.from_json(fname)
 collider.build_trackers()
 
 
@@ -296,6 +299,9 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
                 * np.sin(2 * np.pi * zz
                         * harmonic_number / tw_strong.circumference)),
             rtol=0, atol=1e-6) # Not the cleanest, to be investigated
+        print(f"nn_weak: {nn_weak}, nn_strong: {nn_strong}")
+        print(f"shift_x: {ee_weak.other_beam_shift_x}, expected shift_x: {(tw_strong['x', nn_strong] - tw_weak['x', nn_weak] + survey_strong['X', nn_strong] - survey_weak['X', nn_weak] - phi_crab_x * tw_strong.circumference / (2 * np.pi * harmonic_number) * np.sin(2 * np.pi * zz * harmonic_number / tw_strong.circumference))}")
+        print(f"x_strong: {tw_strong['x', nn_strong]}, x_weak: {tw_weak['x', nn_weak]}, survey_strong: {survey_strong['X', nn_strong]}, survey_weak: {survey_weak['X', nn_weak]}, phi_crab_x: {phi_crab_x}, zz: {zz}")
 
         xo.assert_allclose(ee_weak.other_beam_shift_y,
             (tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
