@@ -131,7 +131,8 @@ def build_xsuite_collider(
             mad_track.sequence[sequence_name], apply_madx_errors=True,
             deferred_expressions=True,
             install_apertures=install_apertures,
-            replace_in_expr={'bv_aux': 'bvaux_'+sequence_name})
+            replace_in_expr={'bv_aux': 'bvaux_'+sequence_name,
+                             'isnotb4': 'isnotb4_'+sequence_name})
         mad_beam = mad_track.sequence[sequence_name].beam
         line.particle_ref = xp.Particles(p0c = mad_beam.pc*1e9,
             q0 = mad_beam.charge, mass0 = mad_beam.mass*1e9)
