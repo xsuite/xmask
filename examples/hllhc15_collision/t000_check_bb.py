@@ -195,12 +195,10 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
     with xt._temp_knobs(collider, knobs={'beambeam_scale': 0}):
         tw_z_crab_plus = collider[name_strong].twiss(
             zeta0=-(z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
         tw_z_crab_minus = collider[name_strong].twiss(
             zeta0= -(-z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
     phi_crab_x = -(
         (tw_z_crab_plus['x', f'ip{ip_n}'] - tw_z_crab_minus['x', f'ip{ip_n}'])
             / (2 * z_crab_test))

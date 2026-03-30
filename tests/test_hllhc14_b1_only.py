@@ -356,12 +356,10 @@ def test_hllhc14_b1_only_3_bb_config():
         z_crab_test = 0.01 # This is the z for the reversed strong beam (e.g. b2 and not b4)
         tw_z_crab_plus = collider_ref[name_strong].twiss(
             zeta0=-(z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
         tw_z_crab_minus = collider_ref[name_strong].twiss(
             zeta0= -(-z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
         phi_crab_x = -(
             (tw_z_crab_plus['x', f'ip{ip_n}'] - tw_z_crab_minus['x', f'ip{ip_n}'])
                 / (2*z_crab_test))
