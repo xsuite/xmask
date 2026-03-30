@@ -4,7 +4,7 @@ collider = xt.Environment.from_json('./collider_04_tuned_and_leveled_bb_on.json'
 collider.build_trackers()
 
 # collider['beambeam_scale'] = 0.0
-# collider['bb_ho.l1b1_05'].scale_strength = 1.
+# collider['bb_ho.l1b1_05'].scale_strength = 0.
 # collider['bb_ho.l1b1_04'].scale_strength = 0.
 # collider['bb_ho.l1b1_03'].scale_strength = 0.
 # collider['bb_ho.l1b1_02'].scale_strength = 0.
@@ -17,7 +17,8 @@ collider.build_trackers()
 # collider['bb_ho.r1b1_05'].scale_strength = 0.
 
 # collider['bb_ho.c1b1_00'].scale_strength = 1.
-# collider.set(collider.lhcb1.get_table().rows['bb_ho.*1b1_.*'], scale_strength=1.0)
+ttt = collider.lhcb1.get_table().rows['bb_ho.*1b1_.*']
+collider.set(ttt, scale_strength=0.0)
 # collider.set(collider.lhcb1.get_table().rows['bb_lr.*'], scale_strength=0.0)
 
 fp_polar_no_rescale = collider['lhcb1'].get_footprint(nemitt_x=2.5e-6, nemitt_y=2.5e-6)
