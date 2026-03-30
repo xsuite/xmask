@@ -119,7 +119,6 @@ def configure_b4_from_b2(sequence_b4, sequence_b2,
         mad_b4.input(f'{nn}:={str(b2_dep[nn])}')
 
     # bv_aux and my my lhcbeam need to be defined explicitly
-    breakpoint()
     for nn in update_globals.keys():
         mad_b4.input(f'{nn}={update_globals[nn]}')
 
