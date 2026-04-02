@@ -371,5 +371,3 @@ for line_name in ['b1', 'b2']:
     xo.assert_allclose(np.min(fp_polar_with_rescale.qy), 0.3036, atol=1e-3)
     xo.assert_allclose(np.max(fp_polar_with_rescale.qy), 0.3187, atol=1e-3)
 
-
-
