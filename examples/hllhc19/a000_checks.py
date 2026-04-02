@@ -3,8 +3,14 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
-# lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
-lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
+label = 'thin'
+
+if label == 'thin':
+    lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
+elif label == 'thick':
+    lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
+else:
+    raise ValueError
 
 # Check that errors on a few magnet types are present,
 # and that the first two orders are zero (consistently with setup)
