@@ -17,6 +17,11 @@ lhc.b2.twiss_default.clear()
 # Load optics
 lhc.vars.load(config['optics_file'])
 
+assert 'particle_ref_b1' in lhc.particles
+assert 'particle_ref_b2' in lhc.particles
+assert lhc.b1.particle_ref.name == 'particle_ref_b1'
+assert lhc.b2.particle_ref.name == 'particle_ref_b2'
+
 # Create reference particles (TODO: generalize for ions)
 if 'particle_ref_b1' not in lhc.particles:
     lhc.new_particle(f'particle_ref_b1',

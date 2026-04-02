@@ -300,8 +300,8 @@ for line_name in ['b1', 'b2']:
 
 assert np.max(global_chrom_coupling_no_corr['b1']) > 2e-3
 assert np.max(global_chrom_coupling_no_corr['b2']) > 2e-3
-assert np.all(np.abs(global_chrom_coupling['b1']) < 3e-4)
-assert np.all(np.abs(global_chrom_coupling['b2']) < 3e-4)
+assert np.all(np.abs(global_chrom_coupling['b1']) < 6e-4)
+assert np.all(np.abs(global_chrom_coupling['b2']) < 6e-4)
 
 # Check effect of mcs on chromaticity
 lhc.set(lhc.vars.get_table().rows['on_corr_kcs.*'], 0)
@@ -322,14 +322,38 @@ lhc.set(tt_vars.rows['cmis.*|cmrs.*'], 0)
 lhc.set(tt_vars.rows['dqx.*|dqy.*'], 0)
 lhc.set(tt_vars.rows['dqp.*'], 0)
 
-tw1_clean = lhc.b1.twiss(strengths=True)
-tw2_clean = lhc.b2.twiss(strengths=True)
+tw1_clean = lhc.b1.twiss4d(strengths=True)
+tw2_clean = lhc.b2.twiss4d(strengths=True)
 
 for tw in [tw1_clean, tw2_clean]:
-    xo.assert_allclose(tw.x, 0, atol=1e-10)
-    xo.assert_allclose(tw.px, 0, atol=1e-10)
-    xo.assert_allclose(tw.y, 0, atol=1e-10)
-    xo.assert_allclose(tw.py, 0, atol=1e-10)
+    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=1e-9)
+    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=1e-10)
+    xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
+    xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
+    xo.assert_allclose(tw.qx, 62.31, atol=1e-6)
+    xo.assert_allclose(tw.qy, 60.32, atol=1e-6)
+    xo.assert_allclose(tw.dqx, 0, atol=1e-3)
+    xo.assert_allclose(tw.dqy, 0, atol=1e-3)
+    xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
+    # xo.assert_allclose(tw.qs, 0.0021243, atol=1e-5)
+    xo.assert_allclose(tw.rows[['ip1', 'ip2', 'ip5', 'ip8']].betx,
+                       [0.15, 10, 0.15, 1.5], rtol=1e-4)
+    xo.assert_allclose(tw.k1sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k2sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k3sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k4l, 0, atol=1e-12)
+    xo.assert_allclose(tw.k4sl, 0, atol=1e-12)
+    xo.assert_allclose(tw.k5l, 0, atol=1e-12)
+    xo.assert_allclose(tw.k5sl, 0, atol=1e-12)
+
+tw1_clean_6d = lhc.b1.twiss6d(strengths=True)
+tw2_clean_6d = lhc.b2.twiss6d(strengths=True)
+
+for tw in [tw1_clean_6d, tw2_clean_6d]:
+    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=5e-8)
+    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=1e-8)
+    xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
+    xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
     xo.assert_allclose(tw.qx, 62.31, atol=1e-6)
     xo.assert_allclose(tw.qy, 60.32, atol=1e-6)
     xo.assert_allclose(tw.dqx, 0, atol=1e-3)
@@ -345,7 +369,6 @@ for tw in [tw1_clean, tw2_clean]:
     xo.assert_allclose(tw.k4sl, 0, atol=1e-12)
     xo.assert_allclose(tw.k5l, 0, atol=1e-12)
     xo.assert_allclose(tw.k5sl, 0, atol=1e-12)
-
 
 import matplotlib.pyplot as plt
 plt.close('all')

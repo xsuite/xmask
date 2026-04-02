@@ -10,6 +10,9 @@ optics_file: opt_150.madx
 
 new_knobs: {
 
+  p0c: 7e12, # Need to change the energy here to have it in the closed-orbit
+             # correction references
+
   on_alice: on_alice_normalized * 7000e9 / energy0_b1,
   on_lhcb: on_lhcb_normalized * 7000e9 / energy0_b1,
 
