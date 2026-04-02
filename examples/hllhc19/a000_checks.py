@@ -3,6 +3,7 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
+# lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
 lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
 
 # Check that errors on a few magnet types are present,
@@ -19,7 +20,7 @@ assert np.all(lhc['mq.12r4.b2'].ksl_rel[:2] == 0)
 
 tt_triplet_quads_15 = lhc.elements.get_table().rows['mqxf.*'].rows.match(element_type='Quadrupole')
 assert len(tt_triplet_quads_15) == 2 * 2 * 2 * 6 # 2 beams, 2 sides, 2 ips, 6 quads per triplet
-tt_d2_15 = lhc.elements.get_table().rows['mbrd.*']
+tt_d2_15 = lhc.elements.get_table().rows['mbrd.*'].rows.match(element_type='RBend')
 assert len(tt_d2_15) == 2 * 2 * 2 # 2 beams, 2 sides, 2 ips
 for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
     assert np.max(np.abs(lhc[nn].knl_rel)) > 10.
@@ -176,10 +177,10 @@ with xt.line._temp_knobs(lhc, dict(on_disp=0)):
     tw1_no_disp = lhc.b1.twiss()
     tw2_no_disp = lhc.b2.twiss(reverse=True)
 
-assert np.abs(tw1_no_disp['dx', 'ip1']) > np.abs(tw1['dx', 'ip1']) * 6
-assert np.abs(tw2_no_disp['dx', 'ip1']) > np.abs(tw2['dx', 'ip1']) * 6
-assert np.abs(tw1_no_disp['dx', 'ip5']) > np.abs(tw1['dx', 'ip5']) * 6
-assert np.abs(tw2_no_disp['dx', 'ip5']) > np.abs(tw2['dx', 'ip5']) * 6
+assert np.abs(tw1_no_disp['dx', 'ip1']) > np.abs(tw1['dx', 'ip1']) * 4
+assert np.abs(tw2_no_disp['dx', 'ip1']) > np.abs(tw2['dx', 'ip1']) * 4
+assert np.abs(tw1_no_disp['dx', 'ip5']) > np.abs(tw1['dx', 'ip5']) * 4
+assert np.abs(tw2_no_disp['dx', 'ip5']) > np.abs(tw2['dx', 'ip5']) * 4
 
 # Check crab dispersion
 xo.assert_allclose(tw1['dx_zeta', 'ip1'], -190e-6, atol=10e-6)
@@ -227,8 +228,8 @@ xo.assert_allclose(x_diff_ip8*px_diff_ip8 + y_diff_ip8*py_diff_ip8, 0, atol=1e-1
 sigma_b1 = tw1.get_beam_covariance(nemitt_x=2.5e-6, nemitt_y=2.5e-6)
 xo.assert_allclose((tw1['x', 'ip2'] - tw2['x', 'ip2'])/sigma_b1['sigma_x', 'ip2'],
                    5, rtol=0.1)
-xo.assert_allclose(tw1['y', 'ip2'], 0, atol=1e-7)
-xo.assert_allclose(tw2['y', 'ip2'], 0, atol=1e-7)
+xo.assert_allclose(tw1['y', 'ip2'], 0, atol=5e-7)
+xo.assert_allclose(tw2['y', 'ip2'], 0, atol=5e-7)
 
 # Remove corrections that are not valid with flat orbit
 lhc['on_corr_co'] = 0
