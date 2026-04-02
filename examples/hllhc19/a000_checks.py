@@ -3,7 +3,7 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
-label = 'thin'
+label = 'thick'
 
 if label == 'thin':
     lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
@@ -24,9 +24,9 @@ assert np.all(lhc['mq.12r4.b2'].knl_rel[:2] == 0)
 assert np.max(np.abs(lhc['mq.12r4.b2'].ksl_rel)) > 10.
 assert np.all(lhc['mq.12r4.b2'].ksl_rel[:2] == 0)
 
-tt_triplet_quads_15 = lhc.elements.get_table().rows['mqxf.*'].rows.match(element_type='Quadrupole')
+tt_triplet_quads_15 = lhc.elements.get_table().rows['mqxf.*/b.*'].rows.match(element_type='Quadrupole')
 assert len(tt_triplet_quads_15) == 2 * 2 * 2 * 6 # 2 beams, 2 sides, 2 ips, 6 quads per triplet
-tt_d2_15 = lhc.elements.get_table().rows['mbrd.*'].rows.match(element_type='RBend')
+tt_d2_15 = lhc.elements.get_table().rows['mbrd.*4.*'].rows.match(element_type='RBend')
 assert len(tt_d2_15) == 2 * 2 * 2 # 2 beams, 2 sides, 2 ips
 for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
     assert np.max(np.abs(lhc[nn].knl_rel)) > 10.

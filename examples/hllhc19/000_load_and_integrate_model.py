@@ -18,12 +18,15 @@ lhc.b2.twiss_default.clear()
 lhc.vars.load(config['optics_file'])
 
 # Create reference particles (TODO: generalize for ions)
-lhc.new_particle(f'particle_ref_b1',
-            energy0=config['beam_config']['b1']['beam_energy_tot'] * 1e9)
-lhc.new_particle(f'particle_ref_b2',
-            energy0=config['beam_config']['b2']['beam_energy_tot'] * 1e9)
+if 'particle_ref_b1' not in lhc.particles:
+    lhc.new_particle(f'particle_ref_b1',
+                energy0=config['beam_config']['b1']['beam_energy_tot'] * 1e9)
+if 'particle_ref_b2' not in lhc.particles:
+    lhc.new_particle(f'particle_ref_b2',
+                energy0=config['beam_config']['b2']['beam_energy_tot'] * 1e9)
 
 # Assign reference particles to beams
+
 lhc.b1.particle_ref = 'particle_ref_b1'
 lhc.b2.particle_ref = 'particle_ref_b2'
 

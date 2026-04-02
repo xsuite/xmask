@@ -8,11 +8,6 @@ optics_file: opt_150.madx
 # lattice_file: lhc_thin.json
 # optics_file: opt_150_thin.madx
 
-# Beam parameters
-beam_config:
-  b1: {beam_energy_tot: 7000} # [GeV]
-  b2: {beam_energy_tot: 7000} # [GeV]
-
 new_knobs: {
 
   on_alice: on_alice_normalized * 7000e9 / energy0_b1,
@@ -43,6 +38,7 @@ apply_multipolar_errors:
     max_order: 15
 
 knob_settings:
+  p0c: 7e12              # beam energy
   # Orbit knobs
   on_x1hs: 250           # [urad]
   on_sep1v: 0            # [mm]
