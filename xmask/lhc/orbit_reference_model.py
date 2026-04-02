@@ -6,7 +6,7 @@ def build_closed_orbit_reference(lhc):
 
     lhc_ref = lhc.copy() # deep copy
     lhc_ref._var_management = None
-    lhc_ref._init_var_management() # kills all knobs on the elements
+    lhc_ref._init_var_management() # kills all knobs on the elements and the particles
 
     xm.transfer_vars_to_env(lhc, lhc_ref)
 
