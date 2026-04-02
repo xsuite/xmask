@@ -49,49 +49,6 @@ num_particles = 2.2e11
 qx_no_bb = {'lhcb1': 62.31, 'lhcb2': 62.31}
 qy_no_bb = {'lhcb1': 60.32, 'lhcb2': 60.32}
 
-for line_name in ['lhcb1', 'lhcb2']:
-
-    print(f'Global check on line {line_name}')
-
-    # Check that the number of lenses is correct
-    df = collider[line_name].to_pandas()
-    bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
-    bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
-    bb_df = pd.concat([bblr_df, bbho_df])
-
-    assert (len(bblr_df) == 2 * sum(
-        [ip_bb_config[ip]['num_lr_per_side'] for ip in ip_bb_config.keys()]))
-    assert (len(bbho_df) == len(ip_bb_config.keys()) * num_slices_head_on)
-
-    # Check that beam-beam scale knob works correctly
-    collider.vars['beambeam_scale'] = 1
-    for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 1
-    collider.vars['beambeam_scale'] = 0
-    for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 0
-    collider.vars['beambeam_scale'] = 1
-    for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 1
-
-    # Twiss with and without bb
-    collider.vars['beambeam_scale'] = 1
-    tw_bb_on = collider[line_name].twiss()
-    collider.vars['beambeam_scale'] = 0
-    tw_bb_off = collider[line_name].twiss()
-    collider.vars['beambeam_scale'] = 1
-
-    xo.assert_allclose(tw_bb_off.qx, qx_no_bb[line_name], rtol=0, atol=1e-4)
-    xo.assert_allclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
-
-    # Check that there is a tune shift of the order of 1.5e-2
-    xo.assert_allclose(tw_bb_on.qx, qx_no_bb[line_name] - 1.5e-2, rtol=0, atol=5e-3)
-    xo.assert_allclose(tw_bb_on.qy, qy_no_bb[line_name] - 1.5e-2, rtol=0, atol=5e-3)
-
-    # Check that there is no effect on the orbit
-    np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
-    np.allclose(tw_bb_on.y, tw_bb_off.y, atol=1e-10, rtol=0)
-
 for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
     print(f'\n--> Checking {name_weak} {ip}\n')
@@ -352,3 +309,46 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
         for nn in ['x', 'y', 'zeta', 'px', 'py', 'pzeta']:
             assert getattr(ee_weak, f'slices_other_beam_{nn}_center')[0] == 0
+
+for line_name in ['lhcb1', 'lhcb2']:
+
+    print(f'Global check on line {line_name}')
+
+    # Check that the number of lenses is correct
+    df = collider[line_name].to_pandas()
+    bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
+    bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
+    bb_df = pd.concat([bblr_df, bbho_df])
+
+    assert (len(bblr_df) == 2 * sum(
+        [ip_bb_config[ip]['num_lr_per_side'] for ip in ip_bb_config.keys()]))
+    assert (len(bbho_df) == len(ip_bb_config.keys()) * num_slices_head_on)
+
+    # Check that beam-beam scale knob works correctly
+    collider.vars['beambeam_scale'] = 1
+    for nn in bb_df.name.values:
+        assert collider[line_name][nn].scale_strength == 1
+    collider.vars['beambeam_scale'] = 0
+    for nn in bb_df.name.values:
+        assert collider[line_name][nn].scale_strength == 0
+    collider.vars['beambeam_scale'] = 1
+    for nn in bb_df.name.values:
+        assert collider[line_name][nn].scale_strength == 1
+
+    # Twiss with and without bb
+    collider.vars['beambeam_scale'] = 1
+    tw_bb_on = collider[line_name].twiss()
+    collider.vars['beambeam_scale'] = 0
+    tw_bb_off = collider[line_name].twiss()
+    collider.vars['beambeam_scale'] = 1
+
+    xo.assert_allclose(tw_bb_off.qx, qx_no_bb[line_name], rtol=0, atol=1e-4)
+    xo.assert_allclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
+
+    # Check that there is a tune shift of the order of 1.5e-2
+    xo.assert_allclose(tw_bb_on.qx, qx_no_bb[line_name] - 1.5e-2, rtol=0, atol=5e-3)
+    xo.assert_allclose(tw_bb_on.qy, qy_no_bb[line_name] - 1.5e-2, rtol=0, atol=5e-3)
+
+    # Check that there is no effect on the orbit
+    np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
+    np.allclose(tw_bb_on.y, tw_bb_off.y, atol=1e-10, rtol=0)
