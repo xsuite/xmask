@@ -359,8 +359,17 @@ for line_name in ['b1', 'b2']:
     np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
     np.allclose(tw_bb_on.y, tw_bb_off.y, atol=1e-10, rtol=0)
 
+    # Check size and position of the footprint
     fp_polar_with_rescale = lhc[line_name].get_footprint(
         nemitt_x=2.5e-6, nemitt_y=2.5e-6,
+        r_range=[0.1, 5],
         linear_rescale_on_knobs=[
-            xt.LinearRescale(knob_name='beambeam_scale', v0=0.0, dv=0.1)]
+            xt.LinearRescale(knob_name='beambeam_scale', v0=0.0, dv=0.2)]
         )
+    xo.assert_allclose(np.min(fp_polar_with_rescale.qx), 0.2941, atol=1e-3)
+    xo.assert_allclose(np.max(fp_polar_with_rescale.qx), 0.3071, atol=1e-3)
+    xo.assert_allclose(np.min(fp_polar_with_rescale.qy), 0.3036, atol=1e-3)
+    xo.assert_allclose(np.max(fp_polar_with_rescale.qy), 0.3187, atol=1e-3)
+
+
+
