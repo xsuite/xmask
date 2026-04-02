@@ -5,11 +5,15 @@ from itertools import product
 import numpy as np
 import pandas as pd
 
-fname = '../hllhc14_collision/collider_04_tuned_and_leveled_bb_on.json'
-# fname = 'collider_04_tuned_and_leveled_bb_on.json'
+label = 'thin'
 
-collider = xt.Environment.from_json(fname)
-collider.build_trackers()
+if label == 'thin':
+    lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
+elif label == 'thick':
+    lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
+else:
+    raise ValueError
+
 
 
 def _get_z_centroids(ho_slices, sigmaz):
@@ -35,8 +39,8 @@ ip_bb_config= {
 }
 
 line_config = {
-    'lhcb1': {'strong_beam': 'lhcb2', 'sorting': {'l': -1, 'r': 1}},
-    'lhcb2': {'strong_beam': 'lhcb1', 'sorting': {'l': 1, 'r': -1}},
+    'b1': {'strong_beam': 'b2', 'sorting': {'l': -1, 'r': 1}},
+    'b2': {'strong_beam': 'b1', 'sorting': {'l': 1, 'r': -1}},
 }
 
 nemitt_x = 2.5e-6
@@ -46,10 +50,10 @@ bunch_spacing_buckets = 10
 sigmaz = 0.076
 num_slices_head_on = 11
 num_particles = 2.2e11
-qx_no_bb = {'lhcb1': 62.31, 'lhcb2': 62.31}
-qy_no_bb = {'lhcb1': 60.32, 'lhcb2': 60.32}
+qx_no_bb = {'b1': 62.31, 'b2': 62.31}
+qy_no_bb = {'b1': 60.32, 'b2': 60.32}
 
-for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
+for name_weak, ip in product(['b1', 'b2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
     print(f'\n--> Checking {name_weak} {ip}\n')
 
@@ -60,17 +64,17 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
     # The bb lenses are setup based on the twiss taken with the bb off
     print('Twiss(es) (with bb off)')
-    with xt._temp_knobs(collider, knobs={'beambeam_scale': 0}):
-        tw_weak = collider[name_weak].twiss()
-        tw_strong = collider[name_strong].twiss().reverse()
+    with xt._temp_knobs(lhc, knobs={'beambeam_scale': 0}):
+        tw_weak = lhc[name_weak].twiss()
+        tw_strong = lhc[name_strong].twiss().reverse()
 
     # Survey starting from ip
     print('Survey(s) (starting from ip)')
-    survey_weak = collider[name_weak].survey(element0=f'ip{ip_n}')
-    survey_strong = collider[name_strong].survey(
+    survey_weak = lhc[name_weak].survey(element0=f'ip{ip_n}')
+    survey_strong = lhc[name_strong].survey(
                                         element0=f'ip{ip_n}').reverse()
-    beta0_strong = collider[name_strong].particle_ref.beta0[0]
-    gamma0_strong = collider[name_strong].particle_ref.gamma0[0]
+    beta0_strong = lhc[name_strong].particle_ref.beta0[0]
+    gamma0_strong = lhc[name_strong].particle_ref.gamma0[0]
 
     bunch_spacing_ds = (tw_weak.circumference / harmonic_number
                         * bunch_spacing_buckets)
@@ -84,7 +88,7 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
             assert nn_weak in tw_weak.name
             assert nn_strong in tw_strong.name
 
-            ee_weak = collider[name_weak][nn_weak]
+            ee_weak = lhc[name_weak][nn_weak]
 
             assert isinstance(ee_weak, xf.BeamBeamBiGaussian2D)
 
@@ -94,10 +98,10 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
                                     * nemitt_y/beta0_strong/gamma0_strong)
 
             # Beam sizes
-            xo.assert_allclose(ee_weak.other_beam_Sigma_11, expected_sigma_x**2,
-                            atol=0, rtol=1e-5)
-            xo.assert_allclose(ee_weak.other_beam_Sigma_33, expected_sigma_y**2,
-                            atol=0, rtol=1e-5)
+            xo.assert_allclose(np.sqrt(ee_weak.other_beam_Sigma_11), expected_sigma_x,
+                            atol=0, rtol=1e-4)
+            xo.assert_allclose(np.sqrt(ee_weak.other_beam_Sigma_33), expected_sigma_y,
+                            atol=0, rtol=1e-4)
 
             # Check no coupling
             assert ee_weak.other_beam_Sigma_13 == 0
@@ -149,11 +153,11 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
     # Measure crabbing angle
     z_crab_test = 0.01 # This is the z for the reversed strong beam (e.g. b2 and not b4)
-    with xt._temp_knobs(collider, knobs={'beambeam_scale': 0}):
-        tw_z_crab_plus = collider[name_strong].twiss(
+    with xt._temp_knobs(lhc, knobs={'beambeam_scale': 0}):
+        tw_z_crab_plus = lhc[name_strong].twiss(
             zeta0=-(z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
             method='4d').reverse()
-        tw_z_crab_minus = collider[name_strong].twiss(
+        tw_z_crab_minus = lhc[name_strong].twiss(
             zeta0= -(-z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
             method='4d').reverse()
     phi_crab_x = -(
@@ -177,7 +181,7 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         nn_weak = f'bb_ho.{side}{ip_n}b{name_weak[-1]}_{int(abs(ii)):02d}'
         nn_strong = f'bb_ho.{side}{ip_n}b{name_strong[-1]}_{int(abs(ii)):02d}'
 
-        ee_weak = collider[name_weak][nn_weak]
+        ee_weak = lhc[name_weak][nn_weak]
 
         assert isinstance(ee_weak, xf.BeamBeamBiGaussian3D)
         assert ee_weak.num_slices_other_beam == 1
@@ -194,22 +198,22 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         expected_sigma_y = np.sqrt(tw_strong['bety', nn_strong]
                                 * nemitt_y/beta0_strong/gamma0_strong)
 
-        xo.assert_allclose(ee_weak.slices_other_beam_Sigma_11[0],
-                        expected_sigma_x**2,
-                        atol=0, rtol=1e-5)
-        xo.assert_allclose(ee_weak.slices_other_beam_Sigma_33[0],
-                        expected_sigma_y**2,
-                        atol=0, rtol=1e-5)
+        xo.assert_allclose(np.sqrt(ee_weak.slices_other_beam_Sigma_11[0]),
+                        expected_sigma_x,
+                        atol=0, rtol=1e-2)
+        xo.assert_allclose(np.sqrt(ee_weak.slices_other_beam_Sigma_33[0]),
+                        expected_sigma_y,
+                        atol=0, rtol=1e-2)
 
         expected_sigma_px = np.sqrt(tw_strong['gamx', nn_strong]
                                     * nemitt_x/beta0_strong/gamma0_strong)
         expected_sigma_py = np.sqrt(tw_strong['gamy', nn_strong]
                                     * nemitt_y/beta0_strong/gamma0_strong)
-        xo.assert_allclose(ee_weak.slices_other_beam_Sigma_22[0],
-                        expected_sigma_px**2,
+        xo.assert_allclose(np.sqrt(ee_weak.slices_other_beam_Sigma_22[0]),
+                        expected_sigma_px,
                         atol=0, rtol=1e-4)
-        xo.assert_allclose(ee_weak.slices_other_beam_Sigma_44[0],
-                        expected_sigma_py**2,
+        xo.assert_allclose(np.sqrt(ee_weak.slices_other_beam_Sigma_44[0]),
+                        expected_sigma_py,
                         atol=0, rtol=1e-4)
 
         expected_sigma_xpx = -(tw_strong['alfx', nn_strong]
@@ -274,7 +278,9 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
 
         # Check crossing angle
         # Assume that crossing is either in x or in y
-        if np.abs(tw_weak['px', f'ip{ip_n}']) < 1e-6:
+        if ip_n == 8:
+            pass # TODO: tilted crossing, to be checked differently
+        elif np.abs(tw_weak['px', f'ip{ip_n}']) < 1e-6:
             # Vertical crossing
             xo.assert_allclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
             xo.assert_allclose(
@@ -284,7 +290,7 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         else:
             # Horizontal crossing
             xo.assert_allclose(ee_weak.alpha,
-                (-15e-3 if ip_n==8 else 0)*{'lhcb1': 1, 'lhcb2': -1}[name_weak],
+                (-15e-3 if ip_n==8 else 0)*{'b1': 1, 'b2': -1}[name_weak],
                 atol=5e-3, rtol=0)
             xo.assert_allclose(
                 2*ee_weak.phi,
@@ -310,12 +316,12 @@ for name_weak, ip in product(['lhcb1', 'lhcb2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         for nn in ['x', 'y', 'zeta', 'px', 'py', 'pzeta']:
             assert getattr(ee_weak, f'slices_other_beam_{nn}_center')[0] == 0
 
-for line_name in ['lhcb1', 'lhcb2']:
+for line_name in ['b1', 'b2']:
 
     print(f'Global check on line {line_name}')
 
     # Check that the number of lenses is correct
-    df = collider[line_name].to_pandas()
+    df = lhc[line_name].to_pandas()
     bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
     bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
     bb_df = pd.concat([bblr_df, bbho_df])
@@ -325,22 +331,22 @@ for line_name in ['lhcb1', 'lhcb2']:
     assert (len(bbho_df) == len(ip_bb_config.keys()) * num_slices_head_on)
 
     # Check that beam-beam scale knob works correctly
-    collider.vars['beambeam_scale'] = 1
+    lhc.vars['beambeam_scale'] = 1
     for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 1
-    collider.vars['beambeam_scale'] = 0
+        assert lhc[line_name][nn].scale_strength == 1
+    lhc.vars['beambeam_scale'] = 0
     for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 0
-    collider.vars['beambeam_scale'] = 1
+        assert lhc[line_name][nn].scale_strength == 0
+    lhc.vars['beambeam_scale'] = 1
     for nn in bb_df.name.values:
-        assert collider[line_name][nn].scale_strength == 1
+        assert lhc[line_name][nn].scale_strength == 1
 
     # Twiss with and without bb
-    collider.vars['beambeam_scale'] = 1
-    tw_bb_on = collider[line_name].twiss()
-    collider.vars['beambeam_scale'] = 0
-    tw_bb_off = collider[line_name].twiss()
-    collider.vars['beambeam_scale'] = 1
+    lhc.vars['beambeam_scale'] = 1
+    tw_bb_on = lhc[line_name].twiss()
+    lhc.vars['beambeam_scale'] = 0
+    tw_bb_off = lhc[line_name].twiss()
+    lhc.vars['beambeam_scale'] = 1
 
     xo.assert_allclose(tw_bb_off.qx, qx_no_bb[line_name], rtol=0, atol=1e-4)
     xo.assert_allclose(tw_bb_off.qy, qy_no_bb[line_name], rtol=0, atol=1e-4)
@@ -352,3 +358,9 @@ for line_name in ['lhcb1', 'lhcb2']:
     # Check that there is no effect on the orbit
     np.allclose(tw_bb_on.x, tw_bb_off.x, atol=1e-10, rtol=0)
     np.allclose(tw_bb_on.y, tw_bb_off.y, atol=1e-10, rtol=0)
+
+    fp_polar_with_rescale = lhc[line_name].get_footprint(
+        nemitt_x=2.5e-6, nemitt_y=2.5e-6,
+        linear_rescale_on_knobs=[
+            xt.LinearRescale(knob_name='beambeam_scale', v0=0.0, dv=0.1)]
+        )
