@@ -23,3 +23,6 @@ tt_corr_restore = tt_vars.rows[r'on_corr_k.*']
 for nn in tt_corr_restore.name:
     lhc[nn] = tt_corr_restore['value', nn]
 print("Corrections back on (flat machine) - |C-| = ", lhc['b1'].twiss4d().c_minus)
+
+lhc['on_corr_k1s_global'] = 0
+print("Global k1s off (flat machine) - |C-| = ", lhc['b1'].twiss4d().c_minus)
