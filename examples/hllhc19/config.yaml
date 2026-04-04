@@ -1,12 +1,14 @@
 label: thick_test
-# Lattice and optics files
 lattice_file: lhc.json
 optics_file: opt_150.madx
 
 # label: thin_test
-# # Lattice and optics files
 # lattice_file: lhc_thin.json
 # optics_file: opt_150_thin.madx
+
+label: legacy_thick_test
+lattice_file: lhc.legacy.json
+optics_file: opt_150.legacy.madx
 
 new_knobs: {
 

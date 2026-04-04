@@ -17,23 +17,19 @@ lhc.b2.twiss_default.clear()
 # Load optics
 lhc.vars.load(config['optics_file'])
 
+# For legacy files:
+if 'particle_ref_b1' not in lhc.particles:
+    if 'p0c' not in lhc.vars:
+        lhc['p0c'] = 6.8e12
+    lhc.new_particle(f'particle_ref_b1', p0c='p0c')
+    lhc.new_particle(f'particle_ref_b2', p0c='p0c')
+    lhc.b1.particle_ref = 'particle_ref_b1'
+    lhc.b2.particle_ref = 'particle_ref_b2'
+
 assert 'particle_ref_b1' in lhc.particles
 assert 'particle_ref_b2' in lhc.particles
 assert lhc.b1.particle_ref.name == 'particle_ref_b1'
 assert lhc.b2.particle_ref.name == 'particle_ref_b2'
-
-# Create reference particles (TODO: generalize for ions)
-if 'particle_ref_b1' not in lhc.particles:
-    lhc.new_particle(f'particle_ref_b1',
-                energy0=config['beam_config']['b1']['beam_energy_tot'] * 1e9)
-if 'particle_ref_b2' not in lhc.particles:
-    lhc.new_particle(f'particle_ref_b2',
-                energy0=config['beam_config']['b2']['beam_energy_tot'] * 1e9)
-
-# Assign reference particles to beams
-
-lhc.b1.particle_ref = 'particle_ref_b1'
-lhc.b2.particle_ref = 'particle_ref_b2'
 
 # Define reference energy and rigidity variables
 lhc['energy0_b1'] = lhc.ref['particle_ref_b1'].energy0[0]
