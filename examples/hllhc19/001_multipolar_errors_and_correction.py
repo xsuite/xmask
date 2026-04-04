@@ -74,10 +74,10 @@ xmlhc.set_arc_spool_piece_correctors(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2,
                                         use_mco=False) # dead circuits
 
 # k1s local + global correction (uses MQS)
-xmlhc.correct_k1s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
+xmlhc.correct_k1s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2, feed_down=False)
 
 # k2s local + global correction (uses MSS)
-xmlhc.correct_k2s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2)
+xmlhc.correct_k2s(lhc, twiss_b1=tw_b1, twiss_b2=tw_b2, feed_down=False)
 
 # Back to orbit with bumps
 for nn in tt_to_zero.name:

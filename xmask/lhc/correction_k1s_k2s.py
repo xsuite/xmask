@@ -1,7 +1,7 @@
 import numpy as np
 import xtrack as xt
 
-def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
+def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct, feed_down=True):
 
     tw_b1 = twiss_b1
     tw_b2 = twiss_b2
@@ -73,7 +73,7 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
         rdt_contrib_glob = xt.IntegralOptimization(
                                 line=line,
                                 twiss=tw,
-                                feed_down=True,
+                                feed_down=feed_down,
                                 start=start,
                                 end=end,
                                 vary=xt.VaryList(correction_knobs_global, step=1e-5),
@@ -109,7 +109,7 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
             arc_integ = xt.IntegralOptimization(
                                     line=line,
                                     twiss=tw,
-                                    feed_down=True,
+                                    feed_down=feed_down,
                                     start=start,
                                     end=end,
                                     vary=xt.VaryList(correction_knobs_local, step=1e-5),
@@ -137,8 +137,8 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct):
         print("After setting the knob:")
         line.vars.get_table().rows[correction_knobs_global].show()
 
-def correct_k1s(env, twiss_b1, twiss_b2):
+def correct_k1s(env, twiss_b1, twiss_b2, feed_down=True):
     _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k1s')
 
-def correct_k2s(env, twiss_b1, twiss_b2):
+def correct_k2s(env, twiss_b1, twiss_b2, feed_down=True):
     _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k2s')
