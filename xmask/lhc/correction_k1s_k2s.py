@@ -35,6 +35,8 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct, feed_down=True):
 
     tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
 
+    integ_dct = {}
+
     for beam_name in ['b1', 'b2']:
 
         if tw_b12[beam_name] is None:
@@ -82,7 +84,6 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct, feed_down=True):
 
         # Local correction arc by arc
         opt_dct = {}
-        integ_dct = {}
         for arc_name in arc_names:
             if beam_name == 'b1':
                 start = f's.ds.r{arc_name[0]}.b1'
@@ -125,10 +126,12 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct, feed_down=True):
             line.vars.get_table().rows[correction_knobs_local].show()
 
             opt_dct[arc_name] = opt
-            integ_dct[arc_name] = arc_integ
+            integ_dct[f'{beam_name}_{arc_name}'] = arc_integ
 
         # Global correction
         opt = rdt_contrib_glob.correct()
+
+        integ_dct[f'{beam_name}_global'] = rdt_contrib_glob
 
         print("Before setting the knob:")
         line.vars.get_table().rows[correction_knobs_global].show()
@@ -137,8 +140,12 @@ def _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct, feed_down=True):
         print("After setting the knob:")
         line.vars.get_table().rows[correction_knobs_global].show()
 
+    return integ_dct
+
 def correct_k1s(env, twiss_b1, twiss_b2, feed_down=True):
-    _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k1s')
+    return _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k1s',
+                               feed_down=feed_down)
 
 def correct_k2s(env, twiss_b1, twiss_b2, feed_down=True):
-    _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k2s')
+    return _correct_k1s_or_k2s(env, twiss_b1, twiss_b2, correct='k2s',
+                               feed_down=feed_down)
