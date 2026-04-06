@@ -212,7 +212,7 @@ xo.assert_allclose(tw2_no_crab['dx_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw1_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 xo.assert_allclose(tw2_no_crab['dy_zeta', 'ip5'], 0, atol=1e-7)
 
-# Check luminoisity in ip8 (set by leveling)
+# Check luminosity in ip8 (set by leveling)
 ll_ip8 = xt.lumi.luminosity_from_twiss(
     n_colliding_bunches=2572,
     num_particles_per_bunch=2.2e11,
@@ -302,8 +302,8 @@ for line_name in ['b1', 'b2']:
 
 assert np.max(global_chrom_coupling_no_corr['b1']) > 2e-3
 assert np.max(global_chrom_coupling_no_corr['b2']) > 2e-3
-assert np.all(np.abs(global_chrom_coupling['b1']) < 6e-4)
-assert np.all(np.abs(global_chrom_coupling['b2']) < 6e-4)
+assert np.all(np.abs(global_chrom_coupling['b1']) < 5e-4)
+assert np.all(np.abs(global_chrom_coupling['b2']) < 5e-4)
 
 # Check effect of mcs on chromaticity
 lhc.set(lhc.vars.get_table().rows['on_corr_kcs.*'], 0)
