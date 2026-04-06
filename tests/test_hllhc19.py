@@ -97,7 +97,7 @@ if apply_multipolar_errors_config:
     for knob_name, json_file in apply_multipolar_errors_config.items():
         print(f'Applying multipolar errors from file to create knob {knob_name}')
         # Read the file
-        multipole_errors = xt.json.load(json_file)
+        multipole_errors = xt.json.load(test_data_dir / f'hllhc19/{json_file}')
         for line_name in ['b1', 'b2']:
             line = lhc[line_name]
             # Apply the errors in the line
