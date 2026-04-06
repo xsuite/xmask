@@ -276,24 +276,49 @@ for name_weak, ip in product(['b1', 'b2'], ['ip1', 'ip2', 'ip5', 'ip8']):
         assert ee_weak.other_beam_shift_zeta == 0
         assert ee_weak.other_beam_shift_pzeta == 0
 
-        # Check crossing angle
-        # Assume that crossing is either in x or in y
+        # Check crossing plane orientation and crossing angle
         if ip_n == 8:
-            pass # TODO: tilted crossing, to be checked differently
+            # General tilted-crossing relations from manual:
+            #   alpha = atan(Delta p_y / Delta p_x) if |Delta p_x| >= |Delta p_y|
+            #   alpha = pi/2 - atan(Delta p_x / Delta p_y) otherwise
+            #   theta = 2 * phi
+            delta_px = tw_weak['px', f'ip{ip_n}'] - tw_strong['px', f'ip{ip_n}']
+            delta_py = tw_weak['py', f'ip{ip_n}'] - tw_strong['py', f'ip{ip_n}']
+            theta_abs = np.hypot(delta_px, delta_py)
+
+            if np.abs(delta_px) >= np.abs(delta_py):
+                expected_alpha = np.arctan(delta_py / delta_px)
+                theta_sign = np.sign(delta_px)
+            else:
+                expected_alpha = np.pi / 2 - np.arctan(delta_px / delta_py)
+                theta_sign = np.sign(delta_py)
+
+            expected_theta = theta_sign * theta_abs
+
+            xo.assert_allclose(ee_weak.alpha, expected_alpha,
+                               atol=5e-3, rtol=0)
+
+            xo.assert_allclose(2 * ee_weak.phi, expected_theta,
+                               atol=2e-7, rtol=0)
+
+            # Enforce the signed decomposition of theta in the crossing plane.
+            xo.assert_allclose(2 * ee_weak.phi * np.cos(ee_weak.alpha), delta_px,
+                               atol=2e-7, rtol=0)
+            xo.assert_allclose(2 * ee_weak.phi * np.sin(ee_weak.alpha), delta_py,
+                               atol=2e-7, rtol=0)
+
         elif np.abs(tw_weak['px', f'ip{ip_n}']) < 1e-6:
             # Vertical crossing
             xo.assert_allclose(ee_weak.alpha, np.pi/2, atol=5e-3, rtol=0)
             xo.assert_allclose(
-                2*ee_weak.phi,
+                2 * ee_weak.phi,
                 tw_weak['py', f'ip{ip_n}'] - tw_strong['py', f'ip{ip_n}'],
                 atol=2e-7, rtol=0)
         else:
             # Horizontal crossing
-            xo.assert_allclose(ee_weak.alpha,
-                (-15e-3 if ip_n==8 else 0)*{'b1': 1, 'b2': -1}[name_weak],
-                atol=5e-3, rtol=0)
+            xo.assert_allclose(ee_weak.alpha, 0, atol=5e-3, rtol=0)
             xo.assert_allclose(
-                2*ee_weak.phi,
+                2 * ee_weak.phi,
                 tw_weak['px', f'ip{ip_n}'] - tw_strong['px', f'ip{ip_n}'],
                 atol=2e-7, rtol=0)
 
