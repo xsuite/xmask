@@ -5,22 +5,27 @@ import xfields as xf
 import xmask.lhc as xmlhc
 from pathlib import Path
 from itertools import product
+import pytest
 import numpy as np
 import pandas as pd
 
 test_data_dir = Path(__file__).parent.parent / "test_data"
 
-def test_hllhc19():
-
-    label = 'thin' # TODO: to be parametrized
+@pytest.mark.parametrize("label", ['thin', 'thick'])
+def test_hllhc19_run(label):
 
     # Read config file
     with open(test_data_dir / 'hllhc19/config.yaml','r') as fid:
         config = xm.yaml.load(fid)
 
-    config['label'] = 'thin'
-    config['lattice_file'] = 'lhc_thin.json'
-    config['optics_file'] = 'opt_150_thin.madx'
+    if label == 'thin':
+        config['label'] = 'thin'
+        config['lattice_file'] = 'lhc_thin.json'
+        config['optics_file'] = 'opt_150_thin.madx'
+    elif label == 'thick':
+        config['label'] = 'thick'
+        config['lattice_file'] = 'lhc.json'
+        config['optics_file'] = 'opt_150.madx'
 
     # Load lattice
     lhc = xt.load(test_data_dir / f'hllhc19/{config["lattice_file"]}')
@@ -248,6 +253,17 @@ def test_hllhc19():
         num_particles=config_bb['num_particles_per_bunch'],
         nemitt_x=config_bb['nemitt_x'],
         nemitt_y=config_bb['nemitt_y'])
+
+    lhc.to_json(f'lhc_{config["label"]}_tuned_and_leveled_bb_on.json')
+
+@pytest.mark.parametrize("label", ['thin', 'thick'])
+def test_hllhc19_check_config_and_tuning(label):
+
+    # Load config
+    with open(test_data_dir / f'hllhc19/config.yaml','r') as fid:
+        config = xm.yaml.load(fid)
+
+    lhc = xt.load(f'lhc_{label}_tuned_and_leveled_bb_on.json')
 
     ##########
     # Checks #
@@ -612,9 +628,10 @@ def test_hllhc19():
         xo.assert_allclose(tw.k5l, 0, atol=1e-12)
         xo.assert_allclose(tw.k5sl, 0, atol=1e-12)
 
-    ##############################
-    # Check beam-beam lens setup #
-    ##############################
+@pytest.mark.parametrize('label', ['thin', 'thick'])
+def test_hllhc19_check_beam_beam(label):
+
+    lhc = xt.load(f'lhc_{label}_tuned_and_leveled_bb_on.json')
 
     def _get_z_centroids(ho_slices, sigmaz):
         from scipy.stats import norm
