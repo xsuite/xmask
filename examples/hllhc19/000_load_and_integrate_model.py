@@ -1,7 +1,6 @@
 import xtrack as xt
 import xmask as xm
 import xmask.lhc as xlhc
-from _temp_slice_lattice import slice_lattice
 
 # Read config file
 with open('config.yaml','r') as fid:
