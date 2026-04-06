@@ -1,0 +1,4660 @@
+! LHCOPTICS
+
+! Main Parameters
+p0c                            = 6800000000000.0000000000000000;
+qxb1                           = 62.3100000000000023;
+qyb1                           = 60.3200000000000003;
+qxb2                           = 62.3100000000000023;
+qyb2                           = 60.3200000000000003;
+qpxb1                          =  0.0000000000000000;
+qpyb1                          =  0.0000000000000000;
+qpxb2                          =  0.0000000000000000;
+qpyb2                          =  0.0000000000000000;
+rx_ip1                         =  3.3333333333333335;
+ry_ip1                         =  3.3333333333333335;
+rx_ip5                         =  3.3333333333333335;
+ry_ip5                         =  3.3333333333333335;
+
+! IR1
+
+! Strengths of IR1
+kqx1.l1                        =   -0.005661340884050335;
+kqx1.r1                        =    0.005661340884050335;
+kqx2a.l1                       =   -0.005583504890618946;
+kqx2a.r1                       =    0.005583504890618946;
+kqx2b.l1                       =   -0.005583504890618946;
+kqx2b.r1                       =    0.005583504890618946;
+kqx3.l1                        =   -0.005555674733272236;
+kqx3.r1                        =    0.005555674733272236;
+kq4.l1b1                       =    0.001323079653153657;
+kq4.l1b2                       =   -0.001093503197304017;
+kq4.r1b1                       =   -0.001018395234679529;
+kq4.r1b2                       =    0.001292836670417556;
+kq5.l1b1                       =  -0.0009622820954318373;
+kq5.l1b2                       =     0.00083564330446026;
+kq5.r1b1                       =   0.0008045987623187992;
+kq5.r1b2                       =  -0.0009589980190863254;
+kq6.l1b1                       =    0.001608984448303585;
+kq6.l1b2                       =   -0.001910284016115902;
+kq6.r1b1                       =   -0.002007456528384383;
+kq6.r1b2                       =    0.001666660558091297;
+kq7.l1b1                       =   -0.008352622464026502;
+kq7.l1b2                       =    0.008555861550962246;
+kq7.r1b1                       =    0.008481110534775335;
+kq7.r1b2                       =   -0.008457782259791741;
+kq8.l1b1                       =    0.007831645432017503;
+kq8.l1b2                       =   -0.007319536400320669;
+kq8.r1b1                       =   -0.007239643401367286;
+kq8.r1b2                       =    0.007851524874984984;
+kq9.l1b1                       =   -0.006464058069740201;
+kq9.l1b2                       =    0.006604395413295116;
+kq9.r1b1                       =    0.006576669861487809;
+kq9.r1b2                       =   -0.006707074768180111;
+kq10.l1b1                      =    0.007109172617984361;
+kq10.l1b2                      =   -0.007075825417715407;
+kq10.r1b1                      =   -0.007181581315824678;
+kq10.r1b2                      =    0.007200372476982323;
+kqtl11.l1b1                    =   -0.001851738403928365;
+kqtl11.l1b2                    =  -0.0001936963377725603;
+kqtl11.r1b1                    =  -0.0001051884838110917;
+kqtl11.r1b2                    =   -0.001586328052675629;
+kqt12.l1b1                     =    0.001321891692230817;
+kqt12.l1b2                     =   -0.004947655369278593;
+kqt12.r1b1                     =   -0.004274467799932746;
+kqt12.r1b2                     =  -3.491243979838367e-05;
+kqt13.l1b1                     =  -0.0008554184601553535;
+kqt13.l1b2                     =   -0.000962042338356961;
+kqt13.r1b1                     =  -0.0009305632395834072;
+kqt13.r1b2                     =    0.002775388394679397;
+kqs.l1b2                       =                       0;
+kqs.r1b1                       =                       0;
+lcraba4l1.b1                   =                       0;
+lcraba4l1.b2                   =                       0;
+lcraba4r1.b1                   =                       0;
+lcraba4r1.b2                   =                       0;
+lcrabb4l1.b1                   =                       0;
+lcrabb4l1.b2                   =                       0;
+lcrabb4r1.b1                   =                       0;
+lcrabb4r1.b2                   =                       0;
+vcraba4l1.b1                   =                       0;
+vcraba4l1.b2                   =                       0;
+vcraba4r1.b1                   =                       0;
+vcraba4r1.b2                   =                       0;
+vcrabb4l1.b1                   =                       0;
+vcrabb4l1.b2                   =                       0;
+vcrabb4r1.b1                   =                       0;
+vcrabb4r1.b2                   =                       0;
+acbxh1.l1                      =                       0;
+acbxh1.r1                      =                       0;
+acbxv1.l1                      =                       0;
+acbxv1.r1                      =                       0;
+acbxh2.l1                      =                       0;
+acbxh2.r1                      =                       0;
+acbxv2.l1                      =                       0;
+acbxv2.r1                      =                       0;
+acbxh3.l1                      =                       0;
+acbxh3.r1                      =                       0;
+acbxv3.l1                      =                       0;
+acbxv3.r1                      =                       0;
+acbrdh4.l1b1                   =                       0;
+acbrdh4.l1b2                   =                       0;
+acbrdh4.r1b1                   =                       0;
+acbrdh4.r1b2                   =                       0;
+acbrdv4.l1b1                   =                       0;
+acbrdv4.l1b2                   =                       0;
+acbrdv4.r1b1                   =                       0;
+acbrdv4.r1b2                   =                       0;
+acbyh4.l1b2                    =                       0;
+acbyh4.r1b1                    =                       0;
+acbyhs4.l1b1                   =                       0;
+acbyhs4.l1b2                   =                       0;
+acbyhs4.r1b1                   =                       0;
+acbyhs4.r1b2                   =                       0;
+acbyv4.l1b1                    =                       0;
+acbyv4.r1b2                    =                       0;
+acbyvs4.l1b1                   =                       0;
+acbyvs4.l1b2                   =                       0;
+acbyvs4.r1b1                   =                       0;
+acbyvs4.r1b2                   =                       0;
+acbch5.l1b2                    =                       0;
+acbch5.r1b1                    =                       0;
+acbcv5.l1b1                    =                       0;
+acbcv5.r1b2                    =                       0;
+acbch6.l1b1                    =                       0;
+acbch6.r1b2                    =                       0;
+acbcv6.l1b2                    =                       0;
+acbcv6.r1b1                    =                       0;
+acbch7.l1b2                    =                       0;
+acbch7.r1b1                    =                       0;
+acbcv7.l1b1                    =                       0;
+acbcv7.r1b2                    =                       0;
+acbch8.l1b1                    =                       0;
+acbch8.r1b2                    =                       0;
+acbcv8.l1b2                    =                       0;
+acbcv8.r1b1                    =                       0;
+acbch9.l1b2                    =                       0;
+acbch9.r1b1                    =                       0;
+acbcv9.l1b1                    =                       0;
+acbcv9.r1b2                    =                       0;
+acbch10.l1b1                   =                       0;
+acbch10.r1b2                   =                       0;
+acbcv10.l1b2                   =                       0;
+acbcv10.r1b1                   =                       0;
+acbh10.l1b1                    =                       0;
+acbh10.r1b2                    =                       0;
+acbv10.l1b2                    =                       0;
+acbv10.r1b1                    =                       0;
+acbh11.l1b2                    =                       0;
+acbh11.r1b1                    =                       0;
+acbv11.l1b1                    =                       0;
+acbv11.r1b2                    =                       0;
+acbh12.l1b1                    =                       0;
+acbh12.r1b2                    =                       0;
+acbv12.l1b2                    =                       0;
+acbv12.r1b1                    =                       0;
+acbh13.l1b2                    =                       0;
+acbh13.r1b1                    =                       0;
+acbv13.l1b1                    =                       0;
+acbv13.r1b2                    =                       0;
+acbh14.l1b1                    =                       0;
+acbh14.r1b2                    =                       0;
+acbv14.l1b2                    =                       0;
+acbv14.r1b1                    =                       0;
+acbh15.l1b2                    =                       0;
+acbh15.r1b1                    =                       0;
+acbv15.l1b1                    =                       0;
+acbv15.r1b2                    =                       0;
+acbh16.l1b1                    =                       0;
+acbh16.r1b2                    =                       0;
+acbv16.l1b2                    =                       0;
+acbv16.r1b1                    =                       0;
+acbh17.l1b2                    =                       0;
+acbh17.r1b1                    =                       0;
+acbv17.l1b1                    =                       0;
+acbv17.r1b2                    =                       0;
+acbh18.l1b1                    =                       0;
+acbh18.r1b2                    =                       0;
+acbv18.l1b2                    =                       0;
+acbv18.r1b1                    =                       0;
+acbh19.l1b2                    =                       0;
+acbh19.r1b1                    =                       0;
+acbv19.l1b1                    =                       0;
+acbv19.r1b2                    =                       0;
+acbh20.l1b1                    =                       0;
+acbh20.r1b2                    =                       0;
+acbv20.l1b2                    =                       0;
+acbv20.r1b1                    =                       0;
+acbh21.l1b2                    =                       0;
+acbh21.r1b1                    =                       0;
+acbv21.l1b1                    =                       0;
+acbv21.r1b2                    =                       0;
+acbh22.l1b1                    =                       0;
+acbh22.r1b2                    =                       0;
+acbv22.l1b2                    =                       0;
+acbv22.r1b1                    =                       0;
+acbh23.l1b2                    =                       0;
+acbh23.r1b1                    =                       0;
+acbv23.l1b1                    =                       0;
+acbv23.r1b2                    =                       0;
+acbh24.l1b1                    =                       0;
+acbh24.r1b2                    =                       0;
+acbv24.l1b2                    =                       0;
+acbv24.r1b1                    =                       0;
+acbh25.l1b2                    =                       0;
+acbh25.r1b1                    =                       0;
+acbv25.l1b1                    =                       0;
+acbv25.r1b2                    =                       0;
+acbh26.l1b1                    =                       0;
+acbh26.r1b2                    =                       0;
+acbv26.l1b2                    =                       0;
+acbv26.r1b1                    =                       0;
+acbh27.l1b2                    =                       0;
+acbh27.r1b1                    =                       0;
+acbv27.l1b1                    =                       0;
+acbv27.r1b2                    =                       0;
+acbh28.l1b1                    =                       0;
+acbh28.r1b2                    =                       0;
+acbv28.l1b2                    =                       0;
+acbv28.r1b1                    =                       0;
+acbh29.l1b2                    =                       0;
+acbh29.r1b1                    =                       0;
+acbv29.l1b1                    =                       0;
+acbv29.r1b2                    =                       0;
+acbh30.l1b1                    =                       0;
+acbh30.r1b2                    =                       0;
+acbv30.l1b2                    =                       0;
+acbv30.r1b1                    =                       0;
+acbh31.l1b2                    =                       0;
+acbh31.r1b1                    =                       0;
+acbv31.l1b1                    =                       0;
+acbv31.r1b2                    =                       0;
+acbh32.l1b1                    =                       0;
+acbh32.r1b2                    =                       0;
+acbv32.l1b2                    =                       0;
+acbv32.r1b1                    =                       0;
+acbh33.l1b2                    =                       0;
+acbh33.r1b1                    =                       0;
+acbv33.l1b1                    =                       0;
+acbv33.r1b2                    =                       0;
+acbh34.l1b1                    =                       0;
+acbv34.l1b2                    =                       0;
+
+! Parameters of IR1
+betxip1b1                      =                     0.5;
+betxip1b2                      =                     0.5;
+betyip1b1                      =                     0.5;
+betyip1b2                      =                     0.5;
+alfxip1b1                      =                      -0;
+alfxip1b2                      =                      -0;
+alfyip1b1                      =                       0;
+alfyip1b2                      =                       0;
+dxip1b1                        =                      -0;
+dxip1b2                        =                       0;
+dpxip1b1                       =                       0;
+dpxip1b2                       =                      -0;
+muxip1b1                       =                  2.6427;
+muxip1b1_l                     =                  1.1569;
+muxip1b1_r                     =                  1.4858;
+muxip1b2                       =                  2.6427;
+muxip1b2_l                     =                  1.4884;
+muxip1b2_r                     =                  1.1543;
+muyip1b1                       =                   2.642;
+muyip1b1_l                     =                  1.4867;
+muyip1b1_r                     =                  1.1553;
+muyip1b2                       =                   2.642;
+muyip1b2_l                     =                  1.1563;
+muyip1b2_r                     =                  1.4857;
+
+! IR2
+
+! Strengths of IR2
+kqx.l2                         =      0.0087799458347049;
+kqx.r2                         =     -0.0087799458347049;
+ktqx1.l2                       =  -3.690053746674759e-07;
+ktqx1.r2                       =   3.690053746674759e-07;
+ktqx2.l2                       =  -1.071091401100277e-06;
+ktqx2.r2                       =   1.071091401100277e-06;
+kq4.l2b1                       =   -0.002797949309090649;
+kq4.l2b2                       =    0.001698427244950838;
+kq4.r2b1                       =    0.003731220095379652;
+kq4.r2b2                       =   -0.003512981349708901;
+kq5.l2b1                       =    0.002993309081402662;
+kq5.l2b2                       =    -0.00316154741164354;
+kq5.r2b1                       =   -0.003636142614146676;
+kq5.r2b2                       =    0.004789944575593685;
+kq6.l2b1                       =   -0.004914553767096929;
+kq6.l2b2                       =    0.004354332124744388;
+kq6.r2b1                       =     0.00432312227269872;
+kq6.r2b2                       =   -0.003848392945180688;
+kq7.l2b1                       =    0.007597224318204526;
+kq7.l2b2                       =   -0.007966507100184407;
+kq7.r2b1                       =   -0.006364588841045266;
+kq7.r2b2                       =    0.007451272944686662;
+kq8.l2b1                       =   -0.005413014841430785;
+kq8.l2b2                       =    0.007289449892193262;
+kq8.r2b1                       =    0.006711570683311198;
+kq8.r2b2                       =   -0.005672654011490195;
+kq9.l2b1                       =    0.007007598750478823;
+kq9.l2b2                       =   -0.007070363637925977;
+kq9.r2b1                       =   -0.006591351880700474;
+kq9.r2b2                       =    0.006762519641776721;
+kq10.l2b1                      =   -0.006385529666516673;
+kq10.l2b2                      =    0.007041106109337132;
+kq10.r2b1                      =    0.007305077723094192;
+kq10.r2b2                      =   -0.005322269648993552;
+kqtl11.l2b1                    =   0.0002300372081048372;
+kqtl11.l2b2                    =    0.003795147123833106;
+kqtl11.r2b1                    =  -0.0002973623640457311;
+kqtl11.r2b2                    =   0.0004368214453556609;
+kqt12.l2b1                     =    0.001995641541489742;
+kqt12.l2b2                     =   -0.003070266420401894;
+kqt12.r2b1                     =    -0.00217021473011175;
+kqt12.r2b2                     =   -0.001735477854822704;
+kqt13.l2b1                     =    0.002819459059763041;
+kqt13.l2b2                     =   0.0005139059570158109;
+kqt13.r2b1                     =    -0.00175620163456389;
+kqt13.r2b2                     =    0.004488496697852827;
+kqs.l2b1                       =                       0;
+kqs.r2b2                       =                       0;
+acbxh1.l2                      =                       0;
+acbxh1.r2                      =                       0;
+acbxv1.l2                      =                       0;
+acbxv1.r2                      =                       0;
+acbxh2.l2                      =                       0;
+acbxh2.r2                      =                       0;
+acbxv2.l2                      =                       0;
+acbxv2.r2                      =                       0;
+acbxh3.l2                      =                       0;
+acbxh3.r2                      =                       0;
+acbxv3.l2                      =                       0;
+acbxv3.r2                      =                       0;
+acbyh4.l2b2                    =                       0;
+acbyh4.r2b1                    =                       0;
+acbyhs4.l2b1                   =                       0;
+acbyhs4.l2b2                   =                       0;
+acbyhs4.r2b1                   =                       0;
+acbyhs4.r2b2                   =                       0;
+acbyv4.l2b1                    =                       0;
+acbyv4.r2b2                    =                       0;
+acbyvs4.l2b1                   =                       0;
+acbyvs4.l2b2                   =                       0;
+acbyvs4.r2b1                   =                       0;
+acbyvs4.r2b2                   =                       0;
+acbch5.r2b2                    =                       0;
+acbchs5.r2b1                   =                       0;
+acbchs5.r2b2                   =                       0;
+acbcv5.r2b1                    =                       0;
+acbcvs5.r2b1                   =                       0;
+acbcvs5.r2b2                   =                       0;
+acbyh5.l2b1                    =                       0;
+acbyhs5.l2b1                   =                       0;
+acbyhs5.l2b2                   =                       0;
+acbyv5.l2b2                    =                       0;
+acbyvs5.l2b1                   =                       0;
+acbyvs5.l2b2                   =                       0;
+acbch6.l2b2                    =                       0;
+acbch6.r2b1                    =                       0;
+acbcv6.l2b1                    =                       0;
+acbcv6.r2b2                    =                       0;
+acbch7.l2b1                    =                       0;
+acbch7.r2b2                    =                       0;
+acbcv7.l2b2                    =                       0;
+acbcv7.r2b1                    =                       0;
+acbch8.l2b2                    =                       0;
+acbch8.r2b1                    =                       0;
+acbcv8.l2b1                    =                       0;
+acbcv8.r2b2                    =                       0;
+acbch9.l2b1                    =                       0;
+acbch9.r2b2                    =                       0;
+acbcv9.l2b2                    =                       0;
+acbcv9.r2b1                    =                       0;
+acbch10.l2b2                   =                       0;
+acbch10.r2b1                   =                       0;
+acbcv10.l2b1                   =                       0;
+acbcv10.r2b2                   =                       0;
+acbh11.l2b1                    =                       0;
+acbh11.r2b2                    =                       0;
+acbv11.l2b2                    =                       0;
+acbv11.r2b1                    =                       0;
+acbh12.l2b2                    =                       0;
+acbh12.r2b1                    =                       0;
+acbv12.l2b1                    =                       0;
+acbv12.r2b2                    =                       0;
+acbh13.l2b1                    =                       0;
+acbh13.r2b2                    =                       0;
+acbv13.l2b2                    =                       0;
+acbv13.r2b1                    =                       0;
+acbh14.l2b2                    =                       0;
+acbh14.r2b1                    =                       0;
+acbv14.l2b1                    =                       0;
+acbv14.r2b2                    =                       0;
+acbh15.l2b1                    =                       0;
+acbh15.r2b2                    =                       0;
+acbv15.l2b2                    =                       0;
+acbv15.r2b1                    =                       0;
+acbh16.l2b2                    =                       0;
+acbh16.r2b1                    =                       0;
+acbv16.l2b1                    =                       0;
+acbv16.r2b2                    =                       0;
+acbh17.l2b1                    =                       0;
+acbh17.r2b2                    =                       0;
+acbv17.l2b2                    =                       0;
+acbv17.r2b1                    =                       0;
+acbh18.l2b2                    =                       0;
+acbh18.r2b1                    =                       0;
+acbv18.l2b1                    =                       0;
+acbv18.r2b2                    =                       0;
+acbh19.l2b1                    =                       0;
+acbh19.r2b2                    =                       0;
+acbv19.l2b2                    =                       0;
+acbv19.r2b1                    =                       0;
+acbh20.l2b2                    =                       0;
+acbh20.r2b1                    =                       0;
+acbv20.l2b1                    =                       0;
+acbv20.r2b2                    =                       0;
+acbh21.l2b1                    =                       0;
+acbh21.r2b2                    =                       0;
+acbv21.l2b2                    =                       0;
+acbv21.r2b1                    =                       0;
+acbh22.l2b2                    =                       0;
+acbh22.r2b1                    =                       0;
+acbv22.l2b1                    =                       0;
+acbv22.r2b2                    =                       0;
+acbh23.l2b1                    =                       0;
+acbh23.r2b2                    =                       0;
+acbv23.l2b2                    =                       0;
+acbv23.r2b1                    =                       0;
+acbh24.l2b2                    =                       0;
+acbh24.r2b1                    =                       0;
+acbv24.l2b1                    =                       0;
+acbv24.r2b2                    =                       0;
+acbh25.l2b1                    =                       0;
+acbh25.r2b2                    =                       0;
+acbv25.l2b2                    =                       0;
+acbv25.r2b1                    =                       0;
+acbh26.l2b2                    =                       0;
+acbh26.r2b1                    =                       0;
+acbv26.l2b1                    =                       0;
+acbv26.r2b2                    =                       0;
+acbh27.l2b1                    =                       0;
+acbh27.r2b2                    =                       0;
+acbv27.l2b2                    =                       0;
+acbv27.r2b1                    =                       0;
+acbh28.l2b2                    =                       0;
+acbh28.r2b1                    =                       0;
+acbv28.l2b1                    =                       0;
+acbv28.r2b2                    =                       0;
+acbh29.l2b1                    =                       0;
+acbh29.r2b2                    =                       0;
+acbv29.l2b2                    =                       0;
+acbv29.r2b1                    =                       0;
+acbh30.l2b2                    =                       0;
+acbh30.r2b1                    =                       0;
+acbv30.l2b1                    =                       0;
+acbv30.r2b2                    =                       0;
+acbh31.l2b1                    =                       0;
+acbh31.r2b2                    =                       0;
+acbv31.l2b2                    =                       0;
+acbv31.r2b1                    =                       0;
+acbh32.l2b2                    =                       0;
+acbh32.r2b1                    =                       0;
+acbv32.l2b1                    =                       0;
+acbv32.r2b2                    =                       0;
+acbh33.l2b1                    =                       0;
+acbh33.r2b2                    =                       0;
+acbv33.l2b2                    =                       0;
+acbv33.r2b1                    =                       0;
+acbh34.l2b2                    =                       0;
+acbv34.l2b1                    =                       0;
+
+! Parameters of IR2
+betxip2b1                      =                      10;
+betxip2b2                      =                      10;
+betyip2b1                      =                      10;
+betyip2b2                      =                      10;
+alfxip2b1                      =                       0;
+alfxip2b2                      =                       0;
+alfyip2b1                      =                       0;
+alfyip2b2                      =                      -0;
+dxip2b1                        =                       0;
+dxip2b2                        =                       0;
+dpxip2b1                       =                       0;
+dpxip2b2                       =                       0;
+muxip2b1                       =                    2.95;
+muxip2b1_l                     =              1.50394605;
+muxip2b1_r                     =              1.44605395;
+muxip2b2                       =                    2.95;
+muxip2b2_l                     =              1.31217936;
+muxip2b2_r                     =              1.63782064;
+muyip2b1                       =                     2.7;
+muyip2b1_l                     =              1.31883521;
+muyip2b1_r                     =              1.38116479;
+muyip2b2                       =                     2.7;
+muyip2b2_l                     =              1.54271324;
+muyip2b2_r                     =              1.15728676;
+
+! IR3
+
+! Strengths of IR3
+kq4.lr3                        =    0.001240640360816319;
+kqt4.l3                        =   0.0006871558365936815;
+kqt4.r3                        =   0.0006885127048481036;
+kq5.lr3                        =   -0.001303698928393826;
+kqt5.l3                        =   0.0009700353258284832;
+kqt5.r3                        =   0.0009687222679415989;
+kq6.l3b1                       =    0.002691562223057361;
+kq6.l3b2                       =   -0.002468640794336095;
+kq6.r3b1                       =   -0.002450681561651235;
+kq6.r3b2                       =    0.002734939603381809;
+kqtl7.l3b1                     =   -0.003177274112715896;
+kqtl7.l3b2                     =   0.0007135763934585026;
+kqtl7.r3b1                     =    0.001239423253716733;
+kqtl7.r3b2                     =   -0.002954784033935532;
+kqtl8.l3b1                     =   0.0004703949849167295;
+kqtl8.l3b2                     =     0.00265504699361358;
+kqtl8.r3b1                     =    0.002659134305866171;
+kqtl8.r3b2                     =   0.0001526586549873594;
+kqtl9.l3b1                     =   -0.003628288929843059;
+kqtl9.l3b2                     =  -2.391925329071926e-06;
+kqtl9.r3b1                     =   5.347687088638076e-05;
+kqtl9.r3b2                     =   -0.003680172077383248;
+kqtl10.l3b1                    =   0.0003881377533315809;
+kqtl10.l3b2                    =    0.002964008964657061;
+kqtl10.r3b1                    =    0.003000197426577031;
+kqtl10.r3b2                    =     0.00132941953400652;
+kqtl11.l3b1                    =    0.002016532347985356;
+kqtl11.l3b2                    =    -0.00341620800340227;
+kqtl11.r3b1                    =   -0.003310704217094354;
+kqtl11.r3b2                    =    0.001909214365716319;
+kqt12.l3b1                     =    0.002449467262945713;
+kqt12.l3b2                     =    0.003019779479379483;
+kqt12.r3b1                     =      0.0030716719731309;
+kqt12.r3b2                     =    0.003935793966299284;
+kqt13.l3b1                     =  -0.0008657271706531059;
+kqt13.l3b2                     =   -0.004781349305331099;
+kqt13.r3b1                     =   -0.003363490786594772;
+kqt13.r3b2                     =  -0.0002392984682792049;
+kqs.l3b2                       =                       0;
+kqs.r3b1                       =                       0;
+acbwh4.l3b1                    =                       0;
+acbwh4.r3b2                    =                       0;
+acbwv4.l3b2                    =                       0;
+acbwv4.r3b1                    =                       0;
+acbwh5.l3b2                    =                       0;
+acbwh5.r3b1                    =                       0;
+acbwv5.l3b1                    =                       0;
+acbwv5.r3b2                    =                       0;
+acbch6.l3b1                    =                       0;
+acbch6.r3b2                    =                       0;
+acbcv6.l3b2                    =                       0;
+acbcv6.r3b1                    =                       0;
+acbch7.l3b2                    =                       0;
+acbch7.r3b1                    =                       0;
+acbcv7.l3b1                    =                       0;
+acbcv7.r3b2                    =                       0;
+acbch8.l3b1                    =                       0;
+acbch8.r3b2                    =                       0;
+acbcv8.l3b2                    =                       0;
+acbch9.l3b2                    =                       0;
+acbch9.r3b1                    =                       0;
+acbcv9.l3b1                    =                       0;
+acbcv9.r3b2                    =                       0;
+acbch10.l3b1                   =                       0;
+acbch10.r3b2                   =                       0;
+acbcv10.l3b2                   =                       0;
+acbcv10.r3b1                   =                       0;
+acbh11.l3b2                    =                       0;
+acbh11.r3b1                    =                       0;
+acbv11.l3b1                    =                       0;
+acbv11.r3b2                    =                       0;
+acbh12.l3b1                    =                       0;
+acbh12.r3b2                    =                       0;
+acbv12.l3b2                    =                       0;
+acbv12.r3b1                    =                       0;
+acbh13.l3b2                    =                       0;
+acbh13.r3b1                    =                       0;
+acbv13.l3b1                    =                       0;
+acbv13.r3b2                    =                       0;
+acbh14.l3b1                    =                       0;
+acbh14.r3b2                    =                       0;
+acbv14.l3b2                    =                       0;
+acbv14.r3b1                    =                       0;
+acbh15.l3b2                    =                       0;
+acbh15.r3b1                    =                       0;
+acbv15.l3b1                    =                       0;
+acbv15.r3b2                    =                       0;
+acbh16.l3b1                    =                       0;
+acbh16.r3b2                    =                       0;
+acbv16.l3b2                    =                       0;
+acbv16.r3b1                    =                       0;
+acbh17.l3b2                    =                       0;
+acbh17.r3b1                    =                       0;
+acbv17.l3b1                    =                       0;
+acbv17.r3b2                    =                       0;
+acbh18.l3b1                    =                       0;
+acbh18.r3b2                    =                       0;
+acbv18.l3b2                    =                       0;
+acbv18.r3b1                    =                       0;
+acbh19.l3b2                    =                       0;
+acbh19.r3b1                    =                       0;
+acbv19.l3b1                    =                       0;
+acbv19.r3b2                    =                       0;
+acbh20.l3b1                    =                       0;
+acbh20.r3b2                    =                       0;
+acbv20.l3b2                    =                       0;
+acbv20.r3b1                    =                       0;
+acbh21.l3b2                    =                       0;
+acbh21.r3b1                    =                       0;
+acbv21.l3b1                    =                       0;
+acbv21.r3b2                    =                       0;
+acbh22.l3b1                    =                       0;
+acbh22.r3b2                    =                       0;
+acbv22.l3b2                    =                       0;
+acbv22.r3b1                    =                       0;
+acbh23.l3b2                    =                       0;
+acbh23.r3b1                    =                       0;
+acbv23.l3b1                    =                       0;
+acbv23.r3b2                    =                       0;
+acbh24.l3b1                    =                       0;
+acbh24.r3b2                    =                       0;
+acbv24.l3b2                    =                       0;
+acbv24.r3b1                    =                       0;
+acbh25.l3b2                    =                       0;
+acbh25.r3b1                    =                       0;
+acbv25.l3b1                    =                       0;
+acbv25.r3b2                    =                       0;
+acbh26.l3b1                    =                       0;
+acbh26.r3b2                    =                       0;
+acbv26.l3b2                    =                       0;
+acbv26.r3b1                    =                       0;
+acbh27.l3b2                    =                       0;
+acbh27.r3b1                    =                       0;
+acbv27.l3b1                    =                       0;
+acbv27.r3b2                    =                       0;
+acbh28.l3b1                    =                       0;
+acbh28.r3b2                    =                       0;
+acbv28.l3b2                    =                       0;
+acbv28.r3b1                    =                       0;
+acbh29.l3b2                    =                       0;
+acbh29.r3b1                    =                       0;
+acbv29.l3b1                    =                       0;
+acbv29.r3b2                    =                       0;
+acbh30.l3b1                    =                       0;
+acbh30.r3b2                    =                       0;
+acbv30.l3b2                    =                       0;
+acbv30.r3b1                    =                       0;
+acbh31.l3b2                    =                       0;
+acbh31.r3b1                    =                       0;
+acbv31.l3b1                    =                       0;
+acbv31.r3b2                    =                       0;
+acbh32.l3b1                    =                       0;
+acbh32.r3b2                    =                       0;
+acbv32.l3b2                    =                       0;
+acbv32.r3b1                    =                       0;
+acbh33.l3b2                    =                       0;
+acbh33.r3b1                    =                       0;
+acbv33.l3b1                    =                       0;
+acbv33.r3b2                    =                       0;
+acbh34.l3b1                    =                       0;
+acbv34.l3b2                    =                       0;
+
+! Parameters of IR3
+betxip3b1                      =                121.5698;
+betxip3b2                      =                121.5674;
+betyip3b1                      =                218.6241;
+betyip3b2                      =                218.5189;
+alfxip3b1                      =                  2.2958;
+alfxip3b2                      =                 -2.2957;
+alfyip3b1                      =                 -2.6431;
+alfyip3b2                      =                  2.6421;
+dxip3b1                        =                 -0.5105;
+dxip3b2                        =                  -0.433;
+dpxip3b1                       =                 -0.0065;
+dpxip3b2                       =                   0.008;
+muxip3b1                       =                   2.245;
+muxip3b1_l                     =              1.01217968;
+muxip3b1_r                     =              1.23282032;
+muxip3b2                       =                   2.255;
+muxip3b2_l                     =              1.21927325;
+muxip3b2_r                     =              1.03572675;
+muyip3b1                       =                   1.955;
+muyip3b1_l                     =              1.10871236;
+muyip3b1_r                     =              0.84628764;
+muyip3b2                       =                   1.955;
+muyip3b2_l                     =      0.8526343199999999;
+muyip3b2_r                     =              1.10236568;
+
+! IR4
+
+! Strengths of IR4
+kq5.l4b1                       =    0.004151823390540615;
+kq5.l4b2                       =   -0.004180745058835824;
+kq5.r4b1                       =   -0.004485019688088304;
+kq5.r4b2                       =     0.00557656810962319;
+kq6.l4b1                       =   -0.005093793402694686;
+kq6.l4b2                       =    0.005780893962001875;
+kq6.r4b1                       =    0.005178913257645543;
+kq6.r4b2                       =   -0.006759958514056095;
+kq7.l4b1                       =     0.00737060501834879;
+kq7.l4b2                       =   -0.005018849074642465;
+kq7.r4b1                       =   -0.004442928388573649;
+kq7.r4b2                       =    0.005463933960554433;
+kq8.l4b1                       =   -0.005561012991982334;
+kq8.l4b2                       =    0.008446535086057165;
+kq8.r4b1                       =    0.008082183858704704;
+kq8.r4b2                       =   -0.005875674095249216;
+kq9.l4b1                       =    0.006936815308570461;
+kq9.l4b2                       =   -0.005051917735091432;
+kq9.r4b1                       =   -0.006065144948831228;
+kq9.r4b2                       =    0.005761179295989141;
+kq10.l4b1                      =   -0.006511374652581392;
+kq10.l4b2                      =    0.007135539495721806;
+kq10.r4b1                      =    0.007083731235932431;
+kq10.r4b2                      =   -0.005526217582501483;
+kqtl11.l4b1                    =   0.0006546607083572727;
+kqtl11.l4b2                    =  -3.082818965022603e-05;
+kqtl11.r4b1                    =    0.002993303333046984;
+kqtl11.r4b2                    =   0.0007199959585249087;
+kqt12.l4b1                     =   0.0007623476556265252;
+kqt12.l4b2                     =    0.002377776551605728;
+kqt12.r4b1                     =   -0.003842358789077932;
+kqt12.r4b2                     =      0.0033543123117465;
+kqt13.l4b1                     =    0.002408836341281712;
+kqt13.l4b2                     =   -0.003472881354162989;
+kqt13.r4b1                     =    0.001964332860448224;
+kqt13.r4b2                     =   -0.004695071015067808;
+kqs.l4b1                       =                       0;
+kqs.r4b2                       =                       0;
+acbyh5.l4b1                    =                       0;
+acbyh5.r4b2                    =                       0;
+acbyv5.l4b2                    =                       0;
+acbyv5.r4b1                    =                       0;
+acbyh6.l4b2                    =                       0;
+acbyh6.r4b1                    =                       0;
+acbyv6.l4b1                    =                       0;
+acbyv6.r4b2                    =                       0;
+acbch7.l4b1                    =                       0;
+acbch7.r4b2                    =                       0;
+acbcv7.l4b2                    =                       0;
+acbcv7.r4b1                    =                       0;
+acbch8.l4b2                    =                       0;
+acbch8.r4b1                    =                       0;
+acbcv8.l4b1                    =                       0;
+acbcv8.r4b2                    =                       0;
+acbch9.l4b1                    =                       0;
+acbch9.r4b2                    =                       0;
+acbcv9.l4b2                    =                       0;
+acbcv9.r4b1                    =                       0;
+acbch10.l4b2                   =                       0;
+acbch10.r4b1                   =                       0;
+acbcv10.l4b1                   =                       0;
+acbcv10.r4b2                   =                       0;
+acbh11.l4b1                    =                       0;
+acbh11.r4b2                    =                       0;
+acbv11.l4b2                    =                       0;
+acbv11.r4b1                    =                       0;
+acbh12.l4b2                    =                       0;
+acbh12.r4b1                    =                       0;
+acbv12.l4b1                    =                       0;
+acbv12.r4b2                    =                       0;
+acbh13.l4b1                    =                       0;
+acbh13.r4b2                    =                       0;
+acbv13.l4b2                    =                       0;
+acbv13.r4b1                    =                       0;
+acbh14.l4b2                    =                       0;
+acbh14.r4b1                    =                       0;
+acbv14.l4b1                    =                       0;
+acbv14.r4b2                    =                       0;
+acbh15.l4b1                    =                       0;
+acbh15.r4b2                    =                       0;
+acbv15.l4b2                    =                       0;
+acbv15.r4b1                    =                       0;
+acbh16.l4b2                    =                       0;
+acbh16.r4b1                    =                       0;
+acbv16.l4b1                    =                       0;
+acbv16.r4b2                    =                       0;
+acbh17.l4b1                    =                       0;
+acbh17.r4b2                    =                       0;
+acbv17.l4b2                    =                       0;
+acbv17.r4b1                    =                       0;
+acbh18.l4b2                    =                       0;
+acbh18.r4b1                    =                       0;
+acbv18.l4b1                    =                       0;
+acbv18.r4b2                    =                       0;
+acbh19.l4b1                    =                       0;
+acbh19.r4b2                    =                       0;
+acbv19.l4b2                    =                       0;
+acbv19.r4b1                    =                       0;
+acbh20.l4b2                    =                       0;
+acbh20.r4b1                    =                       0;
+acbv20.l4b1                    =                       0;
+acbv20.r4b2                    =                       0;
+acbh21.l4b1                    =                       0;
+acbh21.r4b2                    =                       0;
+acbv21.l4b2                    =                       0;
+acbv21.r4b1                    =                       0;
+acbh22.l4b2                    =                       0;
+acbh22.r4b1                    =                       0;
+acbv22.l4b1                    =                       0;
+acbv22.r4b2                    =                       0;
+acbh23.l4b1                    =                       0;
+acbh23.r4b2                    =                       0;
+acbv23.l4b2                    =                       0;
+acbv23.r4b1                    =                       0;
+acbh24.l4b2                    =                       0;
+acbh24.r4b1                    =                       0;
+acbv24.l4b1                    =                       0;
+acbv24.r4b2                    =                       0;
+acbh25.l4b1                    =                       0;
+acbh25.r4b2                    =                       0;
+acbv25.l4b2                    =                       0;
+acbv25.r4b1                    =                       0;
+acbh26.l4b2                    =                       0;
+acbh26.r4b1                    =                       0;
+acbv26.l4b1                    =                       0;
+acbv26.r4b2                    =                       0;
+acbh27.l4b1                    =                       0;
+acbh27.r4b2                    =                       0;
+acbv27.l4b2                    =                       0;
+acbv27.r4b1                    =                       0;
+acbh28.l4b2                    =                       0;
+acbh28.r4b1                    =                       0;
+acbv28.l4b1                    =                       0;
+acbv28.r4b2                    =                       0;
+acbh29.l4b1                    =                       0;
+acbh29.r4b2                    =                       0;
+acbv29.l4b2                    =                       0;
+acbv29.r4b1                    =                       0;
+acbh30.l4b2                    =                       0;
+acbh30.r4b1                    =                       0;
+acbv30.l4b1                    =                       0;
+acbv30.r4b2                    =                       0;
+acbh31.l4b1                    =                       0;
+acbh31.r4b2                    =                       0;
+acbv31.l4b2                    =                       0;
+acbv31.r4b1                    =                       0;
+acbh32.l4b2                    =                       0;
+acbh32.r4b1                    =                       0;
+acbv32.l4b1                    =                       0;
+acbv32.r4b2                    =                       0;
+acbh33.l4b1                    =                       0;
+acbh33.r4b2                    =                       0;
+acbv33.l4b2                    =                       0;
+acbv33.r4b1                    =                       0;
+acbh34.l4b2                    =                       0;
+acbv34.l4b1                    =                       0;
+
+! Parameters of IR4
+betxip4b1                      =                236.1836;
+betxip4b2                      =                236.1517;
+betyip4b1                      =                306.2854;
+betyip4b2                      =                320.9177;
+alfxip4b1                      =                  0.4462;
+alfxip4b2                      =                 -0.4465;
+alfyip4b1                      =                 -0.4035;
+alfyip4b2                      =                  0.5957;
+dxip4b1                        =                       0;
+dxip4b2                        =                 -0.0001;
+dpxip4b1                       =                      -0;
+dpxip4b2                       =                      -0;
+muxip4b1                       =                     2.1;
+muxip4b1_l                     =      0.9728696100000001;
+muxip4b1_r                     =              1.12713039;
+muxip4b2                       =                    2.16;
+muxip4b2_l                     =              1.17093503;
+muxip4b2_r                     =              0.98906497;
+muyip4b1                       =                    1.72;
+muyip4b1_l                     =              0.85876583;
+muyip4b1_r                     =              0.86123417;
+muyip4b2                       =                    1.72;
+muyip4b2_l                     =              0.69835813;
+muyip4b2_r                     =              1.02164187;
+
+! IR5
+
+! Strengths of IR5
+kqx1.l5                        =    -0.00566134021050044;
+kqx1.r5                        =     0.00566134021050044;
+kqx2a.l5                       =   -0.005583504791230976;
+kqx2a.r5                       =    0.005583504791230976;
+kqx2b.l5                       =   -0.005583504791230976;
+kqx2b.r5                       =    0.005583504791230976;
+kqx3.l5                        =   -0.005555674830504113;
+kqx3.r5                        =    0.005555674830504113;
+kq4.l5b1                       =    0.001323080175041851;
+kq4.l5b2                       =   -0.001093502835613281;
+kq4.r5b1                       =   -0.001018394758674138;
+kq4.r5b2                       =     0.00129283677994332;
+kq5.l5b1                       =  -0.0009622831418370573;
+kq5.l5b2                       =   0.0008356419697951057;
+kq5.r5b1                       =   0.0008045975108420696;
+kq5.r5b2                       =  -0.0009589975467591569;
+kq6.l5b1                       =    0.001608985695552735;
+kq6.l5b2                       =   -0.001910283198190747;
+kq6.r5b1                       =   -0.002007456034523647;
+kq6.r5b2                       =    0.001666660217277205;
+kq7.l5b1                       =   -0.008352624239336177;
+kq7.l5b2                       =    0.008555861703978001;
+kq7.r5b1                       =    0.008481110769460266;
+kq7.r5b2                       =   -0.008457782531942017;
+kq8.l5b1                       =    0.007831645357497011;
+kq8.l5b2                       =   -0.007319536428244831;
+kq8.r5b1                       =   -0.007239642392647203;
+kq8.r5b2                       =    0.007851525203170267;
+kq9.l5b1                       =   -0.006464058483947035;
+kq9.l5b2                       =    0.006604395275885897;
+kq9.r5b1                       =    0.006576669914017452;
+kq9.r5b2                       =   -0.006707074784054652;
+kq10.l5b1                      =     0.00710917249447946;
+kq10.l5b2                      =   -0.007075825390097762;
+kq10.r5b1                      =   -0.007181580878955506;
+kq10.r5b2                      =    0.007200372581334101;
+kqtl11.l5b1                    =   -0.001851735227072008;
+kqtl11.l5b2                    =   -0.000193696399303838;
+kqtl11.r5b1                    =  -0.0001051887621960744;
+kqtl11.r5b2                    =   -0.001586329631747435;
+kqt12.l5b1                     =    0.001321889377064653;
+kqt12.l5b2                     =   -0.004947655527130914;
+kqt12.r5b1                     =   -0.004274467872570932;
+kqt12.r5b2                     =  -3.491094219744501e-05;
+kqt13.l5b1                     =  -0.0008554193566665582;
+kqt13.l5b2                     =  -0.0009620438377174498;
+kqt13.r5b1                     =  -0.0009305613253302119;
+kqt13.r5b2                     =    0.002775388889772092;
+kqs.l5b2                       =                       0;
+kqs.r5b1                       =                       0;
+lcraba4l5.b1                   =                       0;
+lcraba4l5.b2                   =                       0;
+lcraba4r5.b1                   =                       0;
+lcraba4r5.b2                   =                       0;
+lcrabb4l5.b1                   =                       0;
+lcrabb4l5.b2                   =                       0;
+lcrabb4r5.b1                   =                       0;
+lcrabb4r5.b2                   =                       0;
+vcraba4l5.b1                   =                       0;
+vcraba4l5.b2                   =                       0;
+vcraba4r5.b1                   =                       0;
+vcraba4r5.b2                   =                       0;
+vcrabb4l5.b1                   =                       0;
+vcrabb4l5.b2                   =                       0;
+vcrabb4r5.b1                   =                       0;
+vcrabb4r5.b2                   =                       0;
+acbxh1.l5                      =                       0;
+acbxh1.r5                      =                       0;
+acbxv1.l5                      =                       0;
+acbxv1.r5                      =                       0;
+acbxh2.l5                      =                       0;
+acbxh2.r5                      =                       0;
+acbxv2.l5                      =                       0;
+acbxv2.r5                      =                       0;
+acbxh3.l5                      =                       0;
+acbxh3.r5                      =                       0;
+acbxv3.l5                      =                       0;
+acbxv3.r5                      =                       0;
+acbrdh4.l5b1                   =                       0;
+acbrdh4.l5b2                   =                       0;
+acbrdh4.r5b1                   =                       0;
+acbrdh4.r5b2                   =                       0;
+acbrdv4.l5b1                   =                       0;
+acbrdv4.l5b2                   =                       0;
+acbrdv4.r5b1                   =                       0;
+acbrdv4.r5b2                   =                       0;
+acbyh4.l5b2                    =                       0;
+acbyh4.r5b1                    =                       0;
+acbyhs4.l5b1                   =                       0;
+acbyhs4.l5b2                   =                       0;
+acbyhs4.r5b1                   =                       0;
+acbyhs4.r5b2                   =                       0;
+acbyv4.l5b1                    =                       0;
+acbyv4.r5b2                    =                       0;
+acbyvs4.l5b1                   =                       0;
+acbyvs4.l5b2                   =                       0;
+acbyvs4.r5b1                   =                       0;
+acbyvs4.r5b2                   =                       0;
+acbch5.l5b2                    =                       0;
+acbch5.r5b1                    =                       0;
+acbcv5.l5b1                    =                       0;
+acbcv5.r5b2                    =                       0;
+acbch6.l5b1                    =                       0;
+acbch6.r5b2                    =                       0;
+acbcv6.l5b2                    =                       0;
+acbcv6.r5b1                    =                       0;
+acbch7.l5b2                    =                       0;
+acbch7.r5b1                    =                       0;
+acbcv7.l5b1                    =                       0;
+acbcv7.r5b2                    =                       0;
+acbch8.l5b1                    =                       0;
+acbch8.r5b2                    =                       0;
+acbcv8.l5b2                    =                       0;
+acbcv8.r5b1                    =                       0;
+acbch9.l5b2                    =                       0;
+acbch9.r5b1                    =                       0;
+acbcv9.l5b1                    =                       0;
+acbcv9.r5b2                    =                       0;
+acbch10.l5b1                   =                       0;
+acbch10.r5b2                   =                       0;
+acbcv10.l5b2                   =                       0;
+acbcv10.r5b1                   =                       0;
+acbh10.l5b1                    =                       0;
+acbh10.r5b2                    =                       0;
+acbv10.l5b2                    =                       0;
+acbv10.r5b1                    =                       0;
+acbh11.l5b2                    =                       0;
+acbh11.r5b1                    =                       0;
+acbv11.l5b1                    =                       0;
+acbv11.r5b2                    =                       0;
+acbh12.l5b1                    =                       0;
+acbh12.r5b2                    =                       0;
+acbv12.l5b2                    =                       0;
+acbv12.r5b1                    =                       0;
+acbh13.l5b2                    =                       0;
+acbh13.r5b1                    =                       0;
+acbv13.l5b1                    =                       0;
+acbv13.r5b2                    =                       0;
+acbh14.l5b1                    =                       0;
+acbh14.r5b2                    =                       0;
+acbv14.l5b2                    =                       0;
+acbv14.r5b1                    =                       0;
+acbh15.l5b2                    =                       0;
+acbh15.r5b1                    =                       0;
+acbv15.l5b1                    =                       0;
+acbv15.r5b2                    =                       0;
+acbh16.l5b1                    =                       0;
+acbh16.r5b2                    =                       0;
+acbv16.l5b2                    =                       0;
+acbv16.r5b1                    =                       0;
+acbh17.l5b2                    =                       0;
+acbh17.r5b1                    =                       0;
+acbv17.l5b1                    =                       0;
+acbv17.r5b2                    =                       0;
+acbh18.l5b1                    =                       0;
+acbh18.r5b2                    =                       0;
+acbv18.l5b2                    =                       0;
+acbv18.r5b1                    =                       0;
+acbh19.l5b2                    =                       0;
+acbh19.r5b1                    =                       0;
+acbv19.l5b1                    =                       0;
+acbv19.r5b2                    =                       0;
+acbh20.l5b1                    =                       0;
+acbh20.r5b2                    =                       0;
+acbv20.l5b2                    =                       0;
+acbv20.r5b1                    =                       0;
+acbh21.l5b2                    =                       0;
+acbh21.r5b1                    =                       0;
+acbv21.l5b1                    =                       0;
+acbv21.r5b2                    =                       0;
+acbh22.l5b1                    =                       0;
+acbh22.r5b2                    =                       0;
+acbv22.l5b2                    =                       0;
+acbv22.r5b1                    =                       0;
+acbh23.l5b2                    =                       0;
+acbh23.r5b1                    =                       0;
+acbv23.l5b1                    =                       0;
+acbv23.r5b2                    =                       0;
+acbh24.l5b1                    =                       0;
+acbh24.r5b2                    =                       0;
+acbv24.l5b2                    =                       0;
+acbv24.r5b1                    =                       0;
+acbh25.l5b2                    =                       0;
+acbh25.r5b1                    =                       0;
+acbv25.l5b1                    =                       0;
+acbv25.r5b2                    =                       0;
+acbh26.l5b1                    =                       0;
+acbh26.r5b2                    =                       0;
+acbv26.l5b2                    =                       0;
+acbv26.r5b1                    =                       0;
+acbh27.l5b2                    =                       0;
+acbh27.r5b1                    =                       0;
+acbv27.l5b1                    =                       0;
+acbv27.r5b2                    =                       0;
+acbh28.l5b1                    =                       0;
+acbh28.r5b2                    =                       0;
+acbv28.l5b2                    =                       0;
+acbv28.r5b1                    =                       0;
+acbh29.l5b2                    =                       0;
+acbh29.r5b1                    =                       0;
+acbv29.l5b1                    =                       0;
+acbv29.r5b2                    =                       0;
+acbh30.l5b1                    =                       0;
+acbh30.r5b2                    =                       0;
+acbv30.l5b2                    =                       0;
+acbv30.r5b1                    =                       0;
+acbh31.l5b2                    =                       0;
+acbh31.r5b1                    =                       0;
+acbv31.l5b1                    =                       0;
+acbv31.r5b2                    =                       0;
+acbh32.l5b1                    =                       0;
+acbh32.r5b2                    =                       0;
+acbv32.l5b2                    =                       0;
+acbv32.r5b1                    =                       0;
+acbh33.l5b2                    =                       0;
+acbh33.r5b1                    =                       0;
+acbv33.l5b1                    =                       0;
+acbv33.r5b2                    =                       0;
+acbh34.l5b1                    =                       0;
+acbv34.l5b2                    =                       0;
+
+! Parameters of IR5
+betxip5b1                      =                     0.5;
+betxip5b2                      =                     0.5;
+betyip5b1                      =                     0.5;
+betyip5b2                      =                     0.5;
+alfxip5b1                      =                      -0;
+alfxip5b2                      =                      -0;
+alfyip5b1                      =                       0;
+alfyip5b2                      =                      -0;
+dxip5b1                        =                      -0;
+dxip5b2                        =                       0;
+dpxip5b1                       =                       0;
+dpxip5b2                       =                       0;
+muxip5b1                       =                  2.6427;
+muxip5b1_l                     =                  1.1569;
+muxip5b1_r                     =                  1.4858;
+muxip5b2                       =                  2.6427;
+muxip5b2_l                     =                  1.4884;
+muxip5b2_r                     =                  1.1543;
+muyip5b1                       =                   2.642;
+muyip5b1_l                     =                  1.4867;
+muyip5b1_r                     =                  1.1553;
+muyip5b2                       =                   2.642;
+muyip5b2_l                     =                  1.1563;
+muyip5b2_r                     =                  1.4857;
+
+! IR6
+
+! Strengths of IR6
+kq4.l6b1                       =         -0.004881414734;
+kq4.l6b2                       =    0.005497133708938192;
+kq4.r6b1                       =    0.005685192520716874;
+kq4.r6b2                       =          -0.00483383773;
+kq5.l6b1                       =    0.006978419844413094;
+kq5.l6b2                       =   -0.007089403067073541;
+kq5.r6b1                       =    -0.00678754293791305;
+kq5.r6b2                       =    0.006465677803043197;
+kq8.l6b1                       =   -0.006912996835995676;
+kq8.l6b2                       =    0.008468824928330811;
+kq8.r6b1                       =    0.008003457150254556;
+kq8.r6b2                       =   -0.005053315310832383;
+kq9.l6b1                       =    0.006640889628114382;
+kq9.l6b2                       =   -0.007274341127034336;
+kq9.r6b1                       =   -0.006166032350300481;
+kq9.r6b2                       =    0.007089418531536579;
+kq10.l6b1                      =   -0.007436738329106579;
+kq10.l6b2                      =    0.007026954367933567;
+kq10.r6b1                      =     0.00690469475588547;
+kq10.r6b2                      =   -0.008175431834299854;
+kqtl11.l6b1                    =  -0.0001477962561284349;
+kqtl11.l6b2                    =    0.003837310320902212;
+kqtl11.r6b1                    =    0.002423371452421142;
+kqtl11.r6b2                    =    0.001197582546137933;
+kqt12.l6b1                     =   -0.004260162707780333;
+kqt12.l6b2                     =    0.004891294930650129;
+kqt12.r6b1                     =   -0.001535582409345409;
+kqt12.r6b2                     =    0.004441822352281258;
+kqt13.l6b1                     =  -0.0004888112407239686;
+kqt13.l6b2                     =    0.003678307220397941;
+kqt13.r6b1                     =   0.0009195488230113246;
+kqt13.r6b2                     =   -0.003863051595091405;
+kqs.l6b1                       =                       0;
+kqs.r6b2                       =                       0;
+acbyh4.l6b2                    =                       0;
+acbyh4.r6b1                    =                       0;
+acbyv4.l6b1                    =                       0;
+acbyv4.r6b2                    =                       0;
+acbyh5.l6b1                    =                       0;
+acbyh5.r6b2                    =                       0;
+acbyv5.l6b2                    =                       0;
+acbyv5.r6b1                    =                       0;
+acbch7.l6b1                    =                       0;
+acbch7.r6b2                    =                       0;
+acbcv7.l6b2                    =                       0;
+acbcv7.r6b1                    =                       0;
+acbch8.l6b2                    =                       0;
+acbch8.r6b1                    =                       0;
+acbcv8.l6b1                    =                       0;
+acbcv8.r6b2                    =                       0;
+acbch9.l6b1                    =                       0;
+acbch9.r6b2                    =                       0;
+acbcv9.l6b2                    =                       0;
+acbcv9.r6b1                    =                       0;
+acbch10.l6b2                   =                       0;
+acbch10.r6b1                   =                       0;
+acbcv10.l6b1                   =                       0;
+acbcv10.r6b2                   =                       0;
+acbh11.l6b1                    =                       0;
+acbh11.r6b2                    =                       0;
+acbv11.l6b2                    =                       0;
+acbv11.r6b1                    =                       0;
+acbh12.l6b2                    =                       0;
+acbh12.r6b1                    =                       0;
+acbv12.l6b1                    =                       0;
+acbv12.r6b2                    =                       0;
+acbh13.l6b1                    =                       0;
+acbh13.r6b2                    =                       0;
+acbv13.l6b2                    =                       0;
+acbv13.r6b1                    =                       0;
+acbh14.l6b2                    =                       0;
+acbh14.r6b1                    =                       0;
+acbv14.l6b1                    =                       0;
+acbv14.r6b2                    =                       0;
+acbh15.l6b1                    =                       0;
+acbh15.r6b2                    =                       0;
+acbv15.l6b2                    =                       0;
+acbv15.r6b1                    =                       0;
+acbh16.l6b2                    =                       0;
+acbh16.r6b1                    =                       0;
+acbv16.l6b1                    =                       0;
+acbv16.r6b2                    =                       0;
+acbh17.l6b1                    =                       0;
+acbh17.r6b2                    =                       0;
+acbv17.l6b2                    =                       0;
+acbv17.r6b1                    =                       0;
+acbh18.l6b2                    =                       0;
+acbh18.r6b1                    =                       0;
+acbv18.l6b1                    =                       0;
+acbv18.r6b2                    =                       0;
+acbh19.l6b1                    =                       0;
+acbh19.r6b2                    =                       0;
+acbv19.l6b2                    =                       0;
+acbv19.r6b1                    =                       0;
+acbh20.l6b2                    =                       0;
+acbh20.r6b1                    =                       0;
+acbv20.l6b1                    =                       0;
+acbv20.r6b2                    =                       0;
+acbh21.l6b1                    =                       0;
+acbh21.r6b2                    =                       0;
+acbv21.l6b2                    =                       0;
+acbv21.r6b1                    =                       0;
+acbh22.l6b2                    =                       0;
+acbh22.r6b1                    =                       0;
+acbv22.l6b1                    =                       0;
+acbv22.r6b2                    =                       0;
+acbh23.l6b1                    =                       0;
+acbh23.r6b2                    =                       0;
+acbv23.l6b2                    =                       0;
+acbv23.r6b1                    =                       0;
+acbh24.l6b2                    =                       0;
+acbh24.r6b1                    =                       0;
+acbv24.l6b1                    =                       0;
+acbv24.r6b2                    =                       0;
+acbh25.l6b1                    =                       0;
+acbh25.r6b2                    =                       0;
+acbv25.l6b2                    =                       0;
+acbv25.r6b1                    =                       0;
+acbh26.l6b2                    =                       0;
+acbh26.r6b1                    =                       0;
+acbv26.l6b1                    =                       0;
+acbv26.r6b2                    =                       0;
+acbh27.l6b1                    =                       0;
+acbh27.r6b2                    =                       0;
+acbv27.l6b2                    =                       0;
+acbv27.r6b1                    =                       0;
+acbh28.l6b2                    =                       0;
+acbh28.r6b1                    =                       0;
+acbv28.l6b1                    =                       0;
+acbv28.r6b2                    =                       0;
+acbh29.l6b1                    =                       0;
+acbh29.r6b2                    =                       0;
+acbv29.l6b2                    =                       0;
+acbv29.r6b1                    =                       0;
+acbh30.l6b2                    =                       0;
+acbh30.r6b1                    =                       0;
+acbv30.l6b1                    =                       0;
+acbv30.r6b2                    =                       0;
+acbh31.l6b1                    =                       0;
+acbh31.r6b2                    =                       0;
+acbv31.l6b2                    =                       0;
+acbv31.r6b1                    =                       0;
+acbh32.l6b2                    =                       0;
+acbh32.r6b1                    =                       0;
+acbv32.l6b1                    =                       0;
+acbv32.r6b2                    =                       0;
+acbh33.l6b1                    =                       0;
+acbh33.r6b2                    =                       0;
+acbv33.l6b2                    =                       0;
+acbv33.r6b1                    =                       0;
+acbh34.l6b2                    =                       0;
+acbv34.l6b1                    =                       0;
+
+! Parameters of IR6
+betxip6b1                      =                273.4295;
+betxip6b2                      =                188.4521;
+betyip6b1                      =                183.7921;
+betyip6b2                      =                144.6127;
+alfxip6b1                      =                 -1.0559;
+alfxip6b2                      =                   0.543;
+alfyip6b1                      =                  0.4976;
+alfyip6b2                      =                 -1.1572;
+dxip6b1                        =                 -0.4252;
+dxip6b2                        =                  0.0226;
+dpxip6b1                       =                 -0.0005;
+dpxip6b2                       =                 -0.0031;
+muxip6b1                       =                   2.195;
+muxip6b1_l                     =              1.08770263;
+muxip6b1_r                     =              1.10729737;
+muxip6b2                       =                   2.177;
+muxip6b2_l                     =                1.119998;
+muxip6b2_r                     =                1.057002;
+muyip6b1                       =                    1.97;
+muyip6b1_l                     =              1.03150663;
+muyip6b1_r                     =              0.93849337;
+muyip6b2                       =                    2.03;
+muyip6b2_l                     =               1.1310072;
+muyip6b2_r                     =               0.8989928;
+
+! IR7
+
+! Strengths of IR7
+kq4.lr7                        =    0.001313938813399825;
+kqt4.l7                        =   0.0003308234198173534;
+kqt4.r7                        =   0.0003308577449036229;
+kq5.lr7                        =   -0.001335764273503676;
+kq6.l7b1                       =    0.003246891993109583;
+kq6.l7b2                       =   -0.002742217850459674;
+kq6.r7b1                       =   -0.002954101113287172;
+kq6.r7b2                       =    0.003350659507829111;
+kqtl7.l7b1                     =    0.001781709956295165;
+kqtl7.l7b2                     =    0.003050886845655514;
+kqtl7.r7b1                     =     0.00344368513382089;
+kqtl7.r7b2                     =    0.000500327098026027;
+kqtl8.l7b1                     =  -0.0001787284144000998;
+kqtl8.l7b2                     =    0.001537441316931441;
+kqtl8.r7b1                     =    0.001543880231101267;
+kqtl8.r7b2                     =    0.001050454981522974;
+kqtl9.l7b1                     =    0.000339197181925247;
+kqtl9.l7b2                     =    0.003245901306746263;
+kqtl9.r7b1                     =    0.003434181228427007;
+kqtl9.r7b2                     =    0.000419441652684232;
+kqtl10.l7b1                    =     0.00451289216675194;
+kqtl10.l7b2                    =   0.0004030402312269448;
+kqtl10.r7b1                    =   -0.001371825510604477;
+kqtl10.r7b2                    =    0.004387719900843276;
+kqtl11.l7b1                    =    0.002402705202758355;
+kqtl11.l7b2                    =   0.0002444167167280041;
+kqtl11.r7b1                    =   0.0002528625770354436;
+kqtl11.r7b2                    =   0.0009122161361241961;
+kqt12.l7b1                     =     0.00133799593102596;
+kqt12.l7b2                     =   0.0008588126878908551;
+kqt12.r7b1                     =   -0.001799523935188607;
+kqt12.r7b2                     =  -0.0002214969015333851;
+kqt13.l7b1                     =  -0.0003715960406830873;
+kqt13.l7b2                     =     -0.0016095935976807;
+kqt13.r7b1                     =   0.0001360655766802802;
+kqt13.r7b2                     =   -0.004440976198074563;
+kqs.l7b2                       =                       0;
+kqs.r7b1                       =                       0;
+acbwh4.l7b1                    =                       0;
+acbwh4.r7b2                    =                       0;
+acbwv4.l7b2                    =                       0;
+acbwv4.r7b1                    =                       0;
+acbwh5.l7b2                    =                       0;
+acbwh5.r7b1                    =                       0;
+acbwv5.l7b1                    =                       0;
+acbwv5.r7b2                    =                       0;
+acbch6.l7b1                    =                       0;
+acbch6.r7b2                    =                       0;
+acbcv6.l7b2                    =                       0;
+acbcv6.r7b1                    =                       0;
+acbch7.l7b2                    =                       0;
+acbch7.r7b1                    =                       0;
+acbcv7.l7b1                    =                       0;
+acbcv7.r7b2                    =                       0;
+acbch8.l7b1                    =                       0;
+acbch8.r7b2                    =                       0;
+acbcv8.l7b2                    =                       0;
+acbcv8.r7b1                    =                       0;
+acbch9.l7b2                    =                       0;
+acbch9.r7b1                    =                       0;
+acbcv9.l7b1                    =                       0;
+acbcv9.r7b2                    =                       0;
+acbch10.l7b1                   =                       0;
+acbch10.r7b2                   =                       0;
+acbcv10.l7b2                   =                       0;
+acbcv10.r7b1                   =                       0;
+acbh11.l7b2                    =                       0;
+acbh11.r7b1                    =                       0;
+acbv11.l7b1                    =                       0;
+acbv11.r7b2                    =                       0;
+acbh12.l7b1                    =                       0;
+acbh12.r7b2                    =                       0;
+acbv12.l7b2                    =                       0;
+acbv12.r7b1                    =                       0;
+acbh13.l7b2                    =                       0;
+acbh13.r7b1                    =                       0;
+acbv13.l7b1                    =                       0;
+acbv13.r7b2                    =                       0;
+acbh14.l7b1                    =                       0;
+acbh14.r7b2                    =                       0;
+acbv14.l7b2                    =                       0;
+acbv14.r7b1                    =                       0;
+acbh15.l7b2                    =                       0;
+acbh15.r7b1                    =                       0;
+acbv15.l7b1                    =                       0;
+acbv15.r7b2                    =                       0;
+acbh16.l7b1                    =                       0;
+acbh16.r7b2                    =                       0;
+acbv16.l7b2                    =                       0;
+acbv16.r7b1                    =                       0;
+acbh17.l7b2                    =                       0;
+acbh17.r7b1                    =                       0;
+acbv17.l7b1                    =                       0;
+acbv17.r7b2                    =                       0;
+acbh18.l7b1                    =                       0;
+acbh18.r7b2                    =                       0;
+acbv18.l7b2                    =                       0;
+acbv18.r7b1                    =                       0;
+acbh19.l7b2                    =                       0;
+acbh19.r7b1                    =                       0;
+acbv19.l7b1                    =                       0;
+acbv19.r7b2                    =                       0;
+acbh20.l7b1                    =                       0;
+acbh20.r7b2                    =                       0;
+acbv20.l7b2                    =                       0;
+acbv20.r7b1                    =                       0;
+acbh21.l7b2                    =                       0;
+acbh21.r7b1                    =                       0;
+acbv21.l7b1                    =                       0;
+acbv21.r7b2                    =                       0;
+acbh22.l7b1                    =                       0;
+acbh22.r7b2                    =                       0;
+acbv22.l7b2                    =                       0;
+acbv22.r7b1                    =                       0;
+acbh23.l7b2                    =                       0;
+acbh23.r7b1                    =                       0;
+acbv23.l7b1                    =                       0;
+acbv23.r7b2                    =                       0;
+acbh24.l7b1                    =                       0;
+acbh24.r7b2                    =                       0;
+acbv24.l7b2                    =                       0;
+acbv24.r7b1                    =                       0;
+acbh25.l7b2                    =                       0;
+acbh25.r7b1                    =                       0;
+acbv25.l7b1                    =                       0;
+acbv25.r7b2                    =                       0;
+acbh26.l7b1                    =                       0;
+acbh26.r7b2                    =                       0;
+acbv26.l7b2                    =                       0;
+acbv26.r7b1                    =                       0;
+acbh27.l7b2                    =                       0;
+acbh27.r7b1                    =                       0;
+acbv27.l7b1                    =                       0;
+acbv27.r7b2                    =                       0;
+acbh28.l7b1                    =                       0;
+acbh28.r7b2                    =                       0;
+acbv28.l7b2                    =                       0;
+acbv28.r7b1                    =                       0;
+acbh29.l7b2                    =                       0;
+acbh29.r7b1                    =                       0;
+acbv29.l7b1                    =                       0;
+acbv29.r7b2                    =                       0;
+acbh30.l7b1                    =                       0;
+acbh30.r7b2                    =                       0;
+acbv30.l7b2                    =                       0;
+acbv30.r7b1                    =                       0;
+acbh31.l7b2                    =                       0;
+acbv31.l7b1                    =                       0;
+acbv31.r7b2                    =                       0;
+acbh32.l7b1                    =                       0;
+acbh32.r7b2                    =                       0;
+acbv32.l7b2                    =                       0;
+acbv32.r7b1                    =                       0;
+acbh33.l7b2                    =                       0;
+acbh33.r7b1                    =                       0;
+acbv33.l7b1                    =                       0;
+acbv33.r7b2                    =                       0;
+acbh34.l7b1                    =                       0;
+acbv34.l7b2                    =                       0;
+
+! Parameters of IR7
+betxip7b1                      =                 120.808;
+betxip7b2                      =                120.8086;
+betyip7b1                      =                149.4063;
+betyip7b2                      =                 149.405;
+alfxip7b1                      =                   1.277;
+alfxip7b2                      =                  -1.277;
+alfyip7b1                      =                  -1.385;
+alfyip7b2                      =                   1.385;
+dxip7b1                        =                 -0.2038;
+dxip7b2                        =    -0.09130000000000001;
+dpxip7b1                       =                      -0;
+dpxip7b2                       =                      -0;
+muxip7b1                       =                   2.455;
+muxip7b1_l                     =              1.21666416;
+muxip7b1_r                     =              1.23833584;
+muxip7b2                       =                   2.455;
+muxip7b2_l                     =              1.22380358;
+muxip7b2_r                     =              1.23119642;
+muyip7b1                       =                    1.97;
+muyip7b1_l                     =              0.96021731;
+muyip7b1_r                     =              1.00978269;
+muyip7b2                       =                    1.97;
+muyip7b2_l                     =              0.93416285;
+muyip7b2_r                     =              1.03583715;
+
+! IR8
+
+! Strengths of IR8
+kqx.l8                         =      0.0087798545512205;
+kqx.r8                         =     -0.0087798545512205;
+ktqx1.l8                       =  -1.057993215943913e-08;
+ktqx1.r8                       =   1.057993215943913e-08;
+ktqx2.l8                       =  -1.270813224852643e-09;
+ktqx2.r8                       =   1.270813224852643e-09;
+kq4.l8b1                       =   -0.003007843237898388;
+kq4.l8b2                       =    0.003319302521373414;
+kq4.r8b1                       =    0.003161395797923251;
+kq4.r8b2                       =   -0.002709636013001714;
+kq5.l8b1                       =    0.003344147702837785;
+kq5.l8b2                       =   -0.003855308091216701;
+kq5.r8b1                       =   -0.002161060529882169;
+kq5.r8b2                       =    0.002325769144730945;
+kq6.l8b1                       =   -0.006783124467779228;
+kq6.l8b2                       =    0.006061632203616221;
+kq6.r8b1                       =     0.00466477989189751;
+kq6.r8b2                       =   -0.006159580109533699;
+kq7.l8b1                       =    0.008294186324716379;
+kq7.l8b2                       =   -0.007301216096823522;
+kq7.r8b1                       =   -0.006452465931625039;
+kq7.r8b2                       =     0.00782385279340706;
+kq8.l8b1                       =   -0.006989279685192374;
+kq8.l8b2                       =    0.006720591972728884;
+kq8.r8b1                       =    0.007590234591273857;
+kq8.r8b2                       =   -0.006346716227522464;
+kq9.l8b1                       =    0.006604140768077889;
+kq9.l8b2                       =   -0.004461342440745805;
+kq9.r8b1                       =     -0.0072882283324952;
+kq9.r8b2                       =    0.006790941504709663;
+kq10.l8b1                      =     -0.0064679303091264;
+kq10.l8b2                      =    0.007119703120167839;
+kq10.r8b1                      =    0.007263004090072038;
+kq10.r8b2                      =   -0.006029577070483009;
+kqtl11.l8b1                    =    0.000353122741977115;
+kqtl11.l8b2                    =  -0.0004865022233610443;
+kqtl11.r8b1                    =    0.001333643819980714;
+kqtl11.r8b2                    =  -0.0008437735030246934;
+kqt12.l8b1                     =   0.0001738381660594325;
+kqt12.l8b2                     =  -2.663296232101811e-05;
+kqt12.r8b1                     =   -0.003605758594154046;
+kqt12.r8b2                     =    0.004582224043162528;
+kqt13.l8b1                     =   -0.002603464632779051;
+kqt13.l8b2                     =   -0.002646920302410996;
+kqt13.r8b1                     =   0.0008401804281207275;
+kqt13.r8b2                     =    0.001316163245617989;
+kqs.l8b1                       =                       0;
+kqs.r8b2                       =                       0;
+acbxh1.l8                      =                       0;
+acbxh1.r8                      =                       0;
+acbxv1.l8                      =                       0;
+acbxv1.r8                      =                       0;
+acbxh2.l8                      =                       0;
+acbxh2.r8                      =                       0;
+acbxv2.l8                      =                       0;
+acbxv2.r8                      =                       0;
+acbxh3.l8                      =                       0;
+acbxh3.r8                      =                       0;
+acbxv3.l8                      =                       0;
+acbxv3.r8                      =                       0;
+acbyh4.l8b2                    =                       0;
+acbyh4.r8b1                    =                       0;
+acbyhs4.l8b1                   =                       0;
+acbyhs4.l8b2                   =                       0;
+acbyhs4.r8b1                   =                       0;
+acbyhs4.r8b2                   =                       0;
+acbyv4.l8b1                    =                       0;
+acbyv4.r8b2                    =                       0;
+acbyvs4.l8b1                   =                       0;
+acbyvs4.l8b2                   =                       0;
+acbyvs4.r8b1                   =                       0;
+acbyvs4.r8b2                   =                       0;
+acbch5.l8b1                    =                       0;
+acbchs5.l8b1                   =                       0;
+acbchs5.l8b2                   =                       0;
+acbcv5.l8b2                    =                       0;
+acbcvs5.l8b1                   =                       0;
+acbcvs5.l8b2                   =                       0;
+acbyh5.r8b2                    =                       0;
+acbyhs5.r8b1                   =                       0;
+acbyhs5.r8b2                   =                       0;
+acbyv5.r8b1                    =                       0;
+acbyvs5.r8b1                   =                       0;
+acbyvs5.r8b2                   =                       0;
+acbch6.l8b2                    =                       0;
+acbch6.r8b1                    =                       0;
+acbcv6.l8b1                    =                       0;
+acbcv6.r8b2                    =                       0;
+acbch7.l8b1                    =                       0;
+acbch7.r8b2                    =                       0;
+acbcv7.l8b2                    =                       0;
+acbcv7.r8b1                    =                       0;
+acbch8.l8b2                    =                       0;
+acbch8.r8b1                    =                       0;
+acbcv8.l8b1                    =                       0;
+acbcv8.r8b2                    =                       0;
+acbch9.l8b1                    =                       0;
+acbch9.r8b2                    =                       0;
+acbcv9.l8b2                    =                       0;
+acbcv9.r8b1                    =                       0;
+acbch10.l8b2                   =                       0;
+acbch10.r8b1                   =                       0;
+acbcv10.l8b1                   =                       0;
+acbcv10.r8b2                   =                       0;
+acbh11.l8b1                    =                       0;
+acbh11.r8b2                    =                       0;
+acbv11.l8b2                    =                       0;
+acbv11.r8b1                    =                       0;
+acbh12.l8b2                    =                       0;
+acbh12.r8b1                    =                       0;
+acbv12.l8b1                    =                       0;
+acbv12.r8b2                    =                       0;
+acbh13.l8b1                    =                       0;
+acbh13.r8b2                    =                       0;
+acbv13.l8b2                    =                       0;
+acbv13.r8b1                    =                       0;
+acbh14.l8b2                    =                       0;
+acbh14.r8b1                    =                       0;
+acbv14.l8b1                    =                       0;
+acbv14.r8b2                    =                       0;
+acbh15.l8b1                    =                       0;
+acbh15.r8b2                    =                       0;
+acbv15.l8b2                    =                       0;
+acbv15.r8b1                    =                       0;
+acbh16.l8b2                    =                       0;
+acbh16.r8b1                    =                       0;
+acbv16.l8b1                    =                       0;
+acbv16.r8b2                    =                       0;
+acbh17.l8b1                    =                       0;
+acbh17.r8b2                    =                       0;
+acbv17.l8b2                    =                       0;
+acbv17.r8b1                    =                       0;
+acbh18.l8b2                    =                       0;
+acbh18.r8b1                    =                       0;
+acbv18.l8b1                    =                       0;
+acbv18.r8b2                    =                       0;
+acbh19.l8b1                    =                       0;
+acbh19.r8b2                    =                       0;
+acbv19.l8b2                    =                       0;
+acbv19.r8b1                    =                       0;
+acbh20.l8b2                    =                       0;
+acbh20.r8b1                    =                       0;
+acbv20.l8b1                    =                       0;
+acbv20.r8b2                    =                       0;
+acbh21.l8b1                    =                       0;
+acbh21.r8b2                    =                       0;
+acbv21.l8b2                    =                       0;
+acbv21.r8b1                    =                       0;
+acbh22.l8b2                    =                       0;
+acbh22.r8b1                    =                       0;
+acbv22.l8b1                    =                       0;
+acbv22.r8b2                    =                       0;
+acbh23.l8b1                    =                       0;
+acbh23.r8b2                    =                       0;
+acbv23.l8b2                    =                       0;
+acbv23.r8b1                    =                       0;
+acbh24.l8b2                    =                       0;
+acbh24.r8b1                    =                       0;
+acbv24.l8b1                    =                       0;
+acbv24.r8b2                    =                       0;
+acbh25.l8b1                    =                       0;
+acbh25.r8b2                    =                       0;
+acbv25.l8b2                    =                       0;
+acbv25.r8b1                    =                       0;
+acbh26.l8b2                    =                       0;
+acbh26.r8b1                    =                       0;
+acbv26.l8b1                    =                       0;
+acbv26.r8b2                    =                       0;
+acbh27.l8b1                    =                       0;
+acbh27.r8b2                    =                       0;
+acbv27.l8b2                    =                       0;
+acbv27.r8b1                    =                       0;
+acbh28.l8b2                    =                       0;
+acbh28.r8b1                    =                       0;
+acbv28.l8b1                    =                       0;
+acbv28.r8b2                    =                       0;
+acbh29.l8b1                    =                       0;
+acbh29.r8b2                    =                       0;
+acbv29.l8b2                    =                       0;
+acbv29.r8b1                    =                       0;
+acbh30.l8b2                    =                       0;
+acbh30.r8b1                    =                       0;
+acbv30.l8b1                    =                       0;
+acbv30.r8b2                    =                       0;
+acbh31.l8b1                    =                       0;
+acbh31.r8b2                    =                       0;
+acbv31.l8b2                    =                       0;
+acbv31.r8b1                    =                       0;
+acbh32.l8b2                    =                       0;
+acbh32.r8b1                    =                       0;
+acbv32.l8b1                    =                       0;
+acbv32.r8b2                    =                       0;
+acbh33.l8b1                    =                       0;
+acbh33.r8b2                    =                       0;
+acbv33.l8b2                    =                       0;
+acbv33.r8b1                    =                       0;
+acbh34.l8b2                    =                       0;
+acbv34.l8b1                    =                       0;
+
+! Parameters of IR8
+betxip8b1                      =                     1.5;
+betxip8b2                      =                     1.5;
+betyip8b1                      =                     1.5;
+betyip8b2                      =                     1.5;
+alfxip8b1                      =                       0;
+alfxip8b2                      =                       0;
+alfyip8b1                      =                      -0;
+alfyip8b2                      =                       0;
+dxip8b1                        =                       0;
+dxip8b2                        =                       0;
+dpxip8b1                       =                      -0;
+dpxip8b2                       =                      -0;
+muxip8b1                       =                    3.02;
+muxip8b1_l                     =              1.35126365;
+muxip8b1_r                     =              1.66873635;
+muxip8b2                       =                    3.02;
+muxip8b2_l                     =              1.56801776;
+muxip8b2_r                     =              1.45198224;
+muyip8b1                       =                     2.8;
+muyip8b1_l                     =              1.49620771;
+muyip8b1_r                     =              1.30379229;
+muyip8b2                       =                     2.8;
+muyip8b2_l                     =                1.233611;
+muyip8b2_r                     =                1.566389;
+
+! A12
+
+! Strengths of A12
+kqd.a12                        =   -0.008704755160403282;
+kqf.a12                        =    0.008703298845784021;
+kqtd.a12b1                     =    1.25416078773709e-11;
+kqtd.a12b2                     =   -1.25416078773709e-11;
+kqtf.a12b1                     =   -9.35715250708965e-12;
+kqtf.a12b2                     =    9.35715250708965e-12;
+kqs.a12b2                      =                       0;
+ksd1.a12b1                     =                  -0.099;
+ksd1.a12b2                     =     -0.3555188351357061;
+ksd2.a12b1                     =      -0.359488657590713;
+ksd2.a12b2                     =                  -0.099;
+ksf1.a12b1                     =      0.2195375046800242;
+ksf1.a12b2                     =                    0.06;
+ksf2.a12b1                     =                    0.06;
+ksf2.a12b2                     =       0.211291804921684;
+kod.a12b1                      =                       0;
+kod.a12b2                      =                       0;
+kof.a12b1                      =                       0;
+kof.a12b2                      =                       0;
+
+! Parameters of A12
+muxa12b1                       =             5.244164753;
+muxa12b2                       =             5.217892747;
+muya12b1                       =             5.218269464;
+muya12b2                       =             5.243786536;
+muxcell12b1                    =      0.2499999720380135;
+muxcell12b2                    =       0.249981945285219;
+muycell12b1                    =      0.2499999894208171;
+muycell12b2                    =      0.2499819607841305;
+
+! A23
+
+! Strengths of A23
+kqd.a23                        =   -0.008730130933004367;
+kqf.a23                        =    0.008761022938688313;
+kqtd.a23b1                     =   -0.000234594161901635;
+kqtd.a23b2                     =    0.000234594161901635;
+kqtf.a23b1                     =   -0.000240213999699575;
+kqtf.a23b2                     =    0.000240213999699575;
+kqs.a23b1                      =                       0;
+ksd1.a23b1                     =     -0.1154839288584582;
+ksd1.a23b2                     =     -0.1294515290851082;
+ksd2.a23b1                     =     -0.1154839288584582;
+ksd2.a23b2                     =     -0.1294515290851082;
+ksf1.a23b1                     =     0.06341384816379138;
+ksf1.a23b2                     =      0.0959811756321329;
+ksf2.a23b1                     =     0.06341384816379138;
+ksf2.a23b2                     =      0.0959811756321329;
+kod.a23b1                      =                       0;
+kod.a23b2                      =                       0;
+kof.a23b1                      =                       0;
+kof.a23b2                      =                       0;
+
+! Parameters of A23
+muxa23b1                       =             5.257006594;
+muxa23b2                       =             5.303965704;
+muya23b1                       =             5.267984483;
+muya23b2                       =             5.222246626;
+muxcell23b1                    =      0.2523484207814679;
+muxcell23b2                    =      0.2523666683575003;
+muycell23b1                    =      0.2506591116800299;
+muycell23b2                    =      0.2506772664741281;
+
+! A34
+
+! Strengths of A34
+kqd.a34                        =   -0.008749620632415753;
+kqf.a34                        =    0.008750025406803356;
+kqtd.a34b1                     =    0.000319160058382472;
+kqtd.a34b2                     =   -0.000319160058382472;
+kqtf.a34b1                     =   -0.000235566098557111;
+kqtf.a34b2                     =    0.000235566098557111;
+kqs.a34b2                      =                       0;
+ksd1.a34b1                     =     -0.1154839288584582;
+ksd1.a34b2                     =     -0.1294515290851082;
+ksd2.a34b1                     =     -0.1154839288584582;
+ksd2.a34b2                     =     -0.1294515290851082;
+ksf1.a34b1                     =     0.06341384816379138;
+ksf1.a34b2                     =      0.0959811756321329;
+ksf2.a34b1                     =     0.06341384816379138;
+ksf2.a34b2                     =      0.0959811756321329;
+kod.a34b1                      =                       0;
+kod.a34b2                      =                       0;
+kof.a34b1                      =                       0;
+kof.a34b2                      =                       0;
+
+! Parameters of A34
+muxa34b1                       =       5.273738722000004;
+muxa34b2                       =       5.260345184000009;
+muya34b1                       =       5.241903765000004;
+muya34b2                       =       5.288330716000004;
+muxcell34b1                    =      0.2517088661305111;
+muxcell34b2                    =      0.2517270867857309;
+muycell34b1                    =        0.25161185095343;
+muycell34b2                    =      0.2516300680403636;
+
+! A45
+
+! Strengths of A45
+kqd.a45                        =   -0.008704755160417682;
+kqf.a45                        =    0.008703298845774411;
+kqtd.a45b1                     =     -1.299945189132e-11;
+kqtd.a45b2                     =      1.299945189132e-11;
+kqtf.a45b1                     =   9.426063091157041e-12;
+kqtf.a45b2                     =  -9.426063091157041e-12;
+kqs.a45b1                      =                       0;
+ksd1.a45b1                     =                  -0.099;
+ksd1.a45b2                     =     -0.3722437331237574;
+ksd2.a45b1                     =     -0.3620541409120608;
+ksd2.a45b2                     =                  -0.099;
+ksf1.a45b1                     =      0.2183034912171765;
+ksf1.a45b2                     =                    0.06;
+ksf2.a45b1                     =                    0.06;
+ksf2.a45b2                     =      0.2098248042991788;
+kod.a45b1                      =                       0;
+kod.a45b2                      =                       0;
+kof.a45b1                      =                       0;
+kof.a45b2                      =                       0;
+
+! Parameters of A45
+muxa45b1                       =             5.217892747;
+muxa45b2                       =             5.244164753;
+muya45b1                       =             5.243786536;
+muya45b2                       =             5.218269464;
+muxcell45b1                    =      0.2499819452723306;
+muxcell45b2                    =      0.2499999720509463;
+muycell45b1                    =      0.2499819608213483;
+muycell45b2                    =       0.249999989421493;
+
+! A56
+
+! Strengths of A56
+kqd.a56                        =    -0.00870475516039991;
+kqf.a56                        =     0.00870329884576795;
+kqtd.a56b1                     =    1.26700225584154e-11;
+kqtd.a56b2                     =   -1.26700225584154e-11;
+kqtf.a56b1                     =    -1.0186866773094e-11;
+kqtf.a56b2                     =     1.0186866773094e-11;
+kqs.a56b2                      =                       0;
+ksd1.a56b1                     =                  -0.099;
+ksd1.a56b2                     =     -0.3873433681870275;
+ksd2.a56b1                     =     -0.3505534823704012;
+ksd2.a56b2                     =                  -0.099;
+ksf1.a56b1                     =      0.2247585771266579;
+ksf1.a56b2                     =                    0.06;
+ksf2.a56b1                     =                    0.06;
+ksf2.a56b2                     =      0.2098836604261868;
+kod.a56b1                      =                       0;
+kod.a56b2                      =                       0;
+kof.a56b1                      =                       0;
+kof.a56b2                      =                       0;
+
+! Parameters of A56
+muxa56b1                       =             5.244164753;
+muxa56b2                       =             5.217892747;
+muya56b1                       =             5.218269464;
+muya56b2                       =             5.243786536;
+muxcell56b1                    =      0.2499999720366084;
+muxcell56b2                    =      0.2499819452846199;
+muycell56b1                    =      0.2499999894207829;
+muycell56b2                    =      0.2499819607840994;
+
+! A67
+
+! Strengths of A67
+kqd.a67                        =   -0.008630272257698857;
+kqf.a67                        =    0.008679246765438527;
+kqtd.a67b1                     =    -0.00188760473179025;
+kqtd.a67b2                     =     0.00188760473179025;
+kqtf.a67b1                     =    -0.00294035924810576;
+kqtf.a67b2                     =     0.00294035924810576;
+kqs.a67b1                      =                       0;
+ksd1.a67b1                     =     -0.1154839288584582;
+ksd1.a67b2                     =     -0.1294515290851082;
+ksd2.a67b1                     =     -0.1154839288584582;
+ksd2.a67b2                     =     -0.1294515290851082;
+ksf1.a67b1                     =     0.06341384816379138;
+ksf1.a67b2                     =      0.0959811756321329;
+ksf2.a67b1                     =     0.06341384816379138;
+ksf2.a67b2                     =      0.0959811756321329;
+kod.a67b1                      =                       0;
+kod.a67b2                      =                       0;
+kof.a67b1                      =                       0;
+kof.a67b2                      =                       0;
+
+! Parameters of A67
+muxa67b1                       =             5.080613164;
+muxa67b2                       =             5.352288981;
+muya67b1                       =             5.264716988;
+muya67b2                       =             5.058365882;
+muxcell67b1                    =      0.2495198107423846;
+muxcell67b2                    =      0.2495019150936746;
+muycell67b1                    =      0.2468850164484491;
+muycell67b2                    =      0.2468672604257884;
+
+! A78
+
+! Strengths of A78
+kqd.a78                        =   -0.008799716978548922;
+kqf.a78                        =    0.008842236626436377;
+kqtd.a78b1                     =    0.000921125747673809;
+kqtd.a78b2                     =   -0.000921125747673809;
+kqtf.a78b1                     =      0.0040789551871216;
+kqtf.a78b2                     =     -0.0040789551871216;
+kqs.a78b2                      =                       0;
+ksd1.a78b1                     =     -0.1154839288584582;
+ksd1.a78b2                     =     -0.1294515290851082;
+ksd2.a78b1                     =     -0.1154839288584582;
+ksd2.a78b2                     =     -0.1294515290851082;
+ksf1.a78b1                     =     0.06341384816379138;
+ksf1.a78b2                     =      0.0959811756321329;
+ksf2.a78b1                     =     0.06341384816379138;
+ksf2.a78b2                     =      0.0959811756321329;
+kod.a78b1                      =                       0;
+kod.a78b2                      =                       0;
+kof.a78b1                      =                       0;
+kof.a78b2                      =                       0;
+
+! Parameters of A78
+muxa78b1                       =              5.52412652;
+muxa78b2                       =             5.166885131;
+muya78b1                       =             5.222282764;
+muya78b2                       =             5.367944776;
+muxcell78b1                    =      0.2554519272108662;
+muxcell78b2                    =      0.2554333390420593;
+muycell78b1                    =      0.2531551318245233;
+muycell78b2                    =      0.2531366751609934;
+
+! A81
+
+! Strengths of A81
+kqd.a81                        =   -0.008704755160417903;
+kqf.a81                        =    0.008703298845879481;
+kqtd.a81b1                     =   -1.28495690608988e-11;
+kqtd.a81b2                     =    1.28495690608988e-11;
+kqtf.a81b1                     =    1.14058242483425e-11;
+kqtf.a81b2                     =   -1.14058242483425e-11;
+kqs.a81b1                      =                       0;
+ksd1.a81b1                     =                  -0.099;
+ksd1.a81b2                     =     -0.3683536497199759;
+ksd2.a81b1                     =      -0.406419300855031;
+ksd2.a81b2                     =                  -0.099;
+ksf1.a81b1                     =      0.2508524538499736;
+ksf1.a81b2                     =                    0.06;
+ksf2.a81b1                     =                    0.06;
+ksf2.a81b2                     =      0.1923725144708145;
+kod.a81b1                      =                       0;
+kod.a81b2                      =                       0;
+kof.a81b1                      =                       0;
+kof.a81b2                      =                       0;
+
+! Parameters of A81
+muxa81b1                       =             5.217892747;
+muxa81b2                       =             5.244164753;
+muya81b1                       =             5.243786536;
+muya81b2                       =             5.218269464;
+muxcell81b1                    =      0.2499819452803438;
+muxcell81b2                    =      0.2499999720512136;
+muycell81b1                    =      0.2499819608250866;
+muycell81b2                    =      0.2499999894207008;
+
+! Knobs
+on_a1h = 0;
+on_a1v = 0;
+on_o1h = 0;
+on_o1v = 0;
+on_sep1h = 0;
+on_sep1v = 0;
+on_x1hl = 0;
+on_x1hs = 0;
+on_x1vl = 0;
+on_x1vs = 0;
+on_xip1b1 = 0;
+on_xip1b2 = 0;
+on_yip1b1 = 0;
+on_yip1b2 = 0;
+on_crab1 = 0;
+on_a2h = 0;
+on_a2v = 0;
+on_o2h = 0;
+on_o2v = 0;
+on_sep2h = 0;
+on_sep2v = 0;
+on_x2h = 0;
+on_x2v = 0;
+on_xip2b1 = 0;
+on_xip2b2 = 0;
+on_yip2b1 = 0;
+on_yip2b2 = 0;
+on_a5h = 0;
+on_a5v = 0;
+on_o5h = 0;
+on_o5v = 0;
+on_sep5h = 0;
+on_sep5v = 0;
+on_x5hl = 0;
+on_x5hs = 0;
+on_x5vl = 0;
+on_x5vs = 0;
+on_xip5b1 = 0;
+on_xip5b2 = 0;
+on_yip5b1 = 0;
+on_yip5b2 = 0;
+on_crab5 = 0;
+on_a8h = 0;
+on_a8v = 0;
+on_o8h = 0;
+on_o8v = 0;
+on_sep8h = 0;
+on_sep8v = 0;
+on_x8h = 0;
+on_x8v = 0;
+on_xip8b1 = 0;
+on_xip8b2 = 0;
+on_yip8b1 = 0;
+on_yip8b2 = 0;
+dqx.b1_op = 0;
+dqx.b1_sq = 0;
+dqx.b1 = 0;
+dqx.b2_op = 0;
+dqx.b2_sq = 0;
+dqx.b2 = 0;
+dqy.b1_op = 0;
+dqy.b1_sq = 0;
+dqy.b1 = 0;
+dqy.b2_op = 0;
+dqy.b2_sq = 0;
+dqy.b2 = 0;
+dqpx.b1_op = 0;
+dqpx.b1_sq = 0;
+dqpx.b1 = 0;
+dqpx.b2_op = 0;
+dqpx.b2_sq = 0;
+dqpx.b2 = 0;
+dqpy.b1_op = 0;
+dqpy.b1_sq = 0;
+dqpy.b1 = 0;
+dqpy.b2_op = 0;
+dqpy.b2_sq = 0;
+dqpy.b2 = 0;
+cmis.b1_op = 0;
+cmis.b1_sq = 0;
+cmis.b1 = 0;
+cmis.b2_op = 0;
+cmis.b2_sq = 0;
+cmis.b2 = 0;
+cmrs.b1_op = 0;
+cmrs.b1_sq = 0;
+cmrs.b1 = 0;
+cmrs.b2_op = 0;
+cmrs.b2_sq = 0;
+cmrs.b2 = 0;
+phase_change.b1 = 0;
+phase_change.b2 = 0;
+dp_trim.b1 = 0;
+dp_trim.b2 = 0;
+on_dx1hs = 0;
+on_dx1vs = 0;
+on_dx1hl = 0;
+on_dx1vl = 0;
+on_dx5hs = 0;
+on_dx5vs = 0;
+on_dx5hl = 0;
+on_dx5vl = 0;
+on_dsep1h = -0;
+on_dsep1v = 0;
+on_dsep5h = -0;
+on_dsep5v = 0;
+acbxh1.l1 :=
+  +0
+  +4.41110497044377e-07 * on_a1h
+  +2.12624291039746e-05 * on_o1h
+  +4.74271819256467e-06 * on_sep1h
+  +1.89363620429888e-08 * on_x1hl
+  -3.59201740287571e-08 * on_x1hs;
+acbxh1.r1 :=
+  +0
+  +4.26731775365459e-07 * on_a1h
+  -1.56871111808901e-05 * on_o1h
+  +4.67759128172005e-06 * on_sep1h
+  -1.89364658607564e-08 * on_x1hl
+  +1.46295676386327e-08 * on_x1hs;
+acbxh2.l1 :=
+  +0
+  +4.41115282412693e-07 * on_a1h
+  +7.14988030773662e-06 * on_o1h
+  +4.74232882034359e-06 * on_sep1h
+  +1.89389682407353e-08 * on_x1hl
+  -3.59224776923144e-08 * on_x1hs;
+acbxh2.r1 :=
+  +0
+  +4.26736314390033e-07 * on_a1h
+  -1.01723268351491e-05 * on_o1h
+  +4.67718811072993e-06 * on_sep1h
+  -1.89390739064904e-08 * on_x1hl
+  +1.46307615408628e-08 * on_x1hs;
+acbxh3.l1 :=
+  +0
+  -1.04783228105398e-06 * on_a1h
+  -1.62392201845576e-05 * on_o1h
+  +1.14094406169173e-05 * on_sep1h
+  +1.41183762585268e-07 * on_x1hl
+  +4.11894962320004e-07 * on_x1hs;
+acbxh3.r1 :=
+  +0
+  -9.98324507466268e-07 * on_a1h
+  +1.22362203744622e-05 * on_o1h
+  +1.15179165163679e-05 * on_sep1h
+  -1.41183544396289e-07 * on_x1hl
+  -3.58980138044886e-07 * on_x1hs;
+acbrdh4.l1b1 :=
+  +0
+  -1.87775852490483e-07 * on_a1h
+  +0 * on_o1h
+  +3.62034892111635e-06 * on_sep1h
+  -0 * on_x1hl
+  -4.45915610858861e-07 * on_x1hs;
+acbrdh4.r1b1 :=
+  +0
+  +9.56430932917531e-07 * on_a1h
+  +0 * on_o1h
+  +6.48007235654138e-07 * on_sep1h
+  +0 * on_x1hl
+  +6.9222685080514e-07 * on_x1hs;
+acbrdh4.l1b2 :=
+  +0
+  -9.92849533960533e-07 * on_a1h
+  +0 * on_o1h
+  -6.64352826579325e-07 * on_sep1h
+  +0 * on_x1hl
+  +7.25760229900637e-07 * on_x1hs;
+acbrdh4.r1b2 :=
+  +0
+  +2.01065178904337e-07 * on_a1h
+  +0 * on_o1h
+  -3.6481717092873e-06 * on_sep1h
+  -0 * on_x1hl
+  -4.4663065019939e-07 * on_x1hs;
+acbyh4.l1b2 :=
+  +0
+  +0 * on_a1h
+  +2.17865089197547e-05 * on_o1h
+  -6.6544673047316e-07 * on_sep1h
+  +2.5249468610824e-07 * on_x1hl
+  +0 * on_x1hs;
+acbyh4.r1b1 :=
+  +0
+  +0 * on_a1h
+  +2.53929876339159e-05 * on_o1h
+  +6.49029308727778e-07 * on_sep1h
+  +2.52494542085844e-07 * on_x1hl
+  +0 * on_x1hs;
+pxip1b1 :=
+  +1e-06 * on_a1h
+  +1e-06 * on_x1hl
+  +1e-06 * on_x1hs;
+pxip1b2 :=
+  +1e-06 * on_a1h
+  -1e-06 * on_x1hl
+  -1e-06 * on_x1hs;
+acbyhs4.l1b1 :=
+  +0
+  +0 * on_a1h
+  +1.480573670093e-05 * on_o1h
+  +3.61979784403999e-06 * on_sep1h
+  -3.13387472635371e-07 * on_x1hl
+  -0 * on_x1hs
+  +7.30082309070804e-05 * on_xip1b1;
+acbyhs4.r1b1 :=
+  +0
+  +0 * on_a1h
+  +2.53929708854763e-05 * on_o1h
+  +6.48934477713956e-07 * on_sep1h
+  +2.52493697084067e-07 * on_x1hl
+  +0 * on_x1hs
+  +8.90568819016238e-05 * on_xip1b1;
+acbyhs4.l1b2 :=
+  +0
+  +0 * on_a1h
+  +2.17864904777077e-05 * on_o1h
+  -6.65352718797721e-07 * on_sep1h
+  +2.52493823774558e-07 * on_x1hl
+  +0 * on_x1hs
+  +7.80888876970273e-05 * on_xip1b2;
+acbyhs4.r1b2 :=
+  +0
+  +0 * on_a1h
+  +1.23371364173982e-05 * on_o1h
+  -3.64756390275848e-06 * on_sep1h
+  -3.13387571563728e-07 * on_x1hl
+  -0 * on_x1hs
+  +7.9171249392397e-05 * on_xip1b2;
+acbxv1.l1 :=
+  +0
+  -4.41095551636275e-07 * on_a1v
+  -2.03793956791225e-05 * on_o1v
+  +4.74280409067389e-06 * on_sep1v
+  +1.89402981465747e-08 * on_x1vl
+  -3.59167398956969e-08 * on_x1vs;
+acbxv1.r1 :=
+  +0
+  -4.26716987622621e-07 * on_a1v
+  +1.78646291285543e-05 * on_o1v
+  +4.67767542907727e-06 * on_sep1v
+  -1.89402981540005e-08 * on_x1vl
+  +1.46261861587154e-08 * on_x1vs;
+acbxv2.l1 :=
+  +0
+  -4.41100309102929e-07 * on_a1v
+  -1.01090412436794e-05 * on_o1v
+  +4.7424183105641e-06 * on_sep1v
+  +1.8943389873128e-08 * on_x1vl
+  -3.59192522728091e-08 * on_x1vs;
+acbxv2.r1 :=
+  +0
+  -4.26721255448815e-07 * on_a1v
+  -6.64115370401954e-07 * on_o1v
+  +4.67727612949332e-06 * on_sep1v
+  -1.89433898654719e-08 * on_x1vl
+  +1.46277465727643e-08 * on_x1vs;
+acbxv3.l1 :=
+  +0
+  +1.04779021614614e-06 * on_a1v
+  +1.86602460016422e-05 * on_o1v
+  +1.14093685844044e-05 * on_sep1v
+  +1.41161133109737e-07 * on_x1vl
+  +4.11875882240923e-07 * on_x1vs;
+acbxv3.r1 :=
+  +0
+  +9.98282393340625e-07 * on_a1v
+  +7.94828460137577e-08 * on_o1v
+  +1.15178465557274e-05 * on_sep1v
+  -1.41161133100701e-07 * on_x1vl
+  -3.5896154167759e-07 * on_x1vs;
+acbrdv4.l1b1 :=
+  +0
+  -9.92847504722226e-07 * on_a1v
+  +0 * on_o1v
+  +6.64379937201775e-07 * on_sep1v
+  -0 * on_x1vl
+  -7.25763439680727e-07 * on_x1vs;
+acbrdv4.r1b1 :=
+  +0
+  +2.01075022246336e-07 * on_a1v
+  +0 * on_o1v
+  +3.64822559213558e-06 * on_sep1v
+  +0 * on_x1vl
+  +4.46631846174595e-07 * on_x1vs;
+acbrdv4.l1b2 :=
+  +0
+  -1.87785500765297e-07 * on_a1v
+  +0 * on_o1v
+  -3.62040387298535e-06 * on_sep1v
+  +0 * on_x1vl
+  +4.45917405606024e-07 * on_x1vs;
+acbrdv4.r1b2 :=
+  +0
+  +9.56429291151974e-07 * on_a1v
+  +0 * on_o1v
+  -6.48033741908843e-07 * on_sep1v
+  -0 * on_x1vl
+  -6.92230731375829e-07 * on_x1vs;
+acbyv4.l1b1 :=
+  +0
+  +0 * on_a1v
+  +2.13335861528743e-05 * on_o1v
+  +6.65467598658965e-07 * on_sep1v
+  -2.52496842603656e-07 * on_x1vl
+  -0 * on_x1vs;
+acbyv4.r1b2 :=
+  +0
+  +0 * on_a1v
+  +3.20850284058708e-05 * on_o1v
+  -6.49049676414386e-07 * on_sep1v
+  -2.5249684258324e-07 * on_x1vl
+  -0 * on_x1vs;
+pyip1b1 :=
+  +1e-06 * on_a1v
+  +1e-06 * on_x1vl
+  +1e-06 * on_x1vs;
+pyip1b2 :=
+  +1e-06 * on_a1v
+  -1e-06 * on_x1vl
+  -1e-06 * on_x1vs;
+acbyvs4.l1b1 :=
+  +0
+  +0 * on_a1v
+  +2.13335572419177e-05 * on_o1v
+  +6.65374123244608e-07 * on_sep1v
+  -2.52495846274053e-07 * on_x1vl
+  -0 * on_x1vs
+  +7.91496172686989e-05 * on_yip1b1;
+acbyvs4.r1b1 :=
+  +0
+  +0 * on_a1v
+  +1.40722173075405e-05 * on_o1v
+  +3.64762523830373e-06 * on_sep1v
+  +3.13389618591226e-07 * on_x1vl
+  +0 * on_x1vs
+  +8.11770430576765e-05 * on_yip1b1;
+acbyvs4.l1b2 :=
+  +0
+  +0 * on_a1v
+  +1.30127606962989e-05 * on_o1v
+  -3.61985935364e-06 * on_sep1v
+  +3.13389618608304e-07 * on_x1vl
+  +0 * on_x1vs
+  +7.46245709751278e-05 * on_yip1b2;
+acbyvs4.r1b2 :=
+  +0
+  +0 * on_a1v
+  +3.2084999430723e-05 * on_o1v
+  -6.48955414449954e-07 * on_sep1v
+  -2.52495846259003e-07 * on_x1vl
+  -0 * on_x1vs
+  +9.02507441898175e-05 * on_yip1b2;
+acbch7.l1b2 :=
+  +0
+  -2.34722406237936e-05 * on_o1h;
+acbch7.r1b1 :=
+  +0
+  -3.07720018957685e-05 * on_o1h;
+xip1b1 :=
+  +0.001 * on_o1h
+  +0.001 * on_sep1h;
+xip1b2 :=
+  +0.001 * on_o1h
+  -0.001 * on_sep1h;
+acbch5.r1b1 :=
+  +0
+  +0 * on_o1h
+  -6.58746210525876e-05 * on_xip1b1;
+acbch6.l1b1 :=
+  +0
+  -2.96669772835983e-06 * on_o1h
+  -4.9973008290803e-05 * on_xip1b1;
+acbch5.l1b2 :=
+  +0
+  +0 * on_o1h
+  -5.49634603697755e-05 * on_xip1b2;
+acbch6.r1b2 :=
+  +0
+  -1.81527964234483e-06 * on_o1h
+  -5.54388890841183e-05 * on_xip1b2;
+acbcv7.l1b1 :=
+  +0
+  -2.36309719990229e-05 * on_o1v;
+acbcv7.r1b2 :=
+  +0
+  -3.88337708199845e-05 * on_o1v;
+yip1b1 :=
+  +0.001 * on_o1v
+  +0.001 * on_sep1v;
+yip1b2 :=
+  +0.001 * on_o1v
+  -0.001 * on_sep1v;
+acbcv5.l1b1 :=
+  +0
+  +0 * on_o1v
+  -5.4870769734864e-05 * on_yip1b1;
+acbcv6.r1b1 :=
+  +0
+  -3.95955875175969e-06 * on_o1v
+  -5.57085604416358e-05 * on_yip1b1;
+acbcv5.r1b2 :=
+  +0
+  +0 * on_o1v
+  -6.56206126395799e-05 * on_yip1b2;
+acbcv6.l1b2 :=
+  +0
+  -1.43745269737605e-06 * on_o1v
+  -5.04366706872986e-05 * on_yip1b2;
+vcraba4l1.b1 :=
+  +0
+  -0.0175732936524859 * on_crab1;
+vcraba4l1.b2 :=
+  +0
+  +0.0164303031365335 * on_crab1;
+vcraba4r1.b1 :=
+  +0
+  -0.0174046027409508 * on_crab1;
+vcraba4r1.b2 :=
+  +0
+  +0.017194273362717 * on_crab1;
+vcrabb4l1.b1 :=
+  +0
+  -0.0175732936524859 * on_crab1;
+vcrabb4l1.b2 :=
+  +0
+  +0.0164303031365335 * on_crab1;
+vcrabb4r1.b1 :=
+  +0
+  -0.0174046027409508 * on_crab1;
+vcrabb4r1.b2 :=
+  +0
+  +0.017194273362717 * on_crab1;
+acbyhs5.l2b1 :=
+  +0
+  -5.27773073696121e-07 * on_a2h
+  -4.03176645245253e-05 * on_o2h
+  -1.43055009005632e-05 * on_sep2h
+  -3.1750064368816e-07 * on_x2h;
+acbchs5.r2b1 :=
+  +0
+  +1.04708230712965e-06 * on_a2h
+  -6.92285036630478e-05 * on_o2h
+  +2.33352023302595e-05 * on_sep2h
+  +2.95683058470663e-07 * on_x2h;
+acbyhs5.l2b2 :=
+  +0
+  -6.58559349463572e-07 * on_a2h
+  -4.35410645260637e-05 * on_o2h
+  +3.97948406691852e-06 * on_sep2h
+  +3.36977129424822e-07 * on_x2h;
+acbchs5.r2b2 :=
+  +0
+  +6.7734754211416e-07 * on_a2h
+  -5.17439620661502e-05 * on_o2h
+  +3.75639553787353e-06 * on_sep2h
+  -2.89462983731915e-07 * on_x2h;
+pxip2b1 :=
+  +1e-06 * on_a2h
+  +1e-06 * on_x2h;
+pxip2b2 :=
+  +1e-06 * on_a2h
+  -1e-06 * on_x2h;
+acbyhs4.l2b1 :=
+  +0
+  +4.84152280013665e-07 * on_a2h
+  +8.3819695850959e-05 * on_o2h
+  +3.31790164794777e-05 * on_sep2h
+  +7.49672097047714e-08 * on_x2h
+  +8.61505611647401e-05 * on_xip2b1;
+acbyhs4.r2b1 :=
+  +0
+  -3.66254205953438e-07 * on_a2h
+  +5.95242363695067e-05 * on_o2h
+  -5.81310626455298e-06 * on_sep2h
+  +1.64009737174242e-07 * on_x2h
+  +1.9614532697505e-05 * on_xip2b1;
+acbyhs4.l2b2 :=
+  +0
+  +3.94774994090066e-07 * on_a2h
+  +6.1409906148886e-05 * on_o2h
+  -1.46814449702541e-05 * on_sep2h
+  -1.50500355066489e-08 * on_x2h
+  +4.21653837160356e-05 * on_xip2b2;
+acbyhs4.r2b2 :=
+  +0
+  -7.55002975006719e-07 * on_a2h
+  +0.000104510531234119 * on_o2h
+  -1.49488912591418e-05 * on_sep2h
+  +3.1337406755148e-08 * on_x2h
+  +0.000101032767115431 * on_xip2b2;
+acbyvs5.l2b1 :=
+  +0
+  -6.90652070349042e-07 * on_a2v
+  -4.56637042885566e-05 * on_o2v
+  +1.53988907259603e-05 * on_sep2v
+  -1.95177839879637e-07 * on_x2v;
+acbcvs5.r2b1 :=
+  +0
+  +6.73361594246925e-07 * on_a2v
+  -5.14409306167033e-05 * on_o2v
+  -3.73485546696522e-06 * on_sep2v
+  +2.87793442712538e-07 * on_x2v;
+acbyvs5.l2b2 :=
+  +0
+  -5.49056432463851e-07 * on_a2v
+  -4.19447353225057e-05 * on_o2v
+  +3.04694479502999e-06 * on_sep2v
+  +2.34554323574141e-07 * on_x2v;
+acbcvs5.r2b2 :=
+  +0
+  +1.03861289962974e-06 * on_a2v
+  -6.8669760585826e-05 * on_o2v
+  -2.31491404094288e-05 * on_sep2v
+  -2.93314863470185e-07 * on_x2v;
+pyip2b1 :=
+  +1e-06 * on_a2v
+  +1e-06 * on_x2v;
+pyip2b2 :=
+  +1e-06 * on_a2v
+  -1e-06 * on_x2v;
+acbyvs4.l2b1 :=
+  +0
+  +2.22588235146328e-07 * on_a2v
+  +5.00266630026404e-05 * on_o2v
+  -2.61700083918872e-06 * on_sep2v
+  -2.04469252436768e-07 * on_x2v
+  +2.84524619210243e-05 * on_yip2b1;
+acbyvs4.r2b1 :=
+  +0
+  -7.73230846814479e-07 * on_a2v
+  +0.000105906261219453 * on_o2v
+  +1.50512810980176e-05 * on_sep2v
+  -3.91971670004738e-08 * on_x2v
+  +0.000102469473414702 * on_yip2b1;
+acbyvs4.l2b2 :=
+  +0
+  +3.7267401945212e-07 * on_a2v
+  +7.53060367034739e-05 * on_o2v
+  -1.28328470319538e-05 * on_sep2v
+  +1.32216534306124e-07 * on_x2v
+  +7.78221272482298e-05 * on_yip2b2;
+acbyvs4.r2b2 :=
+  +0
+  -3.98320954355728e-07 * on_a2v
+  +6.16455479206962e-05 * on_o2v
+  +6.5296498135683e-06 * on_sep2v
+  -1.54935775441626e-07 * on_x2v
+  +2.55383629865812e-05 * on_yip2b2;
+xip2b1 :=
+  +0.001 * on_o2h
+  +0.001 * on_sep2h;
+xip2b2 :=
+  +0.001 * on_o2h
+  -0.001 * on_sep2h;
+yip2b1 :=
+  +0.001 * on_o2v
+  +0.001 * on_sep2v;
+yip2b2 :=
+  +0.001 * on_o2v
+  -0.001 * on_sep2v;
+acbxh1.l2 :=
+  +0
+  +8e-06 * on_sep2h
+  +6.47058823529412e-08 * on_x2h;
+acbxh1.r2 :=
+  +0
+  +7.99562502230873e-06 * on_sep2h
+  -6.48568610431282e-08 * on_x2h;
+acbxh2.l2 :=
+  +0
+  +7.98025208578204e-06 * on_sep2h
+  +6.54301354357714e-08 * on_x2h;
+acbxh2.r2 :=
+  +0
+  +7.97871973182419e-06 * on_sep2h
+  -6.54144996746552e-08 * on_x2h;
+acbxh3.l2 :=
+  +0
+  +8.01288429441456e-06 * on_sep2h
+  +6.41850862709629e-08 * on_x2h;
+acbxh3.r2 :=
+  +0
+  +8.01723027996661e-06 * on_sep2h
+  -6.40509927258707e-08 * on_x2h;
+acbxv1.l2 :=
+  +0
+  +7.99519084856116e-06 * on_sep2v
+  +6.4860440236271e-08 * on_x2v;
+acbxv1.r2 :=
+  +0
+  +7.99529505865881e-06 * on_sep2v
+  -6.48693568001047e-08 * on_x2v;
+acbxv2.l2 :=
+  +0
+  +7.98326111321927e-06 * on_sep2v
+  +6.53022996283158e-08 * on_x2v;
+acbxv2.r2 :=
+  +0
+  +7.97988611797217e-06 * on_sep2v
+  -6.5413309339921e-08 * on_x2v;
+acbxv3.l2 :=
+  +0
+  +8.01379627628362e-06 * on_sep2v
+  +6.4157123324191e-08 * on_x2v;
+acbxv3.r2 :=
+  +0
+  +8.01663125266515e-06 * on_sep2v
+  -6.40259250087937e-08 * on_x2v;
+acbyh5.l2b1 :=
+  +0
+  -4.11246037589564e-05 * on_xip2b1;
+acbch6.r2b1 :=
+  +0
+  -1.31353071986377e-05 * on_xip2b1;
+acbch5.r2b2 :=
+  +0
+  -4.78101775865146e-05 * on_xip2b2;
+acbch6.l2b2 :=
+  +0
+  -1.35719337821469e-05 * on_xip2b2;
+acbcv5.r2b1 :=
+  +0
+  -4.75249288523094e-05 * on_yip2b1;
+acbcv6.l2b1 :=
+  +0
+  -1.48473082020414e-05 * on_yip2b1;
+acbyv5.l2b2 :=
+  +0
+  -4.26703672764887e-05 * on_yip2b2;
+acbcv6.r2b2 :=
+  +0
+  -1.15646612662259e-05 * on_yip2b2;
+acbxh1.l5 :=
+  +0
+  +4.41110485313039e-07 * on_a5h
+  +2.1536004021012e-05 * on_o5h
+  +4.74272108507285e-06 * on_sep5h
+  +1.89363458237472e-08 * on_x5hl
+  -3.59201948545049e-08 * on_x5hs;
+acbxh1.r5 :=
+  +0
+  +4.26731763111619e-07 * on_a5h
+  -1.54002589646808e-05 * on_o5h
+  +4.67759421645168e-06 * on_sep5h
+  -1.89364473423569e-08 * on_x5hl
+  +1.46295978188274e-08 * on_x5hs;
+acbxh2.l5 :=
+  +0
+  +4.41115290921639e-07 * on_a5h
+  +7.27549381639574e-06 * on_o5h
+  +4.74233019272884e-06 * on_sep5h
+  +1.8938958700011e-08 * on_x5hl
+  -3.59225133125105e-08 * on_x5hs;
+acbxh2.r5 :=
+  +0
+  +4.26736321168404e-07 * on_a5h
+  -1.0040125973972e-05 * on_o5h
+  +4.6771894721378e-06 * on_sep5h
+  -1.89390639735419e-08 * on_x5hl
+  +1.4630796064984e-08 * on_x5hs;
+acbxh3.l5 :=
+  +0
+  -1.04783230032668e-06 * on_a5h
+  -1.634631737179e-05 * on_o5h
+  +1.1409435604187e-05 * on_sep5h
+  +1.41183797604984e-07 * on_x5hl
+  +4.1189504450805e-07 * on_x5hs;
+acbxh3.r5 :=
+  +0
+  -9.98324523554495e-07 * on_a5h
+  +1.20255503564577e-05 * on_o5h
+  +1.15179113953551e-05 * on_sep5h
+  -1.41183581086967e-07 * on_x5hl
+  -3.58980224069343e-07 * on_x5hs;
+acbrdh4.l5b1 :=
+  +0
+  -1.87775831754416e-07 * on_a5h
+  +0 * on_o5h
+  +3.62035025228616e-06 * on_sep5h
+  -0 * on_x5hl
+  -4.45915606063441e-07 * on_x5hs;
+acbrdh4.r5b1 :=
+  +0
+  +9.5643100359213e-07 * on_a5h
+  +0 * on_o5h
+  +6.48005787367785e-07 * on_sep5h
+  +0 * on_x5hl
+  +6.92226948617692e-07 * on_x5hs;
+acbrdh4.l5b2 :=
+  +0
+  -9.92849607072412e-07 * on_a5h
+  +0 * on_o5h
+  -6.64351154979553e-07 * on_sep5h
+  +0 * on_x5hl
+  +7.25760326262222e-07 * on_x5hs;
+acbrdh4.r5b2 :=
+  +0
+  +2.01065157666541e-07 * on_a5h
+  +0 * on_o5h
+  -3.64817318933169e-06 * on_sep5h
+  -0 * on_x5hl
+  -4.46630637183658e-07 * on_x5hs;
+acbyh4.l5b2 :=
+  +0
+  +0 * on_a5h
+  +2.18336953785055e-05 * on_o5h
+  -6.65449344953508e-07 * on_sep5h
+  +2.52494720682697e-07 * on_x5hl
+  +0 * on_x5hs;
+acbyh4.r5b1 :=
+  +0
+  +0 * on_a5h
+  +2.53728924663205e-05 * on_o5h
+  +6.49031864891979e-07 * on_sep5h
+  +2.52494577056687e-07 * on_x5hl
+  +0 * on_x5hs;
+pxip5b1 :=
+  +1e-06 * on_a5h
+  +1e-06 * on_x5hl
+  +1e-06 * on_x5hs;
+pxip5b2 :=
+  +1e-06 * on_a5h
+  -1e-06 * on_x5hl
+  -1e-06 * on_x5hs;
+acbyhs4.l5b1 :=
+  +0
+  +0 * on_a5h
+  +1.39074792833246e-05 * on_o5h
+  +3.61979702538248e-06 * on_sep5h
+  -3.13387463352699e-07 * on_x5hl
+  -0 * on_x5hs
+  +7.89248303714491e-05 * on_xip5b1;
+acbyhs4.r5b1 :=
+  +0
+  +0 * on_a5h
+  +2.53728757666459e-05 * on_o5h
+  +6.48936662349855e-07 * on_sep5h
+  +2.52493728943674e-07 * on_x5hl
+  +0 * on_x5hs
+  +7.77392388497308e-05 * on_xip5b1;
+acbyhs4.l5b2 :=
+  +0
+  +0 * on_a5h
+  +2.18336768141668e-05 * on_o5h
+  -6.65354964906616e-07 * on_sep5h
+  +2.52493855175126e-07 * on_x5hl
+  +0 * on_x5hs
+  +8.93847762981129e-05 * on_xip5b2;
+acbyhs4.r5b2 :=
+  +0
+  +0 * on_a5h
+  +1.30900994002383e-05 * on_o5h
+  -3.6475630119469e-06 * on_sep5h
+  -3.13387559092497e-07 * on_x5hl
+  -0 * on_x5hs
+  +7.32540327358592e-05 * on_xip5b2;
+acbxv1.l5 :=
+  +0
+  -4.41095539892408e-07 * on_a5v
+  -2.05898035400796e-05 * on_o5v
+  +4.74280698279987e-06 * on_sep5v
+  +1.89402816971221e-08 * on_x5vl
+  -3.59167624215323e-08 * on_x5vs;
+acbxv1.r5 :=
+  +0
+  -4.26716975650931e-07 * on_a5v
+  +1.75715107050892e-05 * on_o5v
+  +4.67767836439186e-06 * on_sep5v
+  -1.89402817042603e-08 * on_x5vl
+  +1.46262098534482e-08 * on_x5vs;
+acbxv2.l5 :=
+  +0
+  -4.41100317625946e-07 * on_a5v
+  -1.02197687624052e-05 * on_o5v
+  +4.74241968299221e-06 * on_sep5v
+  +1.89433806014867e-08 * on_x5vl
+  -3.59192860568339e-08 * on_x5vs;
+acbxv2.r5 :=
+  +0
+  -4.26721262449406e-07 * on_a5v
+  -7.32534641509772e-07 * on_o5v
+  +4.677277491389e-06 * on_sep5v
+  -1.89433805936554e-08 * on_x5vl
+  +1.46277782533471e-08 * on_x5vs;
+acbxv3.l5 :=
+  +0
+  +1.04779023542111e-06 * on_a5v
+  +1.88015323560724e-05 * on_o5v
+  +1.14093635721519e-05 * on_sep5v
+  +1.41161168047783e-07 * on_x5vl
+  +4.11875964087909e-07 * on_x5vs;
+acbxv3.r5 :=
+  +0
+  +9.98282409815191e-07 * on_a5v
+  +7.3573799651618e-08 * on_o5v
+  +1.15178414340426e-05 * on_sep5v
+  -1.41161168038982e-07 * on_x5vl
+  -3.58961620879534e-07 * on_x5vs;
+acbrdv4.l5b1 :=
+  +0
+  -9.92847577830927e-07 * on_a5v
+  +0 * on_o5v
+  +6.64378265011743e-07 * on_sep5v
+  -0 * on_x5vl
+  -7.25763536578595e-07 * on_x5vs;
+acbrdv4.r5b1 :=
+  +0
+  +2.01075001429711e-07 * on_a5v
+  +0 * on_o5v
+  +3.64822707160738e-06 * on_sep5v
+  +0 * on_x5vl
+  +4.46631841173025e-07 * on_x5vs;
+acbrdv4.l5b2 :=
+  +0
+  -1.8778548003006e-07 * on_a5v
+  +0 * on_o5v
+  -3.62040520413717e-06 * on_sep5v
+  +0 * on_x5vl
+  +4.45917400950828e-07 * on_x5vs;
+acbrdv4.r5b2 :=
+  +0
+  +9.56429361998792e-07 * on_a5v
+  +0 * on_o5v
+  -6.48032293452532e-07 * on_sep5v
+  -0 * on_x5vl
+  -6.92230825983368e-07 * on_x5vs;
+acbyv4.l5b1 :=
+  +0
+  +0 * on_a5v
+  +2.13829278423511e-05 * on_o5v
+  +6.65470213338242e-07 * on_sep5v
+  -2.52496877113257e-07 * on_x5vl
+  -0 * on_x5vs;
+acbyv4.r5b2 :=
+  +0
+  +0 * on_a5v
+  +3.18488870315196e-05 * on_o5v
+  -6.49052233017272e-07 * on_sep5v
+  -2.5249687709303e-07 * on_x5vl
+  -0 * on_x5vs;
+pyip5b1 :=
+  +1e-06 * on_a5v
+  +1e-06 * on_x5vl
+  +1e-06 * on_x5vs;
+pyip5b2 :=
+  +1e-06 * on_a5v
+  -1e-06 * on_x5vl
+  -1e-06 * on_x5vs;
+acbyvs4.l5b1 :=
+  +0
+  +0 * on_a5v
+  +2.13828986868564e-05 * on_o5v
+  +6.65376369503323e-07 * on_sep5v
+  -2.52495877793121e-07 * on_x5vl
+  -0 * on_x5vs
+  +9.03819651638939e-05 * on_yip5b1;
+acbyvs4.r5b1 :=
+  +0
+  +0 * on_a5v
+  +1.49790094545574e-05 * on_o5v
+  +3.64762434681985e-06 * on_sep5v
+  +3.13389609318732e-07 * on_x5vl
+  +0 * on_x5vs
+  +7.51772775552698e-05 * on_yip5b1;
+acbyvs4.l5b2 :=
+  +0
+  +0 * on_a5v
+  +1.23107439448481e-05 * on_o5v
+  -3.61985853490937e-06 * on_sep5v
+  +3.1338960933641e-07 * on_x5vl
+  +0 * on_x5vs
+  +8.06090685768512e-05 * on_yip5b2;
+acbyvs4.r5b2 :=
+  +0
+  +0 * on_a5v
+  +3.18488580711358e-05 * on_o5v
+  -6.48957599449409e-07 * on_sep5v
+  -2.52495877778241e-07 * on_x5vl
+  -0 * on_x5vs
+  +7.9008946593291e-05 * on_yip5b2;
+acbch7.l5b2 :=
+  +0
+  -2.37395726011819e-05 * on_o5h;
+acbch7.r5b1 :=
+  +0
+  -3.06873891872659e-05 * on_o5h;
+xip5b1 :=
+  +0.001 * on_o5h
+  +0.001 * on_sep5h;
+xip5b2 :=
+  +0.001 * on_o5h
+  -0.001 * on_sep5h;
+acbch5.r5b1 :=
+  +0
+  +0 * on_o5h
+  -5.50012163853685e-05 * on_xip5b1;
+acbch6.l5b1 :=
+  +0
+  -2.29729776082849e-06 * on_o5h
+  -5.54494532413253e-05 * on_xip5b1;
+acbch5.l5b2 :=
+  +0
+  +2.89486211606669e-07 * on_o5h
+  -6.58051560494349e-05 * on_xip5b2;
+acbch6.r5b2 :=
+  +0
+  -2.39125931182446e-06 * on_o5h
+  -5.00045292201502e-05 * on_xip5b2;
+acbcv7.l5b1 :=
+  +0
+  -2.37169263232239e-05 * on_o5v;
+acbcv7.r5b2 :=
+  +0
+  -3.85130441118004e-05 * on_o5v;
+yip5b1 :=
+  +0.001 * on_o5v
+  +0.001 * on_sep5v;
+yip5b2 :=
+  +0.001 * on_o5v
+  -0.001 * on_sep5v;
+acbcv5.l5b1 :=
+  +0
+  +0 * on_o5v
+  -6.55928106162925e-05 * on_yip5b1;
+acbcv6.r5b1 :=
+  +0
+  -4.60455095226454e-06 * on_o5v
+  -5.05564289873958e-05 * on_yip5b1;
+acbcv5.r5b2 :=
+  +0
+  +0 * on_o5v
+  -5.48925249145528e-05 * on_yip5b2;
+acbcv6.l5b2 :=
+  +0
+  -8.98493743997169e-07 * on_o5v
+  -5.56671838025006e-05 * on_yip5b2;
+vcraba4l5.b1 :=
+  +0
+  -0.0173629002928558 * on_crab5;
+vcraba4l5.b2 :=
+  +0
+  +0.0171949885738324 * on_crab5;
+vcraba4r5.b1 :=
+  +0
+  -0.017546156267936 * on_crab5;
+vcraba4r5.b2 :=
+  +0
+  +0.0164583592609403 * on_crab5;
+vcrabb4l5.b1 :=
+  +0
+  -0.0173629002928558 * on_crab5;
+vcrabb4l5.b2 :=
+  +0
+  +0.0171949885738324 * on_crab5;
+vcrabb4r5.b1 :=
+  +0
+  -0.017546156267936 * on_crab5;
+vcrabb4r5.b2 :=
+  +0
+  +0.0164583592609403 * on_crab5;
+acbchs5.l8b1 :=
+  +0
+  -5.32358471408716e-07 * on_a8h
+  -4.06347418209623e-05 * on_o8h
+  -2.94483639116668e-06 * on_sep8h
+  -2.29516525688643e-07 * on_x8h;
+acbyhs5.r8b1 :=
+  +0
+  +7.16540323152836e-07 * on_a8h
+  -4.75261892004974e-05 * on_o8h
+  +1.60035136518385e-05 * on_sep8h
+  +2.060766457851e-07 * on_x8h;
+acbchs5.l8b2 :=
+  +0
+  -6.86179828936814e-07 * on_a8h
+  -4.5512459373071e-05 * on_o8h
+  -1.53254265379311e-05 * on_sep8h
+  +1.97344926678054e-07 * on_x8h;
+acbyhs5.r8b2 :=
+  +0
+  +5.15745779099611e-07 * on_a8h
+  -3.93666994889894e-05 * on_o8h
+  +2.85293954487192e-06 * on_sep8h
+  -2.22354269061035e-07 * on_x8h;
+pxip8b1 :=
+  +1e-06 * on_a8h
+  +1e-06 * on_x8h;
+pxip8b2 :=
+  +1e-06 * on_a8h
+  -1e-06 * on_x8h;
+acbyhs4.l8b1 :=
+  +0
+  +5.04088575397969e-07 * on_a8h
+  +8.52785200204065e-05 * on_o8h
+  +1.35486655760153e-05 * on_sep8h
+  -7.22679169339081e-08 * on_x8h
+  +8.76353727415215e-05 * on_xip8b1;
+acbyhs4.r8b1 :=
+  +0
+  -1.58505172495242e-07 * on_a8h
+  +4.59006018956388e-05 * on_o8h
+  -1.20631243120912e-06 * on_sep8h
+  +2.20000924553141e-07 * on_x8h
+  +2.16415729476922e-05 * on_xip8b1;
+acbyhs4.l8b2 :=
+  +0
+  +1.39677299062278e-07 * on_a8h
+  +4.46517997633046e-05 * on_o8h
+  +7.85800561166164e-07 * on_sep8h
+  +2.2541584419458e-07 * on_x8h
+  +2.55379275567901e-05 * on_xip8b2;
+acbyhs4.r8b2 :=
+  +0
+  -4.78715620366668e-07 * on_a8h
+  +8.33418089577514e-05 * on_o8h
+  -1.34083090976959e-05 * on_sep8h
+  -8.32070867693347e-08 * on_x8h
+  +8.55839729428286e-05 * on_xip8b2;
+acbcvs5.l8b1 :=
+  +0
+  -6.87893521120725e-07 * on_a8v
+  -4.56269336960857e-05 * on_o8v
+  +1.5363627897575e-05 * on_sep8v
+  -1.75007163375015e-07 * on_x8v;
+acbyvs5.r8b1 :=
+  +0
+  +5.05664066179212e-07 * on_a8v
+  -3.85982627081493e-05 * on_o8v
+  -2.79746785438109e-06 * on_sep8v
+  +2.08821534457224e-07 * on_x8v;
+acbcvs5.l8b2 :=
+  +0
+  -5.38457720350042e-07 * on_a8v
+  -4.11014622896089e-05 * on_o8v
+  +2.97889300341193e-06 * on_sep8v
+  +2.17053679354462e-07 * on_x8v;
+acbyvs5.r8b2 :=
+  +0
+  +7.00372822520831e-07 * on_a8v
+  -4.64546668263918e-05 * on_o8v
+  -1.5642351539155e-05 * on_sep8v
+  -1.79130307085236e-07 * on_x8v;
+pyip8b1 :=
+  +1e-06 * on_a8v
+  +1e-06 * on_x8v;
+pyip8b2 :=
+  +1e-06 * on_a8v
+  -1e-06 * on_x8v;
+acbyvs4.l8b1 :=
+  +0
+  +1.88859947592069e-07 * on_a8v
+  +4.7914908815312e-05 * on_o8v
+  -1.88418407841705e-06 * on_sep8v
+  -2.27073232700679e-07 * on_x8v
+  +2.79112249092909e-05 * on_yip8b1;
+acbyvs4.r8b1 :=
+  +0
+  -5.23417989684003e-07 * on_a8v
+  +8.67566444886435e-05 * on_o8v
+  +1.36563127521424e-05 * on_sep8v
+  +7.44265500993076e-08 * on_x8v
+  +8.89170759840142e-05 * on_yip8b1;
+acbyvs4.l8b2 :=
+  +0
+  +5.3217494871251e-07 * on_a8v
+  +8.74250791820508e-05 * on_o8v
+  -1.37047618540258e-05 * on_sep8v
+  +8.13656687013658e-08 * on_x8v
+  +8.98196067338575e-05 * on_yip8b2;
+acbyvs4.r8b2 :=
+  +0
+  -2.3264872713201e-07 * on_a8v
+  +5.08193521329923e-05 * on_o8v
+  +2.86218216711959e-06 * on_sep8v
+  -2.14913673941486e-07 * on_x8v
+  +2.80381299862554e-05 * on_yip8b2;
+xip8b1 :=
+  +0.001 * on_o8h
+  +0.001 * on_sep8h;
+xip8b2 :=
+  +0.001 * on_o8h
+  -0.001 * on_sep8h;
+yip8b1 :=
+  +0.001 * on_o8v
+  +0.001 * on_sep8v;
+yip8b2 :=
+  +0.001 * on_o8v
+  -0.001 * on_sep8v;
+acbxh1.l8 :=
+  +0
+  +8.00000158677081e-06 * on_sep8h
+  +6.42803005543338e-08 * on_x8h;
+acbxh1.r8 :=
+  +0
+  +8.00000231698762e-06 * on_sep8h
+  -6.42802950970869e-08 * on_x8h;
+acbxh2.l8 :=
+  +0
+  +8.00003129413515e-06 * on_sep8h
+  +6.42797004864929e-08 * on_x8h;
+acbxh2.r8 :=
+  +0
+  +8.00003184092083e-06 * on_sep8h
+  -6.42796459969772e-08 * on_x8h;
+acbxh3.l8 :=
+  +0
+  +7.99995314362025e-06 * on_sep8h
+  +6.42814636651791e-08 * on_x8h;
+acbxh3.r8 :=
+  +0
+  +7.99995291274397e-06 * on_sep8h
+  -6.42815335174254e-08 * on_x8h;
+acbxv1.l8 :=
+  +0
+  +7.99999699700102e-06 * on_sep8v
+  +9.57719684456418e-08 * on_x8v;
+acbxv1.r8 :=
+  +0
+  +7.99999786586928e-06 * on_sep8v
+  -9.3179197193384e-08 * on_x8v;
+acbxv2.l8 :=
+  +0
+  +8.00004734586957e-06 * on_sep8v
+  +5.19585478573554e-08 * on_x8v;
+acbxv2.r8 :=
+  +0
+  +8.00004938962978e-06 * on_sep8v
+  -5.53535773200897e-08 * on_x8v;
+acbxv3.l8 :=
+  +0
+  +7.99992182739135e-06 * on_sep8v
+  +5.70315850335912e-08 * on_x8v;
+acbxv3.r8 :=
+  +0
+  +7.99992086258322e-06 * on_sep8v
+  -5.40975251801178e-08 * on_x8v;
+acbch5.l8b1 :=
+  +0
+  -4.12541360748518e-05 * on_xip8b1;
+acbch6.r8b1 :=
+  +0
+  -1.49058560086191e-05 * on_xip8b1;
+acbyh5.r8b2 :=
+  +0
+  -4.05104289165846e-05 * on_xip8b2;
+acbch6.l8b2 :=
+  +0
+  -1.64369196991513e-05 * on_xip8b2;
+acbyv5.r8b1 :=
+  +0
+  -3.98106140455746e-05 * on_yip8b1;
+acbcv6.l8b1 :=
+  +0
+  -1.76934488367144e-05 * on_yip8b1;
+acbcv5.l8b2 :=
+  +0
+  -4.14370375791561e-05 * on_yip8b2;
+acbcv6.r8b2 :=
+  +0
+  -1.43206761838197e-05 * on_yip8b2;
+kqtf.a12b1 :=
+  -9.35715250708965e-12
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.00413493598563659 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  +0.000792719159425764 * dqy.b1;
+kqtf.a23b1 :=
+  -0.000240213999699575
+  +0.00750547330117481 * dqx.b1_op
+  +0.00750547330117481 * dqx.b1_sq
+  +0.00036155598196664 * dqx.b1
+  +0.00159474146098721 * dqy.b1_op
+  +0.00159474146098721 * dqy.b1_sq
+  +0.000298424833597502 * dqy.b1;
+kqtf.a34b1 :=
+  -0.000235566098557111
+  +0.00882272571644092 * dqx.b1_op
+  +0.00882272571644092 * dqx.b1_sq
+  +3.2270758842038e-05 * dqx.b1
+  +0.00215078652273778 * dqy.b1_op
+  +0.00215078652273778 * dqy.b1_sq
+  +0.000388793013879258 * dqy.b1;
+kqtf.a45b1 :=
+  +9.42606309115704e-12
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.00400091923414151 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  +0.000522721193208093 * dqy.b1;
+kqtf.a56b1 :=
+  -1.0186866773094e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.00439354076034798 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  +0.000705698893282056 * dqy.b1;
+kqtf.a67b1 :=
+  -0.00294035924810576
+  +0.00663865423751105 * dqx.b1_op
+  +0.00663865423751105 * dqx.b1_sq
+  +0.000966793120991972 * dqx.b1
+  +0.000942943687427466 * dqy.b1_op
+  +0.000942943687427466 * dqy.b1_sq
+  +0.000276839735652973 * dqy.b1;
+kqtf.a78b1 :=
+  +0.0040789551871216
+  +0.00565033331684182 * dqx.b1_op
+  +0.00565033331684182 * dqx.b1_sq
+  +0.00231031097661939 * dqx.b1
+  +0.00054698628185704 * dqy.b1_op
+  +0.00054698628185704 * dqy.b1_sq
+  +0.000225571298642146 * dqy.b1;
+kqtf.a81b1 :=
+  +1.14058242483425e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.00230485944919827 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  +0.000517946089790166 * dqy.b1;
+kqtd.a12b1 :=
+  +1.25416078773709e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  -0.00132425002647655 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  -0.00311009247253917 * dqy.b1;
+kqtd.a23b1 :=
+  -0.000234594161901635
+  +0.000900746205744118 * dqx.b1_op
+  +0.000900746205744118 * dqx.b1_sq
+  -0.00223340289613224 * dqx.b1
+  -0.0062689962616357 * dqy.b1_op
+  -0.0062689962616357 * dqy.b1_sq
+  -0.00163097102557975 * dqy.b1;
+kqtd.a34b1 :=
+  +0.000319160058382472
+  -0.000683080999643319 * dqx.b1_op
+  -0.000683080999643319 * dqx.b1_sq
+  -0.00139471626670176 * dqx.b1
+  -0.00673304245403031 * dqy.b1_op
+  -0.00673304245403031 * dqy.b1_sq
+  -0.0017994849764174 * dqy.b1;
+kqtd.a45b1 :=
+  -1.299945189132e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.000586482144082963 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  -0.00306618659344469 * dqy.b1;
+kqtd.a56b1 :=
+  +1.26700225584154e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  -0.000141039758576477 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  -0.00297136902919386 * dqy.b1;
+kqtd.a67b1 :=
+  -0.00188760473179025
+  -0.00280575832453769 * dqx.b1_op
+  -0.00280575832453769 * dqx.b1_sq
+  -0.000255706675501729 * dqx.b1
+  -0.00777031958264632 * dqy.b1_op
+  -0.00777031958264632 * dqy.b1_sq
+  -0.00177622701447842 * dqy.b1;
+kqtd.a78b1 :=
+  +0.000921125747673809
+  -0.00264726164807322 * dqx.b1_op
+  -0.00264726164807322 * dqx.b1_sq
+  -0.000380065501778232 * dqx.b1
+  -0.0080317496752617 * dqy.b1_op
+  -0.0080317496752617 * dqy.b1_sq
+  -0.00185610196491249 * dqy.b1;
+kqtd.a81b1 :=
+  -1.28495690608988e-11
+  +0 * dqx.b1_op
+  +0 * dqx.b1_sq
+  +0.000307959782323557 * dqx.b1
+  +0 * dqy.b1_op
+  +0 * dqy.b1_sq
+  -0.00280037926886363 * dqy.b1;
+kqtf.a12b2 :=
+  +9.35715250708965e-12
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  +0.00357156915144877 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  +0.000727160270578266 * dqy.b2;
+kqtf.a23b2 :=
+  +0.000240213999699575
+  +0.00805454744129534 * dqx.b2_op
+  +0.00805454744129534 * dqx.b2_sq
+  +0.00182588990460786 * dqx.b2
+  +0.00155017575757205 * dqy.b2_op
+  +0.00155017575757205 * dqy.b2_sq
+  +0.000357176615236342 * dqy.b2;
+kqtf.a34b2 :=
+  +0.000235566098557111
+  +0.00683090448725184 * dqx.b2_op
+  +0.00683090448725184 * dqx.b2_sq
+  +0.00208054217064844 * dqx.b2
+  +0.00123807831564963 * dqy.b2_op
+  +0.00123807831564963 * dqy.b2_sq
+  +0.000446089283718015 * dqy.b2;
+kqtf.a45b2 :=
+  -9.42606309115704e-12
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  +0.00225760017978584 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  +0.000382414519485919 * dqy.b2;
+kqtf.a56b2 :=
+  +1.0186866773094e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  +0.00345292826674649 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  +0.000602743673023997 * dqy.b2;
+kqtf.a67b2 :=
+  +0.00294035924810576
+  +0.00569343830709401 * dqx.b2_op
+  +0.00569343830709401 * dqx.b2_sq
+  +0.00157695083350461 * dqx.b2
+  +0.00079880706735271 * dqy.b2_op
+  +0.00079880706735271 * dqy.b2_sq
+  +0.000274947440482099 * dqy.b2;
+kqtf.a78b2 :=
+  -0.0040789551871216
+  +0.00813621131022325 * dqx.b2_op
+  +0.00813621131022325 * dqx.b2_sq
+  +0.0015808180351452 * dqx.b2
+  +0.00169435725761293 * dqy.b2_op
+  +0.00169435725761293 * dqy.b2_sq
+  +0.000321746789520951 * dqy.b2;
+kqtf.a81b2 :=
+  -1.14058242483425e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  +0.00272685960289715 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  +0.000460096669389882 * dqy.b2;
+kqtd.a12b2 :=
+  -1.25416078773709e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  -0.000366190258451556 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  -0.00294502100208264 * dqy.b2;
+kqtd.a23b2 :=
+  +0.000234594161901635
+  +0.000269812361573014 * dqx.b2_op
+  +0.000269812361573014 * dqx.b2_sq
+  -0.000209989827177931 * dqx.b2
+  -0.00679084305838822 * dqy.b2_op
+  -0.00679084305838822 * dqy.b2_sq
+  -0.00166190419166744 * dqy.b2;
+kqtd.a34b2 :=
+  -0.000319160058382472
+  -0.00467166258552847 * dqx.b2_op
+  -0.00467166258552847 * dqx.b2_sq
+  -0.000577695224473657 * dqx.b2
+  -0.00810836038887167 * dqy.b2_op
+  -0.00810836038887167 * dqy.b2_sq
+  -0.00173701381050875 * dqy.b2;
+kqtd.a45b2 :=
+  +1.299945189132e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  -0.000819037034818069 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  -0.00307452164403865 * dqy.b2;
+kqtd.a56b2 :=
+  -1.26700225584154e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  -0.000675388736341877 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  -0.00308241473001956 * dqy.b2;
+kqtd.a67b2 :=
+  +0.00188760473179025
+  -0.000648239347040247 * dqx.b2_op
+  -0.000648239347040247 * dqx.b2_sq
+  -0.000442743597405212 * dqx.b2
+  -0.00706141895164095 * dqy.b2_op
+  -0.00706141895164095 * dqy.b2_sq
+  -0.00175682032076704 * dqy.b2;
+kqtd.a78b2 :=
+  -0.000921125747673809
+  -0.000263127076929478 * dqx.b2_op
+  -0.000263127076929478 * dqx.b2_sq
+  -0.000120277240409898 * dqx.b2
+  -0.00685779289345103 * dqy.b2_op
+  -0.00685779289345103 * dqy.b2_sq
+  -0.00160263832298924 * dqy.b2;
+kqtd.a81b2 :=
+  +1.28495690608988e-11
+  +0 * dqx.b2_op
+  +0 * dqx.b2_sq
+  -0.000356501424199056 * dqx.b2
+  +0 * dqy.b2_op
+  +0 * dqy.b2_sq
+  -0.00301137900450482 * dqy.b2;
+ksf1.a12b1 :=
+  +0.219537504680024
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a23b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a34b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a45b1 :=
+  +0.218303491217177
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a56b1 :=
+  +0.224758577126658
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a67b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a78b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf1.a81b1 :=
+  +0.250852453849974
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a12b1 :=
+  +0.06
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a23b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a34b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a45b1 :=
+  +0.06
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a56b1 :=
+  +0.06
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a67b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a78b1 :=
+  +0.0634138481637914
+  +0.00118824255601389 * dqpx.b1_op
+  +0.00118824255601389 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0.000218682854426026 * dqpy.b1_op
+  +0.000218682854426026 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksf2.a81b1 :=
+  +0.06
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  +0.000413259240834414 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  +7.70029730936498e-05 * dqpy.b1;
+ksd1.a12b1 :=
+  -0.099
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a23b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a34b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a45b1 :=
+  -0.099
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a56b1 :=
+  -0.099
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a67b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a78b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd1.a81b1 :=
+  -0.099
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a12b1 :=
+  -0.359488657590713
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a23b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a34b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a45b1 :=
+  -0.362054140912061
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a56b1 :=
+  -0.350553482370401
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a67b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a78b1 :=
+  -0.115483928858458
+  -0.000366627815191739 * dqpx.b1_op
+  -0.000366627815191739 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  -0.0020005392401302 * dqpy.b1_op
+  -0.0020005392401302 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksd2.a81b1 :=
+  -0.406419300855031
+  +0 * dqpx.b1_op
+  +0 * dqpx.b1_sq
+  -0.00012770882697942 * dqpx.b1
+  +0 * dqpy.b1_op
+  +0 * dqpy.b1_sq
+  -0.00069559773916596 * dqpy.b1;
+ksf1.a12b2 :=
+  +0.06
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a23b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a34b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a45b2 :=
+  +0.06
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a56b2 :=
+  +0.06
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a67b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a78b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf1.a81b2 :=
+  +0.06
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a12b2 :=
+  +0.211291804921684
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a23b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a34b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a45b2 :=
+  +0.209824804299179
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a56b2 :=
+  +0.209883660426187
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a67b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a78b2 :=
+  +0.0959811756321329
+  +0.00118480933450832 * dqpx.b2_op
+  +0.00118480933450832 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0.000217594247854242 * dqpy.b2_op
+  +0.000217594247854242 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksf2.a81b2 :=
+  +0.192372514470815
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  +0.000411729486753268 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  +7.68215111425393e-05 * dqpy.b2;
+ksd1.a12b2 :=
+  -0.355518835135706
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a23b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a34b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a45b2 :=
+  -0.372243733123757
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a56b2 :=
+  -0.387343368187027
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a67b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a78b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd1.a81b2 :=
+  -0.368353649719976
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a12b2 :=
+  -0.099
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a23b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a34b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a45b2 :=
+  -0.099
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a56b2 :=
+  -0.099
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a67b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a78b2 :=
+  -0.129451529085108
+  -0.000367684353818843 * dqpx.b2_op
+  -0.000367684353818843 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  -0.00199420232227406 * dqpy.b2_op
+  -0.00199420232227406 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+ksd2.a81b2 :=
+  -0.099
+  +0 * dqpx.b2_op
+  +0 * dqpx.b2_sq
+  -0.000128606394192596 * dqpx.b2
+  +0 * dqpy.b2_op
+  +0 * dqpy.b2_sq
+  -0.000694644268527262 * dqpy.b2;
+kqs.a23b1 :=
+  +0
+  -0.0637044877315694 * cmis.b1_op
+  -0.0637044877315694 * cmis.b1_sq
+  -0.0247416167456366 * cmis.b1
+  -0.0299121773043362 * cmrs.b1_op
+  -0.0299121773043362 * cmrs.b1_sq
+  -0.0221325515236715 * cmrs.b1;
+kqs.a45b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  +0.0224283120434555 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  +0.00473109571661191 * cmrs.b1;
+kqs.a67b1 :=
+  +0
+  +0.038509694894485 * cmis.b1_op
+  +0.038509694894485 * cmis.b1_sq
+  +0.000811432241013503 * cmis.b1
+  -0.0208411699332729 * cmrs.b1_op
+  -0.0208411699332729 * cmrs.b1_sq
+  -0.010045105167331 * cmrs.b1;
+kqs.a81b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  +0.0128138930450818 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  -0.00377400692445729 * cmrs.b1;
+kqs.r1b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  -0.00417544808239773 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  -0.015449100011539 * cmrs.b1;
+kqs.l2b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  +0.0109018017026456 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  +0.00590132804622158 * cmrs.b1;
+kqs.r3b1 :=
+  +0
+  -0.0227262232836774 * cmis.b1_op
+  -0.0227262232836774 * cmis.b1_sq
+  -0.00151103899349356 * cmis.b1
+  +0.00945899303547862 * cmrs.b1_op
+  +0.00945899303547862 * cmrs.b1_sq
+  +0.00421874463094616 * cmrs.b1;
+kqs.l4b1 :=
+  +0
+  -0.0224765945828379 * cmis.b1_op
+  -0.0224765945828379 * cmis.b1_sq
+  -0.0014324725977301 * cmis.b1
+  +0.0095256155138171 * cmrs.b1_op
+  +0.0095256155138171 * cmrs.b1_sq
+  +0.00427502666785473 * cmrs.b1;
+kqs.r5b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  +0.00846724984081058 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  -0.00657659799063775 * cmrs.b1;
+kqs.l6b1 :=
+  +0
+  +0 * cmis.b1_op
+  +0 * cmis.b1_sq
+  +0.0116429838817146 * cmis.b1
+  +0 * cmrs.b1_op
+  +0 * cmrs.b1_sq
+  +0.00793777217073331 * cmrs.b1;
+kqs.r7b1 :=
+  +0
+  -0.00326796405927613 * cmis.b1_op
+  -0.00326796405927613 * cmis.b1_sq
+  +0.00414675024915756 * cmis.b1
+  +0.0133688180405261 * cmrs.b1_op
+  +0.0133688180405261 * cmrs.b1_sq
+  +0.00783355032020545 * cmrs.b1;
+kqs.l8b1 :=
+  +0
+  +0.0032896142372412 * cmis.b1_op
+  +0.0032896142372412 * cmis.b1_sq
+  +0.00588655807399025 * cmis.b1
+  +0.0142271688221919 * cmrs.b1_op
+  +0.0142271688221919 * cmrs.b1_sq
+  +0.00877536236349251 * cmrs.b1;
+kqs.a12b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  -0.007384663639487 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  -0.00979008061228235 * cmrs.b2;
+kqs.a34b2 :=
+  +0
+  +0.0619431282547414 * cmis.b2_op
+  +0.0619431282547414 * cmis.b2_sq
+  +0.0240896243772493 * cmis.b2
+  +0.00571410697514002 * cmrs.b2_op
+  +0.00571410697514002 * cmrs.b2_sq
+  -0.010895805772581 * cmrs.b2;
+kqs.a56b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  -0.0167577573037753 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  -0.00246088303495905 * cmrs.b2;
+kqs.a78b2 :=
+  +0
+  -0.00723506528710341 * cmis.b2_op
+  -0.00723506528710341 * cmis.b2_sq
+  +0.0101095899529899 * cmis.b2
+  -0.0341633147803241 * cmrs.b2_op
+  -0.0341633147803241 * cmrs.b2_sq
+  -0.0162600950699705 * cmrs.b2;
+kqs.l1b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  +0.00173792210572643 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  -0.0125065434193738 * cmrs.b2;
+kqs.r2b2 :=
+  +0
+  -0.00958818770959162 * cmis.b2_op
+  -0.00958818770959162 * cmis.b2_sq
+  -0.00972389706178218 * cmis.b2
+  +0.0146541060811324 * cmrs.b2_op
+  +0.0146541060811324 * cmrs.b2_sq
+  +0.00981992363700618 * cmrs.b2;
+kqs.l3b2 :=
+  +0
+  -0.00671037138940851 * cmis.b2_op
+  -0.00671037138940851 * cmis.b2_sq
+  -0.00883146051667024 * cmis.b2
+  +0.0155072742747175 * cmrs.b2_op
+  +0.0155072742747175 * cmrs.b2_sq
+  +0.00962133302393035 * cmrs.b2;
+kqs.r4b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  -0.0112850256389536 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  +0.0066963604662112 * cmrs.b2;
+kqs.l5b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  -0.00763529219995316 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  -0.00615672148993869 * cmrs.b2;
+kqs.r6b2 :=
+  +0
+  -0.00134177024803615 * cmis.b2_op
+  -0.00134177024803615 * cmis.b2_sq
+  -0.00708299394570116 * cmis.b2
+  +0.0168821471136775 * cmrs.b2_op
+  +0.0168821471136775 * cmrs.b2_sq
+  +0.00913742073509298 * cmrs.b2;
+kqs.l7b2 :=
+  +0
+  +0.003355325079355 * cmis.b2_op
+  +0.003355325079355 * cmis.b2_sq
+  -0.00532928978664706 * cmis.b2
+  +0.0175046304641016 * cmrs.b2_op
+  +0.0175046304641016 * cmrs.b2_sq
+  +0.00841022724381028 * cmrs.b2;
+kqs.r8b2 :=
+  +0
+  +0 * cmis.b2_op
+  +0 * cmis.b2_sq
+  -0.0102715123498413 * cmis.b2
+  +0 * cmrs.b2_op
+  +0 * cmrs.b2_sq
+  +0.0045191460316397 * cmrs.b2;
+acbh12.l1b1 :=
+  +0
+  -6.24771907436979e-08 * on_dx1hs
+  -6.27164271201823e-08 * on_dx1hl
+  +1.23445439270734e-06 * on_dsep1h;
+acbh12.r1b2 :=
+  +0
+  -7.78634840723306e-08 * on_dx1hs
+  -7.8017638710443e-08 * on_dx1hl
+  -1.51336789895759e-06 * on_dsep1h;
+acbh13.l1b2 :=
+  +0
+  -7.00639423258884e-08 * on_dx1hs
+  -6.70137812147399e-08 * on_dx1hl
+  -1.14165208712778e-07 * on_dsep1h;
+acbh13.r1b1 :=
+  +0
+  -5.99456473501003e-08 * on_dx1hs
+  -5.83551472157202e-08 * on_dx1hl
+  +1.81622446501429e-07 * on_dsep1h;
+acbh14.l1b1 :=
+  +0
+  +4.48294907123004e-10 * on_dx1hs
+  +4.4991091966677e-10 * on_dx1hl
+  -9.10777542966852e-09 * on_dsep1h;
+acbh14.r1b2 :=
+  +0
+  -8.0145431210091e-10 * on_dx1hs
+  -8.02974089581512e-10 * on_dx1hl
+  -1.52385917820122e-08 * on_dsep1h;
+acbh15.l1b2 :=
+  +0
+  -9.44511222112441e-12 * on_dx1hs
+  -8.05350477323907e-12 * on_dx1hl
+  +4.60582206792511e-12 * on_dsep1h;
+acbh15.r1b1 :=
+  +0
+  -8.93817332757476e-12 * on_dx1hs
+  -8.14542648517797e-12 * on_dx1hl
+  -8.61791826898715e-13 * on_dsep1h;
+acbh12.l2b2 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh13.l2b1 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh14.l2b2 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh15.l2b1 :=
+  +0
+  +5.99432160190338e-08 * on_dx1hs
+  +5.83528869238307e-08 * on_dx1hl
+  -1.81622411055956e-07 * on_dsep1h;
+acbh16.l2b2 :=
+  +0
+  +7.67495913593504e-08 * on_dx1hs
+  +7.69015974997445e-08 * on_dx1hl
+  +1.49164489896679e-06 * on_dsep1h;
+acbh12.r8b1 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh13.r8b2 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh14.r8b1 :=
+  +0
+  +0 * on_dx1hs
+  +0 * on_dx1hl
+  +0 * on_dsep1h;
+acbh15.r8b2 :=
+  +0
+  +7.0155100755341e-08 * on_dx1hs
+  +6.71012992656981e-08 * on_dx1hl
+  +1.14320812220393e-07 * on_dsep1h;
+acbh16.r8b1 :=
+  +0
+  +6.26391531968471e-08 * on_dx1hs
+  +6.2879032946458e-08 * on_dx1hl
+  -1.23760962647537e-06 * on_dsep1h;
+acbv12.l1b2 :=
+  +0
+  +6.94181547047831e-08 * on_dx1vs
+  +6.96835256438613e-08 * on_dx1vl
+  -1.37452837962045e-06 * on_dsep1v;
+acbv12.r1b1 :=
+  +0
+  +6.89755793971391e-08 * on_dx1vs
+  +6.91831816062605e-08 * on_dx1vl
+  +1.3673708096246e-06 * on_dsep1v;
+acbv13.l1b1 :=
+  +0
+  +4.89251974102726e-08 * on_dx1vs
+  +4.67919521223143e-08 * on_dx1vl
+  +7.94475131582927e-08 * on_dsep1v;
+acbv13.r1b2 :=
+  +0
+  +5.20783196222844e-08 * on_dx1vs
+  +5.05528495659636e-08 * on_dx1vl
+  +2.13172974755003e-08 * on_dsep1v;
+acbv14.l1b2 :=
+  +0
+  +4.25592122217729e-10 * on_dx1vs
+  +4.27320050771705e-10 * on_dx1vl
+  -8.17050594542711e-09 * on_dsep1v;
+acbv14.r1b1 :=
+  +0
+  +2.96431369746504e-10 * on_dx1vs
+  +2.97408473949339e-10 * on_dx1vl
+  +5.64218769834036e-09 * on_dsep1v;
+acbv15.l1b1 :=
+  +0
+  -1.03810749140339e-10 * on_dx1vs
+  -9.97305703234047e-11 * on_dx1vl
+  -1.77462844804886e-10 * on_dsep1v;
+acbv15.r1b2 :=
+  +0
+  -1.12088279123921e-10 * on_dx1vs
+  -1.09138518536948e-10 * on_dx1vl
+  -4.83237533924022e-11 * on_dsep1v;
+acbv13.l2b2 :=
+  +0
+  +0 * on_dx1vs
+  +0 * on_dx1vl
+  +0 * on_dsep1v;
+acbv14.l2b1 :=
+  +0
+  +0 * on_dx1vs
+  +0 * on_dx1vl
+  +0 * on_dsep1v;
+acbv15.l2b2 :=
+  +0
+  -5.2076668659463e-08 * on_dx1vs
+  -5.05513462838589e-08 * on_dx1vl
+  -2.13173467718958e-08 * on_dsep1v;
+acbv16.l2b1 :=
+  +0
+  -6.86469348244425e-08 * on_dx1vs
+  -6.88535707632213e-08 * on_dx1vl
+  -1.36078990558099e-06 * on_dsep1v;
+acbv13.r8b1 :=
+  +0
+  +0 * on_dx1vs
+  +0 * on_dx1vl
+  +0 * on_dsep1v;
+acbv14.r8b2 :=
+  +0
+  +0 * on_dx1vs
+  +0 * on_dx1vl
+  +0 * on_dsep1v;
+acbv15.r8b1 :=
+  +0
+  -4.88645591978182e-08 * on_dx1vs
+  -4.6734094845537e-08 * on_dx1vl
+  -7.93517734369824e-08 * on_dsep1v;
+acbv16.r8b2 :=
+  +0
+  -6.85940214042608e-08 * on_dx1vs
+  -6.88562702400825e-08 * on_dx1vl
+  +1.35813784518077e-06 * on_dsep1v;
+acbh12.l5b1 :=
+  +0
+  -7.44678443496088e-08 * on_dx5hs
+  -7.475360868496e-08 * on_dx5hl
+  +1.47146370332266e-06 * on_dsep5h;
+acbh12.r5b2 :=
+  +0
+  -7.9222827431872e-08 * on_dx5hs
+  -7.94081295634869e-08 * on_dx5hl
+  -1.56538736465507e-06 * on_dsep5h;
+acbh13.l5b2 :=
+  +0
+  -6.20337944921991e-08 * on_dx5hs
+  -5.93329001637174e-08 * on_dx5hl
+  -1.0093319946793e-07 * on_dsep5h;
+acbh13.r5b1 :=
+  +0
+  -5.56199257200853e-08 * on_dx5hs
+  -5.41070720604128e-08 * on_dx5hl
+  +7.96187195630392e-08 * on_dsep5h;
+acbh14.l5b1 :=
+  +0
+  +5.3246226657858e-10 * on_dx5hs
+  +5.34347648955441e-10 * on_dx5hl
+  -1.08561873761359e-08 * on_dsep5h;
+acbh14.r5b2 :=
+  +0
+  -8.17187558933102e-10 * on_dx5hs
+  -8.1905387498994e-10 * on_dx5hl
+  -1.57629671235175e-08 * on_dsep5h;
+acbh15.l5b2 :=
+  +0
+  -6.91824762176134e-12 * on_dx5hs
+  -5.86605628823194e-12 * on_dx5hl
+  +3.90312256644751e-12 * on_dsep5h;
+acbh15.r5b1 :=
+  +0
+  -7.14773114396178e-12 * on_dx5hs
+  -6.50700361854827e-12 * on_dx5hl
+  -5.22857732733282e-13 * on_dsep5h;
+acbh12.r4b1 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh13.r4b2 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh14.r4b1 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh15.r4b2 :=
+  +0
+  +6.21149723080577e-08 * on_dx5hs
+  +5.94107956528655e-08 * on_dx5hl
+  +1.01070881639413e-07 * on_dsep5h;
+acbh16.r4b1 :=
+  +0
+  +7.46610756840073e-08 * on_dx5hs
+  +7.49476155610568e-08 * on_dx5hl
+  -1.47522495565291e-06 * on_dsep5h;
+acbh12.l6b2 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh13.l6b1 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh14.l6b2 :=
+  +0
+  +0 * on_dx5hs
+  +0 * on_dx5hl
+  +0 * on_dsep5h;
+acbh15.l6b1 :=
+  +0
+  +5.56180261126087e-08 * on_dx5hs
+  +5.41052975829902e-08 * on_dx5hl
+  -7.96186797139475e-08 * on_dsep5h;
+acbh16.l6b2 :=
+  +0
+  +7.80903166794288e-08 * on_dx5hs
+  +7.82730336104153e-08 * on_dx5hl
+  +1.5429178234483e-06 * on_dsep5h;
+acbv12.l5b2 :=
+  +0
+  +6.90979591151522e-08 * on_dx5vs
+  +6.93618332757837e-08 * on_dx5vl
+  -1.36823690373499e-06 * on_dsep5v;
+acbv12.r5b1 :=
+  +0
+  +7.44544186838503e-08 * on_dx5vs
+  +7.46134242356369e-08 * on_dx5vl
+  +1.47068855963597e-06 * on_dsep5v;
+acbv13.l5b1 :=
+  +0
+  +5.63103067409742e-08 * on_dx5vs
+  +5.38551468678206e-08 * on_dx5vl
+  +9.14713156878204e-08 * on_dsep5v;
+acbv13.r5b2 :=
+  +0
+  +5.02755550577864e-08 * on_dx5vs
+  +4.89007550022022e-08 * on_dx5vl
+  -7.27795287369866e-08 * on_dsep5v;
+acbv14.l5b2 :=
+  +0
+  +4.24564634247614e-10 * on_dx5vs
+  +4.26335075342876e-10 * on_dx5vl
+  -8.13338958504989e-09 * on_dsep5v;
+acbv14.r5b1 :=
+  +0
+  +3.22127697235821e-10 * on_dx5vs
+  +3.22881357140168e-10 * on_dx5vl
+  +6.06901555454748e-09 * on_dsep5v;
+acbv15.l5b1 :=
+  +0
+  -1.19094762418761e-10 * on_dx5vs
+  -1.14449105563449e-10 * on_dx5vl
+  -2.04320331136824e-10 * on_dsep5v;
+acbv15.r5b2 :=
+  +0
+  -1.08155892834471e-10 * on_dx5vs
+  -1.05499493646252e-10 * on_dx5vl
+  +1.64981511801401e-10 * on_dsep5v;
+acbv13.r4b1 :=
+  +0
+  +0 * on_dx5vs
+  +0 * on_dx5vl
+  +0 * on_dsep5v;
+acbv14.r4b2 :=
+  +0
+  +0 * on_dx5vs
+  +0 * on_dx5vl
+  +0 * on_dsep5v;
+acbv15.r4b1 :=
+  +0
+  -5.62405796625082e-08 * on_dx5vs
+  -5.37886128842087e-08 * on_dx5vl
+  -9.13610863005473e-08 * on_dsep5v;
+acbv16.r4b2 :=
+  +0
+  -6.82780737979284e-08 * on_dx5vs
+  -6.85388608164283e-08 * on_dx5vl
+  +1.3519215063839e-06 * on_dsep5v;
+acbv13.l6b2 :=
+  +0
+  +0 * on_dx5vs
+  +0 * on_dx5vl
+  +0 * on_dsep5v;
+acbv14.l6b1 :=
+  +0
+  +0 * on_dx5vs
+  +0 * on_dx5vl
+  +0 * on_dsep5v;
+acbv15.l6b2 :=
+  +0
+  -5.0273951498495e-08 * on_dx5vs
+  -4.88992842201353e-08 * on_dx5vl
+  +7.27796968506699e-08 * on_dsep5v;
+acbv16.l6b1 :=
+  +0
+  -7.41003535194955e-08 * on_dx5vs
+  -7.42586207665355e-08 * on_dx5vl
+  -1.46361058719423e-06 * on_dsep5v;
+
+! Constant definitions
+
+
+kd1.l1             := ad1.l1/l.mbxf      ;
+kd1.r1             := ad1.r1/l.mbxf      ;
+kd2.l1             := ad2.l1/l.mbrd      ;
+kd2.r1             := ad2.r1/l.mbrd      ;
+kd1.l2             := ad1.l2/l.mbx       ;
+kd1.r2             := ad1.r2/l.mbx       ;
+kd2.l2             := ad2.l2/l.mbrc      ;
+kd2.r2             := ad2.r2/l.mbrc      ;
+kd3.lr3            := ad3.lr3/l.mbw      ;
+kd4.lr3            := ad4.lr3/l.mbw      ;
+kd3.l4             := ad3.l4/l.mbrs      ;
+kd3.r4             := ad3.r4/l.mbrs      ;
+kd4.l4             := ad4.l4/l.mbrb      ;
+kd4.r4             := ad4.r4/l.mbrb      ;
+kd34.lr3           := ad3.lr3/l.mbw      ;
+kd34.lr7           := ad3.lr7/l.mbw      ;
+kd1.l5             := ad1.l5/l.mbxf      ;
+kd1.r5             := ad1.r5/l.mbxf      ;
+kd2.l5             := ad2.l5/l.mbrd      ;
+kd2.r5             := ad2.r5/l.mbrd      ;
+kd3.lr7            := ad3.lr7/l.mbw      ;
+kd4.lr7            := ad4.lr7/l.mbw      ;
+kd1.l8             := ad1.l8/l.mbx       ;
+kd1.r8             := ad1.r8/l.mbx       ;
+kd2.l8             := ad2.l8/l.mbrc      ;
+kd2.r8             := ad2.r8/l.mbrc      ;
+ksumd2.l1b2        := kd2.l1             ;
+ksumd2.l2b2        := kd2.l2             ;
+ksumd2.l5b2        := kd2.l5             ;
+ksumd2.l8b2        := kd2.l8             ;
+ksumd2.r1b2        := kd2.l1             ;
+ksumd2.r2b2        := kd2.l2             ;
+ksumd2.r5b2        := kd2.l5             ;
+ksumd2.r8b2        := kd2.l8             ;
+kb.a12             := ab.a12/l.mb        ;
+kb.a23             := ab.a23/l.mb        ;
+kb.a34             := ab.a34/l.mb        ;
+kb.a45             := ab.a45/l.mb        ;
+kb.a56             := ab.a56/l.mb        ;
+kb.a67             := ab.a67/l.mb        ;
+kb.a78             := ab.a78/l.mb        ;
+kb.a81             := ab.a81/l.mb        ;
+
+abas               := 12.00/6.0*clight/(7e12)*on_sol_atlas ;
+abls               := 6.05/12.1*clight/(7e12)*on_sol_alice ;
+abcs               := 52.00/13.0*clight/(7e12)*on_sol_cms ;
+abxwt.l2           := -0.0000772587268993839836*on_alice ;
+abwmd.l2           := +0.0001472587268993839840*on_alice ;
+abaw.r2            := -0.0001335474860334838000*on_alice ;
+abxwt.r2           := +0.0000635474860334838004*on_alice ;
+abxws.l8           := -0.000045681598453109894*on_lhcb ;
+abxwh.l8           := +0.000180681598453109894*on_lhcb ;
+ablw.r8            := -0.000180681598453109894*on_lhcb ;
+abxws.r8           := +0.000045681598453109894*on_lhcb ;
+
+kqx.l1             := kqx2a.l1           ;
+ktqx1.l1           := kqx1.l1-kqx2a.l1   ;
+ktqx3.l1           := kqx3.l1-kqx2a.l1   ;
+kqx.r1             := kqx2a.r1           ;
+ktqx1.r1           := kqx1.r1-kqx2a.r1   ;
+ktqx3.r1           := kqx3.r1-kqx2a.r1   ;
+
+kqx.l5             := kqx2a.l5           ;
+ktqx1.l5           := kqx1.l5-kqx2a.l5   ;
+ktqx3.l5           := kqx3.l5-kqx2a.l5   ;
+kqx.r5             := kqx2a.r5           ;
+ktqx1.r5           := kqx1.r5-kqx2a.r5   ;
+ktqx3.r5           := kqx3.r5-kqx2a.r5   ;
+
+
+! D1 and D2 angles [rad]
+ad1.l1 = 1.5009443796e-03;
+ad1.l2 = 1.5325070050e-03;
+ad1.l5 = 1.5009443796e-03;
+ad1.l8 = 1.5325070050e-03;
+ad1.r1 = 1.5009443796e-03;
+ad1.r2 = 1.5325070050e-03;
+ad1.r5 = 1.5009443796e-03;
+ad1.r8 = 1.5325070050e-03;
+ad2.l1 = 1.5009443796e-03;
+ad2.l2 = 1.5325070050e-03;
+ad2.l5 = 1.5009443796e-03;
+ad2.l8 = 1.5325070050e-03;
+ad2.r1 = 1.5009443796e-03;
+ad2.r2 = 1.5325070050e-03;
+ad2.r5 = 1.5009443796e-03;
+ad2.r8 = 1.5325070050e-03;
+
+! D1 mid-separation [m]
+sep_mid_d1.l1 = 2.3527297632e-03;
+sep_mid_d1.l2 = 3.6205469140e-03;
+sep_mid_d1.l5 = 2.3527297632e-03;
+sep_mid_d1.l8 = 3.6205469140e-03;
+sep_mid_d1.r1 = 2.3527297632e-03;
+sep_mid_d1.r2 = 3.6205469140e-03;
+sep_mid_d1.r5 = 2.3527297632e-03;
+sep_mid_d1.r8 = 3.6205469140e-03;
+
+! D2 shifts [m]
+shift_d2.l1 = 1.5407071706e-03;
+shift_d2.l2 = 1.1897265430e-03;
+shift_d2.l5 = 1.5407071706e-03;
+shift_d2.l8 = 1.1897265430e-03;
+shift_d2.r1 = 1.5407071706e-03;
+shift_d2.r2 = 1.1897265430e-03;
+shift_d2.r5 = 1.5407071706e-03;
+shift_d2.r8 = 1.1897265430e-03;! Angles for RBends in IR3
+abw.a6l3 = -1.8872909366e-04;
+abw.a6r3 = -1.8872909366e-04;
+abw.b6l3 = -1.8872910038e-04;
+abw.b6r3 = -1.8872910038e-04;
+abw.c6l3 = -1.8872911382e-04;
+abw.c6r3 = -1.8872911382e-04;
+abw.d6l3 = 1.8872911382e-04;
+abw.d6r3 = 1.8872911382e-04;
+abw.e6l3 = 1.8872910038e-04;
+abw.e6r3 = 1.8872910038e-04;
+abw.f6l3 = 1.8872909366e-04;
+abw.f6r3 = 1.8872909366e-04;
+
+! In-out angle differences for RBends in IR3
+adiff.bw.a6l3 = 1.8872909366e-04;
+adiff.bw.a6r3 = -1.8872909366e-04;
+adiff.bw.b6l3 = 5.6618728769e-04;
+adiff.bw.b6r3 = -5.6618728769e-04;
+adiff.bw.c6l3 = 9.4364550190e-04;
+adiff.bw.c6r3 = -9.4364550190e-04;
+adiff.bw.d6l3 = 9.4364550190e-04;
+adiff.bw.d6r3 = -9.4364550190e-04;
+adiff.bw.e6l3 = 5.6618728769e-04;
+adiff.bw.e6r3 = -5.6618728769e-04;
+adiff.bw.f6l3 = 1.8872909366e-04;
+adiff.bw.f6r3 = -1.8872909366e-04;
+
+! Shifts for RBends in IR3
+shift.bw.a6l3 = 1.6919790135e-02;
+shift.bw.a6r3 = 1.6919790135e-02;
+shift.bw.b6l3 = 1.6120522415e-02;
+shift.bw.b6r3 = 1.6120522415e-02;
+shift.bw.c6l3 = 1.4521986906e-02;
+shift.bw.c6r3 = 1.4521986906e-02;
+shift.bw.d6l3 = 4.4780130939e-03;
+shift.bw.d6r3 = 4.4780130939e-03;
+shift.bw.e6l3 = 2.8794775851e-03;
+shift.bw.e6r3 = 2.8794775851e-03;
+shift.bw.f6l3 = 2.0802098651e-03;
+shift.bw.f6r3 = 2.0802098651e-03;! IR4 RBend angles
+ad3.l4 = 1.5716058651e-03;
+ad3.r4 = 1.5716058651e-03;
+ad4.l4 = 1.5716046865e-03;
+ad4.r4 = 1.5716046865e-03;
+
+! IR4 RBend shifts
+shift.mbrb.l4 = 1.8564631277e-03;
+shift.mbrb.r4 = 1.8564631277e-03;
+shift.mbrs.l4 = 1.1435410493e-03;
+shift.mbrs.r4 = 1.1435410493e-03;! Angles for RBends in IR7
+abw.a6l7 = 1.8872909041e-04;
+abw.a6r7 = 1.8872909041e-04;
+abw.b6l7 = 1.8872909713e-04;
+abw.b6r7 = 1.8872909713e-04;
+abw.c6l7 = -1.8872909713e-04;
+abw.c6r7 = -1.8872909713e-04;
+abw.d6l7 = -1.8872909041e-04;
+abw.d6r7 = -1.8872909041e-04;
+
+! In-out angle differences for RBends in IR7
+adiff.bw.a6l7 = -1.8872909041e-04;
+adiff.bw.a6r7 = 1.8872909041e-04;
+adiff.bw.b6l7 = -5.6618727795e-04;
+adiff.bw.b6r7 = 5.6618727795e-04;
+adiff.bw.c6l7 = -5.6618727795e-04;
+adiff.bw.c6r7 = 5.6618727795e-04;
+adiff.bw.d6l7 = -1.8872909041e-04;
+adiff.bw.d6r7 = 1.8872909041e-04;
+
+! Shifts for RBends in IR7
+shift.bw.a6l7 = 1.6919790136e-02;
+shift.bw.a6r7 = 1.6919790136e-02;
+shift.bw.b6l7 = 1.5988412068e-02;
+shift.bw.b6r7 = 1.5988412068e-02;
+shift.bw.c6l7 = 2.8794781954e-03;
+shift.bw.c6r7 = 2.8794781954e-03;
+shift.bw.d6l7 = 2.0802104882e-03;
+shift.bw.d6r7 = 2.0802104882e-03;! D1 and D2 strengths [1/m]
+kd1.l1 = 2.3938497863e-04;
+kd1.l2 = 1.6216998996e-04;
+kd1.l5 = 2.3938497863e-04;
+kd1.l8 = 1.6216998996e-04;
+kd1.r1 = 2.3938497863e-04;
+kd1.r2 = 1.6216998996e-04;
+kd1.r5 = 2.3938497863e-04;
+kd1.r8 = 1.6216998996e-04;
+kd2.l1 = 1.9297297712e-04;
+kd2.l2 = 1.6216998996e-04;
+kd2.l5 = 1.9297297712e-04;
+kd2.l8 = 1.6216998996e-04;
+kd2.r1 = 1.9297297712e-04;
+kd2.r2 = 1.6216998996e-04;
+kd2.r5 = 1.9297297712e-04;
+kd2.r8 = 1.6216998996e-04;! k0 for RBends in IR3
+kd34.lr3 = 5.5508556629e-05;! IR4 RBend k0
+kd3.l4 = 1.6630743049e-04;
+kd3.r4 = 1.6630743049e-04;
+kd4.l4 = 1.6630730577e-04;
+kd4.r4 = 1.6630730577e-04;! k0 for RBends in IR7
+kd34.lr7 = 5.5508555673e-05;
+
