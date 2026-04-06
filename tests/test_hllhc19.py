@@ -202,6 +202,42 @@ def test_hllhc19():
             line_co_ref=env_ref[line_name],
             co_corr_config=co_corr_config[line_name])
 
+    ############
+    # Leveling #
+    ############
+
+    config_lumi_leveling = config['lumi_leveling']
+    config_beambeam = config['beam_beam']
+
+    opts = xmlhc.luminosity_leveling(
+        lhc, config_lumi_leveling=config_lumi_leveling,
+        config_beambeam=config_beambeam)
+
+    # Re-match tunes, and chromaticities
+    conf_tuning = config['tuning']
+
+    for line_name in ['b1', 'b2']:
+        knob_names = conf_tuning['knob_names'][line_name]
+        targets = {
+            'qx': conf_tuning['qx'][line_name],
+            'qy': conf_tuning['qy'][line_name],
+            'dqx': conf_tuning['dqx'][line_name],
+            'dqy': conf_tuning['dqy'][line_name],
+        }
+        xm.machine_tuning(line=lhc[line_name],
+            enable_tune_correction=True, enable_chromaticity_correction=True,
+            knob_names=knob_names, targets=targets)
+
+    ##############################
+    # Configure beam-beam lenses #
+    ##############################
+
+    print('Configuring beam-beam lenses...')
+    lhc.configure_beambeam_interactions(
+        num_particles=config_bb['num_particles_per_bunch'],
+        nemitt_x=config_bb['nemitt_x'],
+        nemitt_y=config_bb['nemitt_y'])
+
 
 co_corr_config = {}
 co_corr_config['b1'] = {
