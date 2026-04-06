@@ -5,7 +5,7 @@ from itertools import product
 import numpy as np
 import pandas as pd
 
-label = 'thick'
+label = 'thin'
 
 if label == 'thin':
     lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
