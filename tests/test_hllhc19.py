@@ -606,7 +606,12 @@ def test_hllhc19_check_config_and_tuning(label):
 
     tw1_clean_6d = lhc.b1.twiss6d(strengths=True)
     tw2_clean_6d = lhc.b2.twiss6d(strengths=True)
-
+    if label == 'thin':
+        atol_x = 3e-7
+        atol_px = 1e-8
+    else:
+        atol_x = 3e-8
+        atol_px = 1e-9
     for tw in [tw1_clean_6d, tw2_clean_6d]:
         xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=atol_x)
         xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)

@@ -3,12 +3,12 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
-label = 'thin'
+label = 'thick'
 
 if label == 'thin':
     lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
 elif label == 'thick':
-    lhc = xt.load("lhc_thick_test_04_tuned_and_leveled_bb_on.json")
+    lhc = xt.load("lhc_thick_04_tuned_and_leveled_bb_on.json")
 elif label == 'legacy_thick':
     lhc = xt.load("lhc_legacy_thick_test_04_tuned_and_leveled_bb_on.json")
 else:
@@ -355,7 +355,12 @@ for tw in [tw1_clean, tw2_clean]:
 
 tw1_clean_6d = lhc.b1.twiss6d(strengths=True)
 tw2_clean_6d = lhc.b2.twiss6d(strengths=True)
-
+if label == 'thin':
+    atol_x = 3e-7
+    atol_px = 1e-8
+else:
+    atol_x = 3e-8
+    atol_px = 1e-9
 for tw in [tw1_clean_6d, tw2_clean_6d]:
     xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=atol_x)
     xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)
