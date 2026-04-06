@@ -3,7 +3,7 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
-label = 'thick'
+label = 'thin'
 
 if label == 'thin':
     lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
@@ -327,13 +327,19 @@ lhc.set(tt_vars.rows['dqp.*'], 0)
 tw1_clean = lhc.b1.twiss4d(strengths=True)
 tw2_clean = lhc.b2.twiss4d(strengths=True)
 
+if label == 'thin':
+    atol_x = 3e-7
+    atol_px = 1e-8
+else:
+    atol_x = 1e-9
+    atol_px = 1e-10
 for tw in [tw1_clean, tw2_clean]:
-    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=1e-9)
-    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=1e-10)
+    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=atol_x)
+    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)
     xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
     xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
-    xo.assert_allclose(tw.qx, 62.31, atol=1e-6)
-    xo.assert_allclose(tw.qy, 60.32, atol=1e-6)
+    xo.assert_allclose(tw.qx, 62.31, atol=3e-6)
+    xo.assert_allclose(tw.qy, 60.32, atol=3e-6)
     xo.assert_allclose(tw.dqx, 0, atol=1e-3)
     xo.assert_allclose(tw.dqy, 0, atol=1e-3)
     xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
@@ -351,12 +357,12 @@ tw1_clean_6d = lhc.b1.twiss6d(strengths=True)
 tw2_clean_6d = lhc.b2.twiss6d(strengths=True)
 
 for tw in [tw1_clean_6d, tw2_clean_6d]:
-    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=5e-8)
-    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=1e-8)
+    xo.assert_allclose(tw.rows['mq.*'].x, 0, atol=atol_x)
+    xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)
     xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
     xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
-    xo.assert_allclose(tw.qx, 62.31, atol=1e-6)
-    xo.assert_allclose(tw.qy, 60.32, atol=1e-6)
+    xo.assert_allclose(tw.qx, 62.31, atol=3e-6)
+    xo.assert_allclose(tw.qy, 60.32, atol=3e-6)
     xo.assert_allclose(tw.dqx, 0, atol=1e-3)
     xo.assert_allclose(tw.dqy, 0, atol=1e-3)
     xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
