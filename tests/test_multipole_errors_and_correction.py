@@ -3,6 +3,8 @@ import xobjects as xo
 import xmask.lhc as xmlhc
 import xmask as xm
 
+import numpy as np
+
 from pathlib import Path
 
 test_data_dir = Path(__file__).parent.parent / "test_data"
@@ -187,7 +189,7 @@ def test_multipole_errors_and_correction():
 def test_multipole_errors_arcs_against_ref():
 
     env_test = xt.load('lhc_test_multipolar_errors_corrected.json')
-    env_ref = xt.load('../hllhc14_multipolar_errors_legacy/'
+    env_ref = xt.load(test_data_dir / "hllhc14_references_from_legacy/"
                     'collider_errors_on_corrections_off.json')
 
     # To be in the same conditions as the reference
@@ -196,7 +198,10 @@ def test_multipole_errors_arcs_against_ref():
     env_test['on_error_arc_k1'] = 0
     env_test['on_error_arc_k1s'] = 0
 
-    issues = []
+    # Switch off corrections to be in the same conditions as the reference
+    tt_vars = env_test.vars.get_table()
+    env_test.set(tt_vars.rows[r'on_corr_.*'], 0)
+
     for line_to_check in ['lhcb1', 'lhcb2']:
         line_test = env_test[line_to_check]
         line_ref = env_ref[line_to_check]
