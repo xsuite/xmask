@@ -253,6 +253,55 @@ def test_multipole_errors_arcs_against_ref():
                         xo.assert_allclose(ksl_tot_nn[ii], line_ref[nn].ksl[ii],
                                             rtol=1e-10, atol=1e-10)
 
+def test_multipole_errors_triplet_installation():
+
+    env_test = xt.load('lhc_test_multipolar_errors_corrected.json')
+
+    line_b1_ref = xt.load(
+        test_data_dir / 'hllhc_triplet_error_references/line_lhcb1_perm6.json'
+    )
+
+    # Check  b1/b2 consistency in env_test
+    tt_b1_mqxf = env_test['lhcb1'].get_table(attr=True).rows['mqxf.*']
+    for nn in tt_b1_mqxf.name:
+        if '..fl' in nn or '..fr' in nn:
+            continue # skip edge lenses
+        if isinstance(env_test[nn], xt.Marker):
+            continue # skip markers
+        ele_b1 = env_test['lhcb1'][nn]
+        ele_b2 = env_test['lhcb2'][nn.replace('/lhcb1', '/lhcb2')]
+        xmlhc.assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, rtol=1e-12, atol=1e-12)
+
+    line_test = env_test['lhcb1']
+    line_ref = line_b1_ref
+
+    line_test.cycle('ip7')
+    line_ref.cycle('ip7')
+
+    # Check b1/b2 consistency
+    line_test = env_test['lhcb2']
+
+    tt_test = line_test.get_table(attr=True)
+    tt_ref = line_ref.get_table(attr=True)
+
+    tt_ref_mqxf = tt_ref.rows['mqxf.*']
+
+    for nn in tt_ref_mqxf.name:
+        if '..fl' in nn or '..fr' in nn:
+            continue # skip edge lenses
+        print(f'Checking {nn}               ', end='\r', flush=True)
+
+        if hasattr(line_ref[nn], 'knl'):
+            knl_tot_nn, ksl_tot_nn = line_test[nn].get_total_knl_ksl()
+            for ii in range(len(line_ref[nn].knl)):
+                if ii >= 10:
+                    break # reference has only up to decapolar, check only up to octupolar
+                xo.assert_allclose(knl_tot_nn[ii], line_ref[nn].knl[ii],
+                                rtol=0.01, atol=1e-10)
+                xo.assert_allclose(ksl_tot_nn[ii], line_ref[nn].ksl[ii],
+                                    rtol=0.01, atol=1e-10)
+
+
 def test_multipole_errors_ir_corrections_against_ref():
 
     env = xt.load(test_data_dir /
