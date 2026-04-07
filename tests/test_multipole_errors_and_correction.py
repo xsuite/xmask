@@ -206,14 +206,8 @@ def test_multipole_errors_arcs_against_ref():
         line_test = env_test[line_to_check]
         line_ref = env_ref[line_to_check]
 
-        tt_test = line_test.get_table(attr=True)
-        tt_ref = line_ref.get_table(attr=True)
-
-        tt_test_quad = tt_test.rows['mq.*']
-        tt_ref_quad = tt_ref.rows['mq.*']
-
-        max_order = 18
-
+        tt_test = line_test.get_table()
+        tt_ref = line_ref.get_table()
 
         for arc in ['12', '23', '34', '45', '56', '67', '78', '81']:
             if line_to_check == 'lhcb1':
