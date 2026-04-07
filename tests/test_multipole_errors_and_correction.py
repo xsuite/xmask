@@ -148,6 +148,39 @@ def test_multipole_errors_and_correction():
     env['on_error_d2_ir15_k1'] = 0
     env['on_error_d2_ir15_k1s'] = 0
 
+    #################################
+    # Compute and apply corrections #
+    #################################
+
+
+    # Status of error knobs
+    tt_err_knobs = env.vars.get_table().rows[r'on_error_.*']
+    print("Error knobs in the environment:")
+    tt_err_knobs.show()
+
+    # Errors off to get reference twiss
+    env.set(tt_err_knobs.name, 0)
+    tw_b1 = env['lhcb1'].twiss4d(reverse=False) # Reference twiss
+    tw_b2 = env['lhcb2'].twiss4d(reverse=False) # Reference twiss
+    tw_b12 = {'b1': tw_b1, 'b2': tw_b2}
+
+    # errors back on
+    for nn in tt_err_knobs.name:
+        env[nn] = tt_err_knobs['value', nn]
+
+    # Local correction of IR15 multipole errors
+    xmlhc.correct_ir_errors(env, twiss_b1=tw_b1, twiss_b2=tw_b2,
+                            corrections=IR_CORRECTIONS)
+
+    # Spool piece correctors (MCS, MC0, MCD)
+    xmlhc.set_arc_spool_piece_correctors(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
+    # k1s local + global correction (uses MQS)
+    xmlhc.correct_k1s(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
+    # k2s local + global correction (uses MSS)
+    xmlhc.correct_k2s(env, twiss_b1=tw_b1, twiss_b2=tw_b2)
+
 
 # One possible configuration - final magnet-asset association still to be defined
 MAGNET_ASSET_ASSOCIATION_IT15 = {
@@ -283,6 +316,129 @@ DATA_FILES_D2_15 = {
               'v2': 'FQ_MBRD/FQ_MBRD5_AP2_cold_nominal_extrapolation.json'}
 }
 
+IR_CORRECTIONS = {
+  'ip1': {
+    'range_b1': ['taxn.4l1/lhcb1', 'taxn.4r1/lhcb1'],
+    'range_b2': ['taxn.4r1/lhcb2', 'taxn.4l1/lhcb2'],
+    'corrections': {
+      'on_corr_k2_ip1': {
+        'correction_knobs': ['kcsx3.l1', 'kcsx3.r1'],
+        'target_quantities_b1': {'f1020_b1': 'f1020'},
+        'target_quantities_b2': {'f1020_b2': 'f1020'},
+        'feed_down': False
+      },
+      'on_corr_k3_ip1': {
+        'correction_knobs': ['kcox3.l1', 'kcox3.r1'],
+        'target_quantities_b1': {'f4000_b1': 'f4000'},
+        'target_quantities_b2': {'f4000_b2': 'f4000'},
+        'feed_down': False
+      },
+      'on_corr_k4_ip1': {
+        'correction_knobs': ['kcdx3.l1', 'kcdx3.r1'],
+        'target_quantities_b1': {'f5000_b1': 'f5000'},
+        'target_quantities_b2': {'f5000_b2': 'f5000'},
+        'feed_down': False
+      },
+      'on_corr_k5_ip1': {
+        'correction_knobs': ['kctx3.l1', 'kctx3.r1'],
+        'target_quantities_b1': {'f6000_b1': 'f6000'},
+        'target_quantities_b2': {'f6000_b2': 'f6000'},
+        'feed_down': False
+      },
+      'on_corr_k1s_ip1': {
+        'correction_knobs': ['kqsx3.l1', 'kqsx3.r1'],
+        'target_quantities_b1': {'f1001_b1': 'f1001'},
+        'target_quantities_b2': {'f1001_b2': 'f1001'},
+        'feed_down': False
+      },
+      'on_corr_k2s_ip1': {
+        'correction_knobs': ['kcssx3.l1', 'kcssx3.r1'],
+        'target_quantities_b1': {'f0030_b1': 'f0030'},
+        'target_quantities_b2': {'f0030_b2': 'f0030'},
+        'feed_down': False
+      },
+      'on_corr_k3s_ip1': {
+        'correction_knobs': ['kcosx3.l1', 'kcosx3.r1'],
+        'target_quantities_b1': {'f1030_b1': 'f1030'},
+        'target_quantities_b2': {'f1030_b2': 'f1030'},
+        'feed_down': False
+      },
+      'on_corr_k4s_ip1': {
+        'correction_knobs': ['kcdsx3.l1', 'kcdsx3.r1'],
+        'target_quantities_b1': {'f0050_b1': 'f0050'},
+        'target_quantities_b2': {'f0050_b2': 'f0050'},
+        'feed_down': False
+      },
+      'on_corr_k5s_ip1': {
+        'correction_knobs': ['kctsx3.l1', 'kctsx3.r1'],
+        'target_quantities_b1': {'f1050_b1': 'f1050'},
+        'target_quantities_b2': {'f1050_b2': 'f1050'},
+        'feed_down': False
+      }
+    }
+  },
+  'ip5': {
+    'range_b1': ['taxn.4l5/lhcb1', 'taxn.4r5/lhcb1'],
+    'range_b2': ['taxn.4r5/lhcb2', 'taxn.4l5/lhcb2'],
+    'corrections': {
+      'on_corr_k2_ip5': {
+        'correction_knobs': ['kcsx3.l5', 'kcsx3.r5'],
+        'target_quantities_b1': {'f1020_b1': 'f1020'},
+        'target_quantities_b2': {'f1020_b2': 'f1020'},
+        'feed_down': False
+      },
+      'on_corr_k3_ip5': {
+        'correction_knobs': ['kcox3.l5', 'kcox3.r5'],
+        'target_quantities_b1': {'f4000_b1': 'f4000'},
+        'target_quantities_b2': {'f4000_b2': 'f4000'},
+        'feed_down': False
+      },
+      'on_corr_k4_ip5': {
+        'correction_knobs': ['kcdx3.l5', 'kcdx3.r5'],
+        'target_quantities_b1': {'f5000_b1': 'f5000'},
+        'target_quantities_b2': {'f5000_b2': 'f5000'},
+        'feed_down': False
+      },
+      'on_corr_k5_ip5': {
+        'correction_knobs': ['kctx3.l5', 'kctx3.r5'],
+        'target_quantities_b1': {'f6000_b1': 'f6000'},
+        'target_quantities_b2': {'f6000_b2': 'f6000'},
+        'feed_down': False
+      },
+      'on_corr_k1s_ip5': {
+        'correction_knobs': ['kqsx3.l5', 'kqsx3.r5'],
+        'target_quantities_b1': {'f1001_b1': 'f1001'},
+        'target_quantities_b2': {'f1001_b2': 'f1001'},
+        'feed_down': False
+      },
+      'on_corr_k2s_ip5': {
+        'correction_knobs': ['kcssx3.l5', 'kcssx3.r5'],
+        'target_quantities_b1': {'f0030_b1': 'f0030'},
+        'target_quantities_b2': {'f0030_b2': 'f0030'},
+        'feed_down': False
+      },
+      'on_corr_k3s_ip5': {
+        'correction_knobs': ['kcosx3.l5', 'kcosx3.r5'],
+        'target_quantities_b1': {'f1030_b1': 'f1030'},
+        'target_quantities_b2': {'f1030_b2': 'f1030'},
+        'feed_down': False
+      },
+      'on_corr_k4s_ip5': {
+        'correction_knobs': ['kcdsx3.l5', 'kcdsx3.r5'],
+        'target_quantities_b1': {'f0050_b1': 'f0050'},
+        'target_quantities_b2': {'f0050_b2': 'f0050'},
+        'feed_down': False
+      },
+      'on_corr_k5s_ip5': {
+        'correction_knobs': ['kctsx3.l5', 'kctsx3.r5'],
+        'target_quantities_b1': {'f1050_b1': 'f1050'},
+        'target_quantities_b2': {'f1050_b2': 'f1050'},
+        'feed_down': False
+      }
+    }
+  },
+}
+
 def load_hllhc_multipole_json(fname):
     data = xt.json.load(fname)
 
@@ -297,3 +453,5 @@ def load_hllhc_multipole_json(fname):
     magnet_meas_data['ref_radius'] = data['reference_radius_mm'] * 1e-3
 
     return magnet_meas_data
+
+

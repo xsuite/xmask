@@ -4,7 +4,7 @@ import xmask.lhc as xmlhc
 
 env = xt.load('lhc_multipolar_errors.json')
 
-# Read beam-beam config from config file
+# Read config file
 with open('config.yaml','r') as fid:
     config = xm.yaml.load(fid)
 
