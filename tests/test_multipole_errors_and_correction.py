@@ -259,7 +259,8 @@ def test_multipole_errors_ir_corrections_against_ref():
         'hllhc14_references_from_legacy/collider_errors_on_corrections_on.json')
 
     # Reference twiss
-    env_no_err = xt.load('../hllhc14_multipolar_errors_legacy/collider_errors_off_corrections_off.json')
+    env_no_err = xt.load(test_data_dir /
+        'hllhc14_references_from_legacy/collider_errors_off_corrections_off.json')
     tw_b1 = env_no_err.lhcb1.twiss4d(reverse=False) # Reference twiss
     tw_b2 = env_no_err.lhcb2.twiss4d(reverse=False) # Reference twiss
 
