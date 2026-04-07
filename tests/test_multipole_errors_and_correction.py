@@ -29,13 +29,13 @@ def test_multipole_errors_and_correction():
     #############################
 
     multipole_errors_triplets15 = {}
-    for nn in MAGNET_ASSET_ASSOCIATION:
-        asset_name = MAGNET_ASSET_ASSOCIATION[nn]
+    for nn in MAGNET_ASSET_ASSOCIATION_IT15:
+        asset_name = MAGNET_ASSET_ASSOCIATION_IT15[nn]
         is_rot = IS_ROTATED[nn]
 
         magnet_meas_data = load_hllhc_multipole_json(test_data_dir /
             "hllhc19/prepare_multipolar_errors/multipole_errors_hllhc_ir15" /
-            DATA_FILES[asset_name])
+            DATA_FILES_IT15[asset_name])
         ref_radius = magnet_meas_data.pop('ref_radius')
 
         main_order = 1 # The are all quadrupoles
@@ -68,9 +68,47 @@ def test_multipole_errors_and_correction():
         multipole_errors_triplets15[nn + '/b1'] = multipole_errors_triplets15[nn + '/lhcb1']
         multipole_errors_triplets15[nn + '/b2'] = multipole_errors_triplets15[nn + '/lhcb2']
 
+    ##################
+    # Load D2 errors #
+    ##################
+
+    multipole_errors_d2_15 = {}
+
+    for nn in MAGNET_ASSET_ASSOCIATION_D2_15:
+        for beam in ['b1', 'b2']:
+            nn_with_beam = nn + '.' + beam
+
+            location = nn[-2:] # e.g "l5"
+            aper = xmlhc.BEAM_MAPPING_PER_SIDE[location][beam] # e.g. 'v1' or 'v2'
+
+            asset_name = MAGNET_ASSET_ASSOCIATION_D2_15[nn]
+            is_rot = IS_ROTATED[nn]
+
+            if is_rot: # Swap aper if rotated
+                aper = 'v1' if aper == 'v2' else 'v2'
+
+            data_file = DATA_FILES_D2_15[asset_name][aper]
+            magnet_meas_data = load_hllhc_multipole_json(
+                test_data_dir / "hllhc19/prepare_multipolar_errors/multipole_errors_hllhc_ir15" / data_file)
+            ref_radius = magnet_meas_data.pop('ref_radius')
+
+            assert nn.startswith('mbrd.') # is a a normal dipole
+            main_order = 0
+            main_is_skew = False
+
+            knl_rel, ksl_rel = xmlhc.convert_multipolar_expansion(
+                magnet_meas_data=magnet_meas_data,
+                is_rotated=is_rot,
+                main_order=main_order,
+                ref_radius=ref_radius
+            )
+
+            multipole_errors_d2_15[nn_with_beam] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
+                'main_order': main_order, 'main_is_skew': main_is_skew}
+
 
 # One possible configuration - final magnet-asset association still to be defined
-MAGNET_ASSET_ASSOCIATION = {
+MAGNET_ASSET_ASSOCIATION_IT15 = {
     'mqxfa.b3l1': 'mqxfa12b',
     'mqxfa.a3l1': 'mqxfa17b',
     'mqxfb.b2l1': 'mqxfb10',
@@ -101,7 +139,7 @@ MAGNET_ASSET_ASSOCIATION = {
     'mbxf.4r5': 'mbxf3',
 }
 
-DATA_FILES = {
+DATA_FILES_IT15 = {
 'mqxfa03':  'FQ_MQXFA/MQXFA03_CA01.json',
 'mqxfa04':  'FQ_MQXFA/MQXFA04_CA02.json',
 'mqxfa05':  'FQ_MQXFA/MQXFA05_CA03.json',
@@ -136,7 +174,6 @@ DATA_FILES = {
 'mbxf3': 'FQ_MBXF/FQ_MBXF3_cold_nominal.json',
 'mbxf5': 'FQ_MBXF/FQ_MBXF5_cold_nominal.json',
 }
-
 
 IS_ROTATED = {
     'mqxfa.b3l1': False,
@@ -182,6 +219,26 @@ IS_ROTATED = {
     # 'mcbrdv.4l5': True,
     # 'mcbrdv.4r5': False,
     # 'mcbrdh.4r5': True
+}
+
+MAGNET_ASSET_ASSOCIATION_D2_15 = {
+    'mbrd.4l1': 'mbrd3',
+    'mbrd.4r1': 'mbrd5',
+    'mbrd.4l5': 'mbrd2',
+    'mbrd.4r5': 'mbrd1'
+}
+
+DATA_FILES_D2_15 = {
+    'mbrd1': {'v1': 'FQ_MBRD/FQ_MBRD1_AP1_cold_nominal_extrapolation.json',
+              'v2': 'FQ_MBRD/FQ_MBRD1_AP2_cold_nominal_extrapolation.json'},
+    'mbrd2': {'v1': 'FQ_MBRD/FQ_MBRD2_AP1_cold_nominal_extrapolation.json',
+              'v2': 'FQ_MBRD/FQ_MBRD2_AP2_cold_nominal_extrapolation.json'},
+    'mbrd3': {'v1': 'FQ_MBRD/FQ_MBRD3_AP1_cold_nominal_extrapolation.json',
+              'v2': 'FQ_MBRD/FQ_MBRD3_AP2_cold_nominal_extrapolation.json'},
+    'mbrd4': {'v1': 'FQ_MBRD/FQ_MBRD4_AP1_cold_nominal_extrapolation.json',
+              'v2': 'FQ_MBRD/FQ_MBRD4_AP2_cold_nominal_extrapolation.json'},
+    'mbrd5': {'v1': 'FQ_MBRD/FQ_MBRD5_AP1_cold_nominal_extrapolation.json',
+              'v2': 'FQ_MBRD/FQ_MBRD5_AP2_cold_nominal_extrapolation.json'}
 }
 
 def load_hllhc_multipole_json(fname):
