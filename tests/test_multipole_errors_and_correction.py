@@ -119,8 +119,8 @@ def test_multipole_errors_and_correction():
     }
 
     # Get a collider model
-    env = xt.load(
-        '../hllhc14_multipolar_errors_legacy/collider_errors_off_corrections_off.json')
+    env = xt.load(test_data_dir /
+        "hllhc14_references_from_legacy/collider_errors_off_corrections_off.json")
 
     # Apply errors in lines
     min_order = 0
