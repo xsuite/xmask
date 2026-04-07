@@ -1,0 +1,3 @@
+This folder contains reference lattice files generated with legacy tools to be
+used for testing purposes. They are generated using the script in the folder
+../../examples/hllhc14_multipolar_errors_legacy

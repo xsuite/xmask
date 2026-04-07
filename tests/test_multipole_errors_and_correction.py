@@ -1,5 +1,6 @@
 import xtrack as xt
 import xmask.lhc as xmlhc
+import xmask as xm
 
 from pathlib import Path
 
@@ -105,6 +106,47 @@ def test_multipole_errors_and_correction():
 
             multipole_errors_d2_15[nn_with_beam] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
                 'main_order': main_order, 'main_is_skew': main_is_skew}
+
+    #########################
+    # Apply errors in lines #
+    #########################
+
+    # Association knob_name -> multipole errors
+    multipole_errors_to_apply = {
+        'on_error_arc': multipole_errors_arcs,
+        'on_error_triplets_ir15': multipole_errors_triplets15,
+        'on_error_d2_ir15': multipole_errors_d2_15
+    }
+
+    # Get a collider model
+    env = xt.load(
+        '../hllhc14_multipolar_errors_legacy/collider_errors_off_corrections_off.json')
+
+    # Apply errors in lines
+    min_order = 0
+    max_order = 15
+
+    for knob_name, multipole_errors in multipole_errors_to_apply.items():
+        for line_name in ['lhcb1', 'lhcb2']:
+            line = env[line_name]
+            xm.set_multipole_errors_in_line(line, multipole_errors,
+                                    min_order=min_order, max_order=max_order,
+                                    error_knob_name=knob_name,
+                                    append_order_to_knob_name=True)
+
+    # Switch off errors of order 0 and 1
+    env['on_error_arc_k0'] = 0
+    env['on_error_arc_k0s'] = 0
+    env['on_error_arc_k1'] = 0
+    env['on_error_arc_k1s'] = 0
+    env['on_error_triplets_ir15_k0'] = 0
+    env['on_error_triplets_ir15_k0s'] = 0
+    env['on_error_triplets_ir15_k1'] = 0
+    env['on_error_triplets_ir15_k1s'] = 0
+    env['on_error_d2_ir15_k0'] = 0
+    env['on_error_d2_ir15_k0s'] = 0
+    env['on_error_d2_ir15_k1'] = 0
+    env['on_error_d2_ir15_k1s'] = 0
 
 
 # One possible configuration - final magnet-asset association still to be defined
