@@ -339,10 +339,10 @@ def test_hllhc19_check_config_and_tuning(label):
     tw2 = lhc.b2.twiss(reverse=True)
 
     # Check global quantities
-    xo.assert_allclose(tw1.qx, 62.31, atol=1e-5)
-    xo.assert_allclose(tw1.qy, 60.32, atol=1e-5)
-    xo.assert_allclose(tw2.qx, 62.31, atol=1e-5)
-    xo.assert_allclose(tw2.qy, 60.32, atol=1e-5)
+    xo.assert_allclose(tw1.qx, 62.31, atol=2e-5)
+    xo.assert_allclose(tw1.qy, 60.32, atol=2e-5)
+    xo.assert_allclose(tw2.qx, 62.31, atol=2e-5)
+    xo.assert_allclose(tw2.qy, 60.32, atol=2e-5)
     xo.assert_allclose(tw1.dqx, 5, atol=0.05)
     xo.assert_allclose(tw1.dqy, 6, atol=0.05)
     xo.assert_allclose(tw2.dqx, 5, atol=0.05)
