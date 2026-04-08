@@ -60,6 +60,7 @@ def machine_tuning(line,
         print(f'Matching linear coupling')
         opt_coupling = line.match(verbose=verbose,
             compute_chromatic_properties=False,
+            method='4d',
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
                         limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob),
@@ -102,8 +103,11 @@ def machine_tuning(line,
 
         print()
         print(f'Matching tune and chromaticity')
-        opt_tune_chormaticity = line.match(verbose=verbose, vary=vary, targets=match_targets)
-        opts['tune_chromaticity'] = opt_tune_chormaticity
+        opt_tune_chromaticity = line.match(verbose=verbose,
+                                           method='4d',
+                                           vary=vary,
+                                           targets=match_targets)
+        opts['tune_chromaticity'] = opt_tune_chromaticity
     return opts
 
 def transfer_vars_to_env(source, dest):
