@@ -272,24 +272,24 @@ def test_hllhc19_check_config_and_tuning(label):
     # Check that errors on a few magnet types are present,
     # and that the first two orders are zero (consistently with setup)
     assert np.max(np.abs(lhc['mb.a12r4.b2'].knl_rel)) > 10.
-    assert np.all(lhc['mb.a12r4.b2'].knl_rel[:2] == 0)
+    assert np.all(lhc.get('mb.a12r4.b2').knl_rel[:2] == 0)
     assert np.max(np.abs(lhc['mb.a12r4.b2'].ksl_rel)) > 10.
-    assert np.all(lhc['mb.a12r4.b2'].ksl_rel[:2] == 0)
+    assert np.all(lhc.get('mb.a12r4.b2').ksl_rel[:2] == 0)
 
     assert np.max(np.abs(lhc['mq.12r4.b2'].knl_rel)) > 10.
-    assert np.all(lhc['mq.12r4.b2'].knl_rel[:2] == 0)
+    assert np.all(lhc.get('mq.12r4.b2').knl_rel[:2] == 0)
     assert np.max(np.abs(lhc['mq.12r4.b2'].ksl_rel)) > 10.
-    assert np.all(lhc['mq.12r4.b2'].ksl_rel[:2] == 0)
+    assert np.all(lhc.get('mq.12r4.b2').ksl_rel[:2] == 0)
 
     tt_triplet_quads_15 = lhc.elements.get_table().rows['mqxf.*/b.*'].rows.match(element_type='Quadrupole')
     assert len(tt_triplet_quads_15) == 2 * 2 * 2 * 6 # 2 beams, 2 sides, 2 ips, 6 quads per triplet
     tt_d2_15 = lhc.elements.get_table().rows['mbrd.*4.*'].rows.match(element_type='RBend')
     assert len(tt_d2_15) == 2 * 2 * 2 # 2 beams, 2 sides, 2 ips
     for nn in list(tt_triplet_quads_15.name) + list(tt_d2_15.name):
-        assert np.max(np.abs(lhc[nn].knl_rel)) > 10.
-        assert np.all(lhc[nn].knl_rel[:2] == 0)
-        assert np.max(np.abs(lhc[nn].ksl_rel)) > 10.
-        assert np.all(lhc[nn].ksl_rel[:2] == 0)
+        assert np.max(np.abs(lhc.get(nn).knl_rel)) > 10.
+        assert np.all(lhc.get(nn).knl_rel[:2] == 0)
+        assert np.max(np.abs(lhc.get(nn).ksl_rel)) > 10.
+        assert np.all(lhc.get(nn).ksl_rel[:2] == 0)
 
     # Check that the the triplet correctors in 1/5 are all powered
     tt_vars_orig = lhc.vars.get_table()
