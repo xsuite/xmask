@@ -76,7 +76,7 @@ for name_weak, ip in product(['b1', 'b2'], ['ip1', 'ip2', 'ip5', 'ip8']):
     beta0_strong = lhc[name_strong].particle_ref.beta0[0]
     gamma0_strong = lhc[name_strong].particle_ref.gamma0[0]
 
-    bunch_spacing_ds = (tw_weak.circumference / harmonic_number
+    bunch_spacing_ds = (tw_weak.line_length / harmonic_number
                         * bunch_spacing_buckets)
 
     # Check lr encounters
@@ -254,21 +254,21 @@ for name_weak, ip in product(['b1', 'b2'], ['ip1', 'ip2', 'ip5', 'ip8']):
             (tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
             + survey_strong['X', nn_strong] - survey_weak['X', nn_weak]
             - phi_crab_x
-                * tw_strong.circumference / (2 * np.pi * harmonic_number)
+                * tw_strong.line_length / (2 * np.pi * harmonic_number)
                 * np.sin(2 * np.pi * zz
-                        * harmonic_number / tw_strong.circumference)),
+                        * harmonic_number / tw_strong.line_length)),
             rtol=0, atol=1e-6) # Not the cleanest, to be investigated
         # print(f"nn_weak: {nn_weak}, nn_strong: {nn_strong}")
-        # print(f"shift_x: {ee_weak.other_beam_shift_x}, expected shift_x: {(tw_strong['x', nn_strong] - tw_weak['x', nn_weak] + survey_strong['X', nn_strong] - survey_weak['X', nn_weak] - phi_crab_x * tw_strong.circumference / (2 * np.pi * harmonic_number) * np.sin(2 * np.pi * zz * harmonic_number / tw_strong.circumference))}")
+        # print(f"shift_x: {ee_weak.other_beam_shift_x}, expected shift_x: {(tw_strong['x', nn_strong] - tw_weak['x', nn_weak] + survey_strong['X', nn_strong] - survey_weak['X', nn_weak] - phi_crab_x * tw_strong.line_length / (2 * np.pi * harmonic_number) * np.sin(2 * np.pi * zz * harmonic_number / tw_strong.line_length))}")
         # print(f"x_strong: {tw_strong['x', nn_strong]}, x_weak: {tw_weak['x', nn_weak]}, survey_strong: {survey_strong['X', nn_strong]}, survey_weak: {survey_weak['X', nn_weak]}, phi_crab_x: {phi_crab_x}, zz: {zz}")
 
         xo.assert_allclose(ee_weak.other_beam_shift_y,
             (tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
             + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak]
             - phi_crab_y
-                * tw_strong.circumference / (2 * np.pi * harmonic_number)
+                * tw_strong.line_length / (2 * np.pi * harmonic_number)
                 * np.sin(2 * np.pi * zz
-                        * harmonic_number / tw_strong.circumference)),
+                        * harmonic_number / tw_strong.line_length)),
             rtol=0, atol=1e-6) # Not the cleanest, to be investigated
 
         assert ee_weak.other_beam_shift_px == 0
