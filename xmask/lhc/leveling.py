@@ -3,6 +3,8 @@ from scipy.constants import c as clight
 import xtrack as xt
 
 def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
+
+    opts = {}
     for ip_name in config_lumi_leveling.keys():
 
         print(f'\n --- Leveling in {ip_name} ---')
@@ -15,8 +17,14 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         assert config_this_ip['preserve_bump_closure'], (
             'Only preserve_bump_closure=True is supported for now')
 
-        beta0_b1 = collider.lhcb1.particle_ref.beta0[0]
-        f_rev=1/(collider.lhcb1.get_length() /(beta0_b1 * clight))
+        if 'b1' in collider.lines:
+            line_names = ['b1', 'b2']
+        else:
+            line_names = ['lhcb1', 'lhcb2']
+        line_b1 = collider[line_names[0]]
+
+        beta0_b1 = line_b1.particle_ref.beta0[0]
+        f_rev=1/(line_b1.get_length() /(beta0_b1 * clight))
 
         targets=[]
         vary=[]
@@ -46,7 +54,8 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         else:
             raise ValueError('Either `luminosity` or `separation_in_sigmas` must be specified')
 
-        tw0 = collider.twiss(lines=['lhcb1', 'lhcb2'])
+        tw0 = collider.twiss(lines=line_names,
+                             compute_chromatic_properties=False)
         if config_this_ip['impose_separation_orthogonal_to_crossing']:
             targets.append(
                 xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'))
@@ -60,7 +69,7 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
             vary.append(xt.Vary(name=knob_name, step=1e-7, limits=ll))
 
         # Target and knobs to rematch the crossing angles and close the bumps
-        for line_name in ['lhcb1', 'lhcb2']:
+        for line_name in line_names:
             targets += [
                 # Preserve crossing angle
                 xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value=tw0, tol=1e-7, scale=1e3),
@@ -73,12 +82,14 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
 
         # Match
         opt = collider.match(
-            lines=['lhcb1', 'lhcb2'],
-            start=[bump_range['lhcb1'][0], bump_range['lhcb2'][0]],
-            end=[bump_range['lhcb1'][-1], bump_range['lhcb2'][-1]],
+            lines=line_names,
+            start=[bump_range[line_names[0]][0], bump_range[line_names[1]][0]],
+            end=[bump_range[line_names[0]][-1], bump_range[line_names[1]][-1]],
             init=tw0, init_at=xt.START,
             targets=targets,
             vary=vary,
             solve=False,
         )
         opt.solve()
+        opts[ip_name] = opt
+    return opts

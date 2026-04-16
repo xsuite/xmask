@@ -17,7 +17,7 @@ config_mad:
     enable_imperfections: false
 
     # Enable knob synthesis (for coupling correction, if no imperfections)
-    enable_knob_synthesis: false
+    enable_knob_synthesis: true
 
     # Rename the coupling knobs to avoid conflict between b1 and b2
     # (for hllhc using old fortran code to generate the knobs)

@@ -1,0 +1,18 @@
+{
+  "magnet": "MQXFA23",
+  "ca": "CA10",
+  "position": "A",
+  "test": "VER. BNL",
+  "measurement": "cold_nominal",
+  "reference_radius_mm": 50,
+  "multipoles": [
+    {"n": 3,  "bn": -0.15,  "an":  1.53},
+    {"n": 4,  "bn": -1.30,  "an":  2.48},
+    {"n": 5,  "bn": -0.34,  "an":  1.38},
+    {"n": 6,  "bn": -1.57,  "an":  0.10},
+    {"n": 7,  "bn": -0.76,  "an":  0.83},
+    {"n": 8,  "bn": -0.16,  "an":  0.18},
+    {"n": 9,  "bn":  0.12,  "an":  0.31},
+    {"n": 10, "bn": -0.63,  "an": -0.01}
+  ]
+}

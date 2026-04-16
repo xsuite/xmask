@@ -277,7 +277,7 @@ def test_hllhc14_b1_only_3_bb_config():
         beta0_strong = collider_ref[name_strong].particle_ref.beta0[0]
         gamma0_strong = collider_ref[name_strong].particle_ref.gamma0[0]
 
-        bunch_spacing_ds = (tw_weak.circumference / harmonic_number
+        bunch_spacing_ds = (tw_weak.line_length / harmonic_number
                             * bunch_spacing_buckets)
 
         # Check lr encounters
@@ -356,12 +356,10 @@ def test_hllhc14_b1_only_3_bb_config():
         z_crab_test = 0.01 # This is the z for the reversed strong beam (e.g. b2 and not b4)
         tw_z_crab_plus = collider_ref[name_strong].twiss(
             zeta0=-(z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
         tw_z_crab_minus = collider_ref[name_strong].twiss(
             zeta0= -(-z_crab_test), # This is the z for the physical strong beam (e.g. b4 and not b2)
-            method='4d',
-            freeze_longitudinal=True).reverse()
+            method='4d').reverse()
         phi_crab_x = -(
             (tw_z_crab_plus['x', f'ip{ip_n}'] - tw_z_crab_minus['x', f'ip{ip_n}'])
                 / (2*z_crab_test))
@@ -458,18 +456,18 @@ def test_hllhc14_b1_only_3_bb_config():
                 (tw_strong['x', nn_strong] - tw_weak['x', nn_weak]
                 + survey_strong['X', nn_strong] - survey_weak['X', nn_weak]
                 - phi_crab_x
-                    * tw_strong.circumference / (2 * np.pi * harmonic_number)
+                    * tw_strong.line_length / (2 * np.pi * harmonic_number)
                     * np.sin(2 * np.pi * zz
-                            * harmonic_number / tw_strong.circumference)),
+                            * harmonic_number / tw_strong.line_length)),
                 rtol=0, atol=1e-5) # Not the cleanest, to be investigated
 
             xo.assert_allclose(ee_weak.other_beam_shift_y,
                 (tw_strong['y', nn_strong] - tw_weak['y', nn_weak]
                 + survey_strong['Y', nn_strong] - survey_weak['Y', nn_weak]
                 - phi_crab_y
-                    * tw_strong.circumference / (2 * np.pi * harmonic_number)
+                    * tw_strong.line_length / (2 * np.pi * harmonic_number)
                     * np.sin(2 * np.pi * zz
-                            * harmonic_number / tw_strong.circumference)),
+                            * harmonic_number / tw_strong.line_length)),
                 rtol=0, atol=1e-5) # Not the cleanest, to be investigated
 
             assert ee_weak.other_beam_shift_px == 0

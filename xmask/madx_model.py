@@ -91,7 +91,7 @@ def save_lines_for_closed_orbit_reference(sequence_clockwise, sequence_anticlock
 
 
 def configure_b4_from_b2(sequence_b4, sequence_b2,
-        update_globals={'bv_aux': -1, 'mylhcbeam': 4}):
+        update_globals={'bv_aux': -1, 'mylhcbeam': 4, 'isnotb4': 0}):
 
     mad_b2 = sequence_b2._madx
     mad_b4 = sequence_b4._madx

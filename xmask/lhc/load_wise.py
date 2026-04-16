@@ -1,0 +1,232 @@
+import xtrack as xt
+import xobjects as xo
+import numpy as np
+from scipy.special import factorial
+
+from .lhc_geography import SIDE_APER_TO_SIDE_BEAM
+
+PREFIX_TO_MAIN_ORDER = [
+    ('mb', (0, 'normal')),
+    ('mqs', (1, 'skew')), ('mq', (1, 'normal')),
+    ('mss', (2, 'skew')), ('ms', (2, 'normal')),
+    ('mo', (3, 'normal')),
+    ('mcbh', (0, 'normal')), ('mcbv', (0, 'skew')),
+    ('mcbch', (0, 'normal')), ('mcbcv', (0, 'skew')),
+    ('mcssx', (2, 'skew')), ('mcsx', (2, 'normal')),
+    ('mcs', (2, 'normal')),
+    ('mco', (3, 'normal')),
+    ('mcd', (4, 'normal')),
+    ('mct', (5, 'normal')),
+]
+
+def load_wise_table_arc_magnets(fname_err_table, fname_rotations, min_order=2, max_order=15, ref_radius=0.017):
+    # Load WISE error table
+    tt_raw = xt.Table.from_tfs(fname_err_table)
+    tt_err_data = tt_raw._data.copy()
+    tt_err_data['name'] = np.array([nn.lower() for nn in tt_err_data['name']])
+    tt_err = xt.Table(data=tt_err_data, col_names=tt_raw._col_names)
+
+    # Load rotation table
+    tt_raw_rot = xt.Table.from_tfs(fname_rotations)
+    tt_rot_data = tt_raw_rot._data.copy()
+    tt_rot_data['name'] = np.array([nn.lower() for nn in tt_rot_data['name']])
+    tt_rot = xt.Table(data=tt_rot_data, col_names=tt_raw_rot._col_names)
+    rot={} # We turn it into a dict for easier access later.
+    for nn in tt_rot['name']:
+        rot[nn] = {'yrot': tt_rot['yrota', nn], 'srot': tt_rot['srota', nn], 'inout': tt_rot['inout', nn]}
+
+    # Isolate magnets with two apertures (end with .b1, .b2, .v1, .v2)
+    tt_err_two_aper = tt_err.rows[r'.*\.b1|.*\.b2|.*\.v1|.*\.v2']
+
+    # I want to keep only the arcs (skip cells 1-7)
+    for icell in range(1, 8):
+        for ip in [1, 2, 3, 4, 5, 6, 7, 8]:
+            tt_err_two_aper = tt_err_two_aper.rows.match_not(
+                f'.*\\.{icell}r{ip}.*|.*\\.{icell}l{ip}.*'
+                f'|.*\\.a{icell}r{ip}.*|.*\\.a{icell}l{ip}.*'
+                f'|.*\\.b{icell}r{ip}.*|.*\\.b{icell}l{ip}.*'
+            )
+
+    # Handle rotations and use name with beam instead of name with aper
+    name_with_aper = tt_err_two_aper['name']
+    name_with_beam = []
+    yrotfactor = []
+    for nn in name_with_aper:
+        # Check if in rot table
+        nn_no_aper = nn.replace('.v1', '').replace('.v2', '')
+        yyff = 1
+        if nn_no_aper in rot: # aperture-beam mapping explicitly given in rot table
+
+            # Check if rotated
+            yrot = rot[nn_no_aper]['yrot']
+            assert yrot in [0, 180], f"Unexpected yrot value {yrot} for magnet {nn_no_aper}"
+            if yrot == 180:
+                yyff = -1
+
+            inout = rot[nn_no_aper]['inout']
+            assert inout in [1, 2], f"Unexpected inout value {inout} for magnet {nn_no_aper}"
+            if (inout == 1 and yyff == 1) or (inout == 2 and yyff == -1):
+                nn_with_beam = nn.replace('.v1', '.b1').replace('.v2', '.b2')
+            elif (inout == 2 and yyff == 1) or (inout == 1 and yyff == -1):
+                nn_with_beam = nn.replace('.v1', '.b2').replace('.v2', '.b1')
+
+        else: # use standard LHC geography (v1 is the external beam)
+            side_aper = nn[-5:]
+            side_beam = SIDE_APER_TO_SIDE_BEAM[side_aper]
+            nn_with_beam = nn[:-5] + side_beam
+
+        if nn_with_beam.endswith('.b2'):
+            yyff *= -1  # invert yrot factor for B2 magnets
+
+        name_with_beam.append(nn_with_beam)
+        yrotfactor.append(yyff)
+    name_with_beam = np.array(name_with_beam)
+
+    tt_err_two_aper['name_with_aper'] = name_with_aper
+    tt_err_two_aper['name_with_beam'] = name_with_beam
+    tt_err_two_aper['name'] = name_with_beam
+    tt_err_two_aper['yrotfactor'] = np.array(yrotfactor)
+
+    # Attach reference order (0 if mb, 1 if mq, fail otherwise)
+    main_order = []
+    main_is_skew = []
+    for nn in tt_err_two_aper['name']:
+        order, is_skew = order_and_is_skew_from_name(nn)
+        main_order.append(order)
+        main_is_skew.append(is_skew)
+    assert len(main_order) == len(tt_err_two_aper)
+    assert len(main_is_skew) == len(tt_err_two_aper)
+
+    tt_err_two_aper['main_order'] = np.array(main_order)
+    tt_err_two_aper['main_is_skew'] = np.array(main_is_skew)
+
+    # From WISE units to knl_rel and ksl_rel
+    ref_radius = 0.017
+
+    knl_rel = np.zeros((len(tt_err_two_aper), max_order))
+    ksl_rel = np.zeros((len(tt_err_two_aper), max_order))
+
+    main_order = tt_err_two_aper['main_order']
+    yrotfactor = tt_err_two_aper['yrotfactor']
+    for ii in range(0, max_order):
+
+        aa = tt_err_two_aper[f'a{ii+1}']
+        bb = tt_err_two_aper[f'b{ii+1}']
+
+        # From magnet measurement convention to MADX convention
+        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (main_order + ii    )
+        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (main_order + ii + 1)
+
+        # From MADX convention to knl
+        kknn_rel = dknlr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+        kkss_rel = dkslr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+
+        knl_rel[:, ii] = kknn_rel
+        ksl_rel[:, ii] = kkss_rel
+
+    tt_err_two_aper['knl_rel'] = knl_rel
+    tt_err_two_aper['ksl_rel'] = ksl_rel
+
+    multipole_errors = {}
+    for nn in tt_err_two_aper.name:
+        knl_rel = tt_err_two_aper['knl_rel', nn]
+        ksl_rel = tt_err_two_aper['ksl_rel', nn]
+        main_order = tt_err_two_aper['main_order', nn]
+        main_is_skew = tt_err_two_aper['main_is_skew', nn]
+        multipole_errors[nn] = {'knl_rel': knl_rel, 'ksl_rel': ksl_rel,
+                                'main_order': main_order, 'main_is_skew': main_is_skew}
+
+    # Suppress multipoles of order < 2
+    for nn in multipole_errors:
+        multipole_errors[nn]['knl_rel'][:min_order] = 0
+        multipole_errors[nn]['ksl_rel'][:min_order] = 0
+
+    return multipole_errors, tt_err_two_aper
+
+def assert_are_same_multipoles_b1_b2(ele_b1, ele_b2, atol=0, rtol=0):
+    knl_b1, ksl_b1 = ele_b1.get_total_knl_ksl()
+    knl_b2, ksl_b2 = ele_b2.get_total_knl_ksl()
+    knl_b2_check = knl_b2.copy()
+    ksl_b2_check = ksl_b2.copy()
+    knl_b2_check[1::2] *= -1
+    ksl_b2_check[0::2] *= -1
+
+    xo.assert_allclose(knl_b1, knl_b2_check, rtol=rtol, atol=atol)
+    xo.assert_allclose(ksl_b1, ksl_b2_check, rtol=rtol, atol=atol)
+
+
+def convert_multipolar_expansion(magnet_meas_data, is_rotated, main_order, ref_radius):
+
+    '''
+    Convert multipolar expansion from magnet measurement convention to xsuite knl_rel and ksl_rel.
+
+    Parameters
+    ----------
+    magnet_meas_data: dict
+        Dictionary containing the multipolar expansion in the magnet measurement convention
+        with keys like 'a1', 'b1', 'a2', 'b2', etc. Note that in this convention
+        a1 is the dipole field, b1 is the quadrupole field, a2 is the sextupole field, etc.
+    is_rotated: bool
+        Whether the magnet is rotated with respect to the reference frame of the measurement. This affects the sign of the multipoles.
+    main_order: int
+        Reference order of the multipolar expansion (e.g. 1 for quadrupoles, 2 for sextupoles, etc.)
+    ref_radius: float
+        Reference radius in meters at which the multipolar expansion is defined.
+
+    Returns
+    -------
+    knl_rel: np.ndarray
+        Array of relative normal multipole coefficients in xsuite convention, indexed by order.
+        Note that in this convention k0 is the dipole field, k1 is the quadrupole field, etc.
+    ksl_rel: np.ndarray
+        Array of relative skew multipole coefficients in xsuite convention, indexed by order.
+        Note that in this convention k0s is the skew dipole field, k1s is the skew quadrupole field, etc.
+    '''
+
+    knl_rel = []
+    ksl_rel = []
+    for kk in magnet_meas_data:
+        assert kk[0] in {'a', 'b'}, f"Unexpected key {kk} in magnet_meas_data, expected keys like 'a1', 'b1', etc."
+
+        ii = int(kk[1:]) - 1 # Xsuite order (0 is dipole)
+
+        if kk[0] == 'a':
+            aa = magnet_meas_data[kk]
+            bb = 0
+        else:
+            aa = 0
+            bb = magnet_meas_data[kk]
+
+        yrotfactor = -1 if is_rotated else 1
+
+        # From magnet measurement convention to MADX convention
+        dknlr_mad = 1e-4 * bb * (-1 * yrotfactor) ** (main_order + ii    )
+        dkslr_mad = 1e-4 * aa * (-1 * yrotfactor) ** (main_order + ii + 1)
+
+        # From MADX convention to knl
+        kknn_rel = dknlr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+        kkss_rel = dkslr_mad * ref_radius**(main_order - (ii)) * factorial(ii) / factorial(main_order)
+
+        # Extend the list if needed
+        while len(knl_rel) <= ii:
+            knl_rel.append(0)
+            ksl_rel.append(0)
+
+        if kk[0] == 'b':
+            knl_rel[ii] = kknn_rel
+        else:
+            ksl_rel[ii] = kkss_rel
+
+    return np.array(knl_rel), np.array(ksl_rel)
+
+def order_and_is_skew_from_name(nn):
+    for prefix, (order, normal_skew) in PREFIX_TO_MAIN_ORDER:
+        assert normal_skew in ['normal', 'skew']
+        if nn.startswith(prefix):
+            main_order = order
+            main_is_skew = normal_skew == 'skew'
+            break
+    else:
+        raise ValueError(f"Unexpected magnet name: {nn}")
+
+    return main_order, main_is_skew

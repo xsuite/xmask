@@ -23,13 +23,17 @@ from .knob_manipulations import add_correction_term_to_dipole_correctors
 def build_xsuite_collider(
     sequence_b1, sequence_b2, sequence_b4, beam_config,
     enable_imperfections,
+    enable_corrections=True,
     install_apertures=False,
     enable_knob_synthesis=False,
     rename_coupling_knobs=False,
     pars_for_imperfections={},
     ver_lhc_run=None,
     ver_hllhc_optics=None,
-    call_after_last_use=None,):
+    call_after_last_use=None,
+    custom_error_table=None,
+    custom_efcomp_code=None
+    ):
 
     """
     Build xsuite collider from madx sequences and optics.
@@ -116,15 +120,19 @@ def build_xsuite_collider(
             enable_imperfections=enable_imperfections,
             enable_knob_synthesis=enable_knob_synthesis,
             pars_for_imperfections=pars_for_imperfections,
+            enable_corrections=enable_corrections,
             ver_lhc_run=ver_lhc_run,
-            ver_hllhc_optics=ver_hllhc_optics)
+            ver_hllhc_optics=ver_hllhc_optics,
+            custom_error_table=custom_error_table,
+            custom_efcomp_code=custom_efcomp_code)
 
         # Prepare xsuite line
         line = xt.Line.from_madx_sequence(
             mad_track.sequence[sequence_name], apply_madx_errors=True,
             deferred_expressions=True,
             install_apertures=install_apertures,
-            replace_in_expr={'bv_aux': 'bvaux_'+sequence_name})
+            replace_in_expr={'bv_aux': 'bvaux_'+sequence_name,
+                             'isnotb4': 'isnotb4_'+sequence_name})
         mad_beam = mad_track.sequence[sequence_name].beam
         line.particle_ref = xp.Particles(p0c = mad_beam.pc*1e9,
             q0 = mad_beam.charge, mass0 = mad_beam.mass*1e9)

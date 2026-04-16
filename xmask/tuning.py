@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import xtrack as xt
+import xmask as xm
 
 def machine_tuning(line,
         enable_closed_orbit_correction=False,
@@ -10,11 +11,30 @@ def machine_tuning(line,
         enable_chromaticity_correction=False,
         knob_names=None,
         targets=None,
+        step_q_knob=None, step_dq_knob=None, step_c_minus_knob=None,
+        tol_tune=None, tol_chromaticity=None, tol_c_minus=None,
         line_co_ref=None, co_corr_config=None,
         verbose=False):
 
+    if step_q_knob is None:
+        step_q_knob = 1e-5
+    if step_dq_knob is None:
+        step_dq_knob = 1e-2
+    if step_c_minus_knob is None:
+        step_c_minus_knob = 1e-5
+
+    if tol_tune is None:
+        tol_tune = 1e-4
+    if tol_chromaticity is None:
+        tol_chromaticity = 0.05
+    if tol_c_minus is None:
+        tol_c_minus = 2e-4
+
+    opts = {}
+
     # Correct closed orbit
     if enable_closed_orbit_correction:
+        print()
         print(f'Correcting closed orbit')
         assert line_co_ref is not None
         assert co_corr_config is not None
@@ -22,23 +42,32 @@ def machine_tuning(line,
             with open(co_corr_config, 'r') as fid:
                 co_corr_config = json.load(fid)
 
-        line._xmask_correct_closed_orbit(
+        if line_co_ref.env is not line.env:
+            xm.transfer_vars_to_env(source=line, dest=line_co_ref)
+
+        opts_co = line._xmask_correct_closed_orbit(
                                 reference=line_co_ref,
                                 correction_config=co_corr_config)
+        if opts_co:
+            opts.update(opts_co)
 
     if enable_linear_coupling_correction:
         assert knob_names is not None
         assert 'c_minus_knob_1' in knob_names
         assert 'c_minus_knob_2' in knob_names
         # Match coupling
+        print()
         print(f'Matching linear coupling')
-        line.match(verbose=verbose,
+        opt_coupling = line.match(verbose=verbose,
+            compute_chromatic_properties=False,
+            method='4d',
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
-                        limits=[-0.5e-2, 0.5e-2], step=1e-5),
+                        limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob),
                 xt.Vary(name=knob_names['c_minus_knob_2'],
-                        limits=[-0.5e-2, 0.5e-2], step=1e-5)],
-            targets=[xt.Target('c_minus', 0, tol=1e-4)])
+                        limits=[-0.5e-2, 0.5e-2], step=step_c_minus_knob)],
+            targets=[xt.Target('c_minus', 0, tol=tol_c_minus)])
+        opts['coupling'] = opt_coupling
 
     # Match tune and chromaticity
     if enable_tune_correction or enable_chromaticity_correction:
@@ -54,10 +83,10 @@ def machine_tuning(line,
             assert 'qx' in targets
             assert 'qy' in targets
 
-            vary.append(xt.Vary(knob_names['q_knob_1'], step=1e-5))
-            vary.append(xt.Vary(knob_names['q_knob_2'], step=1e-5))
-            match_targets.append(xt.Target('qx', targets['qx'], tol=1e-4))
-            match_targets.append(xt.Target('qy', targets['qy'], tol=1e-4))
+            vary.append(xt.Vary(knob_names['q_knob_1'], step=step_q_knob))
+            vary.append(xt.Vary(knob_names['q_knob_2'], step=step_q_knob))
+            match_targets.append(xt.Target('qx', targets['qx'], tol=tol_tune))
+            match_targets.append(xt.Target('qy', targets['qy'], tol=tol_tune))
 
         if enable_chromaticity_correction:
             assert knob_names is not None
@@ -67,10 +96,27 @@ def machine_tuning(line,
             assert 'dqx' in targets
             assert 'dqy' in targets
 
-            vary.append(xt.Vary(knob_names['dq_knob_1'], step=1e-2))
-            vary.append(xt.Vary(knob_names['dq_knob_2'], step=1e-2))
-            match_targets.append(xt.Target('dqx', targets['dqx'], tol=0.05))
-            match_targets.append(xt.Target('dqy', targets['dqy'], tol=0.05))
+            vary.append(xt.Vary(knob_names['dq_knob_1'], step=step_dq_knob))
+            vary.append(xt.Vary(knob_names['dq_knob_2'], step=step_dq_knob))
+            match_targets.append(xt.Target('dqx', targets['dqx'], tol=tol_chromaticity))
+            match_targets.append(xt.Target('dqy', targets['dqy'], tol=tol_chromaticity))
 
+        print()
         print(f'Matching tune and chromaticity')
-        line.match(verbose=verbose, vary=vary, targets=match_targets)
+        opt_tune_chromaticity = line.match(verbose=verbose,
+                                           method='4d',
+                                           vary=vary,
+                                           targets=match_targets)
+        opts['tune_chromaticity'] = opt_tune_chromaticity
+    return opts
+
+def transfer_vars_to_env(source, dest):
+    old_default_to_zero = dest.vars.default_to_zero
+    dest.vars.default_to_zero = True
+    source_dct = source.vars.get_table(compact=False).to_dict()
+    for nn, vv in source_dct.items():
+        if isinstance(vv, str):
+            dest.ref[nn] = eval(vv, {}, dest.ref_manager.containers)
+        else:
+            dest.ref[nn] = vv
+    dest.vars.default_to_zero = old_default_to_zero
