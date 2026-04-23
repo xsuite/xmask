@@ -3,7 +3,7 @@ import xmask as xm
 import xobjects as xo
 import numpy as np
 
-label = 'thick'
+label = 'thin'
 
 if label == 'thin':
     lhc = xt.load("lhc_thin_test_04_tuned_and_leveled_bb_on.json")
@@ -88,14 +88,14 @@ tw1 = lhc.b1.twiss()
 tw2 = lhc.b2.twiss(reverse=True)
 
 # Check global quantities
-xo.assert_allclose(tw1.qx, 62.31, atol=1e-5)
-xo.assert_allclose(tw1.qy, 60.32, atol=1e-5)
-xo.assert_allclose(tw2.qx, 62.31, atol=1e-5)
-xo.assert_allclose(tw2.qy, 60.32, atol=1e-5)
-xo.assert_allclose(tw1.dqx, 5, atol=0.05)
-xo.assert_allclose(tw1.dqy, 6, atol=0.05)
-xo.assert_allclose(tw2.dqx, 5, atol=0.05)
-xo.assert_allclose(tw2.dqy, 6, atol=0.05)
+xo.assert_allclose(tw1.qx, 62.31, atol=3e-5)
+xo.assert_allclose(tw1.qy, 60.32, atol=3e-5)
+xo.assert_allclose(tw2.qx, 62.31, atol=3e-5)
+xo.assert_allclose(tw2.qy, 60.32, atol=3e-5)
+xo.assert_allclose(tw1.dqx, 5, atol=0.1)
+xo.assert_allclose(tw1.dqy, 6, atol=0.1)
+xo.assert_allclose(tw2.dqx, 5, atol=0.1)
+xo.assert_allclose(tw2.dqy, 6, atol=0.1)
 xo.assert_allclose(tw1.c_minus, 0, atol=2e-4)
 xo.assert_allclose(tw2.c_minus, 0, atol=2e-4)
 
@@ -338,13 +338,13 @@ for tw in [tw1_clean, tw2_clean]:
     xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)
     xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
     xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
-    xo.assert_allclose(tw.qx, 62.31, atol=3e-6)
-    xo.assert_allclose(tw.qy, 60.32, atol=3e-6)
-    xo.assert_allclose(tw.dqx, 0, atol=1e-3)
-    xo.assert_allclose(tw.dqy, 0, atol=1e-3)
+    xo.assert_allclose(tw.qx, 62.31, atol=5e-5)
+    xo.assert_allclose(tw.qy, 60.32, atol=5e-5)
+    xo.assert_allclose(tw.dqx, 0, atol=5e-3)
+    xo.assert_allclose(tw.dqy, 0, atol=5e-3)
     xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
     xo.assert_allclose(tw.rows[['ip1', 'ip2', 'ip5', 'ip8']].betx,
-                       [0.15, 10, 0.15, 1.5], rtol=1e-4)
+                       [0.15, 10, 0.15, 1.5], rtol=3e-4)
     xo.assert_allclose(tw.k1sl, 0, atol=1e-12)
     xo.assert_allclose(tw.k2sl, 0, atol=1e-12)
     xo.assert_allclose(tw.k3sl, 0, atol=1e-12)
@@ -366,14 +366,14 @@ for tw in [tw1_clean_6d, tw2_clean_6d]:
     xo.assert_allclose(tw.rows['mq.*'].px, 0, atol=atol_px)
     xo.assert_allclose(tw.rows['mq.*'].y, 0, atol=1e-10)
     xo.assert_allclose(tw.rows['mq.*'].py, 0, atol=1e-10)
-    xo.assert_allclose(tw.qx, 62.31, atol=3e-6)
-    xo.assert_allclose(tw.qy, 60.32, atol=3e-6)
-    xo.assert_allclose(tw.dqx, 0, atol=1e-3)
-    xo.assert_allclose(tw.dqy, 0, atol=1e-3)
+    xo.assert_allclose(tw.qx, 62.31, atol=5e-5)
+    xo.assert_allclose(tw.qy, 60.32, atol=5e-5)
+    xo.assert_allclose(tw.dqx, 0, atol=5e-3)
+    xo.assert_allclose(tw.dqy, 0, atol=5e-3)
     xo.assert_allclose(tw.c_minus, 0, atol=1e-4)
     xo.assert_allclose(tw.qs, 0.0021243, atol=1e-5)
     xo.assert_allclose(tw.rows[['ip1', 'ip2', 'ip5', 'ip8']].betx,
-                       [0.15, 10, 0.15, 1.5], rtol=1e-4)
+                       [0.15, 10, 0.15, 1.5], rtol=3e-4)
     xo.assert_allclose(tw.k1sl, 0, atol=1e-12)
     xo.assert_allclose(tw.k2sl, 0, atol=1e-12)
     xo.assert_allclose(tw.k3sl, 0, atol=1e-12)

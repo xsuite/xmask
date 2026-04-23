@@ -1,10 +1,10 @@
-label: thick
-lattice_file: lhc.json
-optics_file: opt_150.madx
+# label: thick
+# lattice_file: lhc.json
+# optics_file: opt_150.madx
 
-# label: thin_test
-# lattice_file: lhc_thin.json
-# optics_file: opt_150_thin.madx
+label: thin_test
+lattice_file: lhc_thin.json
+optics_file: opt_150_thin.madx
 
 # label: legacy_thick_test
 # lattice_file: lhc.legacy.json
