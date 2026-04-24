@@ -309,17 +309,23 @@ def test_arc_corrections_against_ref():
 
     # Check spool pieces
     tt_kcs_test = env_test.vars.get_table().rows.match(r'kcs\..*').rows.match_not('.*_from_.*')
+    tt_kcs_test = tt_kcs_test.rows[sorted(tt_kcs_test.name)] # sort alphabetically to be in the same order as the reference
     tt_kcs_ref = env_ref.vars.get_table().rows.match(r'kcs\..*').rows.match_not('.*_from_.*')
+    tt_kcs_ref = tt_kcs_ref.rows[sorted(tt_kcs_ref.name)]
     assert np.all(tt_kcs_test.name == tt_kcs_ref.name)
     xo.assert_allclose(tt_kcs_test.value, tt_kcs_ref.value, rtol=0.02)
 
     tt_kco_test = env_test.vars.get_table().rows.match(r'kco\..*').rows.match_not('.*_from_.*')
+    tt_kco_test = tt_kco_test.rows[sorted(tt_kco_test.name)] # sort alphabetically to be in the same order as the reference
     tt_kco_ref = env_ref.vars.get_table().rows.match(r'kco\..*').rows.match_not('.*_from_.*')
+    tt_kco_ref = tt_kco_ref.rows[sorted(tt_kco_ref.name)]
     assert np.all(tt_kco_test.name == tt_kco_ref.name)
     xo.assert_allclose(tt_kco_test.value, tt_kco_ref.value, rtol=0.001)
 
     tt_kcd_test = env_test.vars.get_table().rows.match(r'kcd\..*').rows.match_not('.*_from_.*')
+    tt_kcd_test = tt_kcd_test.rows[sorted(tt_kcd_test.name)] # sort alphabetically to be in the same order as the reference
     tt_kcd_ref = env_ref.vars.get_table().rows.match(r'kcd\..*').rows.match_not('.*_from_.*')
+    tt_kcd_ref = tt_kcd_ref.rows[sorted(tt_kcd_ref.name)]
     assert np.all(tt_kcd_test.name == tt_kcd_ref.name)
     xo.assert_allclose(tt_kcd_test.value, tt_kcd_ref.value, rtol=0.001,
                     atol=0.03*np.max(np.abs(tt_kcd_ref.value)))
