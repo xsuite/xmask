@@ -59,7 +59,7 @@ def machine_tuning(line,
         print()
         print(f'Matching linear coupling')
         opt_coupling = line.match(verbose=verbose,
-            compute_chromatic_properties=False,
+            chrom=False,
             method='4d',
             vary=[
                 xt.Vary(name=knob_names['c_minus_knob_1'],
