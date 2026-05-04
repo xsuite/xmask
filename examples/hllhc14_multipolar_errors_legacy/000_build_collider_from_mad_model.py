@@ -20,17 +20,17 @@ call, file="errors/LHC/Efcomp_MO.madx" ;
 # rename_coupling_knobs = True
 # fname_out = 'collider_errors_on_corrections_on.json'
 
-enable_imperfections = True
-enable_corrections = False
-enable_knob_synthesis = False
-rename_coupling_knobs = False
-fname_out = 'collider_errors_on_corrections_off.json'
-
-# enable_imperfections = False
+# enable_imperfections = True
 # enable_corrections = False
 # enable_knob_synthesis = False
 # rename_coupling_knobs = False
-# fname_out = 'collider_errors_off_corrections_off.json'
+# fname_out = 'collider_errors_on_corrections_off.json'
+
+enable_imperfections = False
+enable_corrections = False
+enable_knob_synthesis = False
+rename_coupling_knobs = False
+fname_out = 'collider_errors_off_corrections_off.json'
 
 # Import user-defined optics-specific tools
 import optics_specific_tools_hlhc14 as ost
