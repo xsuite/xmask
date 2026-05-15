@@ -14,7 +14,7 @@ collider.build_trackers()
 
 # Configure beam-beam lenses
 print('Configuring beam-beam lenses...')
-collider.configure_beambeam_interactions(
+collider.xfields.configure_beambeam_interactions(
     num_particles=config_bb['num_particles_per_bunch'],
     nemitt_x=config_bb['nemitt_x'],
     nemitt_y=config_bb['nemitt_y'])
@@ -26,7 +26,7 @@ if 'mask_with_filling_pattern' in config_bb:
     with open(fname, 'r') as fid:
         filling = json.load(fid)
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling['beam1'],
         filling_pattern_acw=filling['beam2'],
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)

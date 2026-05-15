@@ -75,7 +75,7 @@ def test_lhc_ion_1_install_beambeam():
 
     collider = xt.Environment.from_json('collider_lhc_ion_00.json')
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
@@ -338,7 +338,7 @@ def test_lhc_ion_4_bb_config():
     collider.lhcb1.twiss_default['delta_chrom'] = 1e-5
     collider.lhcb2.twiss_default['delta_chrom'] = 1e-5
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=180000000.0,
         nemitt_x=1.65e-6, nemitt_y=1.65e-6)
 
@@ -703,7 +703,7 @@ def test_lhc_ion_5_filling_scheme():
     assert np.sum([collider.lhcb2[nn].scale_strength
                     for nn in twb2.rows['bb_lr.r8b2_.*'].name]) == 20
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_scheme['beam1'],
         filling_pattern_acw=filling_scheme['beam2'],
         i_bunch_cw=488, i_bunch_acw=488)

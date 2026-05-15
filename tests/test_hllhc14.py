@@ -69,7 +69,7 @@ def test_hllhc14_1_install_beambeam():
     collider = xt.Environment.from_json('collider_hllhc14_00.json')
     assert collider.element_dict is collider.lhcb1.element_dict
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
@@ -283,7 +283,7 @@ def test_hllhc14_4_bb_config():
     collider = xt.Environment.from_json('collider_hllhc14_03.json')
     collider.build_trackers()
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=2.2e11,
         nemitt_x=2e-6, nemitt_y=3e-6)
 
@@ -898,7 +898,7 @@ def test_tune_shift_single_6d_bb_lens_proton():
     # Install head-on only
     collider.discard_trackers()
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1'],
@@ -913,7 +913,7 @@ def test_tune_shift_single_6d_bb_lens_proton():
     # Switch on RF (assumes 6d)
     collider.vars['vrf400'] = 16
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=num_particles,
         nemitt_x=nemitt_x, nemitt_y=nemitt_y,
         crab_strong_beam=False
@@ -981,7 +981,7 @@ def test_tune_shift_single_6d_bb_lens_ion():
     # Install head-on only
     collider.discard_trackers()
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1'],
@@ -996,7 +996,7 @@ def test_tune_shift_single_6d_bb_lens_ion():
     # Switch on RF (assumes 6d)
     collider.vars['vrf400'] = 16
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=num_particles,
         nemitt_x=nemitt_x, nemitt_y=nemitt_y,
         crab_strong_beam=False
@@ -1059,7 +1059,7 @@ def test_tune_shift_single_4d_bb_lens_protons():
     # Install head-on only
     collider.discard_trackers()
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1'],
@@ -1074,7 +1074,7 @@ def test_tune_shift_single_4d_bb_lens_protons():
     # Switch on RF (assumes 6d)
     collider.vars['vrf400'] = 16
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=num_particles,
         nemitt_x=nemitt_x, nemitt_y=nemitt_y,
         crab_strong_beam=False
@@ -1144,7 +1144,7 @@ def test_tune_shift_single_4d_bb_lens_ions():
     # Install head-on only
     collider.discard_trackers()
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line='lhcb2',
         ip_names=['ip1'],
@@ -1159,7 +1159,7 @@ def test_tune_shift_single_4d_bb_lens_ions():
     # Switch on RF (assumes 6d)
     collider.vars['vrf400'] = 16
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=num_particles,
         nemitt_x=nemitt_x, nemitt_y=nemitt_y,
         crab_strong_beam=False
@@ -1260,7 +1260,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 1000
     i_bunch_acw = 1000
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1299,7 +1299,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 174
     i_bunch_acw = 2844
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1336,7 +1336,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 2952
     i_bunch_acw = 279
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1370,7 +1370,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 1000 + 5 # Long range expected on the left
     i_bunch_acw = 1000
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1413,7 +1413,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 2952
     i_bunch_acw = 279 + 5
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1452,7 +1452,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 1612
     i_bunch_acw = 1612
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)
@@ -1521,7 +1521,7 @@ def test_apply_filling_scheme():
     i_bunch_cw = 1775 + 36
     i_bunch_acw = 1775 + 36
 
-    collider.apply_filling_pattern(
+    collider.xfields.apply_filling_pattern(
         filling_pattern_cw=filling_pattern_cw,
         filling_pattern_acw=filling_pattern_acw,
         i_bunch_cw=i_bunch_cw, i_bunch_acw=i_bunch_acw)

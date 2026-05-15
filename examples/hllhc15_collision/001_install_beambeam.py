@@ -12,7 +12,7 @@ with open('config.yaml','r') as fid:
 config_bb = config['config_beambeam']
 
 # Install beam-beam lenses (inactive and not configured)
-collider.install_beambeam_interactions(
+collider.xfields.install_beambeam_interactions(
     clockwise_line='lhcb1',
     anticlockwise_line='lhcb2',
     ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
