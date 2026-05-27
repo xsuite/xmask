@@ -77,7 +77,7 @@ def test_hllhc19_run(label):
     # Install beam-beam lenses (inactive and not configured)
     config_bb = config['beam_beam']
     if config_bb['install_beam_beam']:
-        lhc.install_beambeam_interactions(
+        lhc.xfields.install_beambeam_interactions(
             clockwise_line='b1',
             anticlockwise_line='b2',
             ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
@@ -249,7 +249,7 @@ def test_hllhc19_run(label):
     ##############################
 
     print('Configuring beam-beam lenses...')
-    lhc.configure_beambeam_interactions(
+    lhc.xfields.configure_beambeam_interactions(
         num_particles=config_bb['num_particles_per_bunch'],
         nemitt_x=config_bb['nemitt_x'],
         nemitt_y=config_bb['nemitt_y'])

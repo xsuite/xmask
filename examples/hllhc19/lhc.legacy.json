@@ -124297,20 +124297,16 @@
    "__class__": "CrabCavity"
   },
   "xrotation": {
-   "__class__": "XRotation",
-   "angle": 0.0
+   "__class__": "Rotation"
   },
   "yrotation": {
-   "__class__": "YRotation",
-   "angle": 0.0
+   "__class__": "Rotation"
   },
   "srotation": {
-   "__class__": "SRotation",
-   "angle": 0.0,
-   "cos_z": 1.0
+   "__class__": "Rotation"
   },
   "translation": {
-   "__class__": "XYShift"
+   "__class__": "Translation"
   },
   "dipedge": {
    "__class__": "DipoleEdge"

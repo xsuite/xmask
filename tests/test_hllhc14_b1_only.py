@@ -58,7 +58,7 @@ def test_hllhc14_b1_only_1_install_beambeam():
 
     collider = xt.Environment.from_json('collider_hllhc14_b1_only_00.json')
 
-    collider.install_beambeam_interactions(
+    collider.xfields.install_beambeam_interactions(
         clockwise_line='lhcb1',
         anticlockwise_line=None,
         ip_names=['ip1', 'ip2', 'ip5', 'ip8'],
@@ -179,7 +179,7 @@ def test_hllhc14_b1_only_3_bb_config():
     collider = xt.Environment.from_json('collider_hllhc14_b1_only_02.json')
     collider.build_trackers()
 
-    collider.configure_beambeam_interactions(
+    collider.xfields.configure_beambeam_interactions(
         num_particles=2.2e11,
         nemitt_x=2e-6, nemitt_y=3e-6,
         use_antisymmetry=True,

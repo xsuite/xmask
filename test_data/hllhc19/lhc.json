@@ -534719,9 +534719,7 @@
    "order": 5
   },
   "srotation": {
-   "__class__": "SRotation",
-   "angle": 0.0,
-   "cos_z": 1.0
+   "__class__": "Rotation"
   },
   "tanb": {
    "__class__": "Drift",
@@ -536792,7 +536790,7 @@
    ]
   },
   "translation": {
-   "__class__": "XYShift"
+   "__class__": "Translation"
   },
   "vcorrector": {
    "__class__": "Multipole",
@@ -537030,8 +537028,7 @@
    "prototype": "instrument"
   },
   "xrotation": {
-   "__class__": "XRotation",
-   "angle": 0.0
+   "__class__": "Rotation"
   },
   "xrph.a5l5.b2": {
    "__class__": "Drift",
@@ -537227,8 +537224,7 @@
    "prototype": "collimator"
   },
   "yrotation": {
-   "__class__": "YRotation",
-   "angle": 0.0
+   "__class__": "Rotation"
   },
   "||drift_1": {
    "__class__": "Drift",
