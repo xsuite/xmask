@@ -968,7 +968,7 @@ def test_hllhc19_check_beam_beam(label):
         print(f'Global check on line {line_name}')
 
         # Check that the number of lenses is correct
-        df = lhc[line_name].to_pandas()
+        df = lhc[line_name].get_table().to_pandas()
         bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
         bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
         bb_df = pd.concat([bblr_df, bbho_df])

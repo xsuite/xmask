@@ -214,7 +214,7 @@ def test_hllhc14_b1_only_3_bb_config():
         print(f'Global check on line {line_name}')
 
         # Check that the number of lenses is correct
-        df = collider[line_name].to_pandas()
+        df = collider[line_name].get_table().to_pandas()
         bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
         bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
         bb_df = pd.concat([bblr_df, bbho_df])

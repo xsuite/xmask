@@ -346,7 +346,7 @@ for line_name in ['b1', 'b2']:
     print(f'Global check on line {line_name}')
 
     # Check that the number of lenses is correct
-    df = lhc[line_name].to_pandas()
+    df = lhc[line_name].get_table().to_pandas()
     bblr_df = df[df['element_type'] == 'BeamBeamBiGaussian2D']
     bbho_df = df[df['element_type'] == 'BeamBeamBiGaussian3D']
     bb_df = pd.concat([bblr_df, bbho_df])
@@ -395,4 +395,3 @@ for line_name in ['b1', 'b2']:
     xo.assert_allclose(np.max(fp_polar_with_rescale.qx), 0.3071, atol=1e-3)
     xo.assert_allclose(np.min(fp_polar_with_rescale.qy), 0.3036, atol=1e-3)
     xo.assert_allclose(np.max(fp_polar_with_rescale.qy), 0.3187, atol=1e-3)
-
