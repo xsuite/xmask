@@ -13,6 +13,9 @@ import xtrack as xt
 import xfields as xf
 import xpart as xp
 import xobjects as xo
+from xfields.config_tools.beambeam_config_tools.weak_strong import (
+    _discover_installation,
+)
 
 import xmask as xm
 import xmask.lhc as xmlhc
@@ -90,15 +93,13 @@ def test_hllhc14_1_install_beambeam():
     collider = xt.Environment.from_dict(dct)
     collider.build_trackers()
 
-    assert collider._bb_config['dataframes']['clockwise'].shape == (
-        collider_before_save._bb_config['dataframes']['clockwise'].shape)
-    assert collider._bb_config['dataframes']['anticlockwise'].shape == (
-        collider_before_save._bb_config['dataframes']['anticlockwise'].shape)
-
-    assert (collider._bb_config['dataframes']['clockwise']['elementName'].iloc[50]
-        == collider_before_save._bb_config['dataframes']['clockwise']['elementName'].iloc[50])
-    assert (collider._bb_config['dataframes']['anticlockwise']['elementName'].iloc[50]
-        == collider_before_save._bb_config['dataframes']['anticlockwise']['elementName'].iloc[50])
+    installed = _discover_installation(collider)
+    installed_before_save = _discover_installation(collider_before_save)
+    for orientation in ('clockwise', 'anticlockwise'):
+        assert len(installed.elements[orientation]) == len(
+            installed_before_save.elements[orientation])
+        assert installed.elements[orientation][50].name == (
+            installed_before_save.elements[orientation][50].name)
 
     # Put in some orbit
     knobs = dict(on_x1=250, on_x5=-200, on_disp=1)
@@ -1214,36 +1215,44 @@ def test_apply_filling_scheme():
     filling_pattern_acw = np.zeros(3564, dtype=int)
 
     # Some checks
-    dframes = collider._bb_config['dataframes']
-    assert (dframes['clockwise'].loc['bb_ho.c1b1_00', 'delay_in_slots'] == 0)
-    assert (dframes['clockwise'].loc['bb_ho.c5b1_00', 'delay_in_slots'] == 0)
-    assert (dframes['clockwise'].loc['bb_ho.c2b1_00', 'delay_in_slots'] == 891)
-    assert (dframes['clockwise'].loc['bb_ho.c8b1_00', 'delay_in_slots'] == 2670)
+    installation = _discover_installation(collider)
+    metadata = {
+        orientation: {record.name: record.metadata
+                      for record in installation.elements[orientation]}
+        for orientation in ('clockwise', 'anticlockwise')}
 
-    assert (dframes['anticlockwise'].loc['bb_ho.c1b2_00', 'delay_in_slots'] == 0)
-    assert (dframes['anticlockwise'].loc['bb_ho.c5b2_00', 'delay_in_slots'] == 0)
-    assert (dframes['anticlockwise'].loc['bb_ho.c2b2_00', 'delay_in_slots'] == 3564 - 891)
-    assert (dframes['anticlockwise'].loc['bb_ho.c8b2_00', 'delay_in_slots'] == 3564 - 2670)
+    def delay(orientation, name):
+        return metadata[orientation][name]['delay_in_slots']
 
-    assert (dframes['clockwise'].loc['bb_lr.r1b1_05', 'delay_in_slots'] == 0 + 5)
-    assert (dframes['clockwise'].loc['bb_lr.r5b1_05', 'delay_in_slots'] == 0 + 5)
-    assert (dframes['clockwise'].loc['bb_lr.r2b1_05', 'delay_in_slots'] == 891 + 5)
-    assert (dframes['clockwise'].loc['bb_lr.r8b1_05', 'delay_in_slots'] == 2670 + 5)
+    assert delay('clockwise', 'bb_ho.c1b1_00') == 0
+    assert delay('clockwise', 'bb_ho.c5b1_00') == 0
+    assert delay('clockwise', 'bb_ho.c2b1_00') == 891
+    assert delay('clockwise', 'bb_ho.c8b1_00') == 2670
 
-    assert (dframes['anticlockwise'].loc['bb_lr.r1b2_05', 'delay_in_slots'] == 0 - 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.r5b2_05', 'delay_in_slots'] == 0 - 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.r2b2_05', 'delay_in_slots'] == 3564 - 891 - 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.r8b2_05', 'delay_in_slots'] == 3564 - 2670 - 5)
+    assert delay('anticlockwise', 'bb_ho.c1b2_00') == 0
+    assert delay('anticlockwise', 'bb_ho.c5b2_00') == 0
+    assert delay('anticlockwise', 'bb_ho.c2b2_00') == 3564 - 891
+    assert delay('anticlockwise', 'bb_ho.c8b2_00') == 3564 - 2670
 
-    assert (dframes['clockwise'].loc['bb_lr.l1b1_05', 'delay_in_slots'] == 0 - 5)
-    assert (dframes['clockwise'].loc['bb_lr.l5b1_05', 'delay_in_slots'] == 0 - 5)
-    assert (dframes['clockwise'].loc['bb_lr.l2b1_05', 'delay_in_slots'] == 891 - 5)
-    assert (dframes['clockwise'].loc['bb_lr.l8b1_05', 'delay_in_slots'] == 2670 - 5)
+    assert delay('clockwise', 'bb_lr.r1b1_05') == 0 + 5
+    assert delay('clockwise', 'bb_lr.r5b1_05') == 0 + 5
+    assert delay('clockwise', 'bb_lr.r2b1_05') == 891 + 5
+    assert delay('clockwise', 'bb_lr.r8b1_05') == 2670 + 5
 
-    assert (dframes['anticlockwise'].loc['bb_lr.l1b2_05', 'delay_in_slots'] == 0 + 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.l5b2_05', 'delay_in_slots'] == 0 + 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.l2b2_05', 'delay_in_slots'] == 3564 - 891 + 5)
-    assert (dframes['anticlockwise'].loc['bb_lr.l8b2_05', 'delay_in_slots'] == 3564 - 2670 + 5)
+    assert delay('anticlockwise', 'bb_lr.r1b2_05') == 0 - 5
+    assert delay('anticlockwise', 'bb_lr.r5b2_05') == 0 - 5
+    assert delay('anticlockwise', 'bb_lr.r2b2_05') == 3564 - 891 - 5
+    assert delay('anticlockwise', 'bb_lr.r8b2_05') == 3564 - 2670 - 5
+
+    assert delay('clockwise', 'bb_lr.l1b1_05') == 0 - 5
+    assert delay('clockwise', 'bb_lr.l5b1_05') == 0 - 5
+    assert delay('clockwise', 'bb_lr.l2b1_05') == 891 - 5
+    assert delay('clockwise', 'bb_lr.l8b1_05') == 2670 - 5
+
+    assert delay('anticlockwise', 'bb_lr.l1b2_05') == 0 + 5
+    assert delay('anticlockwise', 'bb_lr.l5b2_05') == 0 + 5
+    assert delay('anticlockwise', 'bb_lr.l2b2_05') == 3564 - 891 + 5
+    assert delay('anticlockwise', 'bb_lr.l8b2_05') == 3564 - 2670 + 5
 
     twb1 = collider.lhcb1.twiss()
     twb2 = collider.lhcb2.twiss()

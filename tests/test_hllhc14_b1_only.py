@@ -9,6 +9,9 @@ from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
 import xobjects as xo
+from xfields.config_tools.beambeam_config_tools.weak_strong import (
+    _discover_installation,
+)
 
 import xmask as xm
 import xmask.lhc as xmlhc
@@ -78,12 +81,13 @@ def test_hllhc14_b1_only_1_install_beambeam():
     collider = xt.Environment.from_dict(dct)
     collider.build_trackers()
 
-    assert collider._bb_config['dataframes']['clockwise'].shape == (
-        collider_before_save._bb_config['dataframes']['clockwise'].shape)
-    assert collider._bb_config['dataframes']['anticlockwise'] is None
-
-    assert (collider._bb_config['dataframes']['clockwise']['elementName'].iloc[50]
-        == collider_before_save._bb_config['dataframes']['clockwise']['elementName'].iloc[50])
+    installed = _discover_installation(collider)
+    installed_before_save = _discover_installation(collider_before_save)
+    assert len(installed.elements['clockwise']) == len(
+        installed_before_save.elements['clockwise'])
+    assert installed.elements['anticlockwise'] == []
+    assert installed.elements['clockwise'][50].name == (
+        installed_before_save.elements['clockwise'][50].name)
 
     # Put in some orbit
     knobs = dict(on_x1=250, on_x5=-200, on_disp=1)
