@@ -13,7 +13,8 @@ import xtrack as xt
 import xfields as xf
 import xpart as xp
 import xobjects as xo
-from xfields.config_tools.beambeam_config_tools.weak_strong import (
+from xfields.config_tools.beambeam_config_tools.particles_mode import (
+    _delay_in_slots,
     _discover_installation,
 )
 
@@ -96,10 +97,8 @@ def test_hllhc14_1_install_beambeam():
     installed = _discover_installation(collider)
     installed_before_save = _discover_installation(collider_before_save)
     for orientation in ('clockwise', 'anticlockwise'):
-        assert len(installed.elements[orientation]) == len(
+        assert installed.elements[orientation] == (
             installed_before_save.elements[orientation])
-        assert installed.elements[orientation][50].name == (
-            installed_before_save.elements[orientation][50].name)
 
     # Put in some orbit
     knobs = dict(on_x1=250, on_x5=-200, on_disp=1)
@@ -1216,13 +1215,11 @@ def test_apply_filling_scheme():
 
     # Some checks
     installation = _discover_installation(collider)
-    metadata = {
-        orientation: {record.name: record.metadata
-                      for record in installation.elements[orientation]}
-        for orientation in ('clockwise', 'anticlockwise')}
 
     def delay(orientation, name):
-        return metadata[orientation][name]['delay_in_slots']
+        return _delay_in_slots(
+            installation, orientation,
+            installation.elements[orientation][name])
 
     assert delay('clockwise', 'bb_ho.c1b1_00') == 0
     assert delay('clockwise', 'bb_ho.c5b1_00') == 0

@@ -9,7 +9,7 @@ from cpymad.madx import Madx
 import xtrack as xt
 import xfields as xf
 import xobjects as xo
-from xfields.config_tools.beambeam_config_tools.weak_strong import (
+from xfields.config_tools.beambeam_config_tools.particles_mode import (
     _discover_installation,
 )
 
@@ -83,11 +83,9 @@ def test_hllhc14_b1_only_1_install_beambeam():
 
     installed = _discover_installation(collider)
     installed_before_save = _discover_installation(collider_before_save)
-    assert len(installed.elements['clockwise']) == len(
+    assert installed.elements['clockwise'] == (
         installed_before_save.elements['clockwise'])
-    assert installed.elements['anticlockwise'] == []
-    assert installed.elements['clockwise'][50].name == (
-        installed_before_save.elements['clockwise'][50].name)
+    assert installed.elements['anticlockwise'] == {}
 
     # Put in some orbit
     knobs = dict(on_x1=250, on_x5=-200, on_disp=1)
