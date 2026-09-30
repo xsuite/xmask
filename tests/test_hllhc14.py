@@ -731,13 +731,13 @@ def test_stress_co_correction_and_lumi_leveling():
                 nemitt_x=nemitt_x, nemitt_y=nemitt_y, sigma_z=sigma_z, crab=False),
             xt.TargetSeparationOrthogonalToCrossing(ip_name='ip8'),
             # Preserve crossing angle
-            xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
-            xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip8', line='lhcb1', value=tw0, tol=1e-7, weight=1e3),
+            xt.TargetList(['px', 'py'], at='ip8', line='lhcb2', value=tw0, tol=1e-7, weight=1e3),
             # Close the bumps
-            xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
-            xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, weight=1),
+            xt.TargetList(['px', 'py'], at='s.ds.r8.b1', line='lhcb1', value=tw0, tol=1e-5, weight=1e3),
+            xt.TargetList(['x', 'y'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, weight=1),
+            xt.TargetList(['px', 'py'], at='e.ds.l8.b2', line='lhcb2', value=tw0, tol=1e-5, weight=1e3),
             ],
         vary=[
             xt.VaryList(['on_sep8h', 'on_sep8v'], step=1e-4), # to control separation
@@ -842,13 +842,13 @@ def test_stress_co_correction_and_lumi_leveling():
             xt.TargetSeparation(ip_name='ip2', separation_norm=3, plane='x', tol=1e-4,
                             nemitt_x=nemitt_x, nemitt_y=nemitt_y),
             # Preserve crossing angle
-            xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value=tw0, tol=1e-7, scale=1e3),
-            xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value=tw0, tol=1e-7, scale=1e3),
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb1', value=tw0, tol=1e-7, weight=1e3),
+            xt.TargetList(['px', 'py'], at='ip2', line='lhcb2', value=tw0, tol=1e-7, weight=1e3),
             # Close the bumps
-            xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, scale=1e3),
-            xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1),
-            xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, scale=1e3),
+            xt.TargetList(['x', 'y'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, weight=1),
+            xt.TargetList(['px', 'py'], at='s.ds.r2.b1', line='lhcb1', value=tw0, tol=1e-5, weight=1e3),
+            xt.TargetList(['x', 'y'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, weight=1),
+            xt.TargetList(['px', 'py'], at='e.ds.l2.b2', line='lhcb2', value=tw0, tol=1e-5, weight=1e3),
         ],
         vary=
             [xt.Vary('on_sep2', step=1e-4),
@@ -1598,15 +1598,15 @@ def test_multiline_match():
                 step=1e-10),
         ],
         targets=[
-            xt.Target('y', at='mb.b28l8.b1', line='lhcb1', value=3e-3, tol=1e-4, scale=1),
-            xt.Target('py', at='mb.b28l8.b1', line='lhcb1', value=0, tol=1e-6, scale=1000),
-            xt.Target('y', at='mb.b27l8.b2', line='lhcb2', value=2e-3, tol=1e-4, scale=1),
-            xt.Target('py', at='mb.b27l8.b2', line='lhcb2', value=0, tol=1e-6, scale=1000),
+            xt.Target('y', at='mb.b28l8.b1', line='lhcb1', value=3e-3, tol=1e-4, weight=1),
+            xt.Target('py', at='mb.b28l8.b1', line='lhcb1', value=0, tol=1e-6, weight=1000),
+            xt.Target('y', at='mb.b27l8.b2', line='lhcb2', value=2e-3, tol=1e-4, weight=1),
+            xt.Target('py', at='mb.b27l8.b2', line='lhcb2', value=0, tol=1e-6, weight=1000),
             # I want the bump to be closed
-            xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-6, scale=1),
-            xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-7, scale=1000),
-            xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-6, scale=1),
-            xt.Target('py', at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-10, scale=1000),
+            xt.TargetList(['y'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-6, weight=1),
+            xt.TargetList(['py'], at='mq.23l8.b1', line='lhcb1', value=tw0, tol=1e-7, weight=1000),
+            xt.TargetList(['y'], at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-6, weight=1),
+            xt.Target('py', at='mq.32l8.b2', line='lhcb2', value=tw0, tol=1e-10, weight=1000),
         ]
     )
     tw_bump = collider.twiss(lines=['lhcb1', 'lhcb2'])
