@@ -72,10 +72,10 @@ def luminosity_leveling(collider, config_lumi_leveling, config_beambeam):
         for line_name in line_names:
             targets += [
                 # Preserve crossing angle
-                xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value=tw0, tol=1e-7, scale=1e3),
+                xt.TargetList(['px', 'py'], at=ip_name, line=line_name, value=tw0, tol=1e-7, weight=1e3),
                 # Close the bumps
-                xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, scale=1),
-                xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, scale=1e3),
+                xt.TargetList(['x', 'y'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, weight=1),
+                xt.TargetList(['px', 'py'], at=bump_range[line_name][-1], line=line_name, value=tw0, tol=1e-5, weight=1e3),
             ]
 
         vary.append(xt.VaryList(config_this_ip['corrector_knob_names'], step=1e-7))
